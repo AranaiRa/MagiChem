@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 3,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "required_advancement": "the_bumblezone:essence/bee_essence_infusion",
+        "object": {
+          "item": "the_bumblezone:ancient_wax_compound_eyes"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_curse",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

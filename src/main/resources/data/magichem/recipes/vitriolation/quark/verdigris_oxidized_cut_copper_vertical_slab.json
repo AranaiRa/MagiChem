@@ -1,0 +1,22 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:vitriolation",
+        "minimumAcidStrength": 1,
+        "acidConsumed": 60,
+        "duration": 120,
+        "inputItem": { "item": "quark:oxidized_cut_copper_vertical_slab", "count": 1 },
+        "resultFluid": { "fluid": "magichem:liquefacted_copper", "amount": 225 },
+        "resultItem": { "item": "magichem:verdigris", "count": 6 }
+      }
+    }
+  ]
+}

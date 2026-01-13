@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/terrarium_wastes"
+    },
+    "facing=east": {
+      "model": "magichem:block/terrarium_wastes",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/terrarium_wastes",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/terrarium_wastes",
+      "y": 270
+    }
+  }
+}

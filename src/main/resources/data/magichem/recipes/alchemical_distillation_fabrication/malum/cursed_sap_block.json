@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 8,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
+          "item": "malum:cursed_sap_block"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_trap",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_curse",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 12
+          },
+          {
+            "item": "magichem:essentia_verdant",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

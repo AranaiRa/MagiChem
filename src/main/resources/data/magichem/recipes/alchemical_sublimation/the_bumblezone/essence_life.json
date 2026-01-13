@@ -1,0 +1,93 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "the_bumblezone"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:sublimation",
+                "tier": 3,
+                "wisdom": 2,
+                "required_advancement": "the_bumblezone:essence/essence_life",
+                "object": {
+                    "item": "the_bumblezone:essence_life",
+                    "count": 1
+                },
+                "stages": [
+                    {
+                        "experience": 0,
+                        "components": [
+                            {"item": "magichem:vinteum_crystal_block"},
+                            {"item": "minecraft:enchanted_golden_apple"},
+                            {"item": "magichem:vinteum_crystal_block"}
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_healing",
+                                "count": 43
+                            },
+                            {
+                                "item": "magichem:admixture_satiety",
+                                "count": 20
+                            },
+                            {
+                                "item": "magichem:admixture_comfort",
+                                "count": 12
+                            }
+                        ]
+                    },
+                    {
+                        "experience": 0,
+                        "components": [
+                            {"item": "mna:chimerite_block"},
+                            {"item": "minecraft:phantom_membrane"},
+                            {"item": "the_bumblezone:essence_of_the_bees"},
+                            {"item": "minecraft:phantom_membrane"},
+                            {"item": "mna:chimerite_block"}
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_blood",
+                                "count": 33
+                            },
+                            {
+                                "item": "magichem:admixture_mana",
+                                "count": 21
+                            },
+                            {
+                                "item": "magichem:essentia_nigredo",
+                                "count": 12
+                            }
+                        ]
+                    },
+                    {
+                        "experience": 0,
+                        "components": [
+                            {"item": "mna:rune_water"},
+                            {"item": "magichem:inert_wisdom_stone"},
+                            {"item": "mna:rune_arcane"}
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_nectar",
+                                "count": 20
+                            },
+                            {
+                                "item": "magichem:admixture_legend",
+                                "count": 2
+                            },
+                            {
+                                "item": "magichem:essentia_albedo",
+                                "count": 6
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

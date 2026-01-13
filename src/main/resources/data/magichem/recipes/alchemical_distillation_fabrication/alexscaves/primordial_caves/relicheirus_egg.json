@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 26,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "object": {
+          "item": "alexscaves:relicheirus_egg"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_creature",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_bone",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

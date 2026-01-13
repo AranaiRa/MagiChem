@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "tag": "magichem:wildergob_components_small_hells" },
+    { "tag": "magichem:wildergob_components_small_hells" },
+    { "tag": "magichem:wildergob_components_small_hells" },
+    { "tag": "magichem:wildergob_components_small_hells" },
+    { "tag": "magichem:wildergob_components_small_hells" },
+    { "tag": "magichem:wildergob_components_small_hells" },
+    { "tag": "magichem:wildergob_components_small_hells" },
+    { "tag": "magichem:wildergob_components_small_hells" },
+    { "tag": "magichem:wildergob_components_small_hells" }
+  ],
+  "result": {
+    "item": "magichem:wildergob_hells"
+  }
+}

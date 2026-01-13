@@ -1,0 +1,61 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "the_bumblezone"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:sublimation",
+                "tier": 2,
+                "wisdom": 1,
+                "required_advancement": "the_bumblezone:structures/enter_garden",
+                "object": {
+                    "item": "the_bumblezone:crystalline_flower",
+                    "count": 1
+                },
+                "stages": [
+                    {
+                        "experience": 0,
+                        "components": [
+                            {"item": "the_bumblezone:honey_crystal_shards"},
+                            {"item": "the_bumblezone:honey_crystal"},
+                            {"item": "minecraft:amethyst_cluster"},
+                            {"item": "the_bumblezone:honey_crystal"},
+                            {"item": "the_bumblezone:honey_crystal_shards"}
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_light",
+                                "count": 32
+                            },
+                            {
+                                "item": "magichem:admixture_nectar",
+                                "count": 16
+                            }
+                        ]
+                    },
+                    {
+                        "experience": 0,
+                        "components": [
+                            {"item": "minecraft:lapis_block"},
+                            {"item": "the_bumblezone:honey_crystal_shards"},
+                            {"item": "minecraft:bookshelf"},
+                            {"item": "the_bumblezone:honey_crystal_shards"},
+                            {"item": "minecraft:lapis_block"}
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_memory",
+                                "count": 20
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

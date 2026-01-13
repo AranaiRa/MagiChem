@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 0.25,
+        "batch_size": 4,
+        "required_advancement": "alexscaves:alexscaves/discover_candy_cavity",
+        "object": {
+          "item": "alexscaves:licoroot_vine"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_delight",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_construct",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_satiety",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

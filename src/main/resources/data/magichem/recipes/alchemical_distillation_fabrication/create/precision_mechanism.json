@@ -14,7 +14,7 @@
         "categories": 1,
         "output_rate": 1.0,
         "batch_size": 1,
-        "required_advancement": "create:precision_mechanism"
+        "required_advancement": "create:precision_mechanism",
         "object": {
           "item": "create:precision_mechanism"
         },

@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.entity.routers.GrandFuseryRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.PrimeAggregatorRouterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
@@ -363,6 +364,8 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
                         fluidCap = gfrbe.getCapability(ForgeCapabilities.FLUID_HANDLER);
                     } else if(targetMachine instanceof AlchemicalNexusRouterBlockEntity anrbe) {
                         fluidCap = anrbe.getCapability(ForgeCapabilities.FLUID_HANDLER);
+                    } else if(targetMachine instanceof PrimeAggregatorRouterBlockEntity parbe) {
+                        fluidCap = parbe.getCapability(ForgeCapabilities.FLUID_HANDLER);
                     }
 
                     if(fluidCap.isPresent()) {

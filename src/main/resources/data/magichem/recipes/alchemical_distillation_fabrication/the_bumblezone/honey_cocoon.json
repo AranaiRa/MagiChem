@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 9,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "the_bumblezone:effects/getting_protection",
+        "object": {
+          "item": "the_bumblezone:honey_cocoon"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 6
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

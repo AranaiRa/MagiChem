@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:vertical_runewood_planks"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_arcane",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_plains",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

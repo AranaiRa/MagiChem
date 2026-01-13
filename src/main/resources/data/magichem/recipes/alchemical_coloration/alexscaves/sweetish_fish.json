@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "valid_on_cauldron": false,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "alexscaves:sweetish_fish_red"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "alexscaves:sweetish_fish_red"
+          },
+          {
+            "color": "yellow",
+            "item": "alexscaves:sweetish_fish_yellow"
+          },
+          {
+            "color": "green",
+            "item": "alexscaves:sweetish_fish_green"
+          },
+          {
+            "color": "blue",
+            "item": "alexscaves:sweetish_fish_blue"
+          },
+          {
+            "color": "pink",
+            "item": "alexscaves:sweetish_fish_pink"
+          }
+        ]
+      }
+    }
+  ]
+}

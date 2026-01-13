@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "object": {
+          "item": "alexscaves:limestone_spear"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_violence",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

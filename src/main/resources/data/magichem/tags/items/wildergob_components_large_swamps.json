@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "mna:tarma_root",
+    "minecraft:jungle_log",
+    "minecraft:mangrove_log"
+  ]
+}

@@ -9,6 +9,7 @@
     { "item": "magichem:alchemical_waste" }
   ],
   "result": {
-    "item": "magichem:ensorcelled_fertilizer"
+    "item": "magichem:ensorcelled_fertilizer",
+    "count": 3
   }
 }

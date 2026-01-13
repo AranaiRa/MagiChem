@@ -237,7 +237,10 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemRL));
                 int count = GsonHelper.getAsInt(resultObject, "count");
 
-                result = new ItemStack(item, count);
+                if(item == null) MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find output item \""+itemRL.toString()+"\"!");
+                else {
+                    result = new ItemStack(item, count);
+                }
             }
 
             Item itemType = null;
@@ -246,6 +249,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 String typeRL = GsonHelper.getAsString(itemsObject, "type");
                 itemType = ForgeRegistries.ITEMS.getValue(new ResourceLocation(typeRL));
                 itemsRequired = GsonHelper.getAsInt(itemsObject, "required");
+                if(itemType == null) MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find required item \""+typeRL.toString()+"\"!");
             }
 
             MateriaItem materiaType = null;
@@ -255,6 +259,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 Item materiaTypeQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(typeRL));
                 materiaRequired = GsonHelper.getAsInt(materiaObject, "required");
                 if(materiaTypeQuery instanceof MateriaItem mi) materiaType = mi;
+                if(materiaType == null) MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find materia type \""+typeRL.toString()+"\"!");
             }
 
             byte eldrinType = 0;

@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 0.333,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:soulwood_sign"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_curse",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

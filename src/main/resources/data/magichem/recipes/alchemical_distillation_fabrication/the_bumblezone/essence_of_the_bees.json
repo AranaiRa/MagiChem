@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 48,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "the_bumblezone:essence_of_the_bees"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 48
+          },
+          {
+            "item": "magichem:admixture_comfort",
+            "count": 32
+          },
+          {
+            "item": "magichem:admixture_creature",
+            "count": 32
+          },
+          {
+            "item": "magichem:admixture_legend",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

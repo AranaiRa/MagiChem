@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:jungle_sapling",
+    "minecraft:jungle_leaves",
+    "minecraft:mangrove_propagule",
+    "minecraft:mangrove_leaves"
+  ]
+}

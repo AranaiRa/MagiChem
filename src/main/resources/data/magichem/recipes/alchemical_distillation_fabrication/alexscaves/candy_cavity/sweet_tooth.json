@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 16,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_candy_cavity",
+        "object": {
+          "item": "alexscaves:sweet_tooth"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_bone",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_rotten",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

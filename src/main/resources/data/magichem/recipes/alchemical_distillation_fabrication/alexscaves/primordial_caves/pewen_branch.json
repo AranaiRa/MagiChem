@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 1,
+        "output_rate": 0.4,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "object": {
+          "item": "alexscaves:pewen_branch"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_history",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_mountains",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

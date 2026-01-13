@@ -1,0 +1,26 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:fluid_distillation_fabrication",
+        "wisdom": 0,
+        "categories": 10,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "fluid": "the_bumblezone:honey_fluid_still",
+        "components": [
+          { "item": "magichem:admixture_nectar", "count": 36},
+          { "item": "magichem:admixture_trap", "count": 9},
+          { "item": "magichem:essentia_nourishing", "count": 6}
+        ]
+      }
+    }
+  ]
+}

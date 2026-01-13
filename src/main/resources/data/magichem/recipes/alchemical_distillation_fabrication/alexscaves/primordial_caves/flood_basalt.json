@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 10,
+        "output_rate": 0.125,
+        "batch_size": 16,
+        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "object": {
+          "item": "alexscaves:flood_basalt"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_fire",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

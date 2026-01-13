@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/defeat_forsaken",
+        "object": {
+          "item": "alexscaves:darkened_apple"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_water",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 20
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 20
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 11
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

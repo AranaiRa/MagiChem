@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 10,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "the_bumblezone:effects/getting_protection",
+        "object": {
+          "item": "the_bumblezone:honey_crystal"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

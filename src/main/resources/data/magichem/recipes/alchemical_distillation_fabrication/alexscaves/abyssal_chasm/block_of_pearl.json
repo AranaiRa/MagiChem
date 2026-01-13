@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "alexscaves:block_of_pearl"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_depths",
+            "count": 27
+          },
+          {
+            "item": "magichem:essentia_fleshy",
+            "count": 27
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 18
+          }
+        ]
+      }
+    }
+  ]
+}

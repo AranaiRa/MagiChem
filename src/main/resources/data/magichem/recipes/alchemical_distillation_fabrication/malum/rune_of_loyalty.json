@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:rune_of_loyalty"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_water",
+            "count": 128
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 34
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 32
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

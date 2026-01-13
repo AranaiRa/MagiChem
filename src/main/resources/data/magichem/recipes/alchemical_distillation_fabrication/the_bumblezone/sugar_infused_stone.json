@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 0.125,
+        "batch_size": 4,
+        "object": {
+          "item": "the_bumblezone:sugar_infused_stone"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 6
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

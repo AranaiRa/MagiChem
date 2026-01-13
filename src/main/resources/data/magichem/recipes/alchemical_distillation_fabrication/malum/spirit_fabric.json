@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.5,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:spirit_fabric"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_comfort",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

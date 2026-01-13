@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cherry_sapling",
+    "minecraft:cherry_leaves",
+    "minecraft:azalea_leaves",
+    "minecraft:flowering_azalea_leaves"
+  ]
+}

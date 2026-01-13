@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/defeat_forsaken",
+        "object": {
+          "item": "alexscaves:shadow_silk"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 3,
+        "output_rate": 0.333,
+        "batch_size": 16,
+        "object": {
+          "item": "alexscaves:bone_ribs"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_bone",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_dust",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 18
+          }
+        ]
+      }
+    }
+  ]
+}

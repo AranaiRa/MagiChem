@@ -1,0 +1,89 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "valid_on_cauldron": true,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "alexscaves:radon_lamp_lime"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "alexscaves:radon_lamp_red"
+          },
+          {
+            "color": "orange",
+            "item": "alexscaves:radon_lamp_orange"
+          },
+          {
+            "color": "yellow",
+            "item": "alexscaves:radon_lamp_yellow"
+          },
+          {
+            "color": "lime",
+            "item": "alexscaves:radon_lamp_lime"
+          },
+          {
+            "color": "green",
+            "item": "alexscaves:radon_lamp_green"
+          },
+          {
+            "color": "cyan",
+            "item": "alexscaves:radon_lamp_cyan"
+          },
+          {
+            "color": "light_blue",
+            "item": "alexscaves:radon_lamp_light_blue"
+          },
+          {
+            "color": "blue",
+            "item": "alexscaves:radon_lamp_blue"
+          },
+          {
+            "color": "purple",
+            "item": "alexscaves:radon_lamp_purple"
+          },
+          {
+            "color": "magenta",
+            "item": "alexscaves:radon_lamp_magenta"
+          },
+          {
+            "color": "pink",
+            "item": "alexscaves:radon_lamp_pink"
+          },
+          {
+            "color": "brown",
+            "item": "alexscaves:radon_lamp_brown"
+          },
+          {
+            "color": "black",
+            "item": "alexscaves:radon_lamp_black"
+          },
+          {
+            "color": "gray",
+            "item": "alexscaves:radon_lamp_gray"
+          },
+          {
+            "color": "light_gray",
+            "item": "alexscaves:radon_lamp_light_gray"
+          },
+          {
+            "color": "white",
+            "item": "alexscaves:radon_lamp_white"
+          }
+        ]
+      }
+    }
+  ]
+}

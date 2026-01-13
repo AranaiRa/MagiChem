@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 48,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/defeat_forsaken",
+        "object": {
+          "item": "alexscaves:pure_darkness"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 12
+          }
+        ]
+      }
+    }
+  ]
+}

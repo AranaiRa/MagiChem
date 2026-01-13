@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 2,
+  "result": { "item": "magichem:terrarium_forests", "count": 1 },
+  "items": { "type": "magichem:wildergob_forests", "required": 16 },
+  "eldrin": { "type": 2, "required": 10 },
+  "materia": { "type": "magichem:essentia_earth", "required": 16 },
+  "slurry": 400
+}

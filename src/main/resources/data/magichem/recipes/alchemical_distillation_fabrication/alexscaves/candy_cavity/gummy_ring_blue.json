@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 3,
+        "output_rate": 0.333,
+        "batch_size": 4,
+        "required_advancement": "alexscaves:alexscaves/gummy_rings",
+        "object": {
+          "item": "alexscaves:gummy_ring_blue"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_water",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_color",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

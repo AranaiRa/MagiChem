@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 24,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_toxic_caves",
+        "object": {
+          "item": "alexscaves:charred_remnant"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_radiation",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_industry",
+            "count": 3
+          }
+        ]
+      }
+    }
+  ]
+}

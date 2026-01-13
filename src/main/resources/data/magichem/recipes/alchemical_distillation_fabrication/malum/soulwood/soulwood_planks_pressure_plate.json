@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 4,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:soulwood_planks_pressure_plate"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_curse",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_signals",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

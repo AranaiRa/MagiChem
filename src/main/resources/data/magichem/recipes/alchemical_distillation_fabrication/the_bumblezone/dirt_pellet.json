@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 9,
+        "output_rate": 0.125,
+        "batch_size": 1,
+        "object": {
+          "item": "the_bumblezone:dirt_pellet"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_earth",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_erosion",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_rotten",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

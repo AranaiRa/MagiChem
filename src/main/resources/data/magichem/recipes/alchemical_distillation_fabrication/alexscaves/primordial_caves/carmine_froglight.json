@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 20,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "alexscaves:carmine_froglight"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_light",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_creature",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_fleshy",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

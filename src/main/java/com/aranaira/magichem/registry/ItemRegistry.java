@@ -283,6 +283,46 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_COLD = ITEMS.register("wildergob_cold",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_END = ITEMS.register("wildergob_end",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_DEPTHS = ITEMS.register("wildergob_depths",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_HELLS = ITEMS.register("wildergob_hells",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_FORESTS = ITEMS.register("wildergob_forests",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_MOUNTAINS = ITEMS.register("wildergob_mountains",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_OMINOUS = ITEMS.register("wildergob_ominous",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_PLAINS = ITEMS.register("wildergob_plains",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_SWAMPS = ITEMS.register("wildergob_swamps",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WILDERGOB_WASTES = ITEMS.register("wildergob_wastes",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> INERT_IDOL = ITEMS.register("inert_idol",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -548,6 +588,10 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> XANTHOTIC_GOLD = ITEMS.register("xanthotic_gold",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SCARLET_CORAL = ITEMS.register("scarlet_coral",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 

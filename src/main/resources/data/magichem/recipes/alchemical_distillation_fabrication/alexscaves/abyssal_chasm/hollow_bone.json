@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 3,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "object": {
+          "item": "alexscaves:hollow_bone"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_bone",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_dust",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 16
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

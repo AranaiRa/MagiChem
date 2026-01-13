@@ -107,13 +107,13 @@ public class MagiChemMod
         ModList modList = ModList.get();
 
         if(modList.isLoaded("bloodmagic")) {
-            BloodMagicItemRegistry.ITEMS_COMPAT_BLOOD_MAGIC.register(eventBus);
+            BloodMagicItemRegistry.register(eventBus);
         }
         if(modList.isLoaded("create")) {
-            CreateItemRegistry.ITEMS_COMPAT_CREATE.register(eventBus);
+            CreateItemRegistry.register(eventBus);
         }
         if(modList.isLoaded("occultism")) {
-            OccultismItemRegistry.ITEMS_COMPAT_OCCULTISM.register(eventBus);
+            OccultismItemRegistry.register(eventBus);
             OccultismCompat.handleRegistration(eventBus);
         }
 

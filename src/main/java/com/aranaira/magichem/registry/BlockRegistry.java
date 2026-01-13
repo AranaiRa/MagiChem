@@ -657,6 +657,56 @@ public class BlockRegistry {
                     .strength(0.125f).forceSolidOn())
     );
 
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_COLD = registerBlock("terrarium_cold",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_DEPTHS = registerBlock("terrarium_depths",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_END = registerBlock("terrarium_end",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_FORESTS = registerBlock("terrarium_forests",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_HELLS = registerBlock("terrarium_hells",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_MOUNTAINS = registerBlock("terrarium_mountains",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_OMINOUS = registerBlock("terrarium_ominous",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_PLAINS = registerBlock("terrarium_plains",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_SWAMPS = registerBlock("terrarium_swamps",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<TerrariumBlock> TERRARIUM_WASTES = registerBlock("terrarium_wastes",
+            () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
     public static final RegistryObject<LecternWithCodexMateriaBlock> LECTERN_WITH_CODEX_MATERIA = registerBlock("lectern_with_codex_materia",
             () -> new LecternWithCodexMateriaBlock(BlockBehaviour.Properties.of()
                     .strength(3.0f).forceSolidOn())

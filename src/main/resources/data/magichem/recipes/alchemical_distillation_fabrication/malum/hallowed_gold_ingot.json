@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
+          "item": "malum:hallowed_gold_ingot"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

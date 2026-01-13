@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 4,
+        "categories": 24,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_toxic_caves",
+        "object": {
+          "item": "alexscaves:fissile_core"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_radiation",
+            "count": 20
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 8
+          }
+        ]
+      }
+    }
+  ]
+}
