@@ -1,0 +1,20 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+  "type": "magichem:fulmination",
+  "input": "crossroads:zinc_ore",
+  "input_count": 1,
+  "result": "crossroads:deepslate_zinc_ore",
+  "result_count": 1
+}
+    }
+  ]
+}
