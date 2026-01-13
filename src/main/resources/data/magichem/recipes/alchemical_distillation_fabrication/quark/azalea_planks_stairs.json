@@ -13,7 +13,7 @@
         "wisdom": 1,
         "categories": 1,
         "output_rate": 0.25,
-        "batch_size": 16,
+        "batch_size": 1,
         "object": {
           "item": "quark:azalea_planks_stairs"
         },
