@@ -5,30 +5,30 @@
       "conditions": [
         {
           "type": "forge:mod_loaded",
-          "modid": "quark"
+          "modid": "create"
         }
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 1,
+        "wisdom": 6,
         "categories": 1,
-        "output_rate": 0.25,
+        "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "quark:blossom_planks_stairs"
+          "item": "create:crushed_raw_osmium"
         },
         "components": [
           {
-            "item": "magichem:admixture_wood",
+            "item": "magichem:admixture_metal",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_dust",
             "count": 2
           },
           {
-            "item": "magichem:admixture_realm",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_wrought",
-            "count": 1
+            "item": "magichem:admixture_erosion",
+            "count": 2
           }
         ]
       }

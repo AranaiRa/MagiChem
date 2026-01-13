@@ -13,7 +13,7 @@
         "wisdom": 1,
         "categories": 1,
         "output_rate": 0.25,
-        "batch_size": 16,
+        "batch_size": 1,
         "required_advancement": "minecraft:husbandry/plant_any_sniffer_seed",
         "object": {
           "item": "quark:ancient_planks_stairs"
