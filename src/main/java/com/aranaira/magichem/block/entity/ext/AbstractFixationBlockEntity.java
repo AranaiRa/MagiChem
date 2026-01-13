@@ -254,7 +254,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         pEntity.remainingAnimus = Math.max(-pVarFunc.apply(IDs.CONFIG_NO_TORQUE_GRACE_PERIOD), pEntity.remainingAnimus - 1);
 
         //skip all of this if grime is full
-        if(GrimeProvider.getCapability(pEntity).getGrime() >= ServerConfig.centrifugeMaximumGrime)
+        if(GrimeProvider.getCapability(pEntity).getGrime() >= pVarFunc.apply(IDs.CONFIG_MAX_GRIME))
             return;
 
         updateActuatorValues(pEntity);
@@ -353,11 +353,11 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         if(pEntity.currentRecipe == null)
             return false;
 
-        final float slurryCost = pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f);
-        final float v = pEntity.containedSlurry.getAmount();
+        final int slurryCost = Math.round(pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f));
+        final int containedSlurry = pEntity.containedSlurry.getAmount();
 
         //Can't craft if there's not enough Academic Slurry
-        if(pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f) > pEntity.containedSlurry.getAmount())
+        if(slurryCost > containedSlurry)
             return false;
 
         //Can't craft if the bottle output is full
