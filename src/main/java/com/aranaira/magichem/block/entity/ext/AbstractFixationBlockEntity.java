@@ -353,8 +353,11 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         if(pEntity.currentRecipe == null)
             return false;
 
+        final float slurryCost = pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f);
+        final float v = pEntity.containedSlurry.getAmount();
+
         //Can't craft if there's not enough Academic Slurry
-        if(pEntity.currentRecipe.getSlurryCost() > pEntity.containedSlurry.getAmount() * ((100f - pEntity.reductionRate) / 100f))
+        if(pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f) > pEntity.containedSlurry.getAmount())
             return false;
 
         //Can't craft if the bottle output is full

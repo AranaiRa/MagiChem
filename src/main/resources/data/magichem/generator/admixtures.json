@@ -808,6 +808,8 @@
       "name": "philosophers_concoction",
       "color": "ffffff",
       "depth": 5,
+      "initialBatchSize": 1,
+      "batchSizeCap": 3,
       "components": [
         { "essentia": "conceptual", "count": 21 },
         { "essentia": "nigredo", "count": 17 },
