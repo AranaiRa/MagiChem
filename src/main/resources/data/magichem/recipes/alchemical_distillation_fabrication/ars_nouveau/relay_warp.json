@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 4,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "minecraft:end/root",
+        "object": {
+          "item": "ars_nouveau:relay_warp"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 12
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 40
+          }
+        ]
+      }
+    }
+  ]
+}

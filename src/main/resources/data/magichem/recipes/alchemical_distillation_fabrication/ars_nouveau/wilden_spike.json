@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
+          "item": "ars_nouveau:wilden_spike"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_bone",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_protection",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_fey",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_mineral",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

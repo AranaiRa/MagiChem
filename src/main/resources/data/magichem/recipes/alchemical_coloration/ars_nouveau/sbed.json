@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "valid_on_cauldron": true,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "ars_nouveau:orange_sbed"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "ars_nouveau:red_sbed"
+          },
+          {
+            "color": "yellow",
+            "item": "ars_nouveau:yellow_sbed"
+          },
+          {
+            "color": "green",
+            "item": "ars_nouveau:green_sbed"
+          },
+          {
+            "color": "blue",
+            "item": "ars_nouveau:blue_sbed"
+          },
+          {
+            "color": "purple",
+            "item": "ars_nouveau:purple_sbed"
+          }
+        ]
+      }
+    }
+  ]
+}

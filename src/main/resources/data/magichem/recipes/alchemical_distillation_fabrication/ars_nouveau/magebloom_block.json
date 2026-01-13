@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "required_advancement": "ars_nouveau:magebloom_crop",
+        "object": {
+          "item": "ars_nouveau:magebloom_block"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_comfort",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}
