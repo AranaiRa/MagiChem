@@ -176,6 +176,7 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_CENTRIFUGE.get(), 1), SEPARATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.FUSERY.get(), 1), FIXATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_FUSERY.get(), 1), FIXATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE, FLUID_FABRICATION_TYPE);
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE, FLUID_FABRICATION_TYPE);
