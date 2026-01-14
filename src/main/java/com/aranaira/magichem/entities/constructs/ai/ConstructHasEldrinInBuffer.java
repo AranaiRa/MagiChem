@@ -53,12 +53,12 @@ public class ConstructHasEldrinInBuffer extends ConstructConditional<ConstructHa
 
                     float resolvedPercent = (float)amountToCheck / 100f;
 
-                    return ((containedEnder + containedEarth + containedWater + containedAir + containedFire + containedArcane) / 6f) >= resolvedPercent * 1000f;
+                    return ((containedEnder + containedEarth + containedWater + containedAir + containedFire + containedArcane) / 6f) >= resolvedPercent * 5000f;
                 } else {
                     float contained = curAmt.getOrDefault(affinityToCheck, 0f);
                     float resolvedPercent = (float) amountToCheck / 100f;
 
-                    return contained >= resolvedPercent * 1000f;
+                    return contained >= resolvedPercent * 5000f;
                 }
             }
         }

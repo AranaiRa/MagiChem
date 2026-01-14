@@ -90,7 +90,7 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
             renderMateriaVessel(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         else if(pStack.getItem() == ItemRegistry.PHILOSOPHERS_STONE.get())
             renderPhilosophersStone(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
-        else if(pStack.getItem() instanceof AdmixtureItem ai) {
+        else if(pStack.getItem() == ItemRegistry.PHILOSOPHERS_CONCOCTION) {
             renderPhilosophersConcoction(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay, InventoryHelper.isMateriaUnbottled(pStack));
         }
 
