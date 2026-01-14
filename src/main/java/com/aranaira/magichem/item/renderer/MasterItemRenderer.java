@@ -256,18 +256,18 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
             int colorFromTime = ColorUtils.getLerpedRainbowColor((float) gameTime  / (float) period);
             int[] rgba = ColorUtils.getRGBAIntTintFromPackedInt(colorFromTime);
 
-            period = 200;
-            int pingPongGameTime = (int)(instance.player.level().getGameTime() % period);
-
             pPoseStack.pushPose();
 
             if (pDisplayContext == ItemDisplayContext.GUI) {
                 TextureAtlasSprite texture = instance.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_PHILOSOPHERS_STONE_DUMMY);
                 int[] white = new int[]{255, 255, 255};
+                gameTime = (int)(instance.player.level().getGameTime() % (period * 5));
+                boolean flip = (int)(instance.player.level().getGameTime() % (period * 10)) > gameTime;
+                int pingPongTime = flip ? (period * 5) - gameTime : gameTime;
 
                 pPoseStack.translate(0.5, 0.5, 0.5);
-                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, white, white, 128, 3.75f, false);
-                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, rgba, white, 255, 4f, false);
+                WorldRenderUtils.renderRadiant(pingPongTime, pPoseStack, pBuffer, white, white, 128, 3.75f, false);
+                WorldRenderUtils.renderRadiant(pingPongTime, pPoseStack, pBuffer, rgba, white, 255, 4f, false);
 
                 RenderUtils.renderFaceWithUV(Direction.SOUTH, pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.cutout()), texture,
                     -0.5f, -0.5f, 10.0f, 1.0f, 1.0f,
@@ -275,8 +275,12 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
                     1f,0f,
                     0xffffffff, pPackedLight);
             } else {
+                gameTime = (int)(instance.player.level().getGameTime() % (period * 5));
+                boolean flip = (int)(instance.player.level().getGameTime() % (period * 10)) > gameTime;
+                int pingPongTime = flip ? (period * 5) - gameTime : gameTime;
+
                 pPoseStack.translate(0.5, 0.625, 0.5);
-                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, rgba, new int[]{255, 255, 255}, 255, 4f, false);
+                WorldRenderUtils.renderRadiant(pingPongTime, pPoseStack, pBuffer, rgba, new int[]{255, 255, 255}, 255, 4f, false);
 
                 pPoseStack.translate(0.0, -0.125, 0.0);
                 instance.getItemRenderer().renderStatic(STACK_PHILOSOPHERS_STONE_DUMMY, pDisplayContext, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, null, 0);
