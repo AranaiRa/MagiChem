@@ -8,6 +8,7 @@ package com.aranaira.magichem.registry;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.NameCountPair;
 import com.aranaira.magichem.item.AdmixtureItem;
+import com.aranaira.magichem.item.AdmixtureItemWithSpecialRenderer;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -83,9 +84,14 @@ public class MateriaRegistry {
 
             }
 
-            ItemRegistry.ADMIXTURES.register("admixture_"+admixtureName,
-                    () -> new AdmixtureItem(admixtureName, color, depth, formulaE, formulaA, initialBatchSize.getValue(), batchSizeCap.getValue()));
-            RegistryObject<Item> registryObject = ItemRegistry.getRegistryObject(ItemRegistry.ADMIXTURES, "admixture_"+admixtureName);
+            if(admixtureName.equals("philosophers_concoction")) {
+                ItemRegistry.ADMIXTURES.register("admixture_" + admixtureName,
+                        () -> new AdmixtureItemWithSpecialRenderer(admixtureName, color, depth, formulaE, formulaA, initialBatchSize.getValue(), batchSizeCap.getValue()));
+            } else {
+                ItemRegistry.ADMIXTURES.register("admixture_" + admixtureName,
+                        () -> new AdmixtureItem(admixtureName, color, depth, formulaE, formulaA, initialBatchSize.getValue(), batchSizeCap.getValue()));
+            }
+            RegistryObject<Item> registryObject = ItemRegistry.getRegistryObject(ItemRegistry.ADMIXTURES, "admixture_" + admixtureName);
         }
     }
 }

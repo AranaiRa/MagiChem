@@ -25,7 +25,7 @@ public class ItemRegistry {
     public static final DeferredRegister<Item> ESSENTIA = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
 
-    public static Item NIGREGO, ALBEDO, CITRINITAS, RUBEDO;
+    public static Item NIGREGO, ALBEDO, CITRINITAS, RUBEDO, PHILOSOPHERS_CONCOCTION;
 
     ///////////////
     // MAGICHEM ITEMS
@@ -806,6 +806,7 @@ public class ItemRegistry {
         ALBEDO = materiaMap.get("albedo");
         CITRINITAS = materiaMap.get("citrinitas");
         RUBEDO = materiaMap.get("rubedo");
+        PHILOSOPHERS_CONCOCTION = materiaMap.get("philosophers_concoction");
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

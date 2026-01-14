@@ -2,10 +2,12 @@ package com.aranaira.magichem.item.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
 import com.aranaira.magichem.util.render.RenderUtils;
@@ -46,6 +48,10 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
 
     public static NonNullLazy<BlockEntityWithoutLevelRenderer> getOrCreateMasterRenderer() {
         if(MASTER_RENDERER == null) {
+            CompoundTag nbt = new CompoundTag();
+            nbt.putInt("CustomModelData",1);
+            STACK_PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY.setTag(nbt);
+
             MASTER_RENDERER = NonNullLazy.of(() -> new MasterItemRenderer(
                     Minecraft.getInstance().getBlockEntityRenderDispatcher(),
                     Minecraft.getInstance().getEntityModels()));
@@ -57,8 +63,12 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
     public static final ResourceLocation RENDERER_JAR = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_jar");
     public static final ResourceLocation RENDERER_JAR_QUAD = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_jar_quad");
     public static final ResourceLocation RENDERER_VESSEL = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_vessel");
-    private static final ItemStack STACK_PHILO_DUMMY = new ItemStack(ItemRegistry.PHILOSOPHERS_STONE_DUMMY.get());
-    public static final ResourceLocation TEXTURE_PHILO_DUMMY = new ResourceLocation(MagiChemMod.MODID, "item/philosophers_stone");
+    private static final ItemStack STACK_PHILOSOPHERS_STONE_DUMMY = new ItemStack(ItemRegistry.PHILOSOPHERS_STONE_DUMMY.get());
+    public static final ResourceLocation TEXTURE_PHILOSOPHERS_STONE_DUMMY = new ResourceLocation(MagiChemMod.MODID, "item/philosophers_stone");
+    private static final ItemStack STACK_PHILOSOPHERS_CONCOCTION_DUMMY = new ItemStack(ItemRegistry.PHILOSOPHERS_STONE_DUMMY.get());
+    public static final ResourceLocation TEXTURE_PHILOSOPHERS_CONCOCTION_DUMMY = new ResourceLocation(MagiChemMod.MODID, "item/admixture_philosophers_concoction");
+    private static final ItemStack STACK_PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY = new ItemStack(ItemRegistry.PHILOSOPHERS_STONE_DUMMY.get());
+    public static final ResourceLocation TEXTURE_PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY = new ResourceLocation(MagiChemMod.MODID, "item/materia_unbottled_philosophers_concoction");
     private BakedModel bakedModel;
 
     private final List<Direction> sides = Util.make(new ArrayList<>(), c -> {
@@ -80,6 +90,9 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
             renderMateriaVessel(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         else if(pStack.getItem() == ItemRegistry.PHILOSOPHERS_STONE.get())
             renderPhilosophersStone(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        else if(pStack.getItem() == ItemRegistry.PHILOSOPHERS_CONCOCTION) {
+            renderPhilosophersConcoction(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay, InventoryHelper.isMateriaUnbottled(pStack));
+        }
 
         super.renderByItem(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
     }
@@ -237,16 +250,19 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
         final Minecraft instance = Minecraft.getInstance();
 
         if(instance.player != null) {
-            long gameTime = instance.player.level().getGameTime();
             int period = 100;
+            int gameTime = (int)(instance.player.level().getGameTime() % period);
 
-            int colorFromTime = ColorUtils.getLerpedRainbowColor((float) (gameTime % period) / (float) period);
+            int colorFromTime = ColorUtils.getLerpedRainbowColor((float) gameTime  / (float) period);
             int[] rgba = ColorUtils.getRGBAIntTintFromPackedInt(colorFromTime);
+
+            period = 200;
+            int pingPongGameTime = (int)(instance.player.level().getGameTime() % period);
 
             pPoseStack.pushPose();
 
             if (pDisplayContext == ItemDisplayContext.GUI) {
-                TextureAtlasSprite texture = instance.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_PHILO_DUMMY);
+                TextureAtlasSprite texture = instance.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_PHILOSOPHERS_STONE_DUMMY);
                 int[] white = new int[]{255, 255, 255};
 
                 pPoseStack.translate(0.5, 0.5, 0.5);
@@ -263,7 +279,45 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
                 WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, rgba, new int[]{255, 255, 255}, 255, 4f, false);
 
                 pPoseStack.translate(0.0, -0.125, 0.0);
-                instance.getItemRenderer().renderStatic(STACK_PHILO_DUMMY, pDisplayContext, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, null, 0);
+                instance.getItemRenderer().renderStatic(STACK_PHILOSOPHERS_STONE_DUMMY, pDisplayContext, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, null, 0);
+            }
+            pPoseStack.popPose();
+        }
+    }
+
+    private void renderPhilosophersConcoction(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, boolean pUnbottled) {
+        PoseStack.Pose last = pPoseStack.last();
+        VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());
+        final Minecraft instance = Minecraft.getInstance();
+
+        if(instance.player != null) {
+            long gameTime = instance.player.level().getGameTime();
+            int period = 100;
+
+            int colorFromTime = ColorUtils.getLerpedRainbowColor((float) (gameTime % period) / (float) period);
+            int[] rgba = ColorUtils.getRGBAIntTintFromPackedInt(colorFromTime);
+
+            pPoseStack.pushPose();
+
+            if (pDisplayContext == ItemDisplayContext.GUI) {
+                TextureAtlasSprite texture = instance.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(pUnbottled ? TEXTURE_PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY : TEXTURE_PHILOSOPHERS_CONCOCTION_DUMMY);
+                int[] white = new int[]{255, 255, 255};
+
+                pPoseStack.translate(0.5, 0.5, 0.5);
+                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, white, white, 128, 3.75f, false);
+                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, rgba, white, 255, 4f, false);
+
+                RenderUtils.renderFaceWithUV(Direction.SOUTH, pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.cutout()), texture,
+                        -0.5f, -0.5f, 10.0f, 1.0f, 1.0f,
+                        0f,1f,
+                        1f,0f,
+                        0xffffffff, pPackedLight);
+            } else {
+                pPoseStack.translate(0.5, 0.625, 0.5);
+                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, rgba, new int[]{255, 255, 255}, 255, 4f, false);
+
+                pPoseStack.translate(0.0, -0.125, 0.0);
+                instance.getItemRenderer().renderStatic(pUnbottled ? STACK_PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY : STACK_PHILOSOPHERS_CONCOCTION_DUMMY, pDisplayContext, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, null, 0);
             }
             pPoseStack.popPose();
         }
