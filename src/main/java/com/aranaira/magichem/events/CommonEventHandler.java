@@ -36,6 +36,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -113,6 +114,7 @@ public class CommonEventHandler {
             TAG_MINECRAFT_AXES = ItemTags.create(new ResourceLocation("minecraft", "axes")),
             TAG_MAGICHEM_NODECAY = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "no_item_decay"));
     private static final Random r = new Random();
+    private static final HashSet<UUID> playersGivenWarning = new HashSet<>();
 
     public CommonEventHandler() {}
 
@@ -405,7 +407,10 @@ public class CommonEventHandler {
             }
         }
         else if(event.getEntity() instanceof ServerPlayer sp && !sp.level().isClientSide()) {
-            sp.sendSystemMessage(Component.translatable("feedback.warning.api_bug_tier_tooltips"));
+            if (!playersGivenWarning.contains(sp.getUUID())) {
+                sp.sendSystemMessage(Component.translatable("feedback.warning.api_bug_tier_tooltips"));
+                playersGivenWarning.add(sp.getUUID());
+            }
 
             final Optional<IWisdomCapability> wisdomCap = WisdomProvider.getCapability(sp);
             if(wisdomCap.isPresent()) {
