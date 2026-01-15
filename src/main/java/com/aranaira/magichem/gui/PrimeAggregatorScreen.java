@@ -337,7 +337,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         if(recipeFilterRowTotal > 5) {
             float percent = (float)recipeFilterRow / (float)(recipeFilterRowTotal - 5);
             int nubbinShift = (int)Math.floor(percent * 80);
-            gui.blit(TEXTURE, x - 19, y + 23 + nubbinShift, 64, 240, 8, 8);
+            gui.blit(TEXTURE, x - 48, y + 20 + nubbinShift, 64, 248, 8, 8);
         }
 
         //Recipe Indicator
@@ -482,8 +482,8 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
             int x = (width - PANEL_MAIN_W) / 2;
             int y = (height - PANEL_MAIN_H) / 2;
 
-            if (pMouseX >= x - 20 && pMouseX <= x - 11 &&
-                    pMouseY >= y + 25 && pMouseY <= y + 115) {
+            if (pMouseX >= x - 48 && pMouseX <= x - 39 &&
+                    pMouseY >= y + 20 && pMouseY <= y + 110) {
                 double point = pMouseY - (y + 42);
                 double percent = point / 80d;
 
@@ -500,8 +500,8 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
             int x = (width - PANEL_MAIN_W) / 2;
             int y = (height - PANEL_MAIN_H) / 2;
 
-            if (pMouseX >= x - 20 && pMouseX <= x - 11 &&
-                    pMouseY >= y + 25 && pMouseY <= y + 115) {
+            if (pMouseX >= x - 48 && pMouseX <= x - 39 &&
+                    pMouseY >= y + 20 && pMouseY <= y + 110) {
                 double point = pMouseY - (y + 42);
                 double percent = point / 80d;
 
