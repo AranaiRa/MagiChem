@@ -267,6 +267,12 @@ public class ClientEventForgeBusHandler {
                                 mode = 2;
                             }
                         }
+                    } else if (blockEntity instanceof PrimeAggregatorRouterBlockEntity parbe) {
+                        if (parbe.getRouterType() == PrimeAggregatorRouterType.PLUG_LEFT || parbe.getRouterType() == PrimeAggregatorRouterType.PLUG_RIGHT) {
+                            if(CommonEventHelper.checkDirectionAndPos(parbe.getPlugDirection(), bhr)) {
+                                mode = 2;
+                            }
+                        }
                     } else if (blockEntity instanceof GrandCircleFabricationRouterBlockEntity gcfrbe) {
                         int routerType = gcfrbe.getBlockState().getValue(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION);
                         if ((routerType == 2 || routerType == 6) && CommonEventHelper.checkDirectionAndPos(gcfrbe.getPlugDirection(), bhr)) {
