@@ -10,6 +10,7 @@ import com.aranaira.magichem.foundation.NameCountPair;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.AdmixtureItemWithSpecialRenderer;
 import com.aranaira.magichem.item.EssentiaItem;
+import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -26,6 +27,9 @@ import java.util.*;
 public class MateriaRegistry {
     public static final JsonObject ESSENTIA_JSON = getStreamAsJsonObject("/data/magichem/generator/essentia.json");
     public static final JsonObject ADMIXTURE_JSON = getStreamAsJsonObject("/data/magichem/generator/admixtures.json");
+
+    public static RegistryObject<EssentiaItem> NIGREDO, ALBEDO, CITRINITAS, RUBEDO;
+    public static RegistryObject<AdmixtureItemWithSpecialRenderer> PHILOSOPHERS_CONCOCTION;
 
     public static JsonObject getStreamAsJsonObject(String pPath) {
         return JsonParser.parseReader(new BufferedReader(new InputStreamReader(Objects.requireNonNull(MagiChemMod.class.getResourceAsStream(pPath))))).getAsJsonObject();
@@ -46,9 +50,22 @@ public class MateriaRegistry {
             String house = object.get("house").getAsString();
             String color = object.get("color").getAsString();
 
-            ItemRegistry.ESSENTIA.register("essentia_"+essentiaName,
-                    () -> new EssentiaItem(essentiaName, abbreviation, house, wheelPos, color));
-            RegistryObject<Item> registryObject = ItemRegistry.getRegistryObject(ItemRegistry.ESSENTIA, "essentia_"+essentiaName);
+            if(essentiaName.equals("nigredo")) {
+                NIGREDO = ItemRegistry.ESSENTIA.register("essentia_"+essentiaName,
+                        () -> new EssentiaItem(essentiaName, abbreviation, house, wheelPos, color));
+            } else if(essentiaName.equals("albedo")) {
+                ALBEDO = ItemRegistry.ESSENTIA.register("essentia_"+essentiaName,
+                        () -> new EssentiaItem(essentiaName, abbreviation, house, wheelPos, color));
+            } else if(essentiaName.equals("citrinitas")) {
+                CITRINITAS = ItemRegistry.ESSENTIA.register("essentia_"+essentiaName,
+                        () -> new EssentiaItem(essentiaName, abbreviation, house, wheelPos, color));
+            } else if(essentiaName.equals("rubedo")) {
+                RUBEDO = ItemRegistry.ESSENTIA.register("essentia_"+essentiaName,
+                        () -> new EssentiaItem(essentiaName, abbreviation, house, wheelPos, color));
+            } else {
+                ItemRegistry.ESSENTIA.register("essentia_"+essentiaName,
+                        () -> new EssentiaItem(essentiaName, abbreviation, house, wheelPos, color));
+            }
         }
     }
 
@@ -85,7 +102,7 @@ public class MateriaRegistry {
             }
 
             if(admixtureName.equals("philosophers_concoction")) {
-                ItemRegistry.ADMIXTURES.register("admixture_" + admixtureName,
+                PHILOSOPHERS_CONCOCTION = ItemRegistry.ADMIXTURES.register("admixture_" + admixtureName,
                         () -> new AdmixtureItemWithSpecialRenderer(admixtureName, color, depth, formulaE, formulaA, initialBatchSize.getValue(), batchSizeCap.getValue()));
             } else {
                 ItemRegistry.ADMIXTURES.register("admixture_" + admixtureName,

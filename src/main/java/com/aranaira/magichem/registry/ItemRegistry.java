@@ -25,8 +25,6 @@ public class ItemRegistry {
     public static final DeferredRegister<Item> ESSENTIA = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
 
-    public static Item NIGREGO, ALBEDO, CITRINITAS, RUBEDO, PHILOSOPHERS_CONCOCTION;
-
     ///////////////
     // MAGICHEM ITEMS
     ///////////////
@@ -60,6 +58,14 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<Item> PHILOSOPHERS_STONE_DUMMY = ITEMS.register("philosophers_stone_dummy",
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> PHILOSOPHERS_CONCOCTION_DUMMY = ITEMS.register("philosophers_concoction_dummy",
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY = ITEMS.register("philosophers_concoction_unbottled_dummy",
             () -> new Item(new Item.Properties().stacksTo(1))
     );
 
@@ -788,7 +794,7 @@ public class ItemRegistry {
     ///////////////
 
     public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
-            PHILOSOPHERS_STONE_DUMMY, SUBLIMATION_IN_PROGRESS, EXALTATION_IN_PROGRESS,
+            PHILOSOPHERS_STONE_DUMMY, PHILOSOPHERS_CONCOCTION_DUMMY, PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY, SUBLIMATION_IN_PROGRESS, EXALTATION_IN_PROGRESS,
             DUMMY_CONSTRUCT_STUDY_MATERIAL,
             DUMMY_ANOINTING,DUMMY_INFO_PANEL,DUMMY_VITRIOLATION,DUMMY_ILLUMINATION,
             DUMMY_PROCESS_FULMINATION, DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL, DUMMY_PROCESS_COLORATION, DUMMY_PROCESS_CONJURATION,
@@ -800,13 +806,6 @@ public class ItemRegistry {
         ITEMS.register(eventBus);
         ESSENTIA.register(eventBus);
         ADMIXTURES.register(eventBus);
-
-        HashMap<String, MateriaItem> materiaMap = getMateriaMap(false, false);
-        NIGREGO = materiaMap.get("nigredo");
-        ALBEDO = materiaMap.get("albedo");
-        CITRINITAS = materiaMap.get("citrinitas");
-        RUBEDO = materiaMap.get("rubedo");
-        PHILOSOPHERS_CONCOCTION = materiaMap.get("philosophers_concoction");
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
