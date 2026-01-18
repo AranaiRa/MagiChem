@@ -21,6 +21,7 @@ public class MobEffectsRegistry {
     public static final RegistryObject<MobEffect> DISSOLUTION = EFFECTS.register("dissolution", () -> new DissolutionEffect(MobEffectCategory.HARMFUL, 0xffb4e51b));
     public static final RegistryObject<MobEffect> ABATED_DISSOLUTION = EFFECTS.register("abated_dissolution", () -> new DissolutionEffect(MobEffectCategory.HARMFUL, 0xffb4e51b));
     public static final RegistryObject<MobEffect> ACID_WARD = EFFECTS.register("acid_ward", () -> new SimpleEffect(MobEffectCategory.BENEFICIAL, 0xff583481));
+    public static final RegistryObject<MobEffect> MEMORIES_OF_DECADENCE = EFFECTS.register("memories_of_decadence", MemoriesOfDecadenceEffect::new);
 
     public static void register(IEventBus eventBus) {
         EFFECTS.register(eventBus);
