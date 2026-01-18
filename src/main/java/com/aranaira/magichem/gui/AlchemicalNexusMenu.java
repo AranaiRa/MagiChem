@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import static com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity.*;
@@ -102,7 +103,9 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
         return blockEntity.getCurrentRecipe();
     }
 
+    @Nullable
     public InfusionStage getStage(int id) {
+        if(id >= blockEntity.getCurrentRecipe().getStages(false).size()) return null;
         return blockEntity.getCurrentRecipe().getStages(false).get(id);
     }
 

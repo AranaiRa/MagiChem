@@ -251,6 +251,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             if(menu.getCurrentRecipe() == null) {
                 pGuiGraphics.blit(TEXTURE, x + 79, y + 79, 28, 238, 18, 18);
             } else {
+                final InfusionStage stage = menu.getStage(menu.blockEntity.getCraftingStage());
                 if(menu.getCurrentRecipe().getAlchemyObject().getItem() instanceof BlockItem) {
                     pGuiGraphics.renderItem(menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
                     pGuiGraphics.renderItemDecorations(Minecraft.getInstance().font, menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
@@ -263,30 +264,32 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     pGuiGraphics.setColor(1, 1, 1, 1);
                 }
 
-                //ingredients
-                {
-                    int i=0;
-                    for (ItemStack is : menu.getStage(menu.blockEntity.getCraftingStage()).componentItems) {
-                        pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 0.25f);
-                        pGuiGraphics.renderItem(is, x + 22, y + 8 + (i * 18));
-                        pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+                if(stage != null) {
+                    //ingredients
+                    {
+                        int i = 0;
+                        for (ItemStack is : stage.componentItems) {
+                            pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 0.25f);
+                            pGuiGraphics.renderItem(is, x + 22, y + 8 + (i * 18));
+                            pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-                        //correction for blockitems
-                        if(is.getItem() instanceof BlockItem) {
-                            pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 22, y + 8 + (i * 18), x + 40, y + 26 + (i * 18), 0x40ffffff);
+                            //correction for blockitems
+                            if (is.getItem() instanceof BlockItem) {
+                                pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 22, y + 8 + (i * 18), x + 40, y + 26 + (i * 18), 0x40ffffff);
+                            }
+
+                            i++;
                         }
-
-                        i++;
                     }
-                }
 
-                //materia
-                {
-                    int i=0;
-                    for (ItemStack is : menu.getStage(menu.blockEntity.getCraftingStage()).componentMateria) {
-                        pGuiGraphics.renderItem(is, x + 44, y + 8 + (i * 18));
-                        pGuiGraphics.renderItemDecorations(font, is, x + 44, y + 8 + (i * 18));
-                        i++;
+                    //materia
+                    {
+                        int i = 0;
+                        for (ItemStack is : stage.componentMateria) {
+                            pGuiGraphics.renderItem(is, x + 44, y + 8 + (i * 18));
+                            pGuiGraphics.renderItemDecorations(font, is, x + 44, y + 8 + (i * 18));
+                            i++;
+                        }
                     }
                 }
             }
