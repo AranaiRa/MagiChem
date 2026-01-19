@@ -268,7 +268,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.putString("heldItem", ForgeRegistries.ITEMS.getKey(heldItem.getItem()).toString());
+        nbt.put("heldItem", heldItem.serializeNBT());
         nbt.putInt("heldItemCount", heldItem.getCount());
         nbt.putInt("craftCountdown", craftCountdown);
 
@@ -279,17 +279,13 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         craftCountdown = nbt.getInt("craftCountdown");
-
-        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("heldItem")));
-        if(item != null) {
-            heldItem = new ItemStack(item, nbt.getInt("heldItemCount"));
-        }
+        heldItem = ItemStack.of(nbt.getCompound("heldItem"));
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putString("heldItem", ForgeRegistries.ITEMS.getKey(heldItem.getItem()).toString());
+        nbt.put("heldItem", heldItem.serializeNBT());
         nbt.putInt("heldItemCount", heldItem.getCount());
         nbt.putInt("craftCountdown", craftCountdown);
         return nbt;
