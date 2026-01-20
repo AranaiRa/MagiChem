@@ -1,0 +1,14 @@
+{
+  "type": "mna:crushing",
+  "tier": 5,
+  "input": "magichem:feast_of_the_gods",
+  "output": "magichem:ambrosia",
+  "output_quantity": 1,
+  "byproducts": [
+    {
+      "item": "magichem:nectar",
+      "chance": 1,
+      "count": 1
+    }
+  ]
+}

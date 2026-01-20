@@ -5,7 +5,10 @@ import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.registry.compat.CreateFluidRegistry;
 import com.aranaira.magichem.registry.compat.CreateItemRegistry;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -363,6 +366,44 @@ public class ItemRegistry {
 
     public static final RegistryObject<StatusGrantingConsumableItem> HOROSCOPE_LUNAR_FOREBODING = ITEMS.register("horoscope_lunar_foreboding",
             () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffects.BAD_OMEN, -1, 30, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false, true, 5)
+    );
+
+    public static final RegistryObject<TooltipLoreItem> FLATBREAD = ITEMS.register("flatbread",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(8).saturationMod(0.6F).build()))
+    );
+
+    public static final RegistryObject<Item> MORSEL_OF_PERFECT_SAVOR = ITEMS.register("morsel_savor",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> MORSEL_OF_PERFECT_SPICE = ITEMS.register("morsel_spice",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> MORSEL_OF_PERFECT_SWEETNESS = ITEMS.register("morsel_sweetness",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> MORSEL_OF_PERFECT_UMAMI = ITEMS.register("morsel_umami",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> AMBROSIA = ITEMS.register("ambrosia",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(20).saturationMod(1.0F)
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 0, false, false), 1.0f).build()
+            ))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> NECTAR = ITEMS.register("nectar",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(20).saturationMod(1.0F)
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 0, false, false), 1.0f).build()
+            ))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> FEAST_OF_THE_GODS = ITEMS.register("feast_of_the_gods",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(40).saturationMod(1.0F)
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 4, false, false), 1.0f).build()
+            ))
     );
 
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",

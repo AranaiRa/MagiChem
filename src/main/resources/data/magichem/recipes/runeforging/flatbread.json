@@ -1,0 +1,8 @@
+{
+	"type": "mna:runeforging",
+	"tier": 3,
+	"material": "minecraft:bread",
+	"hits": 1,
+	"pattern": "minecraft:bread",
+	"output": "magichem:flatbread"
+}

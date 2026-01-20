@@ -1,0 +1,27 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:ambrosia"
+  },
+  "stages": [
+    {
+      "experience": 30,
+      "components": [
+        { "item": "magichem:glowberry_mash" },
+        { "item": "magichem:morsel_savor" },
+        { "item": "magichem:morsel_spice" },
+        { "item": "magichem:morsel_umami" },
+        { "item": "magichem:flatbread" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_healing", "count": 45 },
+        { "item": "magichem:admixture_gourmet", "count": 20 },
+        { "item": "magichem:admixture_light", "count": 15 },
+        { "item": "magichem:admixture_adornment", "count": 3 },
+        { "item": "magichem:essentia_citrinitas", "count": 12 }
+      ]
+    }
+  ]
+}
