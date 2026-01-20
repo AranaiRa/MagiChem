@@ -529,7 +529,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
             gui.drawString(font, materiaCounter, 177 - font.width(materiaCounter)/2, -6, 0xff000000, false);
 
             final Pair<Integer, Integer> slurry = menu.blockEntity.getSlurry();
-            String slurryCounter = ""+(slurry.getSecond() - slurry.getFirst());
+            String slurryCounter = ""+Math.max(0, slurry.getSecond() - slurry.getFirst());
             gui.drawString(font, slurryCounter, 177 - font.width(slurryCounter)/2, 71, 0xff000000, false);
         }
     }

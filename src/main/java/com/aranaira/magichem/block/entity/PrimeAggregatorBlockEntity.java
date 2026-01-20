@@ -1040,12 +1040,12 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                                 pEntity.slurryDelivered += extraction;
                                 pEntity.containedSlurry.shrink(extraction);
                                 changed = true;
-
-                                if (pEntity.slurryDelivered >= Math.round(pEntity.currentRecipe.getSlurryRequired() * (1f - pEntity.reductionRate))) {
-                                    pEntity.progress = 0;
-                                    pEntity.animStage = ANIM_STAGE_CRAFTING;
-                                }
                             }
+                        }
+
+                        if (pEntity.slurryDelivered >= Math.round(pEntity.currentRecipe.getSlurryRequired() * (1f - pEntity.reductionRate))) {
+                            pEntity.progress = 0;
+                            pEntity.animStage = ANIM_STAGE_CRAFTING;
                         }
                     }
 
