@@ -256,7 +256,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     public Component getDisplayName() {
-        return Component.empty();
+        return Component.translatable("block.magichem.prime_aggregator");
     }
 
     @Nullable
@@ -481,6 +481,32 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                 delivered += eldrinDelivered.get(ARCANE);
             }
             return new Pair<>(delivered, currentRecipe.getEldrinRequired() * types);
+        }
+        return new Pair<>(0, -1);
+    }
+
+    public Pair<Integer, Integer> getSpecificEldrin(Affinity pAffinity) {
+        if(currentRecipe != null) {
+            int delivered = 0;
+            if(pAffinity == ENDER) {
+                delivered += eldrinDelivered.get(ENDER);
+            }
+            if(pAffinity == EARTH) {
+                delivered += eldrinDelivered.get(EARTH);
+            }
+            if(pAffinity == WATER) {
+                delivered += eldrinDelivered.get(WATER);
+            }
+            if(pAffinity == WIND) {
+                delivered += eldrinDelivered.get(WIND);
+            }
+            if(pAffinity == FIRE) {
+                delivered += eldrinDelivered.get(FIRE);
+            }
+            if(pAffinity == ARCANE) {
+                delivered += eldrinDelivered.get(ARCANE);
+            }
+            return new Pair<>(delivered, currentRecipe.getEldrinRequired());
         }
         return new Pair<>(0, -1);
     }

@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.PrimeAggregatorBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.ButtonData;
@@ -25,6 +26,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
@@ -463,8 +465,8 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        if(pMouseX >= x - 77 && pMouseX <= x - 11 &&
-                pMouseY >= y + 21 && pMouseY <= y + 114) {
+        if(pMouseX >= x - 106 && pMouseX <= x - 40 &&
+                pMouseY >= y + 19 && pMouseY <= y + 108) {
             if (recipeFilterRowTotal > 5) {
                 if (pDelta < 0)
                     recipeFilterRow = Math.min(recipeFilterRowTotal - 5, recipeFilterRow + 1);
@@ -536,69 +538,159 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
 
     @Override
     protected void renderTooltip(GuiGraphics gui, int mouseX, int mouseY) {
-        super.renderTooltip(gui, mouseX, mouseY);
 
         Font font = Minecraft.getInstance().font;
         List<Component> tooltipContents = new ArrayList<>();
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
+        boolean doOriginalTooltip = true;
+
+        gui.drawString(font, "x:"+(mouseX-x), 50, 50, 0xffffff, true);
+        gui.drawString(font, "y:"+(mouseY-y), 50, 60, 0xffffff, true);
 
         //Selected recipe
-//        if(mouseX >= x+TOOLTIP_SELECTED_RECIPE_X && mouseX <= x+TOOLTIP_SELECTED_RECIPE_X+TOOLTIP_SELECTED_RECIPE_S &&
-//                mouseY >= y+TOOLTIP_SELECTED_RECIPE_Y && mouseY <= y+TOOLTIP_SELECTED_RECIPE_Y+TOOLTIP_SELECTED_RECIPE_S) {
-//            ItemStack recipeItem = menu.getRecipeItem();
-//            if(recipeItem == ItemStack.EMPTY) {
-//                tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-//            } else {
-//                int slurryCost = Math.round(menu.getCurrentRecipe().getSlurryCost() * ((100f - menu.getReductionRate()) / 100f));
-//
-//                tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
-//                tooltipContents.add(Component.empty());
-//                tooltipContents.add(Component.empty()
-//                        .append(Component.translatable("tooltip.magichem.gui.fixation_cost.part1").withStyle(ChatFormatting.DARK_GRAY))
-//                        .append(Component.literal(slurryCost+"mB").withStyle(ChatFormatting.DARK_AQUA))
-//                        .append(Component.translatable("tooltip.magichem.gui.fixation_cost.part2").withStyle(ChatFormatting.DARK_GRAY))
-//                );
-//            }
-//        }
+        if(mouseX >= x+79 && mouseX <= x+96 &&
+                mouseY >= y+67 && mouseY <= y+84) {
+            ItemStack recipeItem = menu.blockEntity.getRecipeItem();
+            if(recipeItem == ItemStack.EMPTY) {
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            } else {
+                tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            }
+        }
 
         //Items in recipe picker
-//        if(mouseX >= x+TOOLTIP_RECIPE_ZONE_X && mouseX <= x+TOOLTIP_RECIPE_ZONE_X+TOOLTIP_RECIPE_ZONE_W &&
-//                mouseY >= y+TOOLTIP_RECIPE_ZONE_Y && mouseY <= y+TOOLTIP_RECIPE_ZONE_Y+TOOLTIP_RECIPE_ZONE_H) {
-//            int mx = mouseX - (x+TOOLTIP_RECIPE_ZONE_X);
-//            int my = mouseY - (y+TOOLTIP_RECIPE_ZONE_Y);
-//            int id = ((my / 18) * 3) + ((mx / 18) % 3);
-//
-//            if (id >= 0 && id < 16) {
-//                if(id + recipeFilterRow * 3 < filteredRecipes.size()) {
-//                    ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3);
-//                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
-//                }
-//            }
-//        }
+        if(mouseX >= x-105 && mouseX <= x-53 &&
+                mouseY >= y+19 && mouseY <= y+108) {
+            int mx = mouseX - (x-105);
+            int my = mouseY - (y+19);
+            int id = ((my / 18) * 3) + ((mx / 18) % 3);
+
+            if (id >= 0 && id < 16) {
+                if(id + recipeFilterRow * 3 < filteredRecipes.size()) {
+                    ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3);
+                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                }
+            }
+        }
 
         //Slurry Bar
-//        if(mouseX >= x+TOOLTIP_SLURRY_X && mouseX <= x+TOOLTIP_SLURRY_X+TOOLTIP_SLURRY_W &&
-//                mouseY >= y+TOOLTIP_SLURRY_Y && mouseY <= y+TOOLTIP_SLURRY_Y+TOOLTIP_SLURRY_H) {
-//
-//            tooltipContents.clear();
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank").withStyle(ChatFormatting.GOLD))
-//                    .append(": ")
-//                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line1"))
-//                    .append(menu.blockEntity.getDisplayName())
-//                    .append("."));
-//            tooltipContents.add(Component.empty());
-//            tooltipContents.add(Component.translatable("tooltip.magichem.gui.slurry.tank.line2a")
-//                    .append(Component.literal(ServerConfig.fixationFailureRefund+"%").withStyle(ChatFormatting.DARK_AQUA))
-//                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line2b")));
-//            tooltipContents.add(Component.empty());
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line3").withStyle(ChatFormatting.DARK_GRAY))
-//                    .append(Component.literal(menu.getSlurryInTank()+"mB").withStyle(ChatFormatting.DARK_AQUA)));
-//            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
-//        }
+        if(mouseX >= x+167 && mouseX <= x+184 &&
+                mouseY >= y+33 && mouseY <= y+70) {
 
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line1"))
+                    .append(menu.blockEntity.getDisplayName())
+                    .append("."));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(menu.blockEntity.getFluidInTank(0).getAmount()+"mB").withStyle(ChatFormatting.DARK_AQUA)));
+        }
+
+        //Sublimation In Progress
+        if(mouseX >= x+79 && mouseX <= x+97 &&
+                mouseY >= y-3 && mouseY <= y+14) {
+
+            ItemStack stackInSlot = menu.getItems().get(AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER);
+            doOriginalTooltip = false;
+
+            if(!stackInSlot.isEmpty()) {
+                tooltipContents.clear();
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.exaltation_in_progress.line1"))
+                );
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.exaltation_in_progress.line2"))
+                );
+            }
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        if(menu.blockEntity.getCurrentRecipe() != null) {
+            //Items Delivered
+            if (mouseX >= x - 23 && mouseX <= x + 26 &&
+                    mouseY >= y - 3 && mouseY <= y + 14) {
+                Pair<Integer, Integer> deliveries = menu.blockEntity.getItems();
+
+                tooltipContents.clear();
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(""+deliveries.getFirst()).withStyle(ChatFormatting.DARK_AQUA))
+                        .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(""+deliveries.getSecond()).withStyle(ChatFormatting.DARK_AQUA))
+                        .append(" ")
+                        .append(menu.blockEntity.getCurrentRecipe().getItemType().getDescription().copy().withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.exaltation.delivered"))
+                );
+            }
+
+            //Materia Delivered
+            if (mouseX >= x + 151 && mouseX <= x + 200 &&
+                    mouseY >= y - 3 && mouseY <= y + 14) {
+                Pair<Integer, Integer> deliveries = menu.blockEntity.getMateria();
+
+                tooltipContents.clear();
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(""+deliveries.getFirst()).withStyle(ChatFormatting.DARK_AQUA))
+                        .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(""+deliveries.getSecond()).withStyle(ChatFormatting.DARK_AQUA))
+                        .append(" ")
+                        .append(menu.blockEntity.getCurrentRecipe().getMateriaType().getDescription().copy().withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.exaltation.delivered"))
+                );
+            }
+
+            //Eldrin Delivered
+            if (mouseX >= x - 23 && mouseX <= x + 26 &&
+                    mouseY >= y + 74 && mouseY <= y + 91) {
+                tooltipContents.clear();
+                final ArrayList<Affinity> eldrinTypes = menu.blockEntity.getCurrentRecipe().getEldrinTypes();
+
+                for (Affinity affinity : eldrinTypes) {
+                    final Pair<Integer, Integer> deliveries = menu.blockEntity.getSpecificEldrin(affinity);
+                    MutableComponent affinityName;
+                    if(affinity == ENDER) affinityName = Component.translatable("tooltip.magichem.jei.exaltation.eldrin.ender");
+                    else if(affinity == EARTH) affinityName = Component.translatable("tooltip.magichem.jei.exaltation.eldrin.earth");
+                    else if(affinity == WATER) affinityName = Component.translatable("tooltip.magichem.jei.exaltation.eldrin.water");
+                    else if(affinity == WIND) affinityName = Component.translatable("tooltip.magichem.jei.exaltation.eldrin.air");
+                    else if(affinity == FIRE) affinityName = Component.translatable("tooltip.magichem.jei.exaltation.eldrin.fire");
+                    else if(affinity == ARCANE) affinityName = Component.translatable("tooltip.magichem.jei.exaltation.eldrin.arcane");
+                    else affinityName = Component.literal("???");
+
+                    tooltipContents.add(Component.empty()
+                            .append(Component.literal(""+deliveries.getFirst()).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(""+deliveries.getSecond()).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(" ")
+                            .append(affinityName.withStyle(ChatFormatting.GOLD))
+                            .append(Component.translatable("tooltip.magichem.gui.exaltation.delivered"))
+                    );
+                }
+            }
+
+            //Slurry Delivered
+            if (mouseX >= x + 151 && mouseX <= x + 200 &&
+                    mouseY >= y + 74 && mouseY <= y + 91) {
+                Pair<Integer, Integer> deliveries = menu.blockEntity.getSlurry();
+
+                tooltipContents.clear();
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(""+deliveries.getFirst()).withStyle(ChatFormatting.DARK_AQUA))
+                        .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(""+deliveries.getSecond()).withStyle(ChatFormatting.DARK_AQUA))
+                        .append(" ")
+                        .append(Component.translatable("block.magichem.academic_slurry").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.exaltation.delivered"))
+                );
+            }
+        }
+
+        if(doOriginalTooltip)
+            super.renderTooltip(gui, mouseX, mouseY);
         gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
     }
 }
