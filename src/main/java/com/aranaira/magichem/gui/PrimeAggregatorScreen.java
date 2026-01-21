@@ -545,9 +545,6 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         int y = (height - PANEL_MAIN_H) / 2;
         boolean doOriginalTooltip = true;
 
-        gui.drawString(font, "x:"+(mouseX-x), 50, 50, 0xffffff, true);
-        gui.drawString(font, "y:"+(mouseY-y), 50, 60, 0xffffff, true);
-
         //Selected recipe
         if(mouseX >= x+79 && mouseX <= x+96 &&
                 mouseY >= y+67 && mouseY <= y+84) {
