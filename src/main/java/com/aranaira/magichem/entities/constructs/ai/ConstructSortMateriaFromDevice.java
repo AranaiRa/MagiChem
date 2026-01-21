@@ -47,8 +47,10 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
     private MateriaItem filter;
     private ETaskPhase phase = ETaskPhase.SETUP;
     private int waitTimer;
-    private boolean isAdvancedMode = false;
     private static final Random r = new Random();
+    public static final float[] SHLORP_SPEEDS = new float[]{0.01f,0.026f,0.035f,0.053f,0.079f,0.121f};
+    public static final float[] SHLORP_DELAY_MULT = new float[]{1.9f, 1.7f, 1.5f, 1.2f, 0.9f, 0.6f};
+    public static final int[] SHLORP_DELAY_STATIC = new int[]{34, 27, 22, 18, 14, 11};
 
     public ConstructSortMateriaFromDevice(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
@@ -70,75 +72,8 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 case SETUP -> {
                     this.filter = null;
 
-                    //check to see if there was materia in transit; pick up where we left off if so
-                    CompoundTag persistentData = construct.asEntity().getPersistentData();
-                    boolean skipToInsertion = false;
-                    if(persistentData.contains("transitMateria")) {
-                        CompoundTag transitMateriaNBT = persistentData.getCompound("transitMateria");
-                        if(!(transitMateriaNBT.getString("id").equals("minecraft:air"))) {
-                            skipToInsertion = true;
-                        }
-                    }
-
-                    if(skipToInsertion) {
-                        this.waitTimer = 21;
-                        this.filter = (MateriaItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(persistentData.getCompound("transitMateria").getString("id")));
-                        this.phase = ETaskPhase.WAIT_AT_DEVICE;
-                        this.setTargetVessel(this.filter);
-                    } else {
-                        if(isAdvancedMode) {
-                            this.setMoveTarget(takeFromTarget);
-                            this.phase = ETaskPhase.MOVE_TO_MIDPOINT;
-                        } else {
-                            this.setMoveTarget(takeFromTarget);
-                            this.phase = ETaskPhase.MOVE_TO_DEVICE;
-                        }
-                    }
-                }
-                case MOVE_TO_DEVICE -> {
-                    if (doMove(2.0F)) {
-                        this.waitTimer = 21;
-                        boolean foundTargetAndSource = this.selectMateriaStackFromSource();
-
-                        if(this.filter != null) {
-                            if(foundTargetAndSource) {
-                                this.phase = ETaskPhase.WAIT_AT_DEVICE;
-                                this.setTargetVessel(this.filter);
-                            }
-                        } else {
-                            this.pushDiagnosticMessage("The device I'm monitoring is empty right now. I'll just wait for a bit!", false);
-                            this.phase = ETaskPhase.WAIT_TO_FAIL;
-                            this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
-                        }
-                    }
-                }
-                case WAIT_AT_DEVICE -> {
-                    this.waitTimer--;
-                    if(this.waitTimer <= 0) {
-                        this.phase = ETaskPhase.MOVE_TO_VESSEL;
-                        this.setMoveTarget(this.jarTargetPos);
-                    }
-                }
-                case MOVE_TO_VESSEL -> {
-                    if(doMove(2.0F + construct.getConstructData().getAffinityScore(Affinity.WATER) * 0.5f)) {
-                        int amount = doMateriaTransfer();
-                        if(amount > 0) {
-                            this.pushDiagnosticMessage("I moved " + amount + " " + getTranslatedNameFromItem(this.filter) + " to a vessel, boss. Bloop!", true);
-                            this.phase = ETaskPhase.WAIT_AT_VESSEL;
-                        } else {
-                            this.pushDiagnosticMessage("I couldn't find a jar to put the " + getTranslatedNameFromItem(this.filter) + " in. Sorry, boss!", true);
-                            this.phase = ETaskPhase.WAIT_TO_FAIL;
-                        }
-                        this.waitTimer = 21;
-                        this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
-                    }
-                }
-                case WAIT_AT_VESSEL -> {
-                    this.waitTimer--;
-                    if(this.waitTimer <= 0) {
-                        construct.clearForcedAnimation();
-                        this.setSuccessCode();
-                    }
+                    this.setMoveTarget(takeFromTarget);
+                    this.phase = ETaskPhase.MOVE_TO_MIDPOINT;
                 }
                 case WAIT_TO_FAIL -> {
                     this.waitTimer--;
@@ -173,7 +108,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 case CREATE_SHLORP -> {
 
                     int amount = doShlorpCreation();
-                    this.waitTimer = Math.round(amount * 1.5f) + 22;
+                    this.waitTimer = Math.round(amount * SHLORP_DELAY_MULT[construct.getEquivalentTier()]) + SHLORP_DELAY_STATIC[construct.getEquivalentTier()];
                     if(amount > 0) {
 
                         InteractionHand interactionHand = construct.getHandWithCapability(ConstructCapability.CAST_SPELL).get();
@@ -191,6 +126,15 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                         this.phase = ETaskPhase.WAIT_TO_FAIL;
                     }
                     this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
+                }
+                case WAIT_AT_VESSEL -> {
+                    this.waitTimer--;
+                    if(this.waitTimer <= 0) {
+                        construct.clearForcedAnimation();
+                        this.setSuccessCode();
+                        this.setMoveTarget(takeFromTarget);
+                        this.phase = ETaskPhase.MOVE_TO_MIDPOINT;
+                    }
                 }
             }
         }
@@ -356,6 +300,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         ItemStack transitMateria = ItemStack.EMPTY;
         CompoundTag constructNBT = construct.asEntity().getPersistentData();
         int transferredAmount = 0;
+        float speedFactor = SHLORP_SPEEDS[construct.getEquivalentTier()];
 
         if(constructNBT.contains("transitMateria")) {
             CompoundTag itemTag = constructNBT.getCompound("transitMateria");
@@ -418,7 +363,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 shlorp.configure(
                         sP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 2.5f + 1f),
                         eP, eO, eT,
-                        0.035f, 0.0625f,
+                        speedFactor, 0.0625f,
                         4 + transferredAmount,
                         (MateriaItem) transitMateria.getItem(),
                         transitMateria.getCount(),
@@ -430,7 +375,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
 
         constructNBT.put("transitMateria", ItemStack.EMPTY.serializeNBT());
         construct.asEntity().addAdditionalSaveData(constructNBT);
-        return transferredAmount;
+        return Math.min(1,Math.round(transferredAmount * (0.035f / speedFactor)));
     }
 
     private HashMap<MateriaItem, List<BlockEntity>> getMateriaStorageInRegion() {
@@ -582,18 +527,6 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
     }
 
     @Override
-    public void setConstruct(IConstruct<?> construct) {
-        super.setConstruct(construct);
-        this.isAdvancedMode = ConstructProvideMateria.isConstructInAdvancedShlorpMode(construct);
-    }
-
-    @Override
-    public boolean areCapabilitiesMet() {
-        if (isAdvancedMode) return true;
-        return super.areCapabilitiesMet();
-    }
-
-    @Override
     public ConstructCapability[] requiredCapabilities() {
         return requiredCaps;
     }
@@ -604,14 +537,11 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
     }
 
     static {
-        requiredCaps = new ConstructCapability[]{ConstructCapability.FLUID_DISPENSE};
+        requiredCaps = new ConstructCapability[]{ConstructCapability.CAST_SPELL};
     }
 
     enum ETaskPhase {
         SETUP,
-        MOVE_TO_DEVICE,
-        WAIT_AT_DEVICE,
-        MOVE_TO_VESSEL,
         WAIT_AT_VESSEL,
         WAIT_TO_FAIL,
         MOVE_TO_MIDPOINT,

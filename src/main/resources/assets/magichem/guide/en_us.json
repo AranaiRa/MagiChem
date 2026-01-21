@@ -4275,7 +4275,14 @@
             "text": "This command will cause a construct to extract materia from an alchemical device and attempt to place it in Materia Vessels within a specified area.\n\nWhen emptying the alchemical device, the construct will always take materia from the largest stack first.\n\nIt requires a "
           },
           {
-            "text": "fluid nozzle arm",
+            "text": "caster arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a "
+          },
+          {
+            "text": "smart head",
             "color": "dark_purple"
           },
           {
@@ -4300,48 +4307,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " inside, it can move 32 additional drams of materia per operation.\n\nWater affinity increases the reach distance of basic sorting constructs when putting materia into containers."
-          }
-        ]
-      },
-      {
-        "type": "title",
-        "value": "Advanced Sorting"
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
-          {
-            "text": "The materia sorting process can be greatly sped up if the construct has a "
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\nWater affinity increases the reach distance of basic sorting constructs when putting materia into containers.\n\nConstructs made from "
           },
           {
-            "text": "Smart Head",
+            "text": "higher tier materials",
             "color": "dark_purple"
           },
           {
-            "text": ", a "
-          },
-          {
-            "text": "Caster Arm",
-            "color": "dark_purple"
-          },
-          {
-            "text": ", and is made entirely of "
-          },
-          {
-            "text": "Tier 3 or higher materials",
-            "color": "dark_purple"
-          },
-          {
-            "text": ".\n\nWhen all of these requirements are met, the construct can direct the materia to "
-          },
-          {
-            "text": "fly through the air",
-            "color": "dark_purple"
-          },
-          {
-            "text": " to its destination instead of needing to physically move the materia from location to location."
+            "text": " will move materia more quickly and will have a shorter delay between transfers."
           }
         ]
       }
@@ -4371,6 +4344,13 @@
             "text": ", "
           },
           {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
             "text": "Centrifuge",
             "color": "dark_purple"
           },
@@ -4389,6 +4369,13 @@
             "color": "dark_purple"
           },
           {
+            "text": ", or any device with an internal Materia buffer (such as the "
+          },
+          {
+            "text": "Skywrath Condenser",
+            "color": "dark_purple"
+          },
+          {
             "text": ", "
           },
           {
@@ -4403,14 +4390,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nProviding materia requires a "
+            "text": ").\n\nProviding materia requires a "
           },
           {
-            "text": "fluid nozzle arm",
+            "text": "caster arm",
             "color": "dark_purple"
           },
           {
-            "text": ". The construct is capable of moving two drams of materia per operation by default. If the construct was summoned with "
+            "text": " and a "
+          },
+          {
+            "text": "smart head",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe construct is capable of moving two drams of materia per operation by default. If the construct was summoned with "
           },
           {
             "text": "Arcane affinity",
@@ -4431,48 +4425,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " inside, it can move 32 additional drams of materia per operation.\n\nWater affinity increases the reach distance of basic sorting constructs when putting materia into containers.\n\nMateria provided to an Alchemical Nexus by a construct transfers at a slower rate than the Nexus can pull on its own, and it does not benefit from the increased speed from increasing the experience cost per crafting stage."
-          }
-        ]
-      },
-      {
-        "type": "title",
-        "value": "Advanced Sorting"
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
-          {
-            "text": "The materia sorting process can be greatly sped up if the construct has a "
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\nMateria provided to an Alchemical Nexus by a construct transfers at a slower rate than the Nexus can pull on its own, and it does not benefit from the increased speed from increasing the experience cost per crafting stage.\n\nConstructs made from "
           },
           {
-            "text": "Smart Head",
+            "text": "higher tier materials",
             "color": "dark_purple"
           },
           {
-            "text": ", a "
-          },
-          {
-            "text": "Caster Arm",
-            "color": "dark_purple"
-          },
-          {
-            "text": ", and is made entirely of "
-          },
-          {
-            "text": "Tier 3 or higher materials",
-            "color": "dark_purple"
-          },
-          {
-            "text": ".\n\nWhen all of these requirements are met, the construct can direct the materia to "
-          },
-          {
-            "text": "fly through the air",
-            "color": "dark_purple"
-          },
-          {
-            "text": " to its destination instead of needing to physically move the materia from location to location."
+            "text": " will move materia more quickly and will have a shorter delay between transfers."
           }
         ]
       }
