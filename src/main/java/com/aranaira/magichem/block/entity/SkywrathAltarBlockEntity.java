@@ -109,8 +109,9 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         boolean hasValidRecipe = recipe != null && heldItem.getCount() >= recipe.getInput().getCount();
         boolean canStoreRF = heldItem.getCapability(ForgeCapabilities.ENERGY).isPresent();
         boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
+        boolean isJournalFragment = heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get();
 
-        if(hasValidRecipe || canStoreRF || isEnchantedBook) {
+        if(hasValidRecipe || canStoreRF || isEnchantedBook || isJournalFragment) {
             craftCountdown = CRAFT_COUNTDOWN_LENGTH;
             syncAndSave();
         }
