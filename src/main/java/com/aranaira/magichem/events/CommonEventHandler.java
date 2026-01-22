@@ -14,6 +14,7 @@ import com.aranaira.magichem.events.compat.FarmersDelightEventHelper;
 import com.aranaira.magichem.events.compat.HexereiEventHelper;
 import com.aranaira.magichem.foundation.ICanAbsorbConstructs;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IInteractsWithBlock;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.interop.OccultismCompat;
@@ -129,13 +130,20 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onBlockActivated(PlayerInteractEvent.RightClickBlock event) {
         //Handle inserting or extracting from materia vessels
+        BlockPos pos = event.getPos();
         ItemStack stack = event.getItemStack();
-        BlockState targetState = event.getLevel().getBlockState(event.getPos());
-        BlockEntity target = event.getLevel().getBlockEntity(event.getPos());
+        BlockState targetState = event.getLevel().getBlockState(pos);
+        BlockEntity target = event.getLevel().getBlockEntity(pos);
 
         //Conditional registration
         ModList modList = ModList.get();
 
+        if(stack.getItem() instanceof IInteractsWithBlock iiwb) {
+            if(iiwb.interceptEvent(pos, targetState, target, event)) {
+                event.setCancellationResult(InteractionResult.CONSUME);
+                event.setCanceled(true);
+            }
+        }
         if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
             if(stack.getItem() == Items.GLASS_BOTTLE) {
                 if(amsbe.getMateriaType() != null) {

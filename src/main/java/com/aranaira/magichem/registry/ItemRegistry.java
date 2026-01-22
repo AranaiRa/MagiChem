@@ -2,10 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.*;
-import com.aranaira.magichem.registry.compat.CreateFluidRegistry;
-import com.aranaira.magichem.registry.compat.CreateItemRegistry;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -13,7 +10,6 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -404,6 +400,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(40).saturationMod(1.0F)
                     .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 4, false, false), 1.0f).build()
             ))
+    );
+
+    public static final RegistryObject<ForkOfTheGulaporrigoItem> FORK_OF_THE_GULAPORRIGO = ITEMS.register("fork_of_the_gulaporrigo",
+            () -> new ForkOfTheGulaporrigoItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
