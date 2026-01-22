@@ -9,6 +9,7 @@ import com.mna.api.faction.IFactionHelper;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mna.items.ItemInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Difficulty;
@@ -97,11 +98,8 @@ public class RadiantRoseBlock extends BaseEntityBlock {
                     MutableInt duration = new MutableInt(240);
                     capQuery.ifPresent(cap -> {
                         final IFaction alliedFaction = cap.getAlliedFaction();
-                        if(alliedFaction != null) {
-                            final ItemStack factionGrimoire = alliedFaction.getFactionGrimoire();
-                            if (factionGrimoire != null && factionGrimoire.getItem() == ItemInit.GRIMOIRE_FEY.get()) {
-                                duration.setValue(720);
-                            }
+                        if(alliedFaction != null && alliedFaction.is(new ResourceLocation("mna:fey"))) {
+                            duration.setValue(720);
                         }
                     });
 
