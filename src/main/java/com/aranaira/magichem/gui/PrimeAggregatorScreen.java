@@ -548,10 +548,10 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         //Selected recipe
         if(mouseX >= x+79 && mouseX <= x+96 &&
                 mouseY >= y+67 && mouseY <= y+84) {
-            ItemStack recipeItem = menu.blockEntity.getRecipeItem();
-            if(recipeItem == ItemStack.EMPTY) {
+            if(menu.blockEntity.getCurrentRecipe() == null) {
                 tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             } else {
+                ItemStack recipeItem = menu.blockEntity.getRecipeItem();
                 tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
             }
         }
