@@ -194,7 +194,8 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                     for(MateriaItem materiaStorageQuery : multi.getMateriaTypes()) {
                                         if (materiaStorageQuery == filter) {
                                             ItemStack extracted = new ItemStack(filter, multi.drain(filter, collectionLimit, leaveOneInContainer));
-                                            this.waitTimer = Math.round(extracted.getCount() * 1.5f) + 22;
+                                            this.waitTimer = Math.round(extracted.getCount() * SHLORP_DELAY_MULT[construct.getEquivalentTier()]) + SHLORP_DELAY_STATIC[construct.getEquivalentTier()];
+                                            float speedFactor = SHLORP_SPEEDS[construct.getEquivalentTier()];
 
                                             if (extracted.getCount() > 0) {
                                                 //create shlorp
@@ -221,7 +222,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                                             shlorp.configure(
                                                                     sP, sO, sT,
                                                                     eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 3.0f + 3f),
-                                                                    0.035f, 0.125f,
+                                                                    speedFactor, 0.125f,
                                                                     4 + extracted.getCount(),
                                                                     (MateriaItem) extracted.getItem(),
                                                                     extracted.getCount(),
