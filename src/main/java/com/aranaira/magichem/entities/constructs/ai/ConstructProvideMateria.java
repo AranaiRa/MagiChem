@@ -248,6 +248,14 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                         }
                     }
                 }
+                case WAIT_AT_DEVICE -> {
+                    this.waitTimer--;
+                    if(this.waitTimer <= 0) {
+                        construct.clearForcedAnimation();
+                        this.setSuccessCode();
+                        this.phase = ETaskPhase.WAIT_TO_FAIL;
+                    }
+                }
                 case WAIT_TO_FAIL -> {
                     this.waitTimer--;
                     if(this.waitTimer <= 0) {
