@@ -1,6 +1,6 @@
 {
   "type": "magichem:exaltation",
-  "tier": 3,
+  "tier": 5,
   "result": { "item": "magichem:morsel_savor", "count": 1 },
   "items": { "type": "minecraft:carrot", "required": 86 },
   "eldrin": { "type": 2, "required": 375 },

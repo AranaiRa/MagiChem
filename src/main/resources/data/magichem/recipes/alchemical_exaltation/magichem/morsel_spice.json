@@ -1,6 +1,6 @@
 {
   "type": "magichem:exaltation",
-  "tier": 3,
+  "tier": 5,
   "result": { "item": "magichem:morsel_spice", "count": 1 },
   "items": { "type": "minecraft:pumpkin_seeds", "required": 215 },
   "eldrin": { "type": 4, "required": 375 },

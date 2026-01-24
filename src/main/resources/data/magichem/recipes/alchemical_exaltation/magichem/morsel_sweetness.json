@@ -1,6 +1,6 @@
 {
   "type": "magichem:exaltation",
-  "tier": 3,
+  "tier": 5,
   "result": { "item": "magichem:morsel_sweetness", "count": 1 },
   "items": { "type": "minecraft:honeycomb", "required": 86 },
   "eldrin": { "type": 8, "required": 375 },

@@ -1,6 +1,6 @@
 {
   "type": "magichem:exaltation",
-  "tier": 3,
+  "tier": 5,
   "result": { "item": "magichem:morsel_umami", "count": 1 },
   "items": { "type": "minecraft:beef", "required": 86 },
   "eldrin": { "type": 16, "required": 375 },
