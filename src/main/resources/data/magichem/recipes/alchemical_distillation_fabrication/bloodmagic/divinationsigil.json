@@ -5,34 +5,38 @@
       "conditions": [
         {
           "type": "forge:mod_loaded",
-          "modid": "malum"
+          "modid": "bloodmagic"
         }
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 2,
+        "categories": 1,
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "malum:deepslate_quartz_ore"
+          "item": "bloodmagic:divinationsigil"
         },
         "components": [
           {
-            "item": "magichem:admixture_stone",
+            "item": "magichem:admixture_sight",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_thought",
             "count": 4
           },
           {
-            "item": "magichem:admixture_crystal",
+            "item": "magichem:admixture_mana",
             "count": 2
           },
           {
-            "item": "magichem:admixture_light",
-            "count": 1
+            "item": "magichem:admixture_sorcery",
+            "count": 2
           },
           {
-            "item": "magichem:essentia_mineral",
-            "count": 4
+            "item": "magichem:admixture_spirit",
+            "count": 1
           }
         ]
       }
