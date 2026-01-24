@@ -10,30 +10,30 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
+        "wisdom": 1,
         "categories": 2,
         "output_rate": 1.0,
-        "batch_size": 1,
+        "batch_size": 16,
         "required_advancement": "alexscaves:alexscaves/discover_abyssal_chasm",
         "object": {
           "item": "alexscaves:tube_worm"
         },
         "components": [
           {
-            "item": "magichem:admixture_bone",
-            "count": 6
-          },
-          {
-            "item": "magichem:admixture_creature",
-            "count": 4
-          },
-          {
             "item": "magichem:admixture_depths",
             "count": 4
           },
           {
+            "item": "magichem:admixture_creature",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_bone",
+            "count": 2
+          },
+          {
             "item": "magichem:admixture_darkness",
-            "count": 4
+            "count": 1
           }
         ]
       }

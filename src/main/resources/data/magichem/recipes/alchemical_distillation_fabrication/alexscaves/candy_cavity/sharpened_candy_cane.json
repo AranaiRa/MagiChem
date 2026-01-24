@@ -19,12 +19,20 @@
         },
         "components": [
           {
-            "item": "magichem:admixture_delight",
-            "count": 3
-          },
-          {
             "item": "magichem:admixture_violence",
             "count": 2
+          },
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_monster",
+            "count": 1
           }
         ]
       }
