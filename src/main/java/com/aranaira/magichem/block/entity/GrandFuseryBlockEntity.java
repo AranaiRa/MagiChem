@@ -3,17 +3,13 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.block.GrandFuseryBlock;
 import com.aranaira.magichem.block.entity.routers.GrandFuseryRouterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
-import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.foundation.enums.GrandFuseryRouterType;
-import com.aranaira.magichem.gui.FuseryMenu;
 import com.aranaira.magichem.gui.GrandFuseryMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
@@ -883,7 +879,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                 if (componentMateria[i / 2] != null) {
                     if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if (InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i / 2].getItem()) {
+                        if (InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i / 2].getItem()) {
                             materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;
@@ -891,7 +887,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     }
                 } else {
                     ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                    if (InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i / 2].getItem()) {
+                    if (InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i / 2].getItem()) {
                         materiaToVent = materiaToVent | (1 << i);
                         itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                         continue;

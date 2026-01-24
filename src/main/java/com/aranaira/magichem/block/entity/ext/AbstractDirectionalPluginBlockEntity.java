@@ -182,7 +182,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
                                 changed = true;
                         }
                         else if (bottleStack.getCount() < entity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES))) {
-                            if(!InventoryHelper.isMateriaUnbottled(insertionStack)){
+                            if(!InventoryHelper.hasCustomModelData(insertionStack)){
                                 if (bottleStack.isEmpty())
                                     bottleStack = new ItemStack(Items.GLASS_BOTTLE);
                                 else

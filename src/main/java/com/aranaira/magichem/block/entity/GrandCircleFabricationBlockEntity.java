@@ -813,7 +813,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                     if(componentMateria[i/2] != null) {
                         if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                             ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                                 materiaToVent = materiaToVent | (1 << i);
                                 itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                                 continue;
@@ -821,7 +821,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                             materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;
@@ -857,7 +857,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                     if(componentMateria[i/2] != null) {
                         if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                             ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                                 materiaToVent = materiaToVent | (1 << i);
                                 itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                                 continue;
@@ -865,7 +865,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                             materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;

@@ -139,8 +139,14 @@ public class CommonEventHandler {
         ModList modList = ModList.get();
 
         if(stack.getItem() instanceof IInteractsWithBlock iiwb) {
-            if(iiwb.interceptEvent(pos, targetState, target, event)) {
-                event.setCancellationResult(InteractionResult.CONSUME);
+            final Pair<Boolean, InteractionResult> query = iiwb.shouldInterceptEvent(event);
+            if(query.getFirst()) {
+                if (iiwb.interceptEvent(event)) {
+                    event.setCancellationResult(InteractionResult.CONSUME);
+                    event.setCanceled(true);
+                }
+            } else {
+                event.setCancellationResult(query.getSecond());
                 event.setCanceled(true);
             }
         }

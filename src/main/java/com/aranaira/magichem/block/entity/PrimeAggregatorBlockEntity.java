@@ -20,7 +20,6 @@ import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
-import com.mna.items.ItemInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.particles.types.movers.ParticleOrbitMover;
 import com.mna.tools.math.Vector3;
@@ -999,7 +998,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
                         if (extraction > 0) {
                             pEntity.materiaDelivered += extraction;
-                            if (!InventoryHelper.isMateriaUnbottled(materiaQuery)) {
+                            if (!InventoryHelper.hasCustomModelData(materiaQuery)) {
                                 if (bottleQuery.isEmpty()) {
                                     pEntity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, extraction));
                                 } else {

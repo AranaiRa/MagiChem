@@ -2,7 +2,6 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.gui.ConjurerMenu;
 import com.aranaira.magichem.gui.StandingRetortMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -23,27 +22,22 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2i;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class StandingRetortBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester {
     private int element = -1;
@@ -86,7 +80,7 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
 
         @Override
         public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if(InventoryHelper.isMateriaUnbottled(getStackInSlot(slot)))
+            if(InventoryHelper.hasCustomModelData(getStackInSlot(slot)))
                 return ItemStack.EMPTY;
             return super.extractItem(slot, amount, simulate);
         }
@@ -198,7 +192,7 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
     @Override
     public boolean needsProvisioning() {
         boolean hasEnoughSpace = itemHandler.getStackInSlot(0).getCount() < 16;
-        boolean isMateriaUnbottled = InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(0));
+        boolean isMateriaUnbottled = InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(0));
         boolean isElementSelected = element > -1;
 
         return hasEnoughSpace && (isMateriaUnbottled || itemHandler.getStackInSlot(0).isEmpty()) && isElementSelected;
@@ -210,7 +204,7 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
 
         int currentCount = itemHandler.getStackInSlot(0).getCount();
         if(currentCount < 16 && !provisioningInProgress) {
-            if(itemHandler.getStackInSlot(0).isEmpty() || InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(0))) {
+            if(itemHandler.getStackInSlot(0).isEmpty() || InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(0))) {
                 needs.put(materiaMap.get(getMateriaType()), 64 - currentCount);
             }
         }
@@ -281,7 +275,7 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
                 ItemStack insertionQuery = convertEssentiaToDroplets(essentiaInSlot);
                 insertionQuery.setCount(Math.min(4, essentiaInSlot.getCount()));
 
-                boolean retortIsBottled = !InventoryHelper.isMateriaUnbottled(entity.itemHandler.getStackInSlot(SLOT_ESSENTIA));
+                boolean retortIsBottled = !InventoryHelper.hasCustomModelData(entity.itemHandler.getStackInSlot(SLOT_ESSENTIA));
 
                 boolean transferIsValid = fumeFilterQuery.isEmpty() || matchesMateriaType;
 
@@ -337,7 +331,7 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public void dropContents() {
-        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA).isEmpty() && !InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA)) && getLevel() != null) {
+        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA).isEmpty() && !InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA)) && getLevel() != null) {
             ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_ESSENTIA));
             getLevel().addFreshEntity(ie);
         }

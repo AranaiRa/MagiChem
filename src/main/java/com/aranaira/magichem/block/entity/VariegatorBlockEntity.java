@@ -658,7 +658,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         if(activeProvisionRequests.contains((MateriaItem)ADMIXTURE_COLOR_STACK.getItem()))
             return false;
 
-        boolean isMateriaUnbottled = InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_DYE_INPUT));
+        boolean isMateriaUnbottled = InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_DYE_INPUT));
         boolean gaugeIsHalfOrLess = dyeAdmixture <= ServerConfig.variegatorMaxAdmixture / 2;
 
         return gaugeIsHalfOrLess && (isMateriaUnbottled || itemHandler.getStackInSlot(SLOT_DYE_INPUT).isEmpty());

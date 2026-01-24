@@ -2,7 +2,6 @@ package com.aranaira.magichem.item.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.AdmixtureItemWithSpecialRenderer;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
@@ -31,7 +30,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -106,7 +104,7 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
             if(STACK_PHILOSOPHERS_CONCOCTION_DUMMY == ItemStack.EMPTY || STACK_PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY == ItemStack.EMPTY)
                 setDummies();
             if(!(STACK_PHILOSOPHERS_CONCOCTION_DUMMY == ItemStack.EMPTY || STACK_PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY == ItemStack.EMPTY))
-                renderPhilosophersConcoction(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay, InventoryHelper.isMateriaUnbottled(pStack));
+                renderPhilosophersConcoction(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay, InventoryHelper.hasCustomModelData(pStack));
         }
 
         super.renderByItem(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);

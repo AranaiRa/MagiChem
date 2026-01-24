@@ -157,7 +157,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         @Override
         public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
             if(slot == SLOT_FIRMAMENT_INPUT || slot == SLOT_REALM_INPUT) {
-                if(InventoryHelper.isMateriaUnbottled(getStackInSlot(slot)))
+                if(InventoryHelper.hasCustomModelData(getStackInSlot(slot)))
                     return ItemStack.EMPTY;
             }
 
@@ -342,7 +342,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
                     ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_REALM_OUTPUT);
                     if(!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
                         entity.realm += CHARGE_ADMIXTURES;
-                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get() && !InventoryHelper.isMateriaUnbottled(inStack)) {
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get() && !InventoryHelper.hasCustomModelData(inStack)) {
                             if (outStack.isEmpty()) {
                                 entity.itemHandler.setStackInSlot(SLOT_REALM_OUTPUT, new ItemStack(Items.GLASS_BOTTLE));
                             } else {
@@ -358,7 +358,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
                     ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_FIRMAMENT_OUTPUT);
                     if(!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
                         entity.firmament += CHARGE_ADMIXTURES;
-                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get() && !InventoryHelper.isMateriaUnbottled(inStack)) {
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get() && !InventoryHelper.hasCustomModelData(inStack)) {
                             if (outStack.isEmpty()) {
                                 entity.itemHandler.setStackInSlot(SLOT_FIRMAMENT_OUTPUT, new ItemStack(Items.GLASS_BOTTLE));
                             } else {
@@ -576,13 +576,13 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
 
         ItemStack firmamentStack = itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
         boolean needsFirmament = false;
-        if(firmamentStack.isEmpty() || InventoryHelper.isMateriaUnbottled(firmamentStack)) {
+        if(firmamentStack.isEmpty() || InventoryHelper.hasCustomModelData(firmamentStack)) {
             needsFirmament = firmamentStack.getCount() < 32;
         }
 
         ItemStack realmStack = itemHandler.getStackInSlot(SLOT_REALM_INPUT);
         boolean needsRealm = false;
-        if(realmStack.isEmpty() || InventoryHelper.isMateriaUnbottled(realmStack)) {
+        if(realmStack.isEmpty() || InventoryHelper.hasCustomModelData(realmStack)) {
             needsRealm = realmStack.getCount() < 32;
         }
 
@@ -597,7 +597,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
             ItemStack firmamentStack = itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
             if (firmamentStack.isEmpty()) {
                 result.put(ADMIXTURE_FIRMAMENT, 32);
-            } else if (InventoryHelper.isMateriaUnbottled(firmamentStack)) {
+            } else if (InventoryHelper.hasCustomModelData(firmamentStack)) {
                 if (firmamentStack.getCount() <= 32) {
                     result.put(ADMIXTURE_FIRMAMENT, 32);
                 }
@@ -608,7 +608,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
             ItemStack realmStack = itemHandler.getStackInSlot(SLOT_REALM_INPUT);
             if (realmStack.isEmpty()) {
                 result.put(ADMIXTURE_REALM, 32);
-            } else if (InventoryHelper.isMateriaUnbottled(realmStack)) {
+            } else if (InventoryHelper.hasCustomModelData(realmStack)) {
                 if (realmStack.getCount() <= 32) {
                     result.put(ADMIXTURE_REALM, 32);
                 }

@@ -23,7 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -37,7 +36,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins, IFluidHandler, IMateriaProvisionRequester {
 
@@ -197,7 +194,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                                 final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
                                 for (int i = 0; i < inputs.getContainerSize(); i++) {
                                     final ItemStack inputQuery = inputs.getItem(i);
-                                    if(!inputQuery.isEmpty() && InventoryHelper.isMateriaUnbottled(inputQuery)) {
+                                    if(!inputQuery.isEmpty() && InventoryHelper.hasCustomModelData(inputQuery)) {
                                         pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractFixationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
                                         ender.createShlorpToTarget(inputQuery, instant);
                                     }
