@@ -19,8 +19,8 @@
         },
         "components": [
           { "item": "magichem:admixture_metal", "count": 6 },
-          { "item": "magichem:admixture_dust", "count": 2 },
-          { "item": "magichem:admixture_erosion", "count": 2 }
+          { "item": "magichem:admixture_erosion", "count": 2 },
+          { "item": "magichem:admixture_dust", "count": 1 }
         ]
       }
     }

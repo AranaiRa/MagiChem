@@ -27,15 +27,15 @@
             "count": 2
           },
           {
+            "item": "magichem:admixture_dust",
+            "count": 2
+          },
+          {
             "item": "magichem:admixture_metal",
             "count": 2
           },
           {
             "item": "magichem:admixture_demon",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_dust",
             "count": 1
           }
         ]

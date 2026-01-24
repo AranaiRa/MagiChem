@@ -18,9 +18,9 @@
           "item": "create:crushed_raw_gold"
         },
         "components": [
-          { "item": "magichem:admixture_dust", "count": 2 },
           { "item": "magichem:admixture_erosion", "count": 2 },
           { "item": "magichem:admixture_metal", "count": 2 },
+          { "item": "magichem:admixture_dust", "count": 1 },
           { "item": "magichem:essentia_precious", "count": 4 }
         ]
       }
