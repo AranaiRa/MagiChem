@@ -20,23 +20,23 @@
         "components": [
           {
             "item": "magichem:admixture_demon",
-            "count": 32
+            "count": 64
           },
           {
             "item": "magichem:admixture_spirit",
-            "count": 18
+            "count": 48
           },
           {
             "item": "magichem:admixture_vessel",
-            "count": 18
+            "count": 46
           },
           {
             "item": "magichem:admixture_sorcery",
-            "count": 10
+            "count": 40
           },
           {
             "item": "magichem:admixture_permanence",
-            "count": 8
+            "count": 24
           }
         ]
       }

@@ -11,9 +11,9 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 2,
-        "categories": 4,
+        "categories": 8,
         "output_rate": 1.0,
-        "batch_size": 1,
+        "batch_size": 8,
         "required_advancement": "magichem:material_unlocks/bloodmagic/magician_blood_orb",
         "object": {
           "item": "bloodmagic:strong_tau"
@@ -28,16 +28,12 @@
             "count": 4
           },
           {
-            "item": "magichem:admixture_plant",
-            "count": 2
-          },
-          {
             "item": "magichem:admixture_acid",
             "count": 2
           },
           {
-            "item": "magichem:essentia_fleshy",
-            "count": 6
+            "item": "magichem:essentia_verdant",
+            "count": 2
           }
         ]
       }

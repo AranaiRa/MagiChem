@@ -5,33 +5,30 @@
       "conditions": [
         {
           "type": "forge:mod_loaded",
-          "modid": "malum"
+          "modid": "bloodmagic"
         }
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 2,
+        "wisdom": 2,
+        "categories": 1,
         "output_rate": 1.0,
-        "batch_size": 1,
+        "batch_size": 8,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/imbued_slate",
         "object": {
-          "item": "malum:natural_quartz_ore"
+          "item": "bloodmagic:tauoil"
         },
         "components": [
           {
-            "item": "magichem:admixture_stone",
-            "count": 4
+            "item": "magichem:admixture_demon",
+            "count": 3
           },
           {
-            "item": "magichem:admixture_crystal",
-            "count": 2
-          },
-          {
-            "item": "magichem:admixture_light",
+            "item": "magichem:admixture_acid",
             "count": 1
           },
           {
-            "item": "magichem:essentia_mineral",
+            "item": "magichem:essentia_verdant",
             "count": 2
           }
         ]
