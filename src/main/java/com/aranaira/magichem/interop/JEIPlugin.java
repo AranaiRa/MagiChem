@@ -18,6 +18,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
@@ -219,6 +220,7 @@ public class JEIPlugin implements IModPlugin {
         registerGuiHandler(registration, GrandFuseryScreen.class, GrandFuseryScreen::getGuiExtraAreas);
         registerGuiHandler(registration, CirclePowerScreen.class, CirclePowerScreen::getGuiExtraAreas);
         registerGuiHandler(registration, PrimeAggregatorScreen.class, PrimeAggregatorScreen::getGuiExtraAreas);
+        registerActuatorGuiHandlers(registration);
     }
     // class gen for handlers with only
     private <T extends AbstractContainerScreen<?>> void registerGuiHandler(IGuiHandlerRegistration registration, Class<T> cls, Function<T, List<Rect2i>> extraAreaRectGetter) {
@@ -228,5 +230,18 @@ public class JEIPlugin implements IModPlugin {
                 return extraAreaRectGetter.apply(screen);
             }
         });
+    }
+    // 6-in-1 actuators
+    private void registerActuatorGuiHandlers(IGuiHandlerRegistration registration) {
+        Function<AbstractContainerScreen<?>, List<Rect2i>> extraAreaRectGetter = screen -> {
+            int xOrigin = (screen.width - 176) / 2;
+            int yOrigin = (screen.height - 159) / 2;
+            return List.of(new Rect2i(xOrigin + 195, yOrigin, 57, 28));
+        };
+        for (Class<? extends AbstractContainerScreen<?>> cls : List.of(
+                ActuatorAirScreen.class, ActuatorArcaneScreen.class, ActuatorEarthScreen.class,
+                ActuatorEnderScreen.class, ActuatorFireScreen.class, ActuatorWaterScreen.class
+        ))
+            registerGuiHandler(registration, cls, s -> extraAreaRectGetter.apply(s));
     }
 }
