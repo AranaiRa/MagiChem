@@ -28,6 +28,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -852,5 +853,15 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         PacketRegistry.sendToServer(new DeviceRecipeClearC2SPacket(
                 menu.blockEntity.getBlockPos()
         ));
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(AlchemicalNexusScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_STATS_X, yOrigin + PANEL_STATS_Y, PANEL_STATS_W, PANEL_STATS_H),
+                new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
+                new Rect2i(xOrigin + 180, yOrigin + 108, 32, 32)
+        );
     }
 }

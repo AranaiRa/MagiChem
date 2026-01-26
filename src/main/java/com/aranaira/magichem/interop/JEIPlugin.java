@@ -1,6 +1,7 @@
 package com.aranaira.magichem.interop;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.gui.AlchemicalNexusScreen;
 import com.aranaira.magichem.interop.jei.*;
 import com.aranaira.magichem.recipe.*;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -9,11 +10,12 @@ import com.mna.blocks.BlockInit;
 import com.mna.items.ItemInit;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
@@ -201,5 +204,19 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockInit.STUDY_DESK.get(), 1), CONSTRUCT_STUDY_MATERIAL_TYPE);
 
         IModPlugin.super.registerRecipeCatalysts(registration);
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registerGuiHandler(registration, AlchemicalNexusScreen.class, AlchemicalNexusScreen::getGuiExtraAreas);
+    }
+    // class gen for handlers with only
+    private <T extends AbstractContainerScreen<?>> void registerGuiHandler(IGuiHandlerRegistration registration, Class<T> cls, Function<T, List<Rect2i>> extraAreaRectGetter) {
+        registration.addGenericGuiContainerHandler(cls, new IGuiContainerHandler<T>() {
+            @Override
+            public List<Rect2i> getGuiExtraAreas(T screen) {
+                return extraAreaRectGetter.apply(screen);
+            }
+        });
     }
 }
