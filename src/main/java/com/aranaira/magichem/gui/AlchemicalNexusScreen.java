@@ -390,16 +390,16 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             public void deleteChars(int pNum) {
                 recipesChanged = true;
                 recipeFilterRow = 0;
-                updateDisplayedRecipes(recipeFilterBox.getValue());
                 super.deleteChars(pNum);
+                updateDisplayedRecipes(recipeFilterBox.getValue());
             }
 
             @Override
             public void deleteWords(int pNum) {
                 recipesChanged = true;
                 recipeFilterRow = 0;
-                updateDisplayedRecipes(recipeFilterBox.getValue());
                 super.deleteChars(pNum);
+                updateDisplayedRecipes(recipeFilterBox.getValue());
             }
         };
         this.recipeFilterBox.setMaxLength(60);
