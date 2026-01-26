@@ -778,7 +778,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         return List.of(
                 new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W,
                         PANEL_BATCH_H + PANEL_BATCH_Y - PANEL_RECIPE_Y),
-                new Rect2i(xOrigin + PANEL_POWER_X, yOrigin + PANEL_POWER_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
+                new Rect2i(xOrigin + PANEL_POWER_X, yOrigin + PANEL_POWER_Y, PANEL_POWER_W, PANEL_POWER_H),
                 new Rect2i(xOrigin + PANEL_STONE_X, yOrigin + PANEL_STONE_Y, 32, 32)
         );
     }

@@ -241,7 +241,7 @@ public class JEIPlugin implements IModPlugin {
         Function<AbstractContainerScreen<?>, List<Rect2i>> extraAreaRectGetter = extraAreaRectGetterGen.apply(195);
         for (Class<? extends AbstractContainerScreen<?>> cls : List.of(
                 ActuatorAirScreen.class, ActuatorArcaneScreen.class, ActuatorEarthScreen.class,
-                /*ActuatorEnderScreen.class*/, ActuatorFireScreen.class, ActuatorWaterScreen.class
+                /*ActuatorEnderScreen.class,*/ ActuatorFireScreen.class, ActuatorWaterScreen.class
         ))
             registerGuiHandler(registration, cls, s -> extraAreaRectGetter.apply(s));
 
