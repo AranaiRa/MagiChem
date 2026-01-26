@@ -58,6 +58,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             PANEL_RECIPE_X = -85, PANEL_RECIPE_Y = 10,
             PANEL_RECIPE_U = 160, PANEL_RECIPE_V = 96, PANEL_RECIPE_W = 81, PANEL_RECIPE_H = 126,
             PANEL_STONE_X = 190, PANEL_STONE_Y = 100,
+            PANEL_BATCH_X = -85, PANEL_BATCH_Y = 142, PANEL_BATCH_W = 81, PANEL_BATCH_H = 45,
             PANEL_POWER_X = 186, PANEL_POWER_Y = 19,
             PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
     private DistillationFabricationOption lastClickedRecipe = null;
@@ -337,7 +338,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             gui.blit(TEXTURE, x + 197, y + 107, 54, 202, 18, 18);
 
         //Batch Size Selector
-        gui.blit(TEXTURE_EXT, x - 85, y + 142, 0, 168, 81, 45);
+        gui.blit(TEXTURE_EXT, x + PANEL_BATCH_X, y + PANEL_BATCH_Y, 0, 168, PANEL_BATCH_W, PANEL_BATCH_H);
 
         //Scroll Nubbin for Batch Size
         int batchLimit = 1;
@@ -777,6 +778,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         return List.of(
                 new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
                 new Rect2i(xOrigin + PANEL_POWER_X, yOrigin + PANEL_POWER_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
+                new Rect2i(xOrigin + PANEL_BATCH_X, yOrigin + PANEL_BATCH_Y, PANEL_BATCH_W, PANEL_BATCH_H),
                 new Rect2i(xOrigin + PANEL_STONE_X, yOrigin + PANEL_STONE_Y, 32, 32)
         );
     }
