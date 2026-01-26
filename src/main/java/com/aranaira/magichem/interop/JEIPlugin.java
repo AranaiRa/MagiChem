@@ -213,6 +213,8 @@ public class JEIPlugin implements IModPlugin {
         registerGuiHandler(registration, GrandDistilleryScreen.class, GrandDistilleryScreen::getGuiExtraAreas);
         registerGuiHandler(registration, CentrifugeScreen.class, CentrifugeScreen::getGuiExtraAreas);
         registerGuiHandler(registration, GrandCentrifugeScreen.class, GrandCentrifugeScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, CircleFabricationScreen.class, CircleFabricationScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, GrandCircleFabricationScreen.class, GrandCircleFabricationScreen::getGuiExtraAreas);
     }
     // class gen for handlers with only
     private <T extends AbstractContainerScreen<?>> void registerGuiHandler(IGuiHandlerRegistration registration, Class<T> cls, Function<T, List<Rect2i>> extraAreaRectGetter) {

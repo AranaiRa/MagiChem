@@ -26,8 +26,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -56,7 +55,10 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
     private EditBox recipeFilterBox;
     private static final int
             PANEL_MAIN_W = 186, PANEL_MAIN_H = 192,
+            PANEL_RECIPE_X = -85, PANEL_RECIPE_Y = 10,
             PANEL_RECIPE_U = 160, PANEL_RECIPE_V = 96, PANEL_RECIPE_W = 81, PANEL_RECIPE_H = 126,
+            PANEL_STONE_X = 190, PANEL_STONE_Y = 100,
+            PANEL_POWER_X = 186, PANEL_POWER_Y = 19,
             PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
     private DistillationFabricationOption lastClickedRecipe = null;
     private boolean recipesChanged = true;
@@ -304,10 +306,10 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
         //Recipe Selector Panel
-        gui.blit(TEXTURE_EXT, x - 85, y + 10, PANEL_RECIPE_U, PANEL_RECIPE_V, PANEL_RECIPE_W, PANEL_RECIPE_H);
+        gui.blit(TEXTURE_EXT, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, PANEL_RECIPE_V, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
         //Power Settings Panel
-        gui.blit(TEXTURE_EXT, x + 186, y + 19, PANEL_POWER_U, PANEL_POWER_V, PANEL_POWER_W, PANEL_POWER_H);
+        gui.blit(TEXTURE_EXT, x + PANEL_POWER_X, y + PANEL_POWER_Y, PANEL_POWER_U, PANEL_POWER_V, PANEL_POWER_W, PANEL_POWER_H);
 
         renderProgressBar(gui, x + 79, y + 39);
 
@@ -330,7 +332,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         }
 
         //Philosopher's Stone hole
-        gui.blit(TEXTURE, x + 190, y + 100, 0, 198, 32, 32);
+        gui.blit(TEXTURE, x + PANEL_STONE_X, y + PANEL_STONE_Y, 0, 198, 32, 32);
         if(menu.blockEntity.getStoneItem().isEmpty())
             gui.blit(TEXTURE, x + 197, y + 107, 54, 202, 18, 18);
 
@@ -767,5 +769,15 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                 gui.drawString(font, str, -49 - width / 2, 141, 0xff000000, false);
             }
         }
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(GrandCircleFabricationScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
+                new Rect2i(xOrigin + PANEL_POWER_X, yOrigin + PANEL_POWER_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
+                new Rect2i(xOrigin + PANEL_STONE_X, yOrigin + PANEL_STONE_Y, 32, 32)
+        );
     }
 }
