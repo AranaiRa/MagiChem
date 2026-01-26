@@ -233,15 +233,20 @@ public class JEIPlugin implements IModPlugin {
     }
     // 6-in-1 actuators
     private void registerActuatorGuiHandlers(IGuiHandlerRegistration registration) {
-        Function<AbstractContainerScreen<?>, List<Rect2i>> extraAreaRectGetter = screen -> {
+        Function<Integer, Function<AbstractContainerScreen<?>, List<Rect2i>>> extraAreaRectGetterGen = xOffset -> screen -> {
             int xOrigin = (screen.width - 176) / 2;
             int yOrigin = (screen.height - 159) / 2;
-            return List.of(new Rect2i(xOrigin + 195, yOrigin, 57, 28));
+            return List.of(new Rect2i(xOrigin + xOffset, yOrigin, 57, 28));
         };
+        Function<AbstractContainerScreen<?>, List<Rect2i>> extraAreaRectGetter = extraAreaRectGetterGen.apply(195);
         for (Class<? extends AbstractContainerScreen<?>> cls : List.of(
                 ActuatorAirScreen.class, ActuatorArcaneScreen.class, ActuatorEarthScreen.class,
-                ActuatorEnderScreen.class, ActuatorFireScreen.class, ActuatorWaterScreen.class
+                /*ActuatorEnderScreen.class*/, ActuatorFireScreen.class, ActuatorWaterScreen.class
         ))
             registerGuiHandler(registration, cls, s -> extraAreaRectGetter.apply(s));
+
+        // ender plugin is wider
+        Function<AbstractContainerScreen<?>, List<Rect2i>> extraAreaRectGetterEnder = extraAreaRectGetterGen.apply(211);
+        registerGuiHandler(registration, ActuatorEnderScreen.class, s -> extraAreaRectGetterEnder.apply(s));
     }
 }
