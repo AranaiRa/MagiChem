@@ -22,6 +22,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -467,5 +468,13 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         } else {
             return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(CentrifugeScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_GRIME_X, yOrigin + PANEL_GRIME_Y, PANEL_GRIME_W, PANEL_GRIME_H)
+        );
     }
 }

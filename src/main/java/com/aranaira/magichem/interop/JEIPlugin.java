@@ -1,7 +1,7 @@
 package com.aranaira.magichem.interop;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.gui.AlchemicalNexusScreen;
+import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.jei.*;
 import com.aranaira.magichem.recipe.*;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -209,6 +209,10 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registerGuiHandler(registration, AlchemicalNexusScreen.class, AlchemicalNexusScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, DistilleryScreen.class, DistilleryScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, GrandDistilleryScreen.class, GrandDistilleryScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, CentrifugeScreen.class, CentrifugeScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, GrandCentrifugeScreen.class, GrandCentrifugeScreen::getGuiExtraAreas);
     }
     // class gen for handlers with only
     private <T extends AbstractContainerScreen<?>> void registerGuiHandler(IGuiHandlerRegistration registration, Class<T> cls, Function<T, List<Rect2i>> extraAreaRectGetter) {
