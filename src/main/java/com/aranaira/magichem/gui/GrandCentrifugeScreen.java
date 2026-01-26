@@ -570,6 +570,7 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
         int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
         int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
         return List.of(
+                new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
                 new Rect2i(xOrigin + PANEL_GRIME_X, yOrigin + PANEL_GRIME_Y, PANEL_GRIME_W, PANEL_GRIME_H)
         );
     }
