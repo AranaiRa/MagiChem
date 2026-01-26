@@ -435,6 +435,11 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         }
     }
 
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
     ////////////////////
     // INTERACTION AND VFX
     ////////////////////

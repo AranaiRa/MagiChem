@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
@@ -59,9 +60,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
@@ -963,5 +962,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     @Override
     public int getTankCapacity(int tank) {
         return ServerConfig.circleFabricationTankCapacity;
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return new ArrayList<>();
     }
 }

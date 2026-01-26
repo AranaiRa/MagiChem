@@ -467,6 +467,11 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         }
     }
 
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
     ////////////////////
     // INTERACTION AND VFX
     ////////////////////

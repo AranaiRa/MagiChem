@@ -1654,6 +1654,11 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     }
 
     @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
+    @Override
     public void destroyRouters() {
         AlchemicalNexusBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }

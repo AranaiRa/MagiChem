@@ -478,6 +478,11 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         }
     }
 
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
     ////////////////////
     // INTERACTION AND VFX
     ////////////////////

@@ -31,6 +31,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
@@ -93,6 +95,18 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     @Override
     public void linkPluginsDeferred() {
         getMaster().linkPluginsDeferred();
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        if(master == null) {
+            if (masterPos != null)
+                master = (AlchemicalNexusBlockEntity) getLevel().getBlockEntity(masterPos);
+        }
+        if(master == null)
+            return new ArrayList<AbstractDirectionalPluginBlockEntity>();
+
+        return master.getPlugins();
     }
 
     public AlchemicalNexusBlockEntity getMaster(){

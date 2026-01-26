@@ -33,7 +33,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
@@ -98,6 +100,18 @@ public class PrimeAggregatorRouterBlockEntity extends BlockEntity implements Men
     @Override
     public void linkPluginsDeferred() {
         getMaster().linkPluginsDeferred();
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        if(master == null) {
+            if (masterPos != null)
+                master = (PrimeAggregatorBlockEntity) getLevel().getBlockEntity(masterPos);
+        }
+        if(master == null)
+            return new ArrayList<AbstractDirectionalPluginBlockEntity>();
+
+        return master.getPlugins();
     }
 
     public PrimeAggregatorBlockEntity getMaster(){

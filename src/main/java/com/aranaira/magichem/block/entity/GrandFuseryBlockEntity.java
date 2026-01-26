@@ -809,6 +809,11 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         }
     }
 
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
     ////////////////////
     // FLUID HANDLING
     ////////////////////

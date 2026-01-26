@@ -1336,6 +1336,11 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
+    @Override
     public void destroyRouters() {
         PrimeAggregatorBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }

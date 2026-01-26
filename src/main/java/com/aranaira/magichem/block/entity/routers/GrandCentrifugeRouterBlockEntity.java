@@ -25,7 +25,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,7 +33,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
@@ -103,6 +104,18 @@ public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEff
     @Override
     public void linkPluginsDeferred() {
         getMaster().linkPluginsDeferred();
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        if(master == null) {
+            if (masterPos != null)
+                master = (GrandCentrifugeBlockEntity) getLevel().getBlockEntity(masterPos);
+        }
+        if(master == null)
+            return new ArrayList<AbstractDirectionalPluginBlockEntity>();
+
+        return master.getPlugins();
     }
 
     public GrandCentrifugeBlockEntity getMaster(){

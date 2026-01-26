@@ -1169,6 +1169,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
+    @Override
     public byte setRecipe(ItemStack pStack, Player player) {
         final DistillationFabricationRecipe distillationRecipeQuery = DistillationFabricationRecipe.getDistillingRecipe(getLevel(), pStack);
         if(distillationRecipeQuery == null || distillationRecipeQuery.getWisdom() == 6)

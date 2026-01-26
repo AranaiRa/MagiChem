@@ -519,6 +519,11 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         }
     }
 
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
     ////////////////////
     // FLUID HANDLING
     ////////////////////

@@ -454,6 +454,11 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         }
     }
 
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
     ////////////////////
     // INTERACTION AND VFX
     ////////////////////
