@@ -840,6 +840,9 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
     @Override
     public boolean needsProvisioning() {
+        if(currentRecipe == null)
+            return false;
+
         //make sure there's space to PUT the provision
         int openSlots = 0;
         for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
