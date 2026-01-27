@@ -185,6 +185,13 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         addRenderableWidget(recipeFilterBox);
     }
 
+    private void updateFilterBoxContents() {
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
+    }
+
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
@@ -300,6 +307,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+        updateFilterBoxContents();
     }
 
     @Override

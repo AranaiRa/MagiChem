@@ -243,6 +243,13 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         addRenderableWidget(recipeFilterBox);
     }
 
+    private void updateFilterBoxContents() {
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
+    }
+
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
@@ -389,6 +396,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
+        updateFilterBoxContents();
     }
 
     @Override
