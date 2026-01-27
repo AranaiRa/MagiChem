@@ -24,11 +24,7 @@
           },
           {
             "item": "magichem:admixture_erosion",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_mineral",
-            "count": 1
+            "count": 3
           }
         ]
       }

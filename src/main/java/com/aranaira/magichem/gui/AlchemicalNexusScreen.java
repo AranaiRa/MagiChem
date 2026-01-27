@@ -28,6 +28,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -59,6 +60,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 192,
             PANEL_STATS_X = 176, PANEL_STATS_Y = 37, PANEL_STATS_W = 80, PANEL_STATS_H = 66, PANEL_STATS_U = 176, PANEL_STATS_V = 126,
             PANEL_RECIPE_X = -84, PANEL_RECIPE_Y = -7, PANEL_RECIPE_U = 176, PANEL_RECIPE_W = 80, PANEL_RECIPE_H = 126,
+            PANEL_STONE_X = 180, PANEL_STONE_Y = 108,
             SLURRY_X = 8, SLURRY_Y = 23, SLURRY_W = 8, SLURRY_H = 73,
             STAGE_INDICATOR_U = 108, STAGE_INDICATOR_V = 238, STAGE_INDICATOR_W = 12, STAGE_INDICATOR_W_END = 6, STAGE_INDICATOR_H = 9,
             PROGRESS_BAR_WIDTH = 28,
@@ -317,7 +319,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         }
 
         //Philosopher's Stone hole
-        pGuiGraphics.blit(TEXTURE, x + 180, y + 108, 224, 192, 32, 32);
+        pGuiGraphics.blit(TEXTURE, x + PANEL_STONE_X, y + PANEL_STONE_Y, 224, 192, 32, 32);
         if(menu.blockEntity.getStoneItem().isEmpty())
             pGuiGraphics.blit(TEXTURE, x + 187, y + 115, 238, 224, 18, 18);
     }
@@ -390,16 +392,16 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             public void deleteChars(int pNum) {
                 recipesChanged = true;
                 recipeFilterRow = 0;
-                updateDisplayedRecipes(recipeFilterBox.getValue());
                 super.deleteChars(pNum);
+                updateDisplayedRecipes(recipeFilterBox.getValue());
             }
 
             @Override
             public void deleteWords(int pNum) {
                 recipesChanged = true;
                 recipeFilterRow = 0;
-                updateDisplayedRecipes(recipeFilterBox.getValue());
                 super.deleteChars(pNum);
+                updateDisplayedRecipes(recipeFilterBox.getValue());
             }
         };
         this.recipeFilterBox.setMaxLength(60);
@@ -852,5 +854,15 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         PacketRegistry.sendToServer(new DeviceRecipeClearC2SPacket(
                 menu.blockEntity.getBlockPos()
         ));
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(AlchemicalNexusScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_STATS_X, yOrigin + PANEL_STATS_Y, PANEL_STATS_W, PANEL_STATS_H),
+                new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
+                new Rect2i(xOrigin + PANEL_STONE_X, yOrigin + PANEL_STONE_Y, 32, 32)
+        );
     }
 }

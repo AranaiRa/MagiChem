@@ -22,8 +22,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -50,6 +49,8 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
     private static final ResourceLocation TEXTURE_SLURRY =
             new ResourceLocation(MagiChemMod.MODID, "textures/block/fluid/experience_still.png");
     private static final int
+            PANEL_RECIPE_X = -113, PANEL_RECIPE_Y = -10,
+            PANEL_RECIPE_U = 176, PANEL_RECIPE_V = 0, PANEL_RECIPE_W = 80, PANEL_RECIPE_H = 126,
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 176;
     private static final Affinity[] AFFINITIES_ORDERED = {
             ENDER, EARTH, WATER, WIND, FIRE, ARCANE
@@ -229,7 +230,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         gui.blit(TEXTURE_EXT, x, y + 102, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
         //Recipe Picker
-        gui.blit(TEXTURE_EXT, x - 113, y - 10, 176, 0, 80, 126);
+        gui.blit(TEXTURE_EXT, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, PANEL_RECIPE_V, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
         //Main Panel
         gui.blit(TEXTURE, x + 38, y - 10, 0, 0, 102, 102);
@@ -689,5 +690,13 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         if(doOriginalTooltip)
             super.renderTooltip(gui, mouseX, mouseY);
         gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(PrimeAggregatorScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H)
+        );
     }
 }
