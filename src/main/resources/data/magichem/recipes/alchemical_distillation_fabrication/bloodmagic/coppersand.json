@@ -19,12 +19,12 @@
         },
         "components": [
           {
-            "item": "magichem:admixture_metal",
+            "item": "magichem:admixture_dust",
             "count": 2
           },
           {
-            "item": "magichem:admixture_dust",
-            "count": 1
+            "item": "magichem:admixture_metal",
+            "count": 2
           },
           {
             "item": "magichem:admixture_energy",
@@ -32,10 +32,6 @@
           },
           {
             "item": "magichem:admixture_erosion",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_mineral",
             "count": 1
           }
         ]

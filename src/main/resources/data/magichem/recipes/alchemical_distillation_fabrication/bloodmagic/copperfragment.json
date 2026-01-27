@@ -19,19 +19,15 @@
         },
         "components": [
           {
+            "item": "magichem:admixture_erosion",
+            "count": 3
+          },
+          {
             "item": "magichem:admixture_metal",
             "count": 2
           },
           {
-            "item": "magichem:admixture_erosion",
-            "count": 1
-          },
-          {
             "item": "magichem:admixture_energy",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_mineral",
             "count": 1
           }
         ]

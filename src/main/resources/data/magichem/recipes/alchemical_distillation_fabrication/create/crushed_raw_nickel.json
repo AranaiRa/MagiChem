@@ -23,12 +23,12 @@
             "count": 3
           },
           {
-            "item": "magichem:admixture_dust",
+            "item": "magichem:admixture_erosion",
             "count": 2
           },
           {
-            "item": "magichem:admixture_erosion",
-            "count": 2
+            "item": "magichem:admixture_dust",
+            "count": 1
           },
           {
             "item": "magichem:admixture_permanence",
