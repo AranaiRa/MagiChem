@@ -50,7 +50,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
     private FixationSeparationRecipe lastRecipe = null;
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
     private ItemStack lastRecipeResultAdmixture = ItemStack.EMPTY;
-    private boolean recipesChanged = false;
+    private String lastUsedFilter = null;
 
     public CentrifugeScreen(CentrifugeMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -115,32 +115,8 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                return super.charTyped(pCodePoint, pModifiers);
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                super.deleteChars(pNum);
-            }
-
-            @Override
-            public void deleteWords(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                super.deleteWords(pNum);
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
@@ -165,6 +141,9 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
     private List<ItemStack> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
+        if (Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         List<FixationSeparationRecipe> fixationRecipeOutputs = getAllRecipes();
         filteredRecipes.clear();
 
@@ -176,8 +155,6 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
-
-        recipesChanged = false;
     }
 
     private List<FixationSeparationRecipe> allRecipes = new ArrayList<>();
@@ -233,8 +210,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        if(recipesChanged)
-            updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
+        updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(gui);
         updateFilterBoxContents();
     }

@@ -62,7 +62,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             PANEL_POWER_X = 186, PANEL_POWER_Y = 19,
             PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
     private DistillationFabricationOption lastClickedRecipe = null;
-    private boolean recipesChanged = true;
+    private String lastUsedFilter = null;
     private Player player;
     private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
     private static List<FluidDistillationFabricationRecipe> allFluidDistillationRecipes = new ArrayList<>();
@@ -108,25 +108,8 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 67, 18, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                return super.charTyped(pCodePoint, pModifiers);
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                super.deleteChars(pNum);
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 67, 18, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
@@ -233,6 +216,9 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
     private List<DistillationFabricationOption> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
+        if (!menu.blockEntity.forceDisplayedRecipeUpdate && Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         filteredRecipes.clear();
         List<DistillationFabricationOption> dump = new ArrayList<>();
 
@@ -291,7 +277,6 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
 
-        recipesChanged = false;
         menu.blockEntity.forceDisplayedRecipeUpdate = false;
     }
 
@@ -373,8 +358,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        if(recipesChanged || menu.blockEntity.forceDisplayedRecipeUpdate)
-            updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
+        updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(gui);
         updateFilterBoxContents();
     }

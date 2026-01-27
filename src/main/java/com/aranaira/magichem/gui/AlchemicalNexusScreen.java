@@ -80,7 +80,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
-    private boolean recipesChanged = false;
+    private String lastUsedFilter = null;
 
     public AlchemicalNexusScreen(AlchemicalNexusMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -101,6 +101,9 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     private List<ItemStack> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
+        if (!menu.blockEntity.forceDisplayedRecipeUpdate && Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         List<SublimationRecipe> sublimationRecipeOutputs = getAllRecipes();
         filteredRecipes.clear();
 
@@ -126,7 +129,6 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
 
-        recipesChanged = false;
         menu.blockEntity.forceDisplayedRecipeUpdate = false;
     }
 
@@ -149,8 +151,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        if(recipesChanged || menu.blockEntity.forceDisplayedRecipeUpdate)
-            updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
+        updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(pGuiGraphics);
         updateFilterBoxContents();
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
@@ -380,34 +381,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                return super.charTyped(pCodePoint, pModifiers);
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                super.deleteChars(pNum);
-                updateDisplayedRecipes(recipeFilterBox.getValue());
-            }
-
-            @Override
-            public void deleteWords(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                super.deleteChars(pNum);
-                updateDisplayedRecipes(recipeFilterBox.getValue());
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
