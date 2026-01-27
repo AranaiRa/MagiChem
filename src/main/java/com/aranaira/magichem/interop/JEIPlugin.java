@@ -1,6 +1,7 @@
 package com.aranaira.magichem.interop;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.jei.*;
 import com.aranaira.magichem.recipe.*;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -9,13 +10,15 @@ import com.mna.blocks.BlockInit;
 import com.mna.items.ItemInit;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
@@ -23,6 +26,7 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
@@ -201,5 +205,49 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockInit.STUDY_DESK.get(), 1), CONSTRUCT_STUDY_MATERIAL_TYPE);
 
         IModPlugin.super.registerRecipeCatalysts(registration);
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registerGuiHandler(registration, AlchemicalNexusScreen.class, AlchemicalNexusScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, DistilleryScreen.class, DistilleryScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, GrandDistilleryScreen.class, GrandDistilleryScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, CentrifugeScreen.class, CentrifugeScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, GrandCentrifugeScreen.class, GrandCentrifugeScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, CircleFabricationScreen.class, CircleFabricationScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, GrandCircleFabricationScreen.class, GrandCircleFabricationScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, FuseryScreen.class, FuseryScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, GrandFuseryScreen.class, GrandFuseryScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, CirclePowerScreen.class, CirclePowerScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, PrimeAggregatorScreen.class, PrimeAggregatorScreen::getGuiExtraAreas);
+        registerActuatorGuiHandlers(registration);
+    }
+    // class gen for handlers with only
+    private <T extends AbstractContainerScreen<?>> void registerGuiHandler(IGuiHandlerRegistration registration, Class<T> cls, Function<T, List<Rect2i>> extraAreaRectGetter) {
+        registration.addGenericGuiContainerHandler(cls, new IGuiContainerHandler<T>() {
+            @Override
+            public List<Rect2i> getGuiExtraAreas(T screen) {
+                return extraAreaRectGetter.apply(screen);
+            }
+        });
+    }
+    // 6-in-1 actuators
+    private void registerActuatorGuiHandlers(IGuiHandlerRegistration registration) {
+        Function<Integer, Function<AbstractContainerScreen<?>, List<Rect2i>>> extraAreaRectGetterGen = xOffset -> screen -> {
+            int xOrigin = (screen.width - 176) / 2;
+            int yOrigin = (screen.height - 159) / 2;
+            return List.of(new Rect2i(xOrigin + xOffset, yOrigin, 57, 28));
+        };
+        Function<AbstractContainerScreen<?>, List<Rect2i>> extraAreaRectGetter = extraAreaRectGetterGen.apply(195);
+        for (Class<? extends AbstractContainerScreen<?>> cls : List.of(
+                ActuatorAirScreen.class, ActuatorArcaneScreen.class, /*ActuatorEarthScreen.class,*/
+                /*ActuatorEnderScreen.class,*/ ActuatorFireScreen.class, ActuatorWaterScreen.class
+        ))
+            registerGuiHandler(registration, cls, extraAreaRectGetter::apply);
+
+        // ender plugin is wider
+        Function<AbstractContainerScreen<?>, List<Rect2i>> extraAreaRectGetterLong = extraAreaRectGetterGen.apply(211);
+        registerGuiHandler(registration, ActuatorEnderScreen.class, extraAreaRectGetterLong::apply);
+        registerGuiHandler(registration, ActuatorEarthScreen.class, extraAreaRectGetterLong::apply);
     }
 }
