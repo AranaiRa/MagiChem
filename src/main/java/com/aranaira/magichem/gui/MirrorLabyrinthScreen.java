@@ -18,6 +18,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,6 +37,9 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_mirror_labyrinth_ext.png");
     private static final int
             PANEL_MAIN_W = 222, PANEL_MAIN_H = 121,
+            PANEL_POWER_X = -84, PANEL_POWER_Y = -24, PANEL_POWER_W = 80, PANEL_POWER_H = 66,
+            PANEL_SEARCH_X = -84, PANEL_SEARCH_Y = -60, PANEL_SEARCH_W = 80, PANEL_SEARCH_H = 32,
+            PANEL_BUTTON_X = 226, PANEL_BUTTON_Y = -60, PANEL_BUTTON_W = 32, PANEL_BUTTON_H = 32,
             PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 64, PANEL_GRIME_H = 59, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
             TOOLTIP_EFFICIENCY_X = 178, TOOLTIP_EFFICIENCY_Y = 18, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
             TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 37, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
@@ -329,17 +333,17 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         gui.blit(TEXTURE_COMPACT, x + 172, y + 64, 176, 121, 57, 90);
 
         //power panel
-        gui.blit(TEXTURE_EXPANDED, x - 84, y - 24, 0, 121, 80, 66);
+        gui.blit(TEXTURE_EXPANDED, x + PANEL_POWER_X, y + PANEL_POWER_Y, 0, 121, PANEL_POWER_W, PANEL_POWER_H);
 
         //power bar
         int pH = (menu.blockEntity.getPowerUsageSetting() + 1) * 5;
         gui.blit(TEXTURE_EXPANDED, x - 75, y + 24 - pH, 0, 226 + (30 - pH), 8, pH);
 
         //search bar
-        gui.blit(TEXTURE_COMPACT, x - 84, y - 60, 116, 224, 80, 32);
+        gui.blit(TEXTURE_COMPACT, x + PANEL_SEARCH_X, y + PANEL_SEARCH_Y, 116, 224, PANEL_SEARCH_W, PANEL_SEARCH_H);
 
         //button house
-        gui.blit(TEXTURE_COMPACT, x + 226, y - 60, 196, 224, 32, 32);
+        gui.blit(TEXTURE_COMPACT, x + PANEL_BUTTON_X, y + PANEL_BUTTON_Y, 196, 224, PANEL_BUTTON_W, PANEL_BUTTON_H);
 
         //bottle ghosts for empty slots
         if(!menu.blockEntity.hasItemInInsertResultSlot())
@@ -605,5 +609,15 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
 //        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
 //        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
 //        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 9, 0xff000000, false);
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(MirrorLabyrinthScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_SEARCH_X, yOrigin + PANEL_SEARCH_Y, PANEL_SEARCH_W, PANEL_SEARCH_H),
+                new Rect2i(xOrigin + PANEL_BUTTON_X, yOrigin + PANEL_BUTTON_Y, PANEL_BUTTON_W, PANEL_BUTTON_H),
+                new Rect2i(xOrigin + PANEL_POWER_X, yOrigin + PANEL_POWER_Y, PANEL_POWER_W, PANEL_POWER_H)
+        );
     }
 }

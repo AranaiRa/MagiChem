@@ -219,6 +219,7 @@ public class JEIPlugin implements IModPlugin {
         registerGuiHandler(registration, FuseryScreen.class, FuseryScreen::getGuiExtraAreas);
         registerGuiHandler(registration, GrandFuseryScreen.class, GrandFuseryScreen::getGuiExtraAreas);
         registerGuiHandler(registration, CirclePowerScreen.class, CirclePowerScreen::getGuiExtraAreas);
+        registerGuiHandler(registration, MirrorLabyrinthScreen.class, MirrorLabyrinthScreen::getGuiExtraAreas);
         registerGuiHandler(registration, PrimeAggregatorScreen.class, PrimeAggregatorScreen::getGuiExtraAreas);
         registerActuatorGuiHandlers(registration);
     }
