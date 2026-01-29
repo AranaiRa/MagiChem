@@ -1,0 +1,13 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:chromatic_silk",
+  "tier": 5,
+  "items": [
+    "magichem:infused_bolt",
+    "magichem:stardust",
+    "magichem:moonshine"
+  ],
+  "patterns": [
+    "mna:infinity"
+  ]
+}

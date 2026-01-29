@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 4,
+  "result": { "item": "magichem:infused_bolt", "count": 1 },
+  "items": { "type": "mna:infused_silk", "required": 1 },
+  "eldrin": { "type": 36, "required": 160 },
+  "materia": { "type": "magichem:admixture_comfort", "required": 14 },
+  "slurry": 1200
+}

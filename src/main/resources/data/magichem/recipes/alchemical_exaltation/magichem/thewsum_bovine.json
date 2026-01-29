@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 5,
+  "result": { "item": "magichem:thewsum_bovine", "count": 1 },
+  "items": { "type": "minecraft:beef", "required": 1200 },
+  "eldrin": { "type": 2, "required": 4000 },
+  "materia": { "type": "magichem:essentia_fleshy", "required": 375 },
+  "slurry": 9600
+}

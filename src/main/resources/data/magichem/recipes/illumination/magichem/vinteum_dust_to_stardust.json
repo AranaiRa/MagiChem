@@ -1,0 +1,12 @@
+{
+  "type": "magichem:illumination",
+  "input": "mna:vinteum_dust",
+  "lumins": {
+    "type": 3,
+    "minutes": 8
+  },
+  "result": {
+    "item": "magichem:stardust",
+    "count": 1
+  }
+}

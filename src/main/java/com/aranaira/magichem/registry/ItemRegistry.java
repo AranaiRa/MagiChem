@@ -364,8 +364,100 @@ public class ItemRegistry {
             () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffects.BAD_OMEN, -1, 30, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false, true, 5)
     );
 
+    public static final RegistryObject<TooltipLoreItem> MOONSHINE = ITEMS.register("moonshine",
+            () -> new TooltipLoreItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> STARDUST = ITEMS.register("stardust",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> INFUSED_BOLT = ITEMS.register("infused_bolt",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK = ITEMS.register("chromatic_silk",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_RED = ITEMS.register("chromatic_silk_red",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_ORANGE = ITEMS.register("chromatic_silk_orange",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_YELLOW = ITEMS.register("chromatic_silk_yellow",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_LIME = ITEMS.register("chromatic_silk_lime",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_GREEN = ITEMS.register("chromatic_silk_green",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_CYAN = ITEMS.register("chromatic_silk_cyan",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_LIGHT_BLUE = ITEMS.register("chromatic_silk_light_blue",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_BLUE = ITEMS.register("chromatic_silk_blue",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_PURPLE = ITEMS.register("chromatic_silk_purple",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_MAGENTA = ITEMS.register("chromatic_silk_magenta",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_PINK = ITEMS.register("chromatic_silk_pink",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_BROWN = ITEMS.register("chromatic_silk_brown",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> AURORAL_SILK = ITEMS.register("auroral_silk",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> FLATBREAD = ITEMS.register("flatbread",
             () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(8).saturationMod(0.6F).build()))
+    );
+
+    public static final RegistryObject<Item> BOVINE_THEWSUM = ITEMS.register("thewsum_bovine",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> GALLINE_THEWSUM = ITEMS.register("thewsum_galline",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> LEPORINE_THEWSUM = ITEMS.register("thewsum_leporine",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> OVINE_THEWSUM = ITEMS.register("thewsum_ovine",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> PORCINE_THEWSUM = ITEMS.register("thewsum_porcine",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> PISCINE_THEWSUM = ITEMS.register("thewsum_piscine",
+            () -> new Item(new Item.Properties())
     );
 
     public static final RegistryObject<Item> MORSEL_OF_PERFECT_SAVOR = ITEMS.register("morsel_savor",
@@ -404,6 +496,34 @@ public class ItemRegistry {
 
     public static final RegistryObject<ForkOfTheGulaporrigoItem> FORK_OF_THE_GULAPORRIGO = ITEMS.register("fork_of_the_gulaporrigo",
             () -> new ForkOfTheGulaporrigoItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHALICE_OF_TEARS = ITEMS.register("chalice_of_tears",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> IMMORTAL_HEART = ITEMS.register("immortal_heart",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BOSS_TROPHY_COUNCIL = ITEMS.register("boss_trophy_council",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BOSS_TROPHY_FEY = ITEMS.register("boss_trophy_fey",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BOSS_TROPHY_DEMONS = ITEMS.register("boss_trophy_demons",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BOSS_TROPHY_UNDEAD = ITEMS.register("boss_trophy_undead",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CROWN_OF_GLORY = ITEMS.register("crown_of_glory",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
