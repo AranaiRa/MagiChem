@@ -45,6 +45,11 @@ public class TerrariumBlock extends Block {
         return VOXEL_SHAPE_AGGREGATE;
     }
 
+    @Override
+    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return true;
+    }
+
     static {
         VOXEL_SHAPE_BASE  = Block.box(0,0,0,16,3,16);
         VOXEL_SHAPE_LIP   = Block.box(2,3,2,14,4,14);
