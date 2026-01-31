@@ -60,7 +60,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             PANEL_POWER_X = 186, PANEL_POWER_Y = 19,
             PANEL_POWER_U = 188, PANEL_POWER_V = 190, PANEL_POWER_W = 66, PANEL_POWER_H = 66;
     private DistillationFabricationOption lastClickedRecipe = null;
-    private boolean recipesChanged = true;
+    private String lastUsedFilter = null;
     private Player player;
     private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
     private static List<FluidDistillationFabricationRecipe> allFluidDistillationRecipes = new ArrayList<>();
@@ -94,36 +94,19 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;
-        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
-            return true;
-        } else {
-            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
+        if (Minecraft.getInstance().options.keyInventory.matches(pKeyCode, pScanCode)) {
+            if (recipeFilterBox.canConsumeInput()) return recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     private void initializeRecipeFilterBox() {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 67, 18, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                return super.charTyped(pCodePoint, pModifiers);
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                super.deleteChars(pNum);
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 67, 18, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
@@ -187,6 +170,9 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private List<DistillationFabricationOption> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
+        if (Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         filteredRecipes.clear();
         List<DistillationFabricationOption> dump = new ArrayList<>();
 
@@ -244,8 +230,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
-
-        recipesChanged = false;
     }
 
     @Override
@@ -319,8 +303,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        if(recipesChanged)
-            updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
+        updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(gui);
         updateFilterBoxContents();
     }

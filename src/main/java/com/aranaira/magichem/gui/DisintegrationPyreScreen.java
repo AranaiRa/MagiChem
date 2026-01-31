@@ -16,9 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class DisintegrationPyreScreen extends AbstractContainerScreen<DisintegrationPyreMenu> {
     private static final ResourceLocation TEXTURE =
@@ -26,6 +24,7 @@ public class DisintegrationPyreScreen extends AbstractContainerScreen<Disintegra
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 148;
     private EditBox percentSelectorBox;
+    private String lastUsedFilter = null;
 
     public DisintegrationPyreScreen(DisintegrationPyreMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -122,45 +121,25 @@ public class DisintegrationPyreScreen extends AbstractContainerScreen<Disintegra
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.percentSelectorBox = new EditBox(Minecraft.getInstance().font, x, y, 38, 16, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                for(char c : VALID_CHARACTERS) {
-                    if(c == pCodePoint) {
-                        super.charTyped(pCodePoint, pModifiers);
-                        int out = 0;
-                        if(getValue().length() > 0) out = Math.max(1, Math.min(99, Integer.parseInt(getValue())));
-                        setValue(""+out);
-                        PacketRegistry.sendToServer(new DisintegrationPyreSyncDataC2SPacket(
-                                menu.blockEntity.getBlockPos(), out));
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                super.deleteChars(pNum);
-                int out = 1;
-                if(getValue().length() > 0) out = Math.max(1, Math.min(99, Integer.parseInt(getValue())));
-                setValue(""+out);
-                PacketRegistry.sendToServer(new DisintegrationPyreSyncDataC2SPacket(
-                        menu.blockEntity.getBlockPos(), out));
-            }
-
-            @Override
-            public void deleteWords(int pNum) {
-                super.deleteWords(pNum);
-                int out = 1;
-                if(getValue().length() > 0) out = Math.max(1, Math.min(99, Integer.parseInt(getValue())));
-                setValue(""+out);
-                PacketRegistry.sendToServer(new DisintegrationPyreSyncDataC2SPacket(
-                        menu.blockEntity.getBlockPos(), out));
-            }
-        };
+        this.percentSelectorBox = new EditBox(Minecraft.getInstance().font, x, y, 38, 16, Component.empty());
         this.percentSelectorBox.setMaxLength(60);
+        this.percentSelectorBox.setResponder(value -> {
+            if (Objects.equals(value, lastUsedFilter)) return;
+            int out = 1;
+            try {
+                if (!value.isEmpty()) out = Math.max(1, Math.min(99, Integer.parseInt(value)));
+            } catch (NumberFormatException e) {
+                if (lastUsedFilter != null) {
+                    value = lastUsedFilter;
+                    out = Integer.parseInt(value);
+                }
+            }
+            value = "" + out;
+            lastUsedFilter = value;
+            this.percentSelectorBox.setValue(value);
+            PacketRegistry.sendToServer(new DisintegrationPyreSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(), out));
+        });
         this.percentSelectorBox.setFocused(false);
         this.percentSelectorBox.setCanLoseFocus(false);
         this.setFocused(this.percentSelectorBox);

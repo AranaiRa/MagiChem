@@ -42,6 +42,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     private EditBox recipeFilterBox;
     int pageIndex = 0;
     int pageCount = 1;
+    private String lastUsedFilter = null;
 
     public MateriaManifestScreen(MateriaManifestMenu menu, Inventory inv, Component component) {
         super(menu, inv, component);
@@ -67,8 +68,6 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 orderedMateriaStorage.add(new Pair<>(mi, be));
             }
         }
-
-        updateMateriaOptionsByTextFilter();
 
         pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 32f);
         if(pageCount <= 0)
@@ -148,42 +147,8 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         int x = 0;//(width - 222) / 2;
         int y = 5;//(height - 213) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                final boolean b = super.charTyped(pCodePoint, pModifiers);
-                updateMateriaOptionsByTextFilter();
-                if(getValue().isEmpty())
-                    setSuggestion("Filter...");
-                else
-                    setSuggestion("");
-                return b;
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                super.deleteChars(pNum);
-                updateMateriaOptionsByTextFilter();
-                if(getValue().isEmpty())
-                    setSuggestion("Filter...");
-                else
-                    setSuggestion("");
-            }
-
-            @Override
-            public void deleteWords(int pNum) {
-                super.deleteWords(pNum);
-                updateMateriaOptionsByTextFilter();
-                if(getValue().isEmpty())
-                    setSuggestion("Filter...");
-                else
-                    setSuggestion("");
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
@@ -191,6 +156,9 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     private void updateMateriaOptionsByTextFilter() {
         String filter = "";
         if(recipeFilterBox != null) filter = recipeFilterBox.getValue().toLowerCase(Locale.ROOT);
+        if (Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         orderedMateriaStorageFiltered.clear();
         for (Pair<MateriaItem, BlockEntity> pair : orderedMateriaStorage) {
             MateriaItem mi = pair.getFirst();
@@ -217,16 +185,23 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         addRenderableWidget(recipeFilterBox);
     }
 
+    private void updateFilterBoxContents() {
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
+    }
+
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;
-        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
-            return true;
-        } else {
-            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
+        if (Minecraft.getInstance().options.keyInventory.matches(pKeyCode, pScanCode)) {
+            if (recipeFilterBox.canConsumeInput()) return recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     @Override
@@ -328,9 +303,11 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
 
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        updateMateriaOptionsByTextFilter();
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+        updateFilterBoxContents();
     }
 
     @Override
