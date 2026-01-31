@@ -51,7 +51,7 @@ public class TerrariumBlock extends Block {
     }
 
     static {
-        VOXEL_SHAPE_BASE  = Block.box(0,0,0,16,3,16);
+        VOXEL_SHAPE_BASE  = Block.box(1,0,1,15,3,15);
         VOXEL_SHAPE_LIP   = Block.box(2,3,2,14,4,14);
         VOXEL_SHAPE_GLASS = Block.box(2.5,4,2.5,13.5,15,13.5);
 

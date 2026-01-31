@@ -4,5 +4,5 @@
 newmtl TERRARIUM_BASE
 map_Kd magichem:block/terrarium_base
 
-newmtl TERRARIUM_FORESTS
+newmtl TERRARIUM_FORESTS_WASTES
 map_Kd magichem:block/terrarium_forests
