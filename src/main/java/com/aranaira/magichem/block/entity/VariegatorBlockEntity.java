@@ -1,11 +1,9 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.VariegatorMenu;
+import com.aranaira.magichem.gui.VariegatorScreen;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ColorationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -54,7 +52,7 @@ import java.util.Random;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.GROUNDED;
 
-public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IKeepsInventoryOnBreak {
+public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IKeepsInventoryOnBreak, IHasDeviceRecipeSlot {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     public static final int
@@ -418,7 +416,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         getCurrentProcessingStack(pEntity).shrink(1);
 
         if(pEntity.dyeAdmixture > 0)
-            pEntity.dyeAdmixture--;
+            pEntity.dyeAdmixture = pEntity.dyeAdmixture - pRecipe.getChargeUsage();
         else if(pEntity.selectedColor != -1){
             pEntity.setDyeFillByColor(color, Math.max(0, pEntity.getDyeFillByColor(color) - 1));
         }
@@ -449,7 +447,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         } else if(sufficientAdmixture || sufficientDye) {
             return Math.max(1, ServerConfig.variegatorOperationTimeFast);
         } else {
-            return Math.max(1, ServerConfig.variegatorOperationTimeSlow);
+            return Math.max(1, ServerConfig.variegatorOperationTimeSlow) * pEntity.currentRecipe.getChargeUsage();
         }
     }
 
@@ -717,5 +715,41 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         }
 
         return 0;
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack, Player player) {
+        if(pStack.getItem() instanceof DyeItem dye) {
+            if(!player.level().isClientSide()) {
+                for(int i=0; i<COLOR_GUI_ORDER.length; i++) {
+                    if(dye.getDyeColor() == COLOR_GUI_ORDER[i]) {
+                        selectedColor = i;
+                        syncAndSave();
+                        break;
+                    }
+                }
+            }
+            return ERROR_CODE_SUCCESS;
+        } else if(pStack.isEmpty()) {
+            if(!player.level().isClientSide()) {
+                selectedColor = -1;
+                syncAndSave();
+            }
+            return ERROR_CODE_SUCCESS;
+        }
+        return ERROR_CODE_NO_SUCH_RECIPE;
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        if(selectedColor == -1) return ItemStack.EMPTY;
+
+        final HashMap<DyeColor, ItemStack> stacks = VariegatorScreen.getOrCreateDyeStacks();
+        return stacks.get(COLOR_GUI_ORDER[selectedColor]);
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return getRecipeItem().copy();
     }
 }
