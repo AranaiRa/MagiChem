@@ -1,0 +1,14 @@
+{
+  "type": "mna:crushing",
+  "tier": 5,
+  "input": "magichem:collated_theories",
+  "output": "magichem:scorched_theorem",
+  "output_quantity": 6,
+  "byproducts": [
+    {
+      "item": "minecraft:leather",
+      "chance": 1,
+      "count": 3
+    }
+  ]
+}
