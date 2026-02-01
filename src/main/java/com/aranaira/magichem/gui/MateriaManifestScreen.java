@@ -69,9 +69,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             }
         }
 
-        pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 32f);
-        if(pageCount <= 0)
-            pageCount = 1;
+        lastUsedFilter = null;
     }
 
     @Override
@@ -168,6 +166,11 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 orderedMateriaStorageFiltered.add(pair);
             }
         }
+
+        pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 32f);
+        if(pageCount <= 0)
+            pageCount = 1;
+        pageIndex = Math.min(pageIndex, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
     }
 
     private void renderFilterBox() {
