@@ -40,6 +40,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             PANEL_POWER_X = -84, PANEL_POWER_Y = -24, PANEL_POWER_W = 80, PANEL_POWER_H = 66,
             PANEL_SEARCH_X = -84, PANEL_SEARCH_Y = -60, PANEL_SEARCH_W = 80, PANEL_SEARCH_H = 32,
             PANEL_BUTTON_X = 226, PANEL_BUTTON_Y = -60, PANEL_BUTTON_W = 32, PANEL_BUTTON_H = 32,
+            PANEL_INSERTION_X = 172, PANEL_INSERTION_Y = 64, PANEL_INSERTION_W = 57, PANEL_INSERTION_H = 90,
             PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 64, PANEL_GRIME_H = 59, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
             TOOLTIP_EFFICIENCY_X = 178, TOOLTIP_EFFICIENCY_Y = 18, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
             TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 37, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
@@ -308,7 +309,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         gui.blit(TEXTURE_COMPACT, x - 7, y + 64, 0, 121, 176, 90);
 
         //insertion panel
-        gui.blit(TEXTURE_COMPACT, x + 172, y + 64, 176, 121, 57, 90);
+        gui.blit(TEXTURE_COMPACT, x + PANEL_INSERTION_X, y + PANEL_INSERTION_Y, 176, 121, PANEL_INSERTION_W, PANEL_INSERTION_H);
 
         //power panel
         gui.blit(TEXTURE_EXPANDED, x + PANEL_POWER_X, y + PANEL_POWER_Y, 0, 121, PANEL_POWER_W, PANEL_POWER_H);
@@ -597,6 +598,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         return List.of(
                 new Rect2i(xOrigin + PANEL_SEARCH_X, yOrigin + PANEL_SEARCH_Y, PANEL_SEARCH_W, PANEL_SEARCH_H),
                 new Rect2i(xOrigin + PANEL_BUTTON_X, yOrigin + PANEL_BUTTON_Y, PANEL_BUTTON_W, PANEL_BUTTON_H),
+                new Rect2i(xOrigin + PANEL_INSERTION_X, yOrigin + PANEL_INSERTION_Y, PANEL_INSERTION_W, PANEL_INSERTION_H),
                 new Rect2i(xOrigin + PANEL_POWER_X, yOrigin + PANEL_POWER_Y, PANEL_POWER_W, PANEL_POWER_H)
         );
     }
