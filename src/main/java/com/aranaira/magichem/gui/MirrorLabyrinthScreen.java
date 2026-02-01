@@ -217,6 +217,10 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                 orderedMateriaStorageFiltered.add(pair);
             }
         }
+
+        pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 16f);
+        if(pageCount <= 0)
+            pageCount = 1;
     }
 
     private MateriaItem getMateriaTypeFromButtonID(int pButtonID) {
@@ -282,11 +286,10 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             orderedMateriaStorage.add(new Pair<>(mi, menu.blockEntity.getCurrentStock(mi)));
         }
 
-        pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 16f);
-        if(pageCount <= 0)
-            pageCount = 1;
-
         menu.blockEntity.needsGuiStorageUpdate = false;
+
+        // force filtered content to update
+        lastUsedFilter = null;
     }
 
     @Override
