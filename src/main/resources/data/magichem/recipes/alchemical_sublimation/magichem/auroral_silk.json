@@ -11,7 +11,7 @@
       "components": [
         { "item": "magichem:chromatic_silk_red" },
         { "item": "magichem:chromatic_silk_orange" },
-        { "item": "mna:infused_thread" },
+        { "item": "magichem:radiant_rose" },
         { "item": "magichem:chromatic_silk_yellow" },
         { "item": "magichem:chromatic_silk_lime" }
       ],
@@ -24,7 +24,7 @@
       "components": [
         { "item": "magichem:chromatic_silk_green" },
         { "item": "magichem:chromatic_silk_cyan" },
-        { "item": "magichem:radiant_rose" },
+        { "item": "magichem:immaculate_vinteum_crystal" },
         { "item": "magichem:chromatic_silk_light_blue" },
         { "item": "magichem:chromatic_silk_blue" }
       ],
@@ -37,7 +37,7 @@
       "components": [
         { "item": "magichem:chromatic_silk_purple" },
         { "item": "magichem:chromatic_silk_magenta" },
-        { "item": "mna:infused_thread" },
+        { "item": "magichem:radiant_rose" },
         { "item": "magichem:chromatic_silk_pink" },
         { "item": "magichem:chromatic_silk_brown" }
       ],

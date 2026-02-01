@@ -400,6 +400,10 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_citrinitas"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_rubedo"
       }
     ]
   },
@@ -4307,7 +4311,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " inside, it can move 32 additional drams of materia per operation.\n\nWater affinity increases the reach distance of basic sorting constructs when putting materia into containers.\n\nConstructs made from "
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\nConstructs made from "
           },
           {
             "text": "higher tier materials",
@@ -11479,7 +11483,7 @@
           },
           {
             "text": "only",
-            "italics": true
+            "italic": true
           },
           {
             "text": " grow magical flowers (no other plants will be created, including grass) and will only grow anything on aspected Ensorcelled Soils.\n\nAspected Ensorcelled Soils can also be filled with magical flowers by fulfilling a "
@@ -11910,6 +11914,268 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/covetous_coffer"
+      }
+    ]
+  },
+  "Ambrosia & Nectar": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Ambrosia & Nectar"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Named after the purported food and drink of the gods, "
+          },
+          {
+            "text": "Ambrosia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "Nectar",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are alchemically perfect foods.\n\nConsuming either will "
+          },
+          {
+            "text": "completely fill your hunger and saturation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". The meal is so exquisite that it leaves the diner with "
+          },
+          {
+            "text": "Memories of Decadence",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; once saturation drops below one shank the diner will experience another "
+          },
+          {
+            "text": "complete refill of hunger and saturation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAmbrosia and Nectar can be combined into a "
+          },
+          {
+            "text": "Feast of the Gods",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a meal far greater than the sum of its parts. When consumed, a Feast of the Gods grants "
+          },
+          {
+            "text": "five levels",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of Memories of Decadence."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/ambrosia"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/nectar"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/feast_of_the_gods"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_savor"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_spice"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_sweetness"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_umami"
+      }
+    ]
+  },
+  "Fork of the Gulaporrigo": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Fork of the Gulaporrigo"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Fork of the Gulaporrigo",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an exquisite dining fork housing a fragment of the Gulaporrigo, a powerful spirit of gluttony. The spirit's power infests any "
+          },
+          {
+            "text": "slice of cake",
+            "color": "dark_purple"
+          },
+          {
+            "text": " eaten with the Fork.\n\nUsing the Fork on a placed cake will "
+          },
+          {
+            "text": "store a slice",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", saving it until the fork is used again to consume the slice. Cake slices can be consumed "
+          },
+          {
+            "text": "regardless of hunger level",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and their nutrition is drastically enhanced (3 shanks of hunger and 4 shanks of saturation).\n\nEating a piece of cake with the Fork also confers a "
+          },
+          {
+            "text": "long-lasting boost to maximum Mana",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". This effect is amplified if the cake slice is eaten within the effect of an "
+          },
+          {
+            "text": "allied sanctum",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and/or while the diner has "
+          },
+          {
+            "text": "Memories of Decadence",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from eating Ambrosia, Nectar, or a Feast of the Gods."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/fork_of_the_gulaporrigo"
+      }
+    ]
+  },
+  "Auroral Silk": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Auroral Silk"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Auroral Silk",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a profoundly powerful magical material made by the exhausting process of combining perfect silks of many colors. It is a vital component of the powerful "
+          },
+          {
+            "text": "Prismatic spell components",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". ("
+          },
+          {
+            "text": "Creator's note: these spell components do not yet exist and will be implemented in 0.5.3",
+            "italic": true
+          },
+          {
+            "text": ")\n\nFirst, infused silk must be Exalted into "
+          },
+          {
+            "text": "Chromatic Silk",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Chromatic Silk can be colored with a "
+          },
+          {
+            "text": "Variegator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and consumes a "
+          },
+          {
+            "text": "very large amount",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of dye or Admixture of Color charge. Finally, all twelve colors of Chromatic Silk are sublimated into "
+          },
+          {
+            "text": "Auroral Silk",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the Nexus."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/auroral_silk"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/infused_bolt"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/honey_bottle_to_moonshine"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/vinteum_dust_to_stardust"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/chromatic_silk"
       }
     ]
   },

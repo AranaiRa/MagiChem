@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 16,
         "object": {
-          "item": "hexerei:blood_sigil"
+          "item": "hexerei:blood_bottle"
         },
         "components": [
           { "item": "magichem:admixture_blood", "count": 2 },
