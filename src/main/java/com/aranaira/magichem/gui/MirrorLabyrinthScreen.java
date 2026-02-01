@@ -222,6 +222,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 16f);
         if(pageCount <= 0)
             pageCount = 1;
+        pageIndex = Math.min(pageIndex, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
     }
 
     private MateriaItem getMateriaTypeFromButtonID(int pButtonID) {
