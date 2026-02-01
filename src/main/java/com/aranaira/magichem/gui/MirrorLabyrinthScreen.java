@@ -287,6 +287,9 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         }
 
         menu.blockEntity.needsGuiStorageUpdate = false;
+
+        // force filtered content to update
+        lastUsedFilter = null;
     }
 
     @Override
