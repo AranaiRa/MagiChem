@@ -10983,6 +10983,49 @@
       },
       {
         "type": "title",
+        "value": "Sleep",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_sleep",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "10 Minutes",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "All "
+          },
+          {
+            "text": "residual magic",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in a "
+          },
+          {
+            "text": "7x7 chunk area",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is instantly eliminated, as though no spells had ever been cast in the region."
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Thought",
         "newPage": true
       },

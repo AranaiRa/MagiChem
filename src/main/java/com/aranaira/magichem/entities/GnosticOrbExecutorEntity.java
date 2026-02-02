@@ -7,7 +7,9 @@ import com.aranaira.magichem.networking.ParticleSpawnAnointingS2CPacket;
 import com.aranaira.magichem.recipe.ProphecyErosionRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.api.capabilities.IChunkMagic;
 import com.mna.blocks.BlockInit;
+import com.mna.capabilities.chunkdata.ChunkMagicProvider;
 import com.mna.tools.SummonUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
@@ -33,8 +35,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -74,8 +78,9 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
             PROPHECY_DATA.put("disaster",  new Quadlet<>(4, 75, GnosticOrbExecutorEntity::preCacheDisaster, GnosticOrbExecutorEntity::prophecyEffectDisaster));
             PROPHECY_DATA.put("erosion",   new Quadlet<>(3, 120, GnosticOrbExecutorEntity::preCacheErosion, GnosticOrbExecutorEntity::prophecyEffectErosion));
             PROPHECY_DATA.put("exanimate", new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheExanimate, GnosticOrbExecutorEntity::prophecyEffectExanimate));
-            PROPHECY_DATA.put("luck",     new Quadlet<>(1, 200, GnosticOrbExecutorEntity::preCacheLuck, GnosticOrbExecutorEntity::prophecyEffectLuck));
+            PROPHECY_DATA.put("luck",      new Quadlet<>(1, 200, GnosticOrbExecutorEntity::preCacheLuck, GnosticOrbExecutorEntity::prophecyEffectLuck));
             PROPHECY_DATA.put("odors",     new Quadlet<>(1, 240, GnosticOrbExecutorEntity::preCacheOdors, GnosticOrbExecutorEntity::prophecyEffectOdors));
+            PROPHECY_DATA.put("sleep",     new Quadlet<>(1, 1, GnosticOrbExecutorEntity::skipPreCache, GnosticOrbExecutorEntity::prophecyEffectSleep));
             PROPHECY_DATA.put("thought",   new Quadlet<>(1, 1, GnosticOrbExecutorEntity::preCacheThought, GnosticOrbExecutorEntity::prophecyEffectThought));
         }
     }
@@ -158,6 +163,11 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
     /////////////////////
     // PROPHECY EFFECTS
     /////////////////////
+
+    public static void skipPreCache(GnosticOrbExecutorEntity pEntity) {
+        //Do nothing; use for effects that require no caching
+        pEntity.hasPreCached = true;
+    }
 
     public static void preCacheConstruct(GnosticOrbExecutorEntity pEntity) {
         //Precalculate places that are iron blocks
@@ -462,6 +472,26 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         MagiChemMod.CHANNEL.send(
                 PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 20f, pEntity.level().dimension())),
                 new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), pEntity.materiaColor, true));
+
+        pEntity.iterator++;
+    }
+
+    public static void prophecyEffectSleep(GnosticOrbExecutorEntity pEntity) {
+        Level level = pEntity.level();
+
+        //Precalculate places that could be ore
+        int range = 3;
+        for (int x = -range; x<=range; x++) {
+            for (int z = -range; z<=range; z++) {
+                LevelChunk chunk = level.getChunkAt(pEntity.blockPosition().offset(x*16, 0, z*16));
+
+                LazyOptional<IChunkMagic> capabilityQuery = chunk.getCapability(ChunkMagicProvider.MAGIC);
+                capabilityQuery.ifPresent(cap -> {
+                    cap.setResidualMagic(0);
+                });
+
+            }
+        }
 
         pEntity.iterator++;
     }
