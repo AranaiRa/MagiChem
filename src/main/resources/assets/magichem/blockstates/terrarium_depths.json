@@ -1,19 +1,44 @@
 {
-  "variants": {
-    "facing=north": {
-      "model": "magichem:block/terrarium_depths"
+  "multipart": [
+    {
+      "apply": {
+        "model": "magichem:block/terrarium_depths"
+      },
+      "when": {
+        "facing": "north"
+      }
     },
-    "facing=east": {
-      "model": "magichem:block/terrarium_depths",
-      "y": 90
+    {
+      "apply": {
+        "model": "magichem:block/terrarium_depths",
+        "y": 90
+      },
+      "when": {
+        "facing": "east"
+      }
     },
-    "facing=south": {
-      "model": "magichem:block/terrarium_depths",
-      "y": 180
+    {
+      "apply": {
+        "model": "magichem:block/terrarium_depths",
+        "y": 180
+      },
+      "when": {
+        "facing": "south"
+      }
     },
-    "facing=west": {
-      "model": "magichem:block/terrarium_depths",
-      "y": 270
+    {
+      "apply": {
+        "model": "magichem:block/terrarium_depths",
+        "y": 270
+      },
+      "when": {
+        "facing": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "magichem:block/terrarium_depths_water"
+      }
     }
-  }
+  ]
 }
