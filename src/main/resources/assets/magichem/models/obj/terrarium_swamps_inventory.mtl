@@ -1,0 +1,8 @@
+# Blender MTL File: 'terrariums.blend'
+# Material Count: 2
+
+newmtl TERRARIUM_BASE
+map_Kd magichem:block/terrarium_base
+
+newmtl TERRARIUM_SWAMP
+map_Kd magichem:block/terrarium_swamps
