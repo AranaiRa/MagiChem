@@ -807,6 +807,50 @@
       }
     ]
   },
+  "Process: Exaltation": {
+    "index": "1110",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Exaltation"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/process_exaltation",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Exalt",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is to fuse a large quantity of one type of item, one type of materia, Eldrin power, and Academic Slurry into a new item. Exaltation is performed at a "
+          },
+          {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/prime_aggregator"
+      }
+    ]
+  },
   "Process: Coloration": {
     "index": "1111",
     "category": "magichem",
@@ -12219,6 +12263,170 @@
       {
         "type": "manaweaving-altar",
         "location": "magichem:manaweaving/chromatic_silk"
+      }
+    ]
+  },
+  "Terrariums": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Terrariums"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Terrarium",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a small version of one or more of the world's many biomes, magically shrunk and contained in glass.\n\nCreating a Terrarium requires a number of "
+          },
+          {
+            "text": "Wildergobs",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", strange mixes of flora that all come from the same biome. Strangely, Wildergobs lose almost all of the materia of their component parts.\n\nWildergobs can be Exalted into a Terrarium on the "
+          },
+          {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Though most incidental materia from the component parts is lost (such as Admixtures of Wood and the Plant), the amount of "
+          },
+          {
+            "text": "biome admixture",
+            "color": "dark_purple"
+          },
+          {
+            "text": " present in a Terrarium "
+          },
+          {
+            "text": "more than triples",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nOf special note is the "
+          },
+          {
+            "text": "Ominous Terrarium",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", created using sculk. When distilled, an Ominous Terrarium is a very large source of "
+          },
+          {
+            "text": "Nigredo Essentia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in place of a biome admixture.\n\nTerrariums can also be placed decoratively."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_forests"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_forests_small"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/terrarium_forests"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_ominous"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/terrarium_ominous"
+      }
+    ]
+  },
+  "Exaltation of Alchemy Essentia": {
+    "index": "-10",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Exaltation of Alchemy Essentia"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Many fabrications and sublimations require essentia of the "
+          },
+          {
+            "text": "House of Alchemy",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": Nigredo, Albedo, Citrinitas, and Rubedo. As one progresses in the arts alchemical these four types of essentia appear as requirements more frequently. So where can a budding alchemist source large enough quantities to work with?\n\nThe process begins with the creation of "
+          },
+          {
+            "text": "Black Diamonds",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the "
+          },
+          {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Though these frighteningly dense diamonds lose most of the materia that make up the diamonds that go into their creation, the amount of "
+          },
+          {
+            "text": "Nigredo Essentia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " present in the Black Diamond "
+          },
+          {
+            "text": "triples",
+            "color": "dark_purple"
+          },
+          {
+            "text": " over the diamonds alone.\n\nAs you increase in Tier, additional items associated with the House of Alchemy will appear as recipe options in the Prime Aggregator. Each one will require 60 of one House of Alchemy Essentia type to Exalt. The resulting item yields 30 of the next House of Alchemy Essentia when distilled (for example, 60 Albedo to create 30 Citrinitas)."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/black_diamond"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/alabaster_pearl"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/xanthotic_gold"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/scarlet_coral"
       }
     ]
   },
