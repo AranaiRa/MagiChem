@@ -1,5 +1,20 @@
 {
-	"parent": "magichem:block/terrarium_hells",
+	"parent": "forge:item/default",
+	"loader": "forge:composite",
+	"textures": {
+		"particle": "minecraft:block/glass"
+	},
+	"children": {
+		"part1": {
+			"loader": "forge:obj",
+			"render_type": "translucent",
+			"automatic_culling": false,
+			"shade_quads": true,
+			"flip_v": true,
+			"emissive_ambient": false,
+			"model": "magichem:models/obj/terrarium_hells_inventory.obj"
+		}
+	},
 	"display": {
 		"thirdperson_righthand": {
 			"scale": [0.65, 0.65, 0.65],
