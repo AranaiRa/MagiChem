@@ -203,6 +203,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                     menu.blockEntity.getPowerUsageSetting()
             ));
             lastClickedRecipe = option;
+            menu.blockEntity.setBatchSize(1);
         }
     }
 

@@ -157,6 +157,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                     0
             ));
             lastClickedRecipe = option;
+            menu.blockEntity.setBatchSize(1);
         }
     }
 
