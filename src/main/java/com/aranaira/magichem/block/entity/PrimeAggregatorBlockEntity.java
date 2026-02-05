@@ -978,6 +978,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                     pEntity.progress++;
 
                     if (!pLevel.isClientSide() && pEntity.progress >= CRAFTING_DURATION) {
+                        pEntity.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
                         pEntity.craftItem();
                         pEntity.clearDeliveries();
                         pEntity.progress = 0;
@@ -988,27 +989,33 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             }
             else if (!pLevel.isClientSide()) {
                 if (pEntity.animStage == ANIM_STAGE_IDLE || pEntity.animStage == ANIM_STAGE_GATHERING_ITEMS) {
+                    if(pEntity.animStage == ANIM_STAGE_IDLE && pEntity.clearRecipeAfterNextProcess && pEntity.currentRecipe != null) {
+                        pEntity.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
+                        if(pEntity.clearRecipeAfterNextProcess) pEntity.clearRecipe();
+                    }
                     boolean changed = false;
 
-                    ItemStack itemQuery = pEntity.itemHandler.getStackInSlot(SLOT_ITEM_INPUT);
-                    if (!itemQuery.isEmpty() && itemQuery.getItem() == pEntity.currentRecipe.getItemType()) {
-                        int remaining = pEntity.currentRecipe.getItemsRequired() - pEntity.itemsDelivered;
-                        int extraction = Math.min(itemQuery.getCount(), remaining);
+                    if(pEntity.getCurrentRecipe() != null) {
+                        ItemStack itemQuery = pEntity.itemHandler.getStackInSlot(SLOT_ITEM_INPUT);
+                        if (!itemQuery.isEmpty() && itemQuery.getItem() == pEntity.currentRecipe.getItemType()) {
+                            int remaining = pEntity.currentRecipe.getItemsRequired() - pEntity.itemsDelivered;
+                            int extraction = Math.min(itemQuery.getCount(), remaining);
 
-                        if (extraction > 0) {
-                            pEntity.itemsDelivered += extraction;
-                            itemQuery.shrink(extraction);
-                            changed = true;
+                            if (extraction > 0) {
+                                pEntity.itemsDelivered += extraction;
+                                itemQuery.shrink(extraction);
+                                changed = true;
 
-                            if(pEntity.itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER).isEmpty()) {
-                                pEntity.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, new ItemStack(ItemRegistry.EXALTATION_IN_PROGRESS.get()));
-                            }
+                                if (pEntity.itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER).isEmpty()) {
+                                    pEntity.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, new ItemStack(ItemRegistry.EXALTATION_IN_PROGRESS.get()));
+                                }
 
-                            if (pEntity.itemsDelivered >= pEntity.currentRecipe.getItemsRequired()) {
-                                pEntity.progress = 0;
-                                pEntity.animStage = ANIM_STAGE_TO_MATERIA;
-                            } else if (pEntity.itemsDelivered > 0) {
-                                pEntity.animStage = ANIM_STAGE_GATHERING_ITEMS;
+                                if (pEntity.itemsDelivered >= pEntity.currentRecipe.getItemsRequired()) {
+                                    pEntity.progress = 0;
+                                    pEntity.animStage = ANIM_STAGE_TO_MATERIA;
+                                } else if (pEntity.itemsDelivered > 0) {
+                                    pEntity.animStage = ANIM_STAGE_GATHERING_ITEMS;
+                                }
                             }
                         }
                     }
