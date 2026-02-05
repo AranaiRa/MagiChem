@@ -969,7 +969,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     @Override
     public boolean needsProvisioning() {
-        if(currentItemRecipe == null || !isFESatisfied || redstonePaused)
+        if((currentItemRecipe == null && currentFluidRecipe == null) || !isFESatisfied || redstonePaused)
             return false;
 
         return getProvisioningNeeds().size() > 0;

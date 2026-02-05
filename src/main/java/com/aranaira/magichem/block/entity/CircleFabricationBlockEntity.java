@@ -797,7 +797,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     @Override
     public boolean needsProvisioning() {
-        if(currentItemRecipe == null)
+        if(currentItemRecipe == null && currentFluidRecipe == null)
             return false;
 
         return getProvisioningNeeds().size() > 0;
