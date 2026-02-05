@@ -12,6 +12,7 @@ import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mna.api.affinity.Affinity;
+import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mna.tools.math.Vector3;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -65,9 +66,11 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
     private String lastUsedFilter = null;
     private IItemHandler itemHandler;
     private ItemStack displayItemStack = ItemStack.EMPTY, displayMateriaStack = ItemStack.EMPTY;
+    private int recipeTierCap = 1;
 
     public PrimeAggregatorScreen(PrimeAggregatorMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        inventory.player.getCapability(PlayerProgressionProvider.PROGRESSION).ifPresent(cap -> recipeTierCap = cap.getTier());
         updateDisplayedRecipes("");
 
         if(AFFINITIES.size() == 0) {
@@ -169,10 +172,11 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         List<ExaltationRecipe> exaltationRecipeList = getAllRecipes();
         filteredRecipes.clear();
 
-        for(ExaltationRecipe fsr : exaltationRecipeList) {
-            String display = fsr.getResultItem().getDisplayName().getString();
+        for(ExaltationRecipe er : exaltationRecipeList) {
+            String display = er.getResultItem().getDisplayName().getString();
             if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
-                filteredRecipes.add(fsr.getResultItem());
+                if(er.getTier() <= recipeTierCap)
+                    filteredRecipes.add(er.getResultItem());
             }
         }
 
