@@ -17,6 +17,7 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.affinity.Affinity;
+import com.mna.api.blocks.PlayerOwnershipRecord;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
@@ -81,6 +82,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     private UUID ownerUUID;
     private int animStage = ANIM_STAGE_IDLE, itemsDelivered = 0, materiaDelivered = 0, slurryDelivered = 0, progress = 0, pluginLinkageCountdown = 3;
     private final HashMap<Affinity, Integer> eldrinDelivered = new HashMap<>();
+    private final HashMap<Affinity, Float> partialEldrinDelivered = new HashMap<>();
     private boolean doDeferredRecipeCheck = false;
     private ExaltationRecipe currentRecipe = null;
     private ResourceLocation deferredRecipeQuery = null;
@@ -251,6 +253,14 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         eldrinDelivered.put(WIND, 0);
         eldrinDelivered.put(FIRE, 0);
         eldrinDelivered.put(ARCANE, 0);
+
+        partialEldrinDelivered.clear();
+        partialEldrinDelivered.put(ENDER, 0f);
+        partialEldrinDelivered.put(EARTH, 0f);
+        partialEldrinDelivered.put(WATER, 0f);
+        partialEldrinDelivered.put(WIND, 0f);
+        partialEldrinDelivered.put(FIRE, 0f);
+        partialEldrinDelivered.put(ARCANE, 0f);
     }
 
     @Override
@@ -350,6 +360,15 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         deliveryTag.putInt("eldrinArcane", eldrinDelivered.get(ARCANE));
         nbt.put("deliveries", deliveryTag);
 
+        CompoundTag partialDeliveryTag = new CompoundTag();
+        deliveryTag.putFloat("partialEnder", partialEldrinDelivered.get(ENDER));
+        deliveryTag.putFloat("partialEarth", partialEldrinDelivered.get(EARTH));
+        deliveryTag.putFloat("partialWater", partialEldrinDelivered.get(WATER));
+        deliveryTag.putFloat("partialAir", partialEldrinDelivered.get(WIND));
+        deliveryTag.putFloat("partialFire", partialEldrinDelivered.get(FIRE));
+        deliveryTag.putFloat("partialArcane", partialEldrinDelivered.get(ARCANE));
+        nbt.put("partialDeliveries", partialDeliveryTag);
+
         super.saveAdditional(nbt);
     }
 
@@ -377,7 +396,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             deferredRecipeQuery = null;
         doDeferredRecipeCheck = true;
 
-        final CompoundTag deliveryTag = nbt.getCompound("deliveries");
+        CompoundTag deliveryTag = nbt.getCompound("deliveries");
         itemsDelivered = deliveryTag.getInt("items");
         materiaDelivered = deliveryTag.getInt("materia");
         slurryDelivered = deliveryTag.getInt("slurry");
@@ -387,6 +406,17 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         eldrinDelivered.put(WIND, deliveryTag.getInt("eldrinAir"));
         eldrinDelivered.put(FIRE, deliveryTag.getInt("eldrinFire"));
         eldrinDelivered.put(ARCANE, deliveryTag.getInt("eldrinArcane"));
+
+        if(nbt.contains("partialDeliveries")) {
+            CompoundTag partialDeliveryTag = nbt.getCompound("partialDeliveries");
+
+            partialEldrinDelivered.put(ENDER, partialDeliveryTag.getFloat("partialEnder"));
+            partialEldrinDelivered.put(EARTH, partialDeliveryTag.getFloat("partialEarth"));
+            partialEldrinDelivered.put(WATER, partialDeliveryTag.getFloat("partialWater"));
+            partialEldrinDelivered.put(WIND, partialDeliveryTag.getFloat("partialAir"));
+            partialEldrinDelivered.put(FIRE, partialDeliveryTag.getFloat("partialFire"));
+            partialEldrinDelivered.put(ARCANE, partialDeliveryTag.getFloat("partialArcane"));
+        }
 
 //        updateActuatorValues(this);
     }
@@ -1025,21 +1055,25 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                     boolean complete = false;
 
                     if (pEntity.getOwner() != null) {
-                        int maxDrainPerTick = Math.max(1, pEntity.currentRecipe.getEldrinRequired() / 4);
+                        int maxDrainPerTick = Math.max(1, pEntity.currentRecipe.getEldrinRequired() / 10);
 
-                        if(pLevel.getGameTime() % 20 == 0) {
-                            complete = true;
-                            for (Affinity affinity : pEntity.currentRecipe.getEldrinTypes()) {
-                                float consumedRaw = pEntity.consume(pEntity.getOwner(), pEntity.getBlockPos(), pEntity.getBlockPos().getCenter(), affinity, Math.min(maxDrainPerTick, pEntity.currentRecipe.getEldrinRequired() - pEntity.eldrinDelivered.get(affinity)), 1);
-                                if (consumedRaw > 0) {
-                                    int consumed = (int) Math.ceil(consumedRaw);
-                                    int updated = Math.min(pEntity.eldrinDelivered.get(affinity) + consumed, pEntity.currentRecipe.getEldrinRequired());
+                        complete = true;
+                        for (Affinity affinity : pEntity.currentRecipe.getEldrinTypes()) {
+                            int limit = pEntity.currentRecipe.getEldrinRequired() - pEntity.eldrinDelivered.get(affinity);
+                            float consumedRaw = pEntity.consume(PlayerOwnershipRecord.of(pEntity.getOwner()), pLevel, pEntity.getBlockPos(), pEntity.getBlockPos().getCenter(), affinity, Math.min(maxDrainPerTick, limit));
+                            if (consumedRaw > 0) {
+                                float partial = pEntity.partialEldrinDelivered.get(affinity);
+                                float inQueue = consumedRaw + partial;
+                                int wholeEldrinConsumed = (int)Math.floor(inQueue);
+                                if(wholeEldrinConsumed > 0){
+                                    int updated = Math.min(pEntity.eldrinDelivered.get(affinity) + wholeEldrinConsumed, pEntity.currentRecipe.getEldrinRequired());
                                     pEntity.eldrinDelivered.put(affinity, updated);
 
                                     changed = true;
                                 }
-                                complete &= pEntity.eldrinDelivered.get(affinity) >= pEntity.currentRecipe.getEldrinRequired();
+                                pEntity.partialEldrinDelivered.put(affinity, inQueue - wholeEldrinConsumed);
                             }
+                            complete &= pEntity.eldrinDelivered.get(affinity) >= pEntity.currentRecipe.getEldrinRequired();
                         }
                     }
 
