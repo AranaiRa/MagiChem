@@ -368,6 +368,10 @@
   "effect.magichem.abated_dissolution": "Abated Dissolution",
   "effect.magichem.acid_ward": "Acid Ward",
   "effect.magichem.memories_of_decadence": "Memories of Decadence",
+  "effect.magichem.equanimity": "Equanimity",
+  "effect.magichem.evanescence": "Evanescence",
+  "effect.magichem.brutality": "Brutality",
+  "effect.magichem.malice": "Malice",
 
   "magichem:academic_slurry": "Academic Slurry",
   "academic_slurry_fluid_type": "Academic Slurry",
