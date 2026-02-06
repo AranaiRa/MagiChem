@@ -55,6 +55,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -66,6 +67,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -85,6 +87,8 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -104,6 +108,7 @@ import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import java.util.*;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
+import static com.aranaira.magichem.registry.MobEffectsRegistry.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 @Mod.EventBusSubscriber(
@@ -454,6 +459,34 @@ public class CommonEventHandler {
         if(event.getEntity() instanceof ItemEntity ie) {
             if(ie.getItem().getItem() == ItemRegistry.THUNDERSTONE.get()) {
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityHurt(LivingHurtEvent event) {
+        if(!event.getEntity().level().isClientSide()) {
+            //Brutality damage reduction
+            if (event.getEntity().hasEffect(MobEffectsRegistry.BRUTALITY.get())) {
+                final MobEffectInstance effect = event.getEntity().getEffect(MobEffectsRegistry.BRUTALITY.get());
+                event.setAmount(event.getAmount() * BRUTALITY_INCOMING_DAMAGE_REDUCTION[Math.min(effect.getAmplifier(), BRUTALITY_INCOMING_DAMAGE_REDUCTION.length)]);
+            }
+            //Evanescence evasion
+            if (event.getEntity().hasEffect(MobEffectsRegistry.EVANESCENCE.get())) {
+                final MobEffectInstance effect = event.getEntity().getEffect(EVANESCENCE.get());
+                if (r.nextInt(100) < EVANESCENCE_EVASION_RATE[Math.min(effect.getAmplifier(), EVANESCENCE_EVASION_RATE.length)]) {
+                    event.setCanceled(true);
+                }
+            }
+
+            if (event.getSource().getEntity() instanceof LivingEntity living) {
+                //Brutality damage boost
+                if (living.hasEffect(MobEffectsRegistry.BRUTALITY.get()) && event.getSource().type().msgId().equals("player")) {
+                    final MobEffectInstance effect = living.getEffect(MobEffectsRegistry.BRUTALITY.get());
+                    float boost = BRUTALITY_BASE_DAMAGE_INCREASE[Math.min(effect.getAmplifier(), BRUTALITY_BASE_DAMAGE_INCREASE.length)];
+                    float multiplier = BRUTALITY_DAMAGE_AMPLIFICATION[Math.min(effect.getAmplifier(), BRUTALITY_DAMAGE_AMPLIFICATION.length)];
+                    event.setAmount((event.getAmount() + boost) * multiplier);
+                }
             }
         }
     }
