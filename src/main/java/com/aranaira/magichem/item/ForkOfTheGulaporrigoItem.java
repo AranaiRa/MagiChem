@@ -5,6 +5,7 @@ import com.aranaira.magichem.foundation.IInteractsWithBlock;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.capabilities.IPlayerProgression;
+import com.mna.api.faction.IFaction;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mna.effects.EffectInit;
 import com.mojang.datafixers.util.Pair;
@@ -84,19 +85,22 @@ public class ForkOfTheGulaporrigoItem extends Item implements IInteractsWithBloc
                     final Optional<IPlayerProgression> optProg = lazyProg.resolve();
                     if(optProg.isPresent()) {
                         final IPlayerProgression prog = optProg.get();
-                        if(prog.getAlliedFaction().is(FACTION_COUNCIL)) {
-                            amplifier *= 4;
-                        } else if(prog.getAlliedFaction().is(FACTION_FEY)) {
-                            amplifier *= 2;
+                        final IFaction faction = prog.getAlliedFaction();
+                        if(faction != null){
+                            if (faction.is(FACTION_COUNCIL)) {
+                                amplifier *= 4;
+                            } else if (faction.is(FACTION_FEY)) {
+                                amplifier *= 2;
+                            }
                         }
                     }
-                }
 
-                pPlayer.addEffect(
-                        new MobEffectInstance(EffectInit.MANA_BOOST.get(), duration, amplifier, false, false)
-                );
-                pLevel.playSound((Player)null, pPlayer.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 0.3f, 0.85f + r.nextFloat(0.3f));
-                pLevel.playSound((Player)null, pPlayer.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 0.3f, 0.7f + r.nextFloat(0.6f));
+                    pPlayer.addEffect(
+                            new MobEffectInstance(EffectInit.MANA_BOOST.get(), duration, amplifier, false, false)
+                    );
+                    pLevel.playSound((Player)null, pPlayer.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 0.3f, 0.85f + r.nextFloat(0.3f));
+                    pLevel.playSound((Player)null, pPlayer.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 0.3f, 0.7f + r.nextFloat(0.6f));
+                }
 
                 final CompoundTag nbt = itemInHand.getOrCreateTag();
                 nbt.remove("CustomModelData");
