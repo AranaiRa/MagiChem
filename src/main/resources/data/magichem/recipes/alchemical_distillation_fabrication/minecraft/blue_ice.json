@@ -1,9 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 2,
+  "wisdom": 6,
   "categories": 7,
   "output_rate": 1.0,
-  "batch_size": 16,
+  "batch_size": 1,
   "object": { "item": "minecraft:blue_ice" },
   "components": [
     { "item": "magichem:essentia_water", "count": 54 },
