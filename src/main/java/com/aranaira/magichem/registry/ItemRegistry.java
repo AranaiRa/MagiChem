@@ -364,12 +364,16 @@ public class ItemRegistry {
             () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffects.BAD_OMEN, -1, 30, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false, true, 5)
     );
 
+    public static final RegistryObject<TooltipLoreItem> SUNBURN = ITEMS.register("sunburn",
+            () -> new TooltipLoreItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE))
+    );
+
     public static final RegistryObject<TooltipLoreItem> MOONSHINE = ITEMS.register("moonshine",
             () -> new TooltipLoreItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE))
     );
 
     public static final RegistryObject<TooltipLoreItem> STARDUST = ITEMS.register("stardust",
-            () -> new TooltipLoreItem(new Item.Properties())
+            () -> new TooltipLoreItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE))
     );
 
     public static final RegistryObject<TooltipLoreItem> INFUSED_BOLT = ITEMS.register("infused_bolt",
