@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:thewsum_bovine" },
+    { "item": "magichem:thewsum_galline" },
+    { "item": "magichem:thewsum_leporine" },
+    { "item": "magichem:thewsum_ovine" },
+    { "item": "magichem:thewsum_porcine" },
+    { "item": "magichem:thewsum_piscine" }
+  ],
+  "result": {
+    "item": "magichem:revolting_mass_of_meat"
+  }
+}

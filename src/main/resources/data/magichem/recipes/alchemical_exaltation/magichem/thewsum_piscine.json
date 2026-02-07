@@ -2,7 +2,7 @@
   "type": "magichem:exaltation",
   "tier": 5,
   "result": { "item": "magichem:thewsum_piscine", "count": 1 },
-  "items": { "type": "minecraft:cod", "required": 1200 },
+  "items": { "type": "minecraft:salmon", "required": 1200 },
   "eldrin": { "type": 4, "required": 4000 },
   "materia": { "type": "magichem:essentia_fleshy", "required": 375 },
   "slurry": 9600
