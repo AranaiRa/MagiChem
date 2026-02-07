@@ -1,0 +1,38 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:fork_of_the_gulaporrigo"
+  },
+  "stages": [
+    {
+      "experience": 30,
+      "components": [
+        { "item": "magichem:selargyros" },
+        { "item": "magichem:chromatic_silk_purple" },
+        { "item": "minecraft:gold_ingot" },
+        { "item": "magichem:abjuration" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_satiety", "count": 74 },
+        { "item": "magichem:admixture_spirit", "count": 47 },
+        { "item": "magichem:essentia_citrinitas", "count": 21 }
+      ]
+    },
+    {
+      "experience": 40,
+      "components": [
+        { "item": "minecraft:cake" },
+        { "item": "magichem:profound_manuscript" },
+        { "item": "mna:greater_mote_ender" },
+        { "item": "minecraft:cake" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_delight", "count": 74 },
+        { "item": "magichem:admixture_gourmet", "count": 47 },
+        { "item": "magichem:essentia_rubedo", "count": 17 }
+      ]
+    }
+  ]
+}

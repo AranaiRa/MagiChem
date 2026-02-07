@@ -124,6 +124,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> DIAVROSITE_SHARD = ITEMS.register("diavrosite_shard",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> VERDIGRIS = ITEMS.register("verdigris",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -376,6 +380,22 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE))
     );
 
+    public static final RegistryObject<TooltipLoreItem> DORMANT_ORICHALKOS = ITEMS.register("dormant_orichalkos",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> ORICHALKOS = ITEMS.register("orichalkos",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> DORMANT_SELARGYROS = ITEMS.register("dormant_selargyros",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SELARGYROS = ITEMS.register("selargyros",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> INFUSED_BOLT = ITEMS.register("infused_bolt",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -441,27 +461,31 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<Item> BOVINE_THEWSUM = ITEMS.register("thewsum_bovine",
-            () -> new Item(new Item.Properties())
+            () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> GALLINE_THEWSUM = ITEMS.register("thewsum_galline",
-            () -> new Item(new Item.Properties())
+            () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> LEPORINE_THEWSUM = ITEMS.register("thewsum_leporine",
-            () -> new Item(new Item.Properties())
+            () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> OVINE_THEWSUM = ITEMS.register("thewsum_ovine",
-            () -> new Item(new Item.Properties())
+            () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> PORCINE_THEWSUM = ITEMS.register("thewsum_porcine",
-            () -> new Item(new Item.Properties())
+            () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> PISCINE_THEWSUM = ITEMS.register("thewsum_piscine",
-            () -> new Item(new Item.Properties())
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> REVOLTING_MASS_OF_MEAT = ITEMS.register("revolting_mass_of_meat",
+            () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> MORSEL_OF_PERFECT_SAVOR = ITEMS.register("morsel_savor",
@@ -503,6 +527,10 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> CHALICE_OF_TEARS = ITEMS.register("chalice_of_tears",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> UNBEATING_HEART = ITEMS.register("unbeating_heart",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 

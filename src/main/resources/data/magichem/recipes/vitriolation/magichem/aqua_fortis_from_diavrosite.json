@@ -1,0 +1,10 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 0,
+  "inputFluidOverride": "minecraft:water",
+  "acidConsumed": 100,
+  "duration": 15,
+  "inputItem": { "item": "magichem:diavrosite_shard", "count": 1 },
+  "resultFluid": { "fluid": "magichem:aqua_fortis", "amount": 100 },
+  "outputForCodex": "magichem:aqua_fortis_bucket"
+}
