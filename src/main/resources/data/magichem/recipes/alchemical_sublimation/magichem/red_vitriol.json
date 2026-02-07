@@ -1,0 +1,42 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:red_vitriol"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:diavrosite_shard" },
+        { "item": "minecraft:redstone" },
+        { "item": "magichem:diavrosite_shard" },
+        { "item": "minecraft:redstone" },
+        { "item": "magichem:diavrosite_shard" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_crystal", "count": 52 },
+        { "item": "magichem:admixture_acid", "count": 41 },
+        { "item": "magichem:admixture_change", "count": 31 },
+        { "item": "magichem:essentia_mineral", "count": 69 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:glowstone_dust" },
+        { "item": "minecraft:nether_wart" },
+        { "item": "magichem:sunburn" },
+        { "item": "minecraft:nether_wart" },
+        { "item": "minecraft:gunpowder" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_erosion", "count": 41 },
+        { "item": "magichem:admixture_hells", "count": 31 },
+        { "item": "magichem:admixture_signals", "count": 19 },
+        { "item": "magichem:essentia_citrinitas", "count": 6 }
+      ]
+    }
+  ]
+}

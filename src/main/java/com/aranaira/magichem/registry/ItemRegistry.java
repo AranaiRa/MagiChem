@@ -718,6 +718,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> RED_VITRIOL = ITEMS.register("red_vitriol",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<EnsorcelledFertilizerItem> ENSORCELLED_FERTILIZER = ITEMS.register("ensorcelled_fertilizer",
             () -> new EnsorcelledFertilizerItem(new Item.Properties())
     );

@@ -9888,10 +9888,17 @@
             "color": "dark_purple"
           },
           {
-            "text": ", which is "
+            "text": ", crafted by dissolving "
           },
           {
-            "text": "not yet craftable",
+            "text": "Granules of Red Vitriol",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "Aqua Regia",
             "color": "dark_purple"
           },
           {
@@ -9964,6 +9971,10 @@
         "location": "magichem:alchemical_sublimation/magichem/regulus_of_gold"
       },
       {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/red_vitriol"
+      },
+      {
         "type": "vitriolation",
         "location": "magichem:vitriolation/magichem/simple_acid"
       },
@@ -9974,6 +9985,10 @@
       {
         "type": "vitriolation",
         "location": "magichem:vitriolation/magichem/aqua_regia"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/oil_of_vitriol"
       }
     ]
   },

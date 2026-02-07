@@ -3,7 +3,7 @@
   "tier": 5,
   "result": { "item": "magichem:dormant_selargyros", "count": 1 },
   "items": { "type": "mna:transmuted_silver", "required": 120 },
-  "eldrin": { "type": 56, "required": 1100 },
+  "eldrin": { "type": 7, "required": 1100 },
   "materia": { "type": "magichem:admixture_metal", "required": 480 },
   "slurry": 15000
 }

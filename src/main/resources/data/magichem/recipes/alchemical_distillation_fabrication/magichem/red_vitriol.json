@@ -1,0 +1,15 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "wisdom": 4,
+  "categories": 1,
+  "output_rate": 1.0,
+  "batch_size": 4,
+  "object": { "item": "magichem:red_vitriol" },
+  "components": [
+    { "item": "magichem:admixture_acid", "count": 24 },
+    { "item": "magichem:admixture_dust", "count": 10 },
+    { "item": "magichem:admixture_hells", "count": 4 },
+    { "item": "magichem:essentia_mineral", "count": 4 },
+    { "item": "magichem:essentia_citrinitas", "count": 2 }
+  ]
+}
