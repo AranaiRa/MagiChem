@@ -18,6 +18,7 @@ import com.aranaira.magichem.foundation.IInteractsWithBlock;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.interop.OccultismCompat;
+import com.aranaira.magichem.item.ChaliceOfTearsItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.networking.AdvancementQueryS2CPacket;
 import com.aranaira.magichem.networking.ResetWisdomToggleS2CPacket;
@@ -27,10 +28,14 @@ import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.aranaira.magichem.util.InteropUtil;
 import com.mna.api.blocks.WizardLabBlock;
+import com.mna.api.capabilities.IPlayerMagic;
+import com.mna.api.events.SpellCastEvent;
 import com.mna.api.events.construct.ConstructSprayEffectEvent;
 import com.mna.api.events.construct.ConstructSprayTargetingEvent;
+import com.mna.api.spells.base.ISpellDefinition;
 import com.mna.blocks.BlockInit;
 import com.mna.blocks.artifice.BookStandBlock;
+import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
 import com.mna.entities.utility.WanderingWizard;
 import com.mna.items.ItemInit;
 import com.mojang.datafixers.util.Pair;
@@ -55,19 +60,22 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -75,6 +83,7 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -102,6 +111,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.network.PacketDistributor;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -123,6 +133,11 @@ public class CommonEventHandler {
     private static final HashSet<UUID> playersGivenWarning = new HashSet<>();
 
     public CommonEventHandler() {}
+
+    @SubscribeEvent
+    public void onConfigLoad(ModConfigEvent.Loading event) {
+        ServerConfig.HAS_CONFIG_LOADED = true;
+    }
 
     @SubscribeEvent
     public static void onItemDecay(ItemExpireEvent event) {
@@ -466,6 +481,24 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onEntityHurt(LivingHurtEvent event) {
         if(!event.getEntity().level().isClientSide()) {
+            //Chalice of Tears fill
+            if(event.getEntity() instanceof Player player){
+                Inventory inventory = player.getInventory();
+                for (ItemStack item : inventory.items) {
+                    if(!item.isEmpty() && item.getItem() == ItemRegistry.CHALICE_OF_TEARS.get() && !player.getCooldowns().isOnCooldown(item.getItem())) {
+                        if(item.hasTag()) {
+                            CompoundTag nbt = item.getTag();
+                            if(nbt.contains("damageAccumulated")) {
+                                int existingDamage = nbt.getInt("damageAccumulated");
+                                int newDamage = Math.round(event.getAmount());
+
+                                nbt.putInt("damageAccumulated", Math.min(ChaliceOfTearsItem.getDamageAccumulationLimit(), existingDamage + newDamage));
+                            }
+                        }
+                    }
+                }
+            }
+
             //Brutality damage reduction
             if (event.getEntity().hasEffect(MobEffectsRegistry.BRUTALITY.get())) {
                 final MobEffectInstance effect = event.getEntity().getEffect(MobEffectsRegistry.BRUTALITY.get());
@@ -478,6 +511,18 @@ public class CommonEventHandler {
                     event.setCanceled(true);
                 }
             }
+            //Equanimity mana recovery
+            if (event.getEntity().hasEffect(EQUANIMITY.get())) {
+                final MobEffectInstance effect = event.getEntity().getEffect(EQUANIMITY.get());
+                float perHeart = EQUANIMITY_MANA_PER_HEART[Math.min(effect.getAmplifier(), EQUANIMITY_MANA_PER_HEART.length)];
+                float manaRecovery = event.getAmount() * perHeart;
+
+                LazyOptional<IPlayerMagic> capLazy = event.getEntity().getCapability(PlayerMagicProvider.MAGIC);
+                if(capLazy.isPresent()) {
+                    Optional<IPlayerMagic> capQuery = capLazy.resolve();
+                    capQuery.ifPresent(iPlayerMagic -> iPlayerMagic.getCastingResource().restore(manaRecovery));
+                }
+            }
 
             if (event.getSource().getEntity() instanceof LivingEntity living) {
                 //Brutality damage boost
@@ -486,6 +531,42 @@ public class CommonEventHandler {
                     float boost = BRUTALITY_BASE_DAMAGE_INCREASE[Math.min(effect.getAmplifier(), BRUTALITY_BASE_DAMAGE_INCREASE.length)];
                     float multiplier = BRUTALITY_DAMAGE_AMPLIFICATION[Math.min(effect.getAmplifier(), BRUTALITY_DAMAGE_AMPLIFICATION.length)];
                     event.setAmount((event.getAmount() + boost) * multiplier);
+                }
+                //Malice Wither discharge
+                if (living.hasEffect(MobEffectsRegistry.MALICE.get()) && event.getSource().type().msgId().equals("player")) {
+                    final MobEffectInstance effect = living.getEffect(MobEffectsRegistry.MALICE.get());
+                    float damage = MALICE_DISCHARGE_DAMAGE[Math.min(effect.getAmplifier(), MALICE_DISCHARGE_DAMAGE.length)];
+
+                    event.getEntity().removeEffect(MobEffects.WITHER);
+                    event.getEntity().hurt(event.getEntity().damageSources().magic(), damage);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onSpellCast(SpellCastEvent event) {
+        final LivingEntity caster = event.getSource().getCaster();
+        if(!caster.level().isClientSide()) {
+            final ISpellDefinition spell = event.getSpell();
+
+            if (caster.hasEffect(MobEffectsRegistry.EQUANIMITY.get())) {
+                final MobEffectInstance effect = caster.getEffect(MobEffectsRegistry.EQUANIMITY.get());
+                float cost = spell.getManaCost();
+                float heal = Math.min(0.5f, cost * EQUANIMITY_HEAL_PER_MANA[Math.min(effect.getAmplifier(), EQUANIMITY_HEAL_PER_MANA.length)]);
+                caster.heal(heal);
+            }
+            if (caster.hasEffect(MobEffectsRegistry.MALICE.get())) {
+                final MobEffectInstance effect = caster.getEffect(MobEffectsRegistry.MALICE.get());
+
+                float radius = MALICE_RADIUS[Math.min(effect.getAmplifier(), MALICE_RADIUS.length)];
+                int amplifier = MALICE_WITHER_LEVEL[Math.min(effect.getAmplifier(), MALICE_WITHER_LEVEL.length)];
+
+                AABB bounds = new AABB(caster.getX() - radius, caster.getY() - radius, caster.getZ() - radius, caster.getX() + radius, caster.getY() + radius, caster.getZ() + radius);
+                for(Entity e : caster.level().getEntities(null, bounds)) {
+                    if(e instanceof LivingEntity living && e != caster) {
+                        living.addEffect(new MobEffectInstance(MobEffects.WITHER, 200, amplifier));
+                    }
                 }
             }
         }

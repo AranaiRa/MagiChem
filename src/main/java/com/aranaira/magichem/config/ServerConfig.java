@@ -15,6 +15,8 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = MagiChemMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ServerConfig
 {
+    public static boolean HAS_CONFIG_LOADED = false;
+
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     //----------------GENERAL
@@ -503,6 +505,18 @@ public class ServerConfig
             .comment("The default cuboid range that a Slumbering Idol will slaughter Phantoms in.")
             .defineInRange("slumberingIdolRange", 64, 16, 1024);
 
+    private static final ForgeConfigSpec.IntValue CHALICE_OF_TEARS_THRESHOLD = BUILDER
+            .comment("How many hearts of damage are needed for the first upgrade to the Chalice of Tears.")
+            .defineInRange("chaliceOfTearsThreshold", 5, 1, 1024);
+
+    private static final ForgeConfigSpec.IntValue CHALICE_OF_TEARS_ESCALATION = BUILDER
+            .comment("What percentage the Chalice of Tears threshold is multiplied by on each step.")
+            .defineInRange("chaliceOfTearsEscalation", 50, 0, 10000);
+
+    private static final ForgeConfigSpec.IntValue CHALICE_OF_TEARS_COOLDOWN = BUILDER
+            .comment("How long, in seconds, it takes for the Chalice of Tears to become usable again.")
+            .defineInRange("chaliceOfTearsEscalation", 600, 1, Integer.MAX_VALUE);
+
     //GNOSTIC ORB
     private static final ForgeConfigSpec.ConfigValue<List<?>> GNOSTIC_ORB_PROPHECY_BLACKLIST = BUILDER
             .comment("A comma separated list of English admixture names. Disables Prophecies of that type of materia from being started. Use the name alone without a prefix, e.g. disaster instead of admixture_disaster.")
@@ -676,7 +690,10 @@ public class ServerConfig
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
         materiaManifestDefaultRange,
-        slumberingIdolRange;
+        slumberingIdolRange,
+        chaliceOfTearsThreshold,
+        chaliceOfTearsEscalation,
+        chaliceOfTearsCooldown;
     public static boolean
         canAzothDestroyBedrock,
         circlePowerReprocessing1Eternal,
@@ -828,5 +845,8 @@ public class ServerConfig
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
         materiaManifestDefaultRange = MATERIA_MANIFEST_DEFAULT_RANGE.get();
         slumberingIdolRange = SLUMBERING_IDOL_RANGE.get();
+        chaliceOfTearsThreshold = CHALICE_OF_TEARS_THRESHOLD.get();
+        chaliceOfTearsEscalation = CHALICE_OF_TEARS_ESCALATION.get();
+        chaliceOfTearsCooldown = CHALICE_OF_TEARS_COOLDOWN.get();
     }
 }

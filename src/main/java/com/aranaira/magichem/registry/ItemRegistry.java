@@ -526,8 +526,8 @@ public class ItemRegistry {
             () -> new ForkOfTheGulaporrigoItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<TooltipLoreItem> CHALICE_OF_TEARS = ITEMS.register("chalice_of_tears",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<ChaliceOfTearsItem> CHALICE_OF_TEARS = ITEMS.register("chalice_of_tears",
+            () -> new ChaliceOfTearsItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> UNBEATING_HEART = ITEMS.register("unbeating_heart",

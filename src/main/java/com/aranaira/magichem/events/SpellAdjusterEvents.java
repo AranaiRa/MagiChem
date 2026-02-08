@@ -1,11 +1,18 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.spell.WisdomSpellAdjuster;
+import com.mna.api.events.SpellCastEvent;
+import com.mna.api.spells.base.ISpellDefinition;
 import com.mna.spells.SpellCaster;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+
+import static com.aranaira.magichem.registry.MobEffectsRegistry.EQUANIMITY_HEAL_PER_MANA;
 
 @Mod.EventBusSubscriber(
         modid= MagiChemMod.MODID,

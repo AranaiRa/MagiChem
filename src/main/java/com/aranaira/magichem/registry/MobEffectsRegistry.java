@@ -32,6 +32,11 @@ public class MobEffectsRegistry {
     public static final float[] BRUTALITY_DAMAGE_AMPLIFICATION = {1.05f, 1.10f, 1.25f, 1.45f, 1.70f};
     public static final int[] EVANESCENCE_REGEN_TICK_RATE = {13, 9, 6, 4, 3};
     public static final int[] EVANESCENCE_EVASION_RATE = {25, 30, 40, 50, 67};
+    public static final float[] EQUANIMITY_HEAL_PER_MANA = {0.018f, 0.024f, 0.030f, 0.036f, 0.042f};
+    public static final float[] EQUANIMITY_MANA_PER_HEART = {80, 120, 180, 270, 405};
+    public static final int[] MALICE_WITHER_LEVEL = {0, 0, 1, 1, 2};
+    public static final float[] MALICE_RADIUS = {5.0f, 6.5f, 8.0f, 9.5f, 11.0f};
+    public static final float[] MALICE_DISCHARGE_DAMAGE = {3.0f, 4.0f, 5.0f, 6.5f, 8.0f};
 
     public static void register(IEventBus eventBus) {
         EFFECTS.register(eventBus);
