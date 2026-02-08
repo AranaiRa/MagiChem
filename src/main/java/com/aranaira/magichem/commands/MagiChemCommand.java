@@ -1,6 +1,7 @@
 package com.aranaira.magichem.commands;
 
 import com.aranaira.magichem.foundation.saveddata.EldrinOrreryLimiterSD;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
@@ -17,6 +18,7 @@ public class MagiChemCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("magichem")
                 .then(resetOrreryCommand())
+                .then(resetChaliceCommand())
         );
     }
 
@@ -42,6 +44,26 @@ public class MagiChemCommand {
                         return Component.translatable("magichem.commands.reset_orrery.failure", (players.iterator().next()).getDisplayName());
                     }, true);
                 }
+            }
+
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private static ArgumentBuilder<CommandSourceStack, ?> resetChaliceCommand() {
+        return (Commands.literal("resetChaliceCooldown")
+                .then(Commands.argument("player", EntityArgument.players()).executes((context) -> {
+                    return resetChaliceExecution((CommandSourceStack)context.getSource(), EntityArgument.getPlayers(context, "player"));
+                })));
+    }
+
+    private static int resetChaliceExecution(CommandSourceStack source, Collection<ServerPlayer> players) {
+        if (players != null && players.size() != 0) {
+
+            for (ServerPlayer spe : players) {
+                spe.getCooldowns().removeCooldown(ItemRegistry.CHALICE_OF_TEARS.get());
             }
 
             return 1;
