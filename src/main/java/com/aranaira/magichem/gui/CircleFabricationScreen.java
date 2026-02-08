@@ -15,6 +15,7 @@ import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.AdvancementUtil;
+import com.mna.tools.math.MathUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -231,6 +232,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
+        recipeFilterRow = MathUtils.clamp(recipeFilterRow, 0, recipeFilterRowTotal - 5);
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
+import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -181,6 +182,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
+        recipeFilterRow = MathUtils.clamp(recipeFilterRow, 0, recipeFilterRowTotal - 5);
     }
 
     private List<ExaltationRecipe> allRecipes = new ArrayList<>();

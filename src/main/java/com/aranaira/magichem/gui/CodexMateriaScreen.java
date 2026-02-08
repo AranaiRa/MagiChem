@@ -9,6 +9,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.tools.math.MathUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -335,6 +336,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         }
 
         materiaFilterRowTotal = (int)Math.ceil(filteredMateria.size() / 6d);
+        materiaFilterRow = MathUtils.clamp(materiaFilterRow, 0, materiaFilterRowTotal - 4);
     }
 
     private final List<DistillationFabricationOption> filteredRecipes = new ArrayList<>();
