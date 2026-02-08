@@ -16,6 +16,7 @@ import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.AdvancementUtil;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
+import com.mna.tools.math.MathUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -128,6 +129,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
+        recipeFilterRow = MathUtils.clamp(recipeFilterRow, 0, recipeFilterRowTotal - 5);
 
         menu.blockEntity.forceDisplayedRecipeUpdate = false;
     }
