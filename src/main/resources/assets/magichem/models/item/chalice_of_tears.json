@@ -1,39 +1,21 @@
 {
-	"parent": "mna:block/clay_mug_full",
+	"parent": "forge:item/default",
+	"loader": "forge:composite",
+	"children": {
+		"part1": {
+			"loader": "forge:obj",
+			"automatic_culling": false,
+			"shade_quads": true,
+			"flip_v": true,
+			"emissive_ambient": false,
+			"model": "magichem:models/obj/chalice_of_tears.obj"
+		}
+	},
 	"display": {
-		"thirdperson_righthand": {
-			"scale": [0.75, 0.75, 0.75],
-			"rotation": [45, 270, 0],
-			"translation": [0, 4, 0]
-		},
-		"thirdperson_lefthand": {
-			"scale": [0.75, 0.75, 0.75],
-			"rotation": [45, 90, 0],
-			"translation": [0, 4, 0]
-		},
-		"firstperson_righthand": {
-			"scale": [0.75, 0.75, 0.75],
-			"rotation": [0, 270, 0],
-			"translation": [0, 4, 0]
-		},
-		"firstperson_lefthand": {
-			"scale": [0.75, 0.75, 0.75],
-			"rotation": [0, 90, 0],
-			"translation": [0, 4, 0]
-		},
-		"ground": {
-			"scale": [0.75, 0.75, 0.75],
-			"translation": [0, 4, 0]
-		},
 		"gui": {
-			"rotation": [29, 45, 0],
-			"scale": [1.5,1.5,1.5],
-			"translation": [0, 6, 0]
-		},
-		"fixed": {
-			"rotation": [-90, 0, 0],
-			"scale": [1.5,1.5,1.5],
-			"translation": [0, 0, -11]
+			"rotation": [29, 0, 0],
+			"scale": [1.0, 1.0, 1.0],
+			"translation": [0, 2, 0]
 		}
 	}
 }

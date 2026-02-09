@@ -36,8 +36,12 @@ import com.mna.api.spells.base.ISpellDefinition;
 import com.mna.blocks.BlockInit;
 import com.mna.blocks.artifice.BookStandBlock;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
+import com.mna.effects.EffectInit;
+import com.mna.entities.constructs.animated.Construct;
 import com.mna.entities.utility.WanderingWizard;
 import com.mna.items.ItemInit;
+import com.mna.items.sorcery.ItemSpell;
+import com.mna.tools.SummonUtils;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -93,6 +97,7 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
@@ -551,6 +556,8 @@ public class CommonEventHandler {
         }
     }
 
+
+
     @SubscribeEvent
     public static void onSpellCast(SpellCastEvent event) {
         final LivingEntity caster = event.getSource().getCaster();
@@ -559,9 +566,11 @@ public class CommonEventHandler {
 
             if (caster.hasEffect(MobEffectsRegistry.EQUANIMITY.get())) {
                 final MobEffectInstance effect = caster.getEffect(MobEffectsRegistry.EQUANIMITY.get());
-                float cost = spell.getManaCost();
-                float heal = Math.min(0.5f, cost * EQUANIMITY_HEAL_PER_MANA[Math.min(effect.getAmplifier(), EQUANIMITY_HEAL_PER_MANA.length)]);
-                caster.heal(heal);
+                if(!spell.isChanneled()) {
+                    float cost = spell.getManaCost();
+                    float heal = Math.max(1.0f, cost * EQUANIMITY_HEAL_PER_MANA[Math.min(effect.getAmplifier(), EQUANIMITY_HEAL_PER_MANA.length)]);
+                    caster.heal(heal);
+                }
             }
             if (caster.hasEffect(MobEffectsRegistry.MALICE.get())) {
                 final MobEffectInstance effect = caster.getEffect(MobEffectsRegistry.MALICE.get());
@@ -572,7 +581,11 @@ public class CommonEventHandler {
                 AABB bounds = new AABB(caster.getX() - radius, caster.getY() - radius, caster.getZ() - radius, caster.getX() + radius, caster.getY() + radius, caster.getZ() + radius);
                 for(Entity e : caster.level().getEntities(null, bounds)) {
                     if(e instanceof LivingEntity living && e != caster) {
-                        living.addEffect(new MobEffectInstance(MobEffects.WITHER, 200, amplifier));
+                        boolean isMyConstruct = (e instanceof Construct c) && (c.getOwner() == caster);
+                        boolean isMySummon = SummonUtils.isSummon(e) && SummonUtils.getSummoner(living) == caster;
+
+                        if(!isMyConstruct && !isMySummon)
+                            living.addEffect(new MobEffectInstance(MobEffects.WITHER, 200, amplifier));
                     }
                 }
             }
@@ -793,6 +806,30 @@ public class CommonEventHandler {
 
         if(original.isPresent() && clone.isPresent()) {
             clone.get().copyFrom(original.get());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if(event.player.level().getGameTime() % 10 == 0) {
+            if (event.player.hasEffect(EQUANIMITY.get())) {
+                final MobEffectInstance effect = event.player.getEffect(EQUANIMITY.get());
+                if (event.player.hasEffect(EffectInit.MANA_STUNT.get())) {
+                    ItemStack mainStack = event.player.getItemInHand(InteractionHand.MAIN_HAND);
+                    ItemStack offStack = event.player.getItemInHand(InteractionHand.OFF_HAND);
+                    ISpellDefinition spell = null;
+                    if (mainStack.getItem() instanceof ItemSpell isp) {
+                        spell = isp.getSpell(offStack, event.player);
+                    } else if (offStack.getItem() instanceof ItemSpell isp) {
+                        spell = isp.getSpell(offStack, event.player);
+                    }
+                    if (spell != null) {
+                        float cost = spell.getManaCost() * 10;
+                        float heal = Math.max(1.0f, cost * EQUANIMITY_HEAL_PER_MANA[Math.min(effect.getAmplifier(), EQUANIMITY_HEAL_PER_MANA.length)]);
+                        event.player.heal(heal);
+                    }
+                }
+            }
         }
     }
 }
