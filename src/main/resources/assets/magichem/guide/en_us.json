@@ -12445,5 +12445,248 @@
       }
     ]
   },
+  "Chalice of Tears": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Chalice of Tears"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Chalice of Tears",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a wondrous vessel that fills with Bitter Ichor "
+          },
+          {
+            "text": "as its holder is injured",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", transmuting suffering into power.\n\nEvery "
+          },
+          {
+            "text": "half heart of damage sustained",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will fill the Chalice of Tears with one unit of Bitter Ichor. The Chalice does not have to be held, but it does need to be in an accessible inventory slot. A Chalice in a Practitioner's Pouch, a Rift, or other such storage methods "
+          },
+          {
+            "text": "will not accumulate Bitter Ichor",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nDrinking from the Chalice of Tears grants the imbiber a "
+          },
+          {
+            "text": "powerful combat boon based on their Faction",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for 90 seconds. By default, the Chalice cannot accumulate Bitter Ichor for "
+          },
+          {
+            "text": "ten minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": " after being drained.\n\nThe boon granted by the Chalice scales in intensity with how full of Bitter Ichor it is at the time of drinking. You can check how strong the effect will be (rated from level 1 to level 5) in the item's tooltip."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Equanimity",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/equanimity.png",
+        "width": 16,
+        "height": 16,
+        "scale": 3
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mages of the Council of Ancient Wizards gain "
+          },
+          {
+            "text": "Equanimity",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when drinking from the Chalice.\n\nUnder Equanimity a mage's "
+          },
+          {
+            "text": "health is restored",
+            "color": "dark_purple"
+          },
+          {
+            "text": " as they spend mana. The greater the cost of the spell, the more intense the healing effect.\n\nAn affected mage will also "
+          },
+          {
+            "text": "regain a large amount of mana",
+            "color": "dark_purple"
+          },
+          {
+            "text": " whenever they are injured."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Evanescence",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/evanescence.png",
+        "width": 16,
+        "height": 16,
+        "scale": 3
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mages of the Fey Courts gain "
+          },
+          {
+            "text": "Evanescence",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when drinking from the Chalice.\n\nUnder Evanescence a mage will "
+          },
+          {
+            "text": "evade incoming sources of damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAn affected mage will also experience "
+          },
+          {
+            "text": "constant health regeneration",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". This health regeneration stacks with other sources of healing over time, such as Potions of Regeneration or a Bind Wounds spell."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Brutality",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/brutality.png",
+        "width": 16,
+        "height": 16,
+        "scale": 3
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mages of the Demons of the Nether gain "
+          },
+          {
+            "text": "Brutality",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when drinking from the Chalice.\n\nUnder Brutality a mage will "
+          },
+          {
+            "text": "deal significantly more damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with weapons or with their fists. Base damage and total damage are enhanced independently and will stack with other sources of increased weapon damage, such as a Potion of Strength.\n\nAn affected mage will also "
+          },
+          {
+            "text": "take significantly less damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from all sources. This mitigation stacks with other sources of damage resistance, such as a Potion of the Turtle Master."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Malice",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/malice.png",
+        "width": 16,
+        "height": 16,
+        "scale": 3
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mages of the Undead Legions gain "
+          },
+          {
+            "text": "Malice",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when drinking from the Chalice.\n\nUnder Malice a mage will "
+          },
+          {
+            "text": "inflict everything nearby with a Withering curse",
+            "color": "dark_purple"
+          },
+          {
+            "text": " whenever they spend souls. The mage's own constructs and summoned creatures are protected from this foul magic.\n\nWhen striking a "
+          },
+          {
+            "text": "Withering foe",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with a weapon or their fists, a mage under Malice will "
+          },
+          {
+            "text": "consume the Withering curse",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from the target to deal a spike of additional magic damage."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/chalice_of_tears"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }
