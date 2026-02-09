@@ -496,7 +496,8 @@ public class CommonEventHandler {
                             if(nbt.contains("damageAccumulated")) {
                                 int existingDamage = nbt.getInt("damageAccumulated");
                                 int newDamage = Math.round(event.getAmount());
-                                nbt.putInt("damageAccumulated", Math.min(ChaliceOfTearsItem.getDamageAccumulationLimit(), existingDamage + newDamage));
+                                int limit = ChaliceOfTearsItem.getDamageAccumulationLimit();
+                                nbt.putInt("damageAccumulated", Math.min(limit, existingDamage + newDamage));
                             }
                             else {
                                 int newDamage = Math.round(event.getAmount());
