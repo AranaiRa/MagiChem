@@ -484,8 +484,8 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<Item> REVOLTING_MASS_OF_MEAT = ITEMS.register("revolting_mass_of_meat",
-            () -> new Item(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<TooltipLoreItem> REVOLTING_MASS_OF_MEAT = ITEMS.register("revolting_mass_of_meat",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> MORSEL_OF_PERFECT_SAVOR = ITEMS.register("morsel_savor",

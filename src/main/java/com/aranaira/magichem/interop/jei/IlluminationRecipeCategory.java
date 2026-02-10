@@ -32,15 +32,6 @@ public class IlluminationRecipeCategory implements IRecipeCategory<IlluminationR
     public static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/jei_recipecategory_04.png");
 
-    private static final ItemStack
-        STACK_LENS = new ItemStack(ItemRegistry.GLASS_LENS.get()),
-        STACK_CLOISTER_SOLAR = new ItemStack(ItemRegistry.SOLAR_CLOISTER_LENS.get()),
-        STACK_CLOISTER_LUNAR = new ItemStack(ItemRegistry.LUNAR_CLOISTER_LENS.get()),
-        STACK_CLOISTER_SIDEREAL = new ItemStack(ItemRegistry.SIDEREAL_CLOISTER_LENS.get()),
-        STACK_FARSIGHT_SOLAR = new ItemStack(ItemRegistry.SOLAR_FARSIGHT_LENS.get()),
-        STACK_FARSIGHT_LUNAR = new ItemStack(ItemRegistry.LUNAR_FARSIGHT_LENS.get()),
-        STACK_FARSIGHT_SIDEREAL = new ItemStack(ItemRegistry.SIDEREAL_FARSIGHT_LENS.get());
-
     private final IDrawable background;
     private final IDrawable icon;
 
