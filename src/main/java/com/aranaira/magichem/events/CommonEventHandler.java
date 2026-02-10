@@ -585,7 +585,7 @@ public class CommonEventHandler {
                         boolean isMyConstruct = (e instanceof Construct c) && (c.getOwner() == caster);
                         boolean isMySummon = SummonUtils.isSummon(e) && SummonUtils.getSummoner(living) == caster;
 
-                        if(!isMyConstruct && !isMySummon)
+                        if(!isMyConstruct && !isMySummon && !living.hasEffect(MobEffects.WITHER))
                             living.addEffect(new MobEffectInstance(MobEffects.WITHER, 200, amplifier));
                     }
                 }
