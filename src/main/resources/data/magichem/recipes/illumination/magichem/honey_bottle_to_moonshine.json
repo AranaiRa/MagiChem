@@ -3,7 +3,7 @@
   "input": "minecraft:honey_bottle",
   "lumins": {
     "type": 2,
-    "minutes": 9
+    "minutes": 4
   },
   "result": {
     "item": "magichem:moonshine",

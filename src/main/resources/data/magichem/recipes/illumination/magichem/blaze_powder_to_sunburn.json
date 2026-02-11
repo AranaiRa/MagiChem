@@ -3,7 +3,7 @@
   "input": "minecraft:blaze_powder",
   "lumins": {
     "type": 1,
-    "minutes": 10
+    "minutes": 6
   },
   "result": {
     "item": "magichem:sunburn",

@@ -3,7 +3,7 @@
   "input": "mna:vinteum_dust",
   "lumins": {
     "type": 3,
-    "minutes": 8
+    "minutes": 5
   },
   "result": {
     "item": "magichem:stardust",
