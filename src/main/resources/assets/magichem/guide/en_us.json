@@ -9963,8 +9963,8 @@
     ],
     "related_recipes": [
       {
-        "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/aristose"
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/aristose"
       },
       {
         "type": "sublimation",
