@@ -31,13 +31,16 @@ import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.aranaira.magichem.util.InteropUtil;
 import com.mna.api.blocks.WizardLabBlock;
 import com.mna.api.capabilities.IPlayerMagic;
+import com.mna.api.capabilities.IPlayerProgression;
 import com.mna.api.events.SpellCastEvent;
 import com.mna.api.events.construct.ConstructSprayEffectEvent;
 import com.mna.api.events.construct.ConstructSprayTargetingEvent;
+import com.mna.api.faction.IFaction;
 import com.mna.api.spells.base.ISpellDefinition;
 import com.mna.blocks.BlockInit;
 import com.mna.blocks.artifice.BookStandBlock;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
+import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mna.effects.EffectInit;
 import com.mna.entities.constructs.animated.Construct;
 import com.mna.entities.utility.WanderingWizard;
@@ -126,6 +129,7 @@ import java.util.*;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 import static com.aranaira.magichem.registry.MobEffectsRegistry.*;
+import static com.mna.api.faction.FactionIDs.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 @Mod.EventBusSubscriber(
@@ -658,7 +662,7 @@ public class CommonEventHandler {
                         MobEffectInstance effect = event.getEffectInstance();
 
                         if(cap.getHeart() == IEnhancementCapability.EnhancedHeartType.IMMORTAL) {
-                            if(isPendingEffect(player, effect.getEffect())) {
+                            if(isPendingEffect(player, effect.getEffect()) || effect.getDuration() == -1) {
                                 removeFromPendingEffects(player, effect.getEffect());
                             } else {
                                 if (effect.getEffect().getCategory() == MobEffectCategory.BENEFICIAL) {
@@ -868,6 +872,33 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        //Immortal Heart absorption
+        if(event.player.level().getGameTime() % 600 == 0) {
+            final LazyOptional<IPlayerProgression> lazyProg = event.player.getCapability(PlayerProgressionProvider.PROGRESSION);
+            if(lazyProg.isPresent()) {
+                final Optional<IPlayerProgression> optProg = lazyProg.resolve();
+                if (optProg.isPresent()) {
+                    final IPlayerProgression prog = optProg.get();
+                    final IFaction faction = prog.getAlliedFaction();
+
+                    if (faction != null && (faction.is(DEMONS) || event.player.level().getGameTime() % 1200 == 0)) {
+                        final LazyOptional<IEnhancementCapability> capLazy = event.player.getCapability(EnhancementProvider.ENHANCEMENT);
+                        if (capLazy.isPresent()) {
+                            final Optional<IEnhancementCapability> capQuery = capLazy.resolve();
+                            if (capQuery.isPresent()) {
+                                final IEnhancementCapability cap = capQuery.get();
+                                if(cap.hasHeart() && cap.getHeart() == IEnhancementCapability.EnhancedHeartType.IMMORTAL) {
+                                    if(faction.is(COUNCIL)) event.player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1200, 2, false, false, false));
+                                    if(faction.is(FEY)) event.player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1200, 2, false, false, false));
+                                    if(faction.is(DEMONS)) event.player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 4, false, false, false));
+                                    if(faction.is(UNDEAD)) event.player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1200, 1, false, false, false));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         if(event.player.level().getGameTime() % 10 == 0) {
             if (event.player.hasEffect(EQUANIMITY.get())) {
                 final MobEffectInstance effect = event.player.getEffect(EQUANIMITY.get());

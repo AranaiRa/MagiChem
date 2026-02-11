@@ -21,7 +21,7 @@ public class EnhancementCapability implements IEnhancementCapability {
 
     @Override
     public boolean hasHeart() {
-        return false;
+        return enhancedHeartType != null && enhancedHeartType != EnhancedHeartType.NONE;
     }
 
     @Override
