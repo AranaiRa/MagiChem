@@ -1,6 +1,8 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.block.entity.ext.*;
+import com.aranaira.magichem.capabilities.enhancement.EnhancementProvider;
+import com.aranaira.magichem.capabilities.enhancement.IEnhancementCapability;
 import com.aranaira.magichem.capabilities.wisdom.IWisdomCapability;
 import com.aranaira.magichem.capabilities.wisdom.WisdomProvider;
 import com.aranaira.magichem.config.ServerConfig;
@@ -471,6 +473,7 @@ public class CommonEventHandler {
         }
         else if(event.getObject() instanceof Player) {
             event.addCapability(IWisdomCapability.WISDOM, new WisdomProvider());
+            event.addCapability(IEnhancementCapability.ENHANCEMENT, new EnhancementProvider());
         }
     }
 
@@ -640,10 +643,39 @@ public class CommonEventHandler {
         }
     }
 
+    private static final HashMap<Player, HashSet<MobEffect>> pendingHeartEffects = new HashMap<>();
     @SubscribeEvent
-    public static void onEntityMobEffect(MobEffectEvent.Applicable event) {
+    public static void checkCanApplyMobEffect(MobEffectEvent.Applicable event) {
         final LivingEntity entity = event.getEntity();
-        if(entity != null) {
+        if(entity != null && !entity.level().isClientSide()) {
+            //Immortal Heart duration modification
+            if(event.getEntity() instanceof Player player) {
+                final LazyOptional<IEnhancementCapability> capLazy = player.getCapability(EnhancementProvider.ENHANCEMENT);
+                if(capLazy.isPresent()) {
+                    final Optional<IEnhancementCapability> capQuery = capLazy.resolve();
+                    if(capQuery.isPresent()) {
+                        final IEnhancementCapability cap = capQuery.get();
+                        MobEffectInstance effect = event.getEffectInstance();
+
+                        if(cap.getHeart() == IEnhancementCapability.EnhancedHeartType.IMMORTAL) {
+                            if(isPendingEffect(player, effect.getEffect())) {
+                                removeFromPendingEffects(player, effect.getEffect());
+                            } else {
+                                if (effect.getEffect().getCategory() == MobEffectCategory.BENEFICIAL) {
+                                    event.setResult(Event.Result.DENY);
+                                    addToPendingEffects(player, effect.getEffect());
+                                    player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration() * 3, effect.getAmplifier(), effect.isAmbient(), effect.isVisible(), effect.showIcon()));
+                                } else if (effect.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
+                                    event.setResult(Event.Result.DENY);
+                                    addToPendingEffects(player, effect.getEffect());
+                                    player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration() / 3, effect.getAmplifier(), effect.isAmbient(), effect.isVisible(), effect.showIcon()));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             Set<MobEffect> keys = entity.getActiveEffectsMap().keySet();
             if (keys.size() > 0) {
                 MobEffect incomingEffect = event.getEffectInstance().getEffect();
@@ -684,6 +716,30 @@ public class CommonEventHandler {
                 }
             }
         }
+    }
+
+    private static void addToPendingEffects(Player player, MobEffect effect) {
+        if(pendingHeartEffects.containsKey(player)) {
+            pendingHeartEffects.get(player).add(effect);
+        } else {
+            HashSet<MobEffect> effectsOnPlayer = new HashSet<>();
+            effectsOnPlayer.add(effect);
+            pendingHeartEffects.put(player, effectsOnPlayer);
+        }
+    }
+
+    private static void removeFromPendingEffects(Player player, MobEffect effect) {
+        if(pendingHeartEffects.containsKey(player)) {
+            pendingHeartEffects.get(player).remove(effect);
+        }
+    }
+
+    private static boolean isPendingEffect(Player player, MobEffect effect) {
+        if(pendingHeartEffects.containsKey(player)) {
+            final HashSet<MobEffect> effectsOnPlayer = pendingHeartEffects.get(player);
+            return effectsOnPlayer.contains(effect);
+        }
+        return false;
     }
 
     @SubscribeEvent
