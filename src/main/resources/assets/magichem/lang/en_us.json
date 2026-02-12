@@ -454,7 +454,9 @@
   "itemGroup.magichemtab.substances" : "MagiChem - Essentia and Admixtures",
 
   "magichem:rituals/balanced_scales" : "Ritual of the Balanced Scales",
+  "magichem:rituals/celestial_awakening" : "Ritual of Celestial Awakening",
   "magichem:rituals/reborn_rose" : "Ritual of the Reborn Rose",
+  "magichem:rituals/surgical_cultivation" : "Ritual of Surgical Cultivation",
 
   "essentia.house.elements": "House of Elements",
   "essentia.house.qualities": "House of Qualities",

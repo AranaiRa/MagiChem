@@ -29,6 +29,18 @@ public class RitualRegistry {
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-reborn_rose"),
                             new RitualEffectRebornRose(new ResourceLocation(MagiChemMod.MODID, "rituals/reborn_rose"))
                     );
+
+                    //Ritual of Celestial Awakening
+                    helper.register(
+                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-celestial_awakening"),
+                            new RitualEffectCelestialAwakening(new ResourceLocation(MagiChemMod.MODID, "rituals/celestial_awakening"))
+                    );
+
+                    //Ritual of Surgical Cultivation
+                    helper.register(
+                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-surgical_cultivation"),
+                            new RitualEffectRebornRose(new ResourceLocation(MagiChemMod.MODID, "rituals/surgical_cultivation"))
+                    );
                 });
     }
 
