@@ -454,7 +454,8 @@
   "itemGroup.magichemtab.substances" : "MagiChem - Essentia and Admixtures",
 
   "magichem:rituals/balanced_scales" : "Ritual of the Balanced Scales",
-  "magichem:rituals/celestial_awakening" : "Ritual of Celestial Awakening",
+  "magichem:rituals/celestial_awakening_solar" : "Ritual of Celestial Awakening (Solar)",
+  "magichem:rituals/celestial_awakening_lunar" : "Ritual of Celestial Awakening (Lunar)",
   "magichem:rituals/reborn_rose" : "Ritual of the Reborn Rose",
   "magichem:rituals/surgical_cultivation" : "Ritual of Surgical Cultivation",
 
@@ -794,6 +795,8 @@
   "feedback.ritual.sublimation.insufficient.and": " and ",
   "feedback.ritual.sublimation.insufficient.more": " more ",
   "feedback.ritual.sublimation.materia_in_ingredient": "One of the supplied ingredients is a Materia Jar or Materia Vessel that contains materia. Please empty the container out before using it as an ingredient.",
+  "feedback.ritual.celestial_awakening.solar": "This ritual can only be performed during the day.",
+  "feedback.ritual.celestial_awakening.lunar": "This ritual can only be performed at night.",
   "feedback.ritual.reborn_rose.abjuration": "The Abjuration crumbles to dust.",
   "feedback.block.eldrin_orrery.over_limit": "You cannot place more than one Eldrin Orrery.",
   "feedback.block.gnostic_orb.too_close_to_orb": "Another Gnostic Orb nearby is interfering. You cannot place another Gnostic Orb at this location.",

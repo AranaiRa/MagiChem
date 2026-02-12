@@ -1,0 +1,99 @@
+{
+	"type": "mna:ritual",
+	"tier": 5,
+	"pattern":
+	[
+		[ 0, 0, 0, 0,-1,13, 0, 0, 0 ],
+		[ 0,21,19, 0,15, 0, 0,12, 0 ],
+		[ 0, 0,17, 0, 0, 0,11, 0, 0 ],
+		[ 0, 0, 0, 0, 0,10, 0, 0,14 ],
+		[ 0, 3, 4, 5,-1, 0, 0,16,-1 ],
+		[ 2, 0, 0, 1, 6, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 7, 0,18,20, 0 ],
+		[ 0, 0, 0, 0, 8, 0, 0,22, 0 ],
+		[ 0, 0, 0, 9, 0, 0, 0, 0, 0 ]
+	],
+	"displayPattern":
+	[
+		[ 0, 0, 0, 0,14,13, 0, 0,10 ],
+		[ 0,21,22, 0,15, 0, 0,-1, 0 ],
+		[ 0, 0,23, 0, 0, 0,-1, 0, 0 ],
+		[ 0, 0, 0, 0, 0,-1, 0, 0,17 ],
+		[ 0, 4,-1, 5,11, 0, 0,19,18 ],
+		[ 3, 0, 0, 1, 6, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 0,-1, 0,27,26, 0 ],
+		[ 0, 0, 0, 0, 7, 0, 0,25, 0 ],
+		[ 0, 0, 0, 8, 0, 0, 0, 0, 0 ]
+	],
+	"reagents":
+	[
+		"    LG   ",
+		" B  G  K ",
+		"  A   L  ",
+		"     O  G",
+		" CCC   GL",
+		"C  DC    ",
+		"    C A  ",
+		"    C  B ",
+		"   C     "
+	],
+	"keys":
+	{
+		"A":
+		{
+			"item": "magichem:moonshine",
+			"optional": false,
+			"consume": true
+		},
+		"B":
+		{
+			"item": "magichem:stardust",
+			"optional": false,
+			"consume": true
+		},
+		"C":
+		{
+			"item": "minecraft:light_gray_candle",
+			"optional": false,
+			"consume": true
+		},
+		"D":
+		{
+			"item": "magichem:dormant_selargyros",
+			"optional": false,
+			"consume": true
+		},
+		"G":
+		{
+			"item": "minecraft:glowstone_dust",
+			"optional": false,
+			"consume": true
+		},
+		"K":
+		{
+			"item": "magichem:black_diamond",
+			"optional": false,
+			"consume": true
+		},
+		"L":
+		{
+			"item": "magichem:salt_of_soot",
+			"optional": false,
+			"consume": true
+		},
+		"O":
+		{
+			"item": "magichem:lunar_orb",
+			"optional": false,
+			"consume": false
+		}
+	},
+	"parameters":
+	{
+		"innerColor": "0xffce49",
+		"outerColor": "0xaccad3",
+		"displayIndexes": false,
+		"connectBeam": false,
+		"beamColor": "0xffffff"
+	}
+}
