@@ -8,6 +8,7 @@ import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageType;
 
 import static com.aranaira.magichem.data.MagiChemDamageTypes.ACID;
+import static com.aranaira.magichem.data.MagiChemDamageTypes.SURGERY;
 
 public class DamageTypeProvider implements RegistrySetBuilder.RegistryBootstrap<DamageType> {
 
@@ -18,5 +19,6 @@ public class DamageTypeProvider implements RegistrySetBuilder.RegistryBootstrap<
     @Override
     public void run(BootstapContext<DamageType> pContext) {
         pContext.register(ACID, new DamageType(MagiChemMod.MODID+".acid", 0.1f, DamageEffects.BURNING));
+        pContext.register(SURGERY, new DamageType(MagiChemMod.MODID+".surgery", 4.0f, DamageEffects.POKING));
     }
 }

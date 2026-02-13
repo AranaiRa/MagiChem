@@ -799,6 +799,8 @@
   "feedback.ritual.celestial_awakening.solar": "This ritual can only be performed during the day.",
   "feedback.ritual.celestial_awakening.lunar": "This ritual can only be performed at night.",
   "feedback.ritual.reborn_rose.abjuration": "The Abjuration crumbles to dust.",
+  "feedback.ritual.surgical_cultivation.success": "You feel raw power thundering in your chest like a storm.",
+
   "feedback.block.eldrin_orrery.over_limit": "You cannot place more than one Eldrin Orrery.",
   "feedback.block.gnostic_orb.too_close_to_orb": "Another Gnostic Orb nearby is interfering. You cannot place another Gnostic Orb at this location.",
   "feedback.block.magic_mirror.link": "This Magic Mirror is now linked to ",
@@ -1846,6 +1848,7 @@
   "chat.magichem.trade_for_codex_arcana": "<Wandering Wizard> You want your book back? Fine. Give me back my notes.",
 
   "death.attack.magichem_acid": "%s dissolved away",
+  "death.attack.magichem_surgery": "%s did not adequately prepare for a dangerous medical procedure",
 
   "cantrip.magichem.acid_ward": "Protection from Acid",
   "cantrip.magichem.acid_ward.desc": "Reduces how severely you are harmed by touching acid. Effect lasts for a few minutes and scales with Tier.",

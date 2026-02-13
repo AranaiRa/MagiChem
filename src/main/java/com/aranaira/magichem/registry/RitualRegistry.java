@@ -43,7 +43,7 @@ public class RitualRegistry {
                     //Ritual of Surgical Cultivation
                     helper.register(
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-surgical_cultivation"),
-                            new RitualEffectRebornRose(new ResourceLocation(MagiChemMod.MODID, "rituals/surgical_cultivation"))
+                            new RitualEffectSurgicalCultivation(new ResourceLocation(MagiChemMod.MODID, "rituals/surgical_cultivation"))
                     );
                 });
     }
