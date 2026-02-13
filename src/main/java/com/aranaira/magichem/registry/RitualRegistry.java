@@ -35,10 +35,10 @@ public class RitualRegistry {
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-celestial_awakening_solar"),
                             new RitualEffectCelestialAwakeningSolar(new ResourceLocation(MagiChemMod.MODID, "rituals/celestial_awakening_solar"))
                     );
-//                    helper.register(
-//                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-celestial_awakening_lunar"),
-//                            new RitualEffectCelestialAwakeningLunar(new ResourceLocation(MagiChemMod.MODID, "rituals/celestial_awakening_lunar"))
-//                    );
+                    helper.register(
+                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-celestial_awakening_lunar"),
+                            new RitualEffectCelestialAwakeningLunar(new ResourceLocation(MagiChemMod.MODID, "rituals/celestial_awakening_lunar"))
+                    );
 
                     //Ritual of Surgical Cultivation
                     helper.register(

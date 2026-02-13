@@ -3,7 +3,7 @@
 	"tier": 5,
 	"pattern":
 	[
-		[ 0, 0, 0, 0,-1,13, 0, 0, 0 ],
+		[ 0, 0, 0, 0,-1,13, 0, 0,23 ],
 		[ 0,21,19, 0,15, 0, 0,12, 0 ],
 		[ 0, 0,17, 0, 0, 0,11, 0, 0 ],
 		[ 0, 0, 0, 0, 0,10, 0, 0,14 ],
@@ -27,9 +27,9 @@
 	],
 	"reagents":
 	[
-		"    LG   ",
-		" B  G  K ",
-		"  A   L  ",
+		"    LG  L",
+		" B  G  X ",
+		"  A   K  ",
 		"     O  G",
 		" CCC   GL",
 		"C  DC    ",
@@ -84,6 +84,12 @@
 		"O":
 		{
 			"item": "magichem:lunar_orb",
+			"optional": false,
+			"consume": false
+		},
+		"X":
+		{
+			"item": "magichem:solar_orb",
 			"optional": false,
 			"consume": false
 		}
