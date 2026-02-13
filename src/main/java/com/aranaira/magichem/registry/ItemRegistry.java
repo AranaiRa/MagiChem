@@ -460,28 +460,32 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(8).saturationMod(0.6F).build()))
     );
 
-    public static final RegistryObject<Item> BOVINE_THEWSUM = ITEMS.register("thewsum_bovine",
-            () -> new Item(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<Item> GIBLETS = ITEMS.register("giblets",
+            () -> new Item(new Item.Properties().food((new FoodProperties.Builder()).nutrition(1).saturationMod(1.0f).build()))
     );
 
-    public static final RegistryObject<Item> GALLINE_THEWSUM = ITEMS.register("thewsum_galline",
-            () -> new Item(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<TooltipLoreItem> BOVINE_THEWSUM = ITEMS.register("thewsum_bovine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<Item> LEPORINE_THEWSUM = ITEMS.register("thewsum_leporine",
-            () -> new Item(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<TooltipLoreItem> GALLINE_THEWSUM = ITEMS.register("thewsum_galline",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<Item> OVINE_THEWSUM = ITEMS.register("thewsum_ovine",
-            () -> new Item(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<TooltipLoreItem> LEPORINE_THEWSUM = ITEMS.register("thewsum_leporine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<Item> PORCINE_THEWSUM = ITEMS.register("thewsum_porcine",
-            () -> new Item(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<TooltipLoreItem> OVINE_THEWSUM = ITEMS.register("thewsum_ovine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<Item> PISCINE_THEWSUM = ITEMS.register("thewsum_piscine",
-            () -> new Item(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<TooltipLoreItem> PORCINE_THEWSUM = ITEMS.register("thewsum_porcine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> PISCINE_THEWSUM = ITEMS.register("thewsum_piscine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> REVOLTING_MASS_OF_MEAT = ITEMS.register("revolting_mass_of_meat",

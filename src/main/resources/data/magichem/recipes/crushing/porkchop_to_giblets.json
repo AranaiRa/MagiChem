@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "minecraft:porkchop",
+  "output": "magichem:giblets",
+  "output_quantity": 3
+}
