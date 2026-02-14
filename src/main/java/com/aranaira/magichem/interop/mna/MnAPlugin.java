@@ -10,6 +10,7 @@ public class MnAPlugin {
     public static final String VITRIOLATION = "vitriolation";
     public static final String FULMINATION = "fulmination";
     public static final String ILLUMINATION = "illumination";
+    public static final String EXALTATION = "exaltation";
 
     public static void register() {
         RecipeRenderers.registerRecipeRenderer(SUBLIMATION_RITUAL, RecipeSublimationRitual.class);
@@ -18,5 +19,6 @@ public class MnAPlugin {
         RecipeRenderers.registerRecipeRenderer(VITRIOLATION, RecipeVitriolation.class);
         RecipeRenderers.registerRecipeRenderer(FULMINATION, RecipeFulmination.class);
         RecipeRenderers.registerRecipeRenderer(ILLUMINATION, RecipeIllumination.class);
+        RecipeRenderers.registerRecipeRenderer(EXALTATION, RecipeExaltation.class);
     }
 }
