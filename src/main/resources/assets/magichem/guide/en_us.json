@@ -6228,6 +6228,211 @@
       }
     ]
   },
+  "Ritual of Surgical Cultivation": {
+    "index": "0",
+    "tier": 5,
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Ritual of Surgical Cultivation"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This ritual ensorcells runesmithing tools, repurposing them as "
+          },
+          {
+            "text": "magical surgical implements",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and allowing the ritualist to "
+          },
+          {
+            "text": "replace their own body parts",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in the blink of an eye.\n\nThe process is exceptionally dangerous and only the hardiest of mages are likely to survive the pain and physical trauma of an invasive surgery performed in a split-second with no anaesthesia. The ritualist must be able to withstand "
+          },
+          {
+            "text": "thirty hearts of damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at once. Careful preparation is necessary to ensure success.\n\nIf the ritual is successful, the body part is replaced and the ritualist's old body part is forcefully ejected from their body as "
+          },
+          {
+            "text": "Giblets",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". "
+          },
+          {
+            "text": "Failure will kill the ritualist",
+            "color": "dark_red"
+          },
+          {
+            "text": ", scattering a large amount of Giblets all over the ritual area. The primary organ is not destroyed in a failed ritual, but all of the ingredients (other than the runesmith tools) are consumed.\n\nBody parts replaced with this ritual are permanent, even "
+          },
+          {
+            "text": "persisting through death",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nMore information on the benefits of replacement body parts can be found on the part's individual page in the "
+          },
+          {
+            "text": "Alchemical Wonders",
+            "color": "dark_purple"
+          },
+          {
+            "text": " chapter."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Catalogue of Cultivation",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The following body parts can be replaced:\n\n"
+          },
+          {
+            "text": "Hearts:",
+            "bold": true
+          },
+          {
+            "text": "\n• Immortal Heart"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/surgical_cultivation"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/immortal_heart"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/vintage_shimmering_wine"
+      }
+    ]
+  },
+  "Ritual of Celestial Awakening": {
+    "index": "0",
+    "tier": 5,
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Rituals of Celestial Awakening"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A pair of rituals used to awaken "
+          },
+          {
+            "text": "Dormant Orichalkos",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "Dormant Selargyros",
+            "color": "dark_purple"
+          },
+          {
+            "text": " into their true, magical forms.\n\nThe Solar ritual can only be performed "
+          },
+          {
+            "text": "during the day",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and the Lunar ritual can only be performed "
+          },
+          {
+            "text": "at night",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Solar Orb and Lunar Orb are "
+          },
+          {
+            "text": "not consumed",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by the ritual. Their power is required for the ritual's magic to perform difficult and ever-changing astrological alignments during the awakening process, but the power within the orbs is never directly consumed."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Interlocking the Rituals",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/gui/guide/img/guide_celestial_awakening_rituals.png",
+        "width": 104,
+        "height": 104
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "The two rituals can be "
+          },
+          {
+            "text": "interlocked",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", sharing much of their operating area.\n\nThe diagram above shows how the two rituals fit together. The orange space is the ritual center for the Solar ritual, and the blue space is the center for the Lunar ritual."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/celestial_awakening_solar"
+      },
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/celestial_awakening_lunar"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/dormant_orichalkos"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/dormant_selargyros"
+      }
+    ]
+  },
   "Radiant Rose": {
     "index": 0,
     "category": "magichem_wonders",
@@ -9668,6 +9873,55 @@
       }
     ]
   },
+  "Celestial Reagents": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "required_advancement": "magichem:__wisdom_2",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Celestial Reagents"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Strange, magical materials infused with one of the three energies of the cosmos on an "
+          },
+          {
+            "text": "Astral Observer",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nCelestial Reagents are used as components of the final stages of the "
+          },
+          {
+            "text": "Magnum Opus",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and can optionally be distilled for helpful materia."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/blaze_powder_to_sunburn"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/honey_bottle_to_moonshine"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/vinteum_dust_to_stardust"
+      }
+    ]
+  },
   "Acids": {
     "index": "0",
     "category": "magichem_wonders",
@@ -11465,21 +11719,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nPowerful enchanted books may leave behind a single "
+            "text": ".\n\nA large number of Scorched Theories can be exalted in the Prime Aggregator into a "
           },
           {
             "text": "Scorched Profundity",
             "color": "dark_purple"
           },
           {
-            "text": " instead. A Scorched Profundity can also be created through Sublimation, but this process has a "
-          },
-          {
-            "text": "very high Academic Slurry cost",
-            "color": "dark_purple"
-          },
-          {
-            "text": ".\n\nThe number of Theorems left behind and the chance that a Profundity is left behind are influenced by both the "
+            "text": ", a collection of the most notable bits of knowledge and implication in the Theories consumed.\n\nThe number of Theorems left behind is influenced by both the "
           },
           {
             "text": "total number of enchantment levels",
@@ -11493,7 +11740,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " on the book.\n\nSome alchemical recipes require Theorems or Profundities directly, but more powerful or complicated recipes may require you to compile them into "
+            "text": " on the book.\n\n"
+          },
+          {
+            "text": "Torn Journal Fragments",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can also be fulminated for Scorched Theories. Higher level spell components will result in more Theories.\n\nSome alchemical recipes require Theorems or Profundities directly, but more powerful or complicated recipes may require you to compile them into "
           },
           {
             "text": "Collated Theories",
@@ -11521,8 +11775,8 @@
     ],
     "related_recipes": [
       {
-        "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/scorched_profundity"
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/scorched_profundity"
       },
       {
         "type": "crafting",
@@ -12122,6 +12376,7 @@
     "index": "0",
     "category": "magichem_wonders",
     "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
     "sections": [
       {
         "type": "title",
@@ -12197,6 +12452,7 @@
     "index": "0",
     "category": "magichem_wonders",
     "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
     "sections": [
       {
         "type": "title",
@@ -12448,7 +12704,8 @@
   "Chalice of Tears": {
     "index": "0",
     "category": "magichem_wonders",
-    "tier": 2,
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
     "sections": [
       {
         "type": "title",
@@ -12685,6 +12942,161 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/chalice_of_tears"
+      }
+    ]
+  },
+  "Immortal Heart": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Immortal Heart"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Immortal Heart",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a self-sustaining magical life force. It is flesh beating with the unrelenting thrum of an unending stormcloud, refusing to stop even after the body is deceased. It can be implanted by performing the "
+          },
+          {
+            "text": "Ritual of Surgical Cultivation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhen implanted, the Immortal Heart increases the duration of beneficial effects "
+          },
+          {
+            "text": "threefold",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and reduces the duration of harmful effects to "
+          },
+          {
+            "text": "one third",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe bearer of an Immortal Heart also receives "
+          },
+          {
+            "text": "absorption hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": " once per minute from its unyielding vitality.\n\nCouncil and Fey mages receive "
+          },
+          {
+            "text": "six hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nUndead mages' bodies are no longer used to heartbeats, reducing this effectiveness to "
+          },
+          {
+            "text": "four hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nDemonic magic receive "
+          },
+          {
+            "text": "ten hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and receive them every "
+          },
+          {
+            "text": "thirty seconds",
+            "color": "dark_purple"
+          },
+          {
+            "text": " instead of every minute."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Creating the Heart",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Creating an Immortal Heart is an involved process with several steps.\n\nFirst, six "
+          },
+          {
+            "text": "Thewsums",
+            "color": "dark_purple"
+          },
+          {
+            "text": " must be exalted from the flesh of hundreds of animals each. These horrid agglomerations of flesh are composed of only the most exceptional parts of each slice of meat that went into their creation. Each one is formed from one type of animal and is associated with one of the six magical elements.\n\nNext, the six Thewsums must be combined into a "
+          },
+          {
+            "text": "Revolting Mass of Meat",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Revolting Mass of Meat is then submerged in an Acid Basin using a very strong acid (at least "
+          },
+          {
+            "text": "Oil of Vitriol",
+            "color": "dark_purple"
+          },
+          {
+            "text": "). This process destroys all of the parts of the Mass that aren't immortal, leaving only an "
+          },
+          {
+            "text": "Unbeating Heart",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nFinally, the Unbeating Heart must be sublimated into an "
+          },
+          {
+            "text": "Immortal Heart",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the Alchemical Nexus."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/surgical_cultivation"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/immortal_heart"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/unbeating_heart"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/revolting_mass_of_meat"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/thewsum_porcine"
       }
     ]
   },
