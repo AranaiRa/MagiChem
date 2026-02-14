@@ -13,7 +13,7 @@
         { "item": "magichem:morsel_sweetness" },
         { "item": "magichem:morsel_spice" },
         { "item": "magichem:morsel_sweetness" },
-        { "item": "minecraft:milk_bucket" }
+        { "item": "minecraft:honeycomb" }
       ],
       "materia": [
         { "item": "magichem:admixture_nectar", "count": 45 },
