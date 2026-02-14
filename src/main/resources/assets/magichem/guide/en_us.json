@@ -12770,9 +12770,8 @@
       {
         "type": "image",
         "location": "magichem:textures/mob_effect/equanimity.png",
-        "width": 16,
-        "height": 16,
-        "scale": 3
+        "width": 32,
+        "height": 32
       },
       {
         "type": "text",
@@ -12812,9 +12811,8 @@
       {
         "type": "image",
         "location": "magichem:textures/mob_effect/evanescence.png",
-        "width": 16,
-        "height": 16,
-        "scale": 3
+        "width": 32,
+        "height": 32
       },
       {
         "type": "text",
@@ -12854,9 +12852,8 @@
       {
         "type": "image",
         "location": "magichem:textures/mob_effect/brutality.png",
-        "width": 16,
-        "height": 16,
-        "scale": 3
+        "width": 32,
+        "height": 32
       },
       {
         "type": "text",
@@ -12896,9 +12893,8 @@
       {
         "type": "image",
         "location": "magichem:textures/mob_effect/malice.png",
-        "width": 16,
-        "height": 16,
-        "scale": 3
+        "width": 32,
+        "height": 32
       },
       {
         "type": "text",

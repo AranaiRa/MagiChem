@@ -7,7 +7,7 @@ import com.mna.api.spells.attributes.Attribute;
 import java.util.HashMap;
 
 public class EnhancementCapability implements IEnhancementCapability {
-    private EnhancedHeartType enhancedHeartType;
+    private EnhancedHeartType enhancedHeartType = EnhancedHeartType.NONE;
 
     @Override
     public void setHeart(EnhancedHeartType pHeartType) {
