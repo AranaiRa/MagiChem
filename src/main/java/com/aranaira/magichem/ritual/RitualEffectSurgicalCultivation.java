@@ -55,6 +55,8 @@ public class RitualEffectSurgicalCultivation extends RitualEffect {
                 player.sendSystemMessage(Component.translatable("feedback.ritual.surgical_cultivation.success"));
 
                 final Vec3 routeBase = player.getForward().scale(3);
+                player.push(-routeBase.x, -routeBase.y, -routeBase.z);
+
                 Vec3 route = routeBase.add(r.nextDouble(GIBLET_SPREAD)-(GIBLET_SPREAD*0.5), r.nextDouble(0.05), r.nextDouble(GIBLET_SPREAD)-(GIBLET_SPREAD*0.5)).scale(0.375);
                 ItemStack is = new ItemStack(ItemRegistry.GIBLETS.get(), 6+r.nextInt(16));
                 ItemEntity ie = new ItemEntity(context.getLevel(), player.getX(), player.getY()+1, player.getZ(),
