@@ -96,7 +96,7 @@
 	},
 	"parameters":
 	{
-		"innerColor": "0xaccad3",
+		"innerColor": "0xffce49",
 		"outerColor": "0xffce49",
 		"displayIndexes": false,
 		"connectBeam": false,

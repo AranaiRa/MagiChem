@@ -1,6 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.ritual.*;
 import com.mna.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -33,11 +34,11 @@ public class RitualRegistry {
                     //Rituals of Celestial Awakening
                     helper.register(
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-celestial_awakening_solar"),
-                            new RitualEffectCelestialAwakeningSolar(new ResourceLocation(MagiChemMod.MODID, "rituals/celestial_awakening_solar"))
+                            new RitualEffectCelestialAwakening(new ResourceLocation(MagiChemMod.MODID, "rituals/celestial_awakening_solar"), LuminType.SOLAR)
                     );
                     helper.register(
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-celestial_awakening_lunar"),
-                            new RitualEffectCelestialAwakeningLunar(new ResourceLocation(MagiChemMod.MODID, "rituals/celestial_awakening_lunar"))
+                            new RitualEffectCelestialAwakening(new ResourceLocation(MagiChemMod.MODID, "rituals/celestial_awakening_lunar"), LuminType.LUNAR)
                     );
 
                     //Ritual of Surgical Cultivation
