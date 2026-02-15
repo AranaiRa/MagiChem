@@ -12065,7 +12065,6 @@
     "index": "-10",
     "category": "magichem_wonders",
     "tier": 1,
-    "required_advancement": "magichem:__wisdom_1",
     "sections": [
       {
         "type": "title",

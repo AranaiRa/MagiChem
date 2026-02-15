@@ -862,15 +862,24 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
-        final Optional<IWisdomCapability> originalWisdom = WisdomProvider.getCapability(event.getOriginal());
-        final Optional<IWisdomCapability> cloneWisdom = WisdomProvider.getCapability(event.getEntity());
-        final Optional<IEnhancementCapability> originalEnhancement = EnhancementProvider.getCapability(event.getOriginal());
-        final Optional<IEnhancementCapability> cloneEnhancement = EnhancementProvider.getCapability(event.getEntity());
+        final Player original = event.getOriginal();
+        final Player player = event.getEntity();
+
+        original.reviveCaps();
+
+        final Optional<IWisdomCapability> originalWisdom = WisdomProvider.getCapability(original);
+        final Optional<IWisdomCapability> cloneWisdom = WisdomProvider.getCapability(player);
+        final Optional<IEnhancementCapability> originalEnhancement = EnhancementProvider.getCapability(original);
+        final Optional<IEnhancementCapability> cloneEnhancement = EnhancementProvider.getCapability(player);
 
         if(originalWisdom.isPresent() && cloneWisdom.isPresent()) {
             cloneWisdom.get().copyFrom(originalWisdom.get());
+        }
+        if(originalEnhancement.isPresent() && cloneEnhancement.isPresent()) {
             cloneEnhancement.get().copyFrom(originalEnhancement.get());
         }
+
+        original.invalidateCaps();
     }
 
     @SubscribeEvent
