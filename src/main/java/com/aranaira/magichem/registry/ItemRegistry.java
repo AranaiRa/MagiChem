@@ -542,22 +542,6 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<IndestructibleItem> BOSS_TROPHY_COUNCIL = ITEMS.register("boss_trophy_council",
-            () -> new IndestructibleItem(new Item.Properties().stacksTo(1))
-    );
-
-    public static final RegistryObject<IndestructibleItem> BOSS_TROPHY_FEY = ITEMS.register("boss_trophy_fey",
-            () -> new IndestructibleItem(new Item.Properties().stacksTo(1))
-    );
-
-    public static final RegistryObject<IndestructibleItem> BOSS_TROPHY_DEMONS = ITEMS.register("boss_trophy_demons",
-            () -> new IndestructibleItem(new Item.Properties().stacksTo(1))
-    );
-
-    public static final RegistryObject<IndestructibleItem> BOSS_TROPHY_UNDEAD = ITEMS.register("boss_trophy_undead",
-            () -> new IndestructibleItem(new Item.Properties().stacksTo(1))
-    );
-
     public static final RegistryObject<TooltipLoreItem> CROWN_OF_GLORY = ITEMS.register("crown_of_glory",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );

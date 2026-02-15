@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/boss_trophy_demons"
+    },
+    "facing=east": {
+      "model": "magichem:block/boss_trophy_demons",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/boss_trophy_demons",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/boss_trophy_demons",
+      "y": 270
+    }
+  }
+}
