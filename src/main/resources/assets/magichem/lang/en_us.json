@@ -375,6 +375,8 @@
   "block.magichem.vinteum_crystal_block": "Vinteum Crystal Block",
   "block.magichem.vinteum_crystal_block_budding": "Budding Vinteum Crystal",
 
+  "entity.magichem.imp_legion_commander": "Imp Legion Commander",
+  "entity.magichem.imp_legion_subordinate": "Imp Legionnaire",
   "entity.magichem.shlorp": "Materia Shlorp",
   "entity.magichem.destructive_harmonics": "Destructive Harmonics",
 

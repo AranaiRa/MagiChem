@@ -9,12 +9,20 @@ import com.mna.api.faction.IFaction;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
 import com.mna.capabilities.playerdata.progression.PlayerProgression;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
+import com.mna.effects.EffectInit;
+import com.mna.entities.EntityInit;
+import com.mna.entities.faction.DemonImp;
+import com.mna.tools.SummonUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -23,6 +31,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -105,7 +114,46 @@ public class BossTrophyBlock extends Block {
     }
 
     private void handleDemonsEffect(Level pLevel, BlockPos pPos, Player pPlayer) {
+        if(pLevel.isClientSide()) {
+            //VFX
+        } else {
+            final AABB aabb = new AABB(pPos.offset(-8, -8, -8), pPos.offset(8, 8, 8));
+            int existingImps = 0;
+            boolean hasCommander = false;
+            for (DemonImp imp : pLevel.getEntitiesOfClass(DemonImp.class, aabb)) {
+                if(SummonUtils.isSummon(imp)) {
+                    if(SummonUtils.getSummoner(imp) == pPlayer) {
+                        existingImps++;
+                        if(imp.hasEffect(MobEffects.MOVEMENT_SPEED)) {
+                            if(imp.hasEffect(EffectInit.ENLARGE.get())) {
+                                if(imp.hasEffect(MobEffectsRegistry.GIGANTIC_VIGOR.get())) {
+                                    if(imp.hasEffect(MobEffectsRegistry.BRUTALITY.get()))
+                                        hasCommander = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
+            for(int i=0; i<Math.max(0,4-existingImps); i++) {
+                DemonImp imp = new DemonImp(EntityInit.DEMON_IMP.get(), pLevel);
+                imp.setPos(pPlayer.blockPosition().getCenter());
+                imp.setTier(2);
+                SummonUtils.setSummon(imp, pPlayer, true, 0);
+                pLevel.addFreshEntity(imp);
+                if(i==0 && !hasCommander) {
+                    imp.setCustomName(Component.translatable("entity.magichem.imp_legion_commander"));
+                    imp.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 0, false, false));
+                    imp.addEffect(new MobEffectInstance(MobEffectsRegistry.GIGANTIC_VIGOR.get(), -1, 0, false, false));
+                    imp.addEffect(new MobEffectInstance(EffectInit.ENLARGE.get(), -1, 3, false, false));
+                    imp.addEffect(new MobEffectInstance(MobEffectsRegistry.BRUTALITY.get(), -1, 1, false, false));
+                    imp.addEffect(new MobEffectInstance(MobEffects.HEAL, 3, 6, false, false));
+                } else {
+                    imp.setCustomName(Component.translatable("entity.magichem.imp_legion_subordinate"));
+                }
+            }
+        }
     }
 
     private void handleFeyEffect(Level pLevel, BlockPos pPos, Player pPlayer) {
