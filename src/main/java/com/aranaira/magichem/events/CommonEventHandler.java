@@ -37,7 +37,10 @@ import com.mna.api.events.SpellCooldownCalculatingEvent;
 import com.mna.api.events.construct.ConstructSprayEffectEvent;
 import com.mna.api.events.construct.ConstructSprayTargetingEvent;
 import com.mna.api.faction.IFaction;
+import com.mna.api.spells.base.IModifiedSpellPart;
 import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
+import com.mna.api.spells.parts.SpellEffect;
 import com.mna.blocks.BlockInit;
 import com.mna.blocks.artifice.BookStandBlock;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
@@ -131,6 +134,7 @@ import java.util.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 import static com.aranaira.magichem.registry.MobEffectsRegistry.*;
 import static com.mna.api.faction.FactionIDs.*;
+import static com.mna.api.spells.collections.Components.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 @Mod.EventBusSubscriber(
@@ -565,17 +569,32 @@ public class CommonEventHandler {
         }
     }
 
+    private static final SpellEffect[] DAMAGE_COMPONENTS = new SpellEffect[]{
+            FIRE_DAMAGE, BACKDRAFT, FROST_DAMAGE, SHATTER, LIGHTNING_DAMAGE, MAGIC_DAMAGE, IMPALE, WIND_SHEAR, PURGE
+    };
     @SubscribeEvent
     public static void onCalculateSpellCooldown(SpellCooldownCalculatingEvent event) {
         final Player caster = event.getCaster();
-        if(caster.hasEffect(CHAINSPELL.get()) && event.getCooldown() > 6) {
-            int diff = event.getCooldown() - 6;
-            int xpCost = Math.max(1,diff / 5);
-            caster.giveExperiencePoints(-xpCost);
-            event.setCooldown(6);
+        final ISpellDefinition spell = event.getSpell();
 
-            if(caster.totalExperience <= 0)
-                caster.removeEffect(CHAINSPELL.get());
+        int floor = 4;
+        for (IModifiedSpellPart<SpellEffect> component : spell.getComponents()) {
+            if(Arrays.asList(DAMAGE_COMPONENTS).contains(component.getPart())) {
+                floor = 12;
+                break;
+            }
+        }
+
+        if(caster.hasEffect(CHAINSPELL.get())) {
+            if (event.getCooldown() > floor) {
+                int diff = event.getCooldown() - floor;
+                int xpCost = Math.max(1, diff / 8);
+                caster.giveExperiencePoints(-xpCost);
+                event.setCooldown(floor);
+
+                if (caster.totalExperience <= 0)
+                    caster.removeEffect(CHAINSPELL.get());
+            }
         }
     }
 
