@@ -33,6 +33,7 @@ import com.mna.api.blocks.WizardLabBlock;
 import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.api.capabilities.IPlayerProgression;
 import com.mna.api.events.SpellCastEvent;
+import com.mna.api.events.SpellCooldownCalculatingEvent;
 import com.mna.api.events.construct.ConstructSprayEffectEvent;
 import com.mna.api.events.construct.ConstructSprayTargetingEvent;
 import com.mna.api.faction.IFaction;
@@ -564,7 +565,19 @@ public class CommonEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onCalculateSpellCooldown(SpellCooldownCalculatingEvent event) {
+        final Player caster = event.getCaster();
+        if(caster.hasEffect(CHAINSPELL.get()) && event.getCooldown() > 6) {
+            int diff = event.getCooldown() - 6;
+            int xpCost = Math.max(1,diff / 5);
+            caster.giveExperiencePoints(-xpCost);
+            event.setCooldown(6);
 
+            if(caster.totalExperience <= 0)
+                caster.removeEffect(CHAINSPELL.get());
+        }
+    }
 
     @SubscribeEvent
     public static void onSpellCast(SpellCastEvent event) {

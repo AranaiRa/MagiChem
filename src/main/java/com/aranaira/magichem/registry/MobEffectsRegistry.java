@@ -26,6 +26,7 @@ public class MobEffectsRegistry {
     public static final RegistryObject<MobEffect> EVANESCENCE = EFFECTS.register("evanescence", EvanescenceEffect::new);
     public static final RegistryObject<MobEffect> BRUTALITY = EFFECTS.register("brutality", () -> new SimpleEffect(MobEffectCategory.NEUTRAL, 0xff8f3631));
     public static final RegistryObject<MobEffect> MALICE = EFFECTS.register("malice", () -> new SimpleEffect(MobEffectCategory.NEUTRAL, 0xff747456));
+    public static final RegistryObject<MobEffect> CHAINSPELL = EFFECTS.register("chainspell", () -> new SimpleEffect(MobEffectCategory.BENEFICIAL, 0xff3139d8));
 
     public static final float[] BRUTALITY_INCOMING_DAMAGE_REDUCTION = {0.82f, 0.74f, 0.66f, 0.58f, 0.5f};
     public static final float[] BRUTALITY_BASE_DAMAGE_INCREASE = {0.5f, 1.0f, 1.5f, 2.0f, 2.5f};

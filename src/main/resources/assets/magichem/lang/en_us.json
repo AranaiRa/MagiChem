@@ -264,7 +264,7 @@
   "block.magichem.boss_trophy_council": "Shard of the Library Supernal",
   "block.magichem.boss_trophy_demons": "Brand of the Hellfire Emperor",
   "block.magichem.boss_trophy_fey": "Shell of Stolen Voices",
-  "block.magichem.boss_trophy_undead": "Pool of Stygian Offerings",
+  "block.magichem.boss_trophy_undead": "Pool of Stygian Waters",
   "block.magichem.centrifuge": "Centrifuge",
   "block.magichem.centrifuge_router": "Centrifuge",
   "block.magichem.circle_fabrication": "Circle of Fabrication",
@@ -392,6 +392,7 @@
   "effect.magichem.evanescence": "Evanescence",
   "effect.magichem.brutality": "Brutality",
   "effect.magichem.malice": "Malice",
+  "effect.magichem.chainspell": "Chainspell",
 
   "magichem:academic_slurry": "Academic Slurry",
   "academic_slurry_fluid_type": "Academic Slurry",
