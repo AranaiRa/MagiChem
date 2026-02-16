@@ -604,16 +604,19 @@ public class CommonEventHandler {
         if(!caster.level().isClientSide()) {
             final ISpellDefinition spell = event.getSpell();
 
-            if (caster.hasEffect(MobEffectsRegistry.EQUANIMITY.get())) {
-                final MobEffectInstance effect = caster.getEffect(MobEffectsRegistry.EQUANIMITY.get());
+            if (caster.hasEffect(CHAINSPELL.get())) {
+                spell.setManaCost(spell.getManaCost() * 0.667f);
+            }
+            if (caster.hasEffect(EQUANIMITY.get())) {
+                final MobEffectInstance effect = caster.getEffect(EQUANIMITY.get());
                 if(!spell.isChanneled()) {
                     float cost = spell.getManaCost();
                     float heal = Math.max(1.0f, cost * EQUANIMITY_HEAL_PER_MANA[Math.min(effect.getAmplifier(), EQUANIMITY_HEAL_PER_MANA.length)]);
                     caster.heal(heal);
                 }
             }
-            if (caster.hasEffect(MobEffectsRegistry.MALICE.get())) {
-                final MobEffectInstance effect = caster.getEffect(MobEffectsRegistry.MALICE.get());
+            if (caster.hasEffect(MALICE.get())) {
+                final MobEffectInstance effect = caster.getEffect(MALICE.get());
 
                 float radius = MALICE_RADIUS[Math.min(effect.getAmplifier(), MALICE_RADIUS.length)];
                 int amplifier = MALICE_WITHER_LEVEL[Math.min(effect.getAmplifier(), MALICE_WITHER_LEVEL.length)];
