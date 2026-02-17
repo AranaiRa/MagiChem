@@ -28,6 +28,11 @@
     "#forge:glass",
     "#forge:glass_panes",
     { "id": "hexerei:selenite_block", "required": false },
-    { "id": "hexerei:budding_selenite", "required": false }
+    { "id": "hexerei:budding_selenite", "required": false },
+    { "id": "ae2:quartz_block", "required": false },
+    { "id": "ae2:flawless_budding_quartz", "required": false },
+    { "id": "ae2:flawed_budding_quartz", "required": false },
+    { "id": "ae2:chipped_budding_quartz", "required": false },
+    { "id": "ae2:damaged_budding_quartz", "required": false }
   ]
 }
