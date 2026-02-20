@@ -6,9 +6,11 @@ import com.aranaira.magichem.capabilities.wisdom.IWisdomCapability;
 import com.aranaira.magichem.capabilities.wisdom.WisdomCapability;
 import com.mna.api.spells.attributes.Attribute;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -37,6 +39,21 @@ public class EnhancementProvider implements ICapabilitySerializable<Tag> {
 
         nbt.putString("heart", instance.getHeart().name());
 
+        CompoundTag bossTrophyTag = new CompoundTag();
+        if(instance.getBossTrophyUseTargetTime() != 0) {
+            bossTrophyTag.putLong("useTargetTime", instance.getBossTrophyUseTargetTime());
+        }
+        if(instance.hasLastDeathTargetLocation()) {
+            final Pair<BlockPos, ResourceLocation> deathData = instance.getLastDeathTargetLocation();
+            CompoundTag deathTag = new CompoundTag();
+            deathTag.putLong("pos", deathData.getFirst().asLong());
+            deathTag.putString("dim", deathData.getSecond().toString());
+            bossTrophyTag.put("deathData", deathTag);
+        }
+        if(bossTrophyTag.size() > 0) {
+            nbt.put("bossTrophyData", bossTrophyTag);
+        }
+
         return nbt;
     }
 
@@ -45,6 +62,18 @@ public class EnhancementProvider implements ICapabilitySerializable<Tag> {
         IEnhancementCapability instance = this.holder.orElse(new EnhancementCapability());
         if(nbt instanceof CompoundTag ct) {
             instance.setHeart(EnhancedHeartType.valueOf(ct.getString("heart")));
+
+            if(ct.contains("bossTrophyData")) {
+                CompoundTag bossTrophyTag = ct.getCompound("bossTrophyData");
+                if(bossTrophyTag.contains("useTargetTime")) instance.setBossTrophyUseTargetTime(bossTrophyTag.getLong("useTargetTime"));
+                if(bossTrophyTag.contains("deathData")) {
+                    CompoundTag deathTag = bossTrophyTag.getCompound("deathData");
+                    instance.setLastDeathTargetLocation(
+                            BlockPos.of(deathTag.getLong("pos")),
+                            new ResourceLocation(deathTag.getString("dim"))
+                    );
+                }
+            }
         }
     }
 

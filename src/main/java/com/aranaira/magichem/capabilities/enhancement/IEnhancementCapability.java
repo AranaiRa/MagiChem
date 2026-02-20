@@ -2,12 +2,24 @@ package com.aranaira.magichem.capabilities.enhancement;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.mna.api.spells.attributes.Attribute;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 
 public interface IEnhancementCapability {
     ResourceLocation ENHANCEMENT = new ResourceLocation(MagiChemMod.MODID, "enhancement");
+
+    long getBossTrophyUseTargetTime();
+
+    void setBossTrophyUseTargetTime(long pValue);
+
+    boolean hasLastDeathTargetLocation();
+
+    Pair<BlockPos, ResourceLocation> getLastDeathTargetLocation();
+
+    void setLastDeathTargetLocation(BlockPos pPos, ResourceLocation pDim);
 
     void setHeart(EnhancedHeartType pHeartType);
 
