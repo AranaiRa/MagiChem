@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.BossTrophyBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -23,6 +24,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -31,7 +33,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -106,10 +107,14 @@ public class BossTrophyBlock extends Block {
         if(pLevel.isClientSide()) {
             //VFX
         } else {
-            if(!pPlayer.hasEffect(MobEffectsRegistry.CHAINSPELL.get()))
+            if(!pPlayer.hasEffect(MobEffectsRegistry.CHAINSPELL.get())) {
+                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.council.success"));
                 pPlayer.addEffect(new MobEffectInstance(
-                        MobEffectsRegistry.CHAINSPELL.get(), -1, 0, false, true
+                        MobEffectsRegistry.CHAINSPELL.get(), -1, 0, false, false, true
                 ));
+            } else {
+                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.council.failure"));
+            }
         }
     }
 
@@ -117,19 +122,18 @@ public class BossTrophyBlock extends Block {
         if(pLevel.isClientSide()) {
             //VFX
         } else {
-            final AABB aabb = new AABB(pPos.offset(-8, -8, -8), pPos.offset(8, 8, 8));
+            pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.demons.success"));
+
             int existingImps = 0;
             boolean hasCommander = false;
-            for (DemonImp imp : pLevel.getEntitiesOfClass(DemonImp.class, aabb)) {
-                if(SummonUtils.isSummon(imp)) {
-                    if(SummonUtils.getSummoner(imp) == pPlayer) {
-                        existingImps++;
-                        if(imp.hasEffect(MobEffects.MOVEMENT_SPEED)) {
-                            if(imp.hasEffect(EffectInit.ENLARGE.get())) {
-                                if(imp.hasEffect(MobEffectsRegistry.GIGANTIC_VIGOR.get())) {
-                                    if(imp.hasEffect(MobEffectsRegistry.BRUTALITY.get()))
-                                        hasCommander = true;
-                                }
+            for (Mob mob : SummonUtils.getSummons(pPlayer)) {
+                if(mob instanceof DemonImp imp) {
+                    existingImps++;
+                    if (imp.hasEffect(MobEffects.MOVEMENT_SPEED)) {
+                        if (imp.hasEffect(EffectInit.ENLARGE.get())) {
+                            if (imp.hasEffect(MobEffectsRegistry.GIGANTIC_VIGOR.get())) {
+                                if (imp.hasEffect(MobEffectsRegistry.BRUTALITY.get()))
+                                    hasCommander = true;
                             }
                         }
                     }
@@ -157,7 +161,16 @@ public class BossTrophyBlock extends Block {
     }
 
     private void handleFeyEffect(Level pLevel, BlockPos pPos, Player pPlayer) {
-
+        if(pLevel.isClientSide()) {
+            //VFX
+        } else {
+            if(!pPlayer.hasEffect(MobEffectsRegistry.REGAL_TWILIGHT.get())) {
+                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.fey.success"));
+                pPlayer.addEffect(new MobEffectInstance(
+                        MobEffectsRegistry.REGAL_TWILIGHT.get(), 36000, 0, false, false, true
+                ));
+            }
+        }
     }
 
     private void handleUndeadEffect(Level pLevel, BlockPos pPos, Player pPlayer) {
