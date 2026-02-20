@@ -1407,7 +1407,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     public ItemStack getRecipeItem() {
-        return currentRecipe.getResultItem();
+        return currentRecipe == null ? ItemStack.EMPTY.copy() : currentRecipe.getResultItem();
     }
 
     @Override
