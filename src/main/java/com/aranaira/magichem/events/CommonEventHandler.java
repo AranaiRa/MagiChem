@@ -569,6 +569,17 @@ public class CommonEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onEffectExpired(MobEffectEvent.Expired event) {
+        if(event.getEntity() instanceof Player player && event.getEffectInstance() != null) {
+            if (event.getEffectInstance().getEffect() == CHAINSPELL.get()) {
+                player.sendSystemMessage(Component.translatable("feedback.trophy.council.expire"));
+            } else if (event.getEffectInstance().getEffect() == REGAL_TWILIGHT.get()) {
+                player.sendSystemMessage(Component.translatable("feedback.trophy.fey.expire"));
+            }
+        }
+    }
+
     private static final SpellEffect[] DAMAGE_COMPONENTS = new SpellEffect[]{
             FIRE_DAMAGE, BACKDRAFT, FROST_DAMAGE, SHATTER, LIGHTNING_DAMAGE, MAGIC_DAMAGE, IMPALE, WIND_SHEAR, PURGE
     };

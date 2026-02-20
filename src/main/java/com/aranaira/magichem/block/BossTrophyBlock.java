@@ -1,6 +1,8 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.BossTrophyBlockEntity;
+import com.aranaira.magichem.capabilities.enhancement.EnhancementProvider;
+import com.aranaira.magichem.capabilities.enhancement.IEnhancementCapability;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -35,6 +37,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 
@@ -88,37 +92,39 @@ public class BossTrophyBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        final LazyOptional<IPlayerProgression> capability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
-        capability.ifPresent(cap -> {
-            final IFaction alliedFaction = cap.getAlliedFaction();
-            if(alliedFaction.is(FACTION_COUNCIL)) handleCouncilEffect(pLevel, pPos, pPlayer);
-            else if(alliedFaction.is(FACTION_DEMONS)) handleDemonsEffect(pLevel, pPos, pPlayer);
-            else if(alliedFaction.is(FACTION_FEY)) handleFeyEffect(pLevel, pPos, pPlayer);
-            else if(alliedFaction.is(FACTION_UNDEAD)) handleUndeadEffect(pLevel, pPos, pPlayer);
+        final LazyOptional<IPlayerProgression> progressionCapability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
+        final Optional<IEnhancementCapability> enhancementCapability = EnhancementProvider.getCapability(pPlayer);
+        progressionCapability.ifPresent(pCap -> {
+            enhancementCapability.ifPresent(eCap -> {
+                final IFaction alliedFaction = pCap.getAlliedFaction();
+                if(alliedFaction.is(FACTION_COUNCIL)) handleCouncilEffect(pLevel, pPos, pPlayer, eCap);
+                else if(alliedFaction.is(FACTION_DEMONS)) handleDemonsEffect(pLevel, pPos, pPlayer, eCap);
+                else if(alliedFaction.is(FACTION_FEY)) handleFeyEffect(pLevel, pPos, pPlayer, eCap);
+                else if(alliedFaction.is(FACTION_UNDEAD)) handleUndeadEffect(pLevel, pPos, pPlayer, eCap);
+            });
         });
 
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
 
-    private void handleCouncilEffect(Level pLevel, BlockPos pPos, Player pPlayer) {
-        if(pLevel.isClientSide()) {
-            //VFX
-        } else {
-            if(!pPlayer.hasEffect(MobEffectsRegistry.CHAINSPELL.get())) {
-                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.council.success"));
-                pPlayer.addEffect(new MobEffectInstance(
-                        MobEffectsRegistry.CHAINSPELL.get(), -1, 0, false, false, true
-                ));
+    private void handleCouncilEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pCap) {
+        if(!pLevel.isClientSide()) {
+            if (pLevel.getGameTime() >= pCap.getBossTrophyUseTargetTime()) {
+                if (!pPlayer.hasEffect(MobEffectsRegistry.CHAINSPELL.get())) {
+                    pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.council.success"));
+                    pPlayer.addEffect(new MobEffectInstance(
+                            MobEffectsRegistry.CHAINSPELL.get(), -1, 0, false, false, true
+                    ));
+                    pCap.setBossTrophyUseTargetTime(pLevel.getGameTime() + 36000);
+                }
             } else {
                 pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.council.failure"));
             }
         }
     }
 
-    private void handleDemonsEffect(Level pLevel, BlockPos pPos, Player pPlayer) {
-        if(pLevel.isClientSide()) {
-            //VFX
-        } else {
+    private void handleDemonsEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pCap) {
+        if (!pLevel.isClientSide()) {
             pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.demons.success"));
 
             int existingImps = 0;
@@ -157,21 +163,32 @@ public class BossTrophyBlock extends BaseEntityBlock {
         }
     }
 
-    private void handleFeyEffect(Level pLevel, BlockPos pPos, Player pPlayer) {
-        if(pLevel.isClientSide()) {
-            //VFX
-        } else {
-            if(!pPlayer.hasEffect(MobEffectsRegistry.REGAL_TWILIGHT.get())) {
-                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.fey.success"));
-                pPlayer.addEffect(new MobEffectInstance(
-                        MobEffectsRegistry.REGAL_TWILIGHT.get(), 36000, 0, false, false, true
-                ));
+    private void handleFeyEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pCap) {
+        if (!pLevel.isClientSide()) {
+            if(pLevel.getGameTime() >= pCap.getBossTrophyUseTargetTime()) {
+                if (!pPlayer.hasEffect(MobEffectsRegistry.REGAL_TWILIGHT.get())) {
+                    pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.fey.success"));
+                    pCap.setBossTrophyUseTargetTime(pLevel.getGameTime() + 36000);
+
+                    pPlayer.addEffect(new MobEffectInstance(
+                            MobEffectsRegistry.REGAL_TWILIGHT.get(), 36000, 0, false, false, true
+                    ));
+                }
+            }
+            else {
+                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.fey.failure"));
             }
         }
     }
 
-    private void handleUndeadEffect(Level pLevel, BlockPos pPos, Player pPlayer) {
+    private void handleUndeadEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pCap) {
+        if (!pLevel.isClientSide()) {
+            if (pCap.hasLastDeathTargetLocation()) {
 
+            } else {
+                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.undead.failure"));
+            }
+        }
     }
 
     @Nullable
