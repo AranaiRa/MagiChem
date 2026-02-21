@@ -92,17 +92,20 @@ public class BossTrophyBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        final LazyOptional<IPlayerProgression> progressionCapability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
-        final Optional<IEnhancementCapability> enhancementCapability = EnhancementProvider.getCapability(pPlayer);
-        progressionCapability.ifPresent(pCap -> {
-            enhancementCapability.ifPresent(eCap -> {
-                final IFaction alliedFaction = pCap.getAlliedFaction();
-                if(alliedFaction.is(FACTION_COUNCIL)) handleCouncilEffect(pLevel, pPos, pPlayer, eCap);
-                else if(alliedFaction.is(FACTION_DEMONS)) handleDemonsEffect(pLevel, pPos, pPlayer, eCap);
-                else if(alliedFaction.is(FACTION_FEY)) handleFeyEffect(pLevel, pPos, pPlayer, eCap);
-                else if(alliedFaction.is(FACTION_UNDEAD)) handleUndeadEffect(pLevel, pPos, pPlayer, eCap);
+        if(pHand == InteractionHand.MAIN_HAND) {
+            final LazyOptional<IPlayerProgression> progressionCapability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
+            final Optional<IEnhancementCapability> enhancementCapability = EnhancementProvider.getCapability(pPlayer);
+            final Block block = pState.getBlock();
+            progressionCapability.ifPresent(pCap -> {
+                enhancementCapability.ifPresent(eCap -> {
+                    final IFaction alliedFaction = pCap.getAlliedFaction();
+                    if (block == BlockRegistry.BOSS_TROPHY_COUNCIL.get() && alliedFaction.is(FACTION_COUNCIL)) handleCouncilEffect(pLevel, pPos, pPlayer, eCap);
+                    else if (block == BlockRegistry.BOSS_TROPHY_DEMONS.get() && alliedFaction.is(FACTION_DEMONS)) handleDemonsEffect(pLevel, pPos, pPlayer, eCap);
+                    else if (block == BlockRegistry.BOSS_TROPHY_FEY.get() && alliedFaction.is(FACTION_FEY)) handleFeyEffect(pLevel, pPos, pPlayer, eCap);
+                    else if (block == BlockRegistry.BOSS_TROPHY_UNDEAD.get() && alliedFaction.is(FACTION_UNDEAD)) handleUndeadEffect(pLevel, pPos, pPlayer, eCap);
+                });
             });
-        });
+        }
 
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
