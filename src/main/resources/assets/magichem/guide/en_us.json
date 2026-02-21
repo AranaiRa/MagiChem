@@ -3640,6 +3640,126 @@
       }
     ]
   },
+  "Prime Aggregator": {
+    "index": "1208",
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Prime Aggregator"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3 Wide, 2 Tall, 3 Deep\n\nVisuals:\n3 Wide, 4 Tall, 3 Deep\n",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an advanced device capable of performing "
+          },
+          {
+            "text": "Exaltation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nExaltation recipes require one type of "
+          },
+          {
+            "text": "item",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", one type of "
+          },
+          {
+            "text": "materia",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Eldrin Power",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAcademic Slurry can be inserted into the device by attaching an "
+          },
+          {
+            "text": "Experience Exchanger",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to the device's tank, having a "
+          },
+          {
+            "text": "Construct",
+            "color": "dark_purple"
+          },
+          {
+            "text": " insert the Slurry, or (once you reach Tier 4) attaching an "
+          },
+          {
+            "text": "Occult Matrix",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Prime Aggregator to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Exaltation symbol in the center.\n\nThe alchemical Exaltation symbol in the center represents the progress on the current craft. It begins filling once all ingredients and materia are provided, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Exaltation symbol are four icons that represent the current stage of the craft. From top to bottom: Items, Materia, Eldrin Power, Academic Slurry.\n\nSurrounding the central panel are four smaller panels, each associated with one of the four stages. The currently active stage's panel will be lit up, while the other three will be dimmed. As the stage's requirements are satisfied the bar on the bottom of the panel will fill up and the text above it will display how much of the requirement is left.\n\nIf you wish to pause a craft, remove the "
+          },
+          {
+            "text": "Exaltation in Progress",
+            "color": "dark_purple"
+          },
+          {
+            "text": " item from the slot. Inserting this item back into the slot later will allow you to resume the craft where you left off."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/prime_aggregator"
+      }
+    ]
+  },
   "Proto Actuator": {
     "index": "1300",
     "category": "magichem",

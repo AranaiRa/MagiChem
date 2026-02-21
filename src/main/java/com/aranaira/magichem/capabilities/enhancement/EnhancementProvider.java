@@ -45,10 +45,12 @@ public class EnhancementProvider implements ICapabilitySerializable<Tag> {
         }
         if(instance.hasLastDeathTargetLocation()) {
             final Pair<BlockPos, ResourceLocation> deathData = instance.getLastDeathTargetLocation();
-            CompoundTag deathTag = new CompoundTag();
-            deathTag.putLong("pos", deathData.getFirst().asLong());
-            deathTag.putString("dim", deathData.getSecond().toString());
-            bossTrophyTag.put("deathData", deathTag);
+            if(deathData.getFirst() != null && deathData.getSecond() != null){
+                CompoundTag deathTag = new CompoundTag();
+                deathTag.putLong("pos", deathData.getFirst().asLong());
+                deathTag.putString("dim", deathData.getSecond().toString());
+                bossTrophyTag.put("deathData", deathTag);
+            }
         }
         if(bossTrophyTag.size() > 0) {
             nbt.put("bossTrophyData", bossTrophyTag);
