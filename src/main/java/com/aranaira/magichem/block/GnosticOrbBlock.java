@@ -98,6 +98,10 @@ public class GnosticOrbBlock extends BaseEntityBlock {
         if(pLevel.getBlockEntity(pPos) instanceof GnosticOrbBlockEntity orb) {
             if(stack.getItem() == ItemRegistry.DEBUG_ORB.get() || pPlayer.hasEffect(MobEffectsRegistry.REGAL_TWILIGHT.get())) {
                 if(orb.hasProphecyCooking()) orb.skipToFullCharge();
+                else if(orb.isProphecyReady()) {
+                    orb.finalizeProphecy(pPlayer);
+                    return InteractionResult.CONSUME;
+                }
             }
             else if (!pLevel.isClientSide()) {
                 if (!orb.hasProphecyCooking()) {
