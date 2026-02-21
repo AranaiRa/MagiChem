@@ -47,6 +47,7 @@ import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mna.effects.EffectInit;
 import com.mna.entities.constructs.animated.Construct;
+import com.mna.entities.faction.Pixie;
 import com.mna.entities.utility.WanderingWizard;
 import com.mna.items.ItemInit;
 import com.mna.items.sorcery.ItemSpell;
@@ -571,11 +572,16 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onEffectExpired(MobEffectEvent.Expired event) {
-        if(event.getEntity() instanceof Player player && event.getEffectInstance() != null) {
+        if (event.getEntity() instanceof Player player && event.getEffectInstance() != null) {
             if (event.getEffectInstance().getEffect() == CHAINSPELL.get()) {
                 player.sendSystemMessage(Component.translatable("feedback.trophy.council.expire"));
             } else if (event.getEffectInstance().getEffect() == REGAL_TWILIGHT.get()) {
                 player.sendSystemMessage(Component.translatable("feedback.trophy.fey.expire"));
+                for (Mob summon : SummonUtils.getSummons(player)) {
+                    if (summon instanceof Pixie pixie) {
+                        pixie.kill();
+                    }
+                }
             }
         }
     }
