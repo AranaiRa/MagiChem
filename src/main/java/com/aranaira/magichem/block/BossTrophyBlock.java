@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +45,10 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACI
 
 public class BossTrophyBlock extends BaseEntityBlock {
     private static final VoxelShape
-        VOXEL_SHAPE_NORTH, VOXEL_SHAPE_EAST, VOXEL_SHAPE_SOUTH, VOXEL_SHAPE_WEST;
+            DEMON_VOXEL_SHAPE_NORTH, DEMON_VOXEL_SHAPE_EAST, DEMON_VOXEL_SHAPE_SOUTH, DEMON_VOXEL_SHAPE_WEST,
+
+            UNDEAD_VOXEL_SHAPE_BOWL_BODY, UNDEAD_VOXEL_SHAPE_BOWL_LIP, UNDEAD_VOXEL_SHAPE_SKULL, UNDEAD_VOXEL_SHAPE_LEG_BACK, UNDEAD_VOXEL_SHAPE_PLATE_BACK, UNDEAD_VOXEL_SHAPE_LEG1, UNDEAD_VOXEL_SHAPE_LEG2, UNDEAD_VOXEL_SHAPE_LEG3, UNDEAD_VOXEL_SHAPE_LEG4,
+            UNDEAD_VOXEL_SHAPE_AGGREGATE_NORTH, UNDEAD_VOXEL_SHAPE_AGGREGATE_EAST, UNDEAD_VOXEL_SHAPE_AGGREGATE_SOUTH, UNDEAD_VOXEL_SHAPE_AGGREGATE_WEST;
     private static final ResourceLocation FACTION_COUNCIL = new ResourceLocation("mna:council");
     private static final ResourceLocation FACTION_FEY = new ResourceLocation("mna:fey");
     private static final ResourceLocation FACTION_DEMONS = new ResourceLocation("mna:demons");
@@ -81,11 +85,20 @@ public class BossTrophyBlock extends BaseEntityBlock {
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         final Direction dir = pState.getValue(FACING);
+        final Block block = pState.getBlock();
 
-        if(dir == Direction.NORTH) return VOXEL_SHAPE_NORTH;
-        else if(dir == Direction.EAST) return VOXEL_SHAPE_EAST;
-        else if(dir == Direction.SOUTH) return VOXEL_SHAPE_SOUTH;
-        else if(dir == Direction.WEST) return VOXEL_SHAPE_WEST;
+        if(block == BlockRegistry.BOSS_TROPHY_DEMONS.get()) {
+            if (dir == Direction.NORTH) return DEMON_VOXEL_SHAPE_NORTH;
+            else if (dir == Direction.EAST) return DEMON_VOXEL_SHAPE_EAST;
+            else if (dir == Direction.SOUTH) return DEMON_VOXEL_SHAPE_SOUTH;
+            else if (dir == Direction.WEST) return DEMON_VOXEL_SHAPE_WEST;
+        }
+        if(block == BlockRegistry.BOSS_TROPHY_UNDEAD.get()) {
+            if (dir == Direction.NORTH) return UNDEAD_VOXEL_SHAPE_AGGREGATE_NORTH;
+            else if (dir == Direction.EAST) return UNDEAD_VOXEL_SHAPE_AGGREGATE_EAST;
+            else if (dir == Direction.SOUTH) return UNDEAD_VOXEL_SHAPE_AGGREGATE_SOUTH;
+            else if (dir == Direction.WEST) return UNDEAD_VOXEL_SHAPE_AGGREGATE_WEST;
+        }
 
         return super.getShape(pState, pLevel, pPos, pContext);
     }
@@ -207,9 +220,64 @@ public class BossTrophyBlock extends BaseEntityBlock {
     }
 
     static {
-        VOXEL_SHAPE_NORTH = Block.box(2,0, 3, 14, 15, 13);
-        VOXEL_SHAPE_EAST = MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH, 1);
-        VOXEL_SHAPE_SOUTH = MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH, 2);
-        VOXEL_SHAPE_WEST = MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH, 3);
+        DEMON_VOXEL_SHAPE_NORTH = Block.box(2,0, 3, 14, 15, 13);
+        DEMON_VOXEL_SHAPE_EAST = MathHelper.rotateVoxelShape(DEMON_VOXEL_SHAPE_NORTH, 1);
+        DEMON_VOXEL_SHAPE_SOUTH = MathHelper.rotateVoxelShape(DEMON_VOXEL_SHAPE_NORTH, 2);
+        DEMON_VOXEL_SHAPE_WEST = MathHelper.rotateVoxelShape(DEMON_VOXEL_SHAPE_NORTH, 3);
+
+        UNDEAD_VOXEL_SHAPE_BOWL_BODY = Block.box(2,2,4.108, 14,6,14.5);
+        UNDEAD_VOXEL_SHAPE_BOWL_LIP = Block.box(1.134,6,3.108, 14.866,7,15.5);
+        UNDEAD_VOXEL_SHAPE_SKULL = Block.box(5,7.240,-1.778, 11,15.683,5.853);
+        UNDEAD_VOXEL_SHAPE_PLATE_BACK = Block.box(5.5,6,0.107,10.5,7,3.107);
+        UNDEAD_VOXEL_SHAPE_LEG_BACK = Block.box(7.5,0,0.107,8.5,6,5.107);
+        UNDEAD_VOXEL_SHAPE_LEG1 = Block.box(0.634,0,8.804,3.634,10,9.804);
+        UNDEAD_VOXEL_SHAPE_LEG2 = Block.box(3.884,0,12.835,6.25,10,15.933);
+        UNDEAD_VOXEL_SHAPE_LEG3 = Block.box(9.75,0,12.835,12.156,10,15.933);
+        UNDEAD_VOXEL_SHAPE_LEG4 = Block.box(12.366,0,8.804,15.366,10,9.804);
+
+        UNDEAD_VOXEL_SHAPE_AGGREGATE_NORTH = Shapes.or(
+                UNDEAD_VOXEL_SHAPE_BOWL_BODY,
+                UNDEAD_VOXEL_SHAPE_BOWL_LIP,
+                UNDEAD_VOXEL_SHAPE_SKULL,
+                UNDEAD_VOXEL_SHAPE_PLATE_BACK,
+                UNDEAD_VOXEL_SHAPE_LEG_BACK,
+                UNDEAD_VOXEL_SHAPE_LEG1,
+                UNDEAD_VOXEL_SHAPE_LEG2,
+                UNDEAD_VOXEL_SHAPE_LEG3,
+                UNDEAD_VOXEL_SHAPE_LEG4
+        );
+        UNDEAD_VOXEL_SHAPE_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_BOWL_BODY,1),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_BOWL_LIP,1),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_SKULL,1),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_PLATE_BACK,1),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG_BACK,1),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG1,1),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG2,1),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG3,1),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG4,1)
+        );
+        UNDEAD_VOXEL_SHAPE_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_BOWL_BODY,2),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_BOWL_LIP,2),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_SKULL,2),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_PLATE_BACK,2),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG_BACK,2),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG1,2),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG2,2),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG3,2),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG4,2)
+        );
+        UNDEAD_VOXEL_SHAPE_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_BOWL_BODY,3),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_BOWL_LIP,3),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_SKULL,3),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_PLATE_BACK,3),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG_BACK,3),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG1,3),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG2,3),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG3,3),
+                MathHelper.rotateVoxelShape(UNDEAD_VOXEL_SHAPE_LEG4,3)
+        );
     }
 }
