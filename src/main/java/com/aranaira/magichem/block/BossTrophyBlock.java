@@ -92,7 +92,7 @@ public class BossTrophyBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pHand == InteractionHand.MAIN_HAND) {
+        if(pHand == InteractionHand.MAIN_HAND && pPlayer.hasEffect(EffectInit.CIRCLE_OF_POWER.get())) {
             final LazyOptional<IPlayerProgression> progressionCapability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
             final Optional<IEnhancementCapability> enhancementCapability = EnhancementProvider.getCapability(pPlayer);
             final Block block = pState.getBlock();
