@@ -128,6 +128,7 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                 }
                 case GENERATE_ORB -> {
                     ItemStack learningItem = construct.asEntity().getItemInHand(learningItemHand.get());
+                    construct.clearForcedAnimation();
                     if(learningItem.isEmpty()) {
                         pushDiagnosticMessage("Hey, where did that thing I was holding go...?", false);
                         forceFail();
@@ -154,7 +155,6 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                             }
                         }
                         construct.asEntity().setItemInHand(learningItemHand.get(), learningItem.isEmpty() ? ItemStack.EMPTY : learningItem);
-                        construct.clearForcedAnimation();
                         if(learningItem.getItem() == ItemRegistry.FRACTALLINE_PUZZLE_BOX.get()) {
                             if(FractallinePuzzleBoxItem.trySolvePuzzle(learningItem))
                                 pushDiagnosticMessage("Take THAT, puzzle! ...Wow, there's another puzzle inside! Today is the best.", false);

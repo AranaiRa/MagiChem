@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
+import com.aranaira.magichem.foundation.IHasDeviceRecipeSlot;
 import com.aranaira.magichem.gui.AlchemicalNexusScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -37,17 +38,9 @@ public class DeviceRecipeClearC2SPacket {
         BlockEntity entity = player.level().getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
-            if(entity instanceof AbstractFixationBlockEntity fixation) {
-                fixation.clearRecipe();
-            }
-            else if(entity instanceof AbstractSeparationBlockEntity separation) {
-                separation.clearRecipe();
-            }
-            else if(entity instanceof AbstractFabricationBlockEntity fabrication) {
-                fabrication.clearRecipe();
-            }
-            else if(entity instanceof AlchemicalNexusBlockEntity nexus) {
-                nexus.clearRecipe();
+            // all in one
+            if(entity instanceof IHasDeviceRecipeSlot device) {
+                device.clearRecipe();
             }
         });
 
