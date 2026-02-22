@@ -1,0 +1,5 @@
+# Blender MTL File: 'boss_trophies.blend'
+# Material Count: 1
+
+newmtl WATER
+map_Kd minecraft:block/water_flow
