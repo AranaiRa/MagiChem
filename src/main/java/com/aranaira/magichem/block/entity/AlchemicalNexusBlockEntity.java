@@ -181,7 +181,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
 
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-                if (slot == SLOT_PROGRESS_HOLDER) return ItemStack.EMPTY;
+                if (slot == SLOT_PROGRESS_HOLDER || slot == SLOT_MARKS) return ItemStack.EMPTY;
                 if (slot == BypassedItemHandler.ConvertSlot(SLOT_PROGRESS_HOLDER)) {
                     slot = BypassedItemHandler.ConvertSlot(slot);
                     final ItemStack stackInSlot = itemHandler.getStackInSlot(slot).copy();
@@ -192,6 +192,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                 } else if(slot == SLOT_WISDOM) {
                     return ItemStack.EMPTY;
                 }
+                if (slot == BypassedItemHandler.ConvertSlot(SLOT_MARKS)) slot = SLOT_MARKS;
 
                 return super.extractItem(slot, amount, simulate);
             }

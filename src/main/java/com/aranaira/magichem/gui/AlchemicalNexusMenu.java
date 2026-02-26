@@ -47,11 +47,12 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            BypassedItemHandler bypassed = new BypassedItemHandler.Extract(handler, AlchemicalNexusBlockEntity.SLOT_MARKS, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER);
+
             //Mark slot
-            this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_MARKS, 134, -5));
+            this.addSlot(new SlotItemHandler(bypassed, AlchemicalNexusBlockEntity.SLOT_MARKS, 134, -5));
 
             //Processing slot
-            BypassedItemHandler bypassed = new BypassedItemHandler.Extract(handler, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER);
             this.addSlot(new SlotItemHandler(bypassed, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER, 80, -5));
 
             //Input item slots
