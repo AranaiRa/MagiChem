@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
+import com.aranaira.magichem.util.BypassedItemHandler;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.items.ItemInit;
 import com.mojang.datafixers.util.Pair;
@@ -50,7 +51,8 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_MARKS, 134, -5));
 
             //Processing slot
-            this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER, 80, -5));
+            BypassedItemHandler bypassed = new BypassedItemHandler.Extract(handler, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER);
+            this.addSlot(new SlotItemHandler(bypassed, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER, 80, -5));
 
             //Input item slots
             for(int i = SLOT_INPUT_START; i< SLOT_INPUT_START + AlchemicalNexusBlockEntity.SLOT_INPUT_COUNT; i++)
