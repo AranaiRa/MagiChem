@@ -322,6 +322,13 @@ public class MagiChemMod
             event.register(DisintegrationPyreBlockEntityRenderer.RENDERER_MODEL_FLAME_LARGE);
 
             event.register(CovetousCofferBlockEntityRenderer.RENDERER_MODEL_LID);
+
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_SUMMER_1);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_SUMMER_2);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_SUMMER_3);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_WINTER_1);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_WINTER_2);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_WINTER_3);
         }
     }
 }

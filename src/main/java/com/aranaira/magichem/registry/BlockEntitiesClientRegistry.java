@@ -58,5 +58,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.DISINTEGRATION_PYRE_BE.get(), DisintegrationPyreBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.COVETOUS_COFFER_BE.get(), CovetousCofferBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.PRIME_AGGREGATOR_BE.get(), PrimeAggregatorBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.BOSS_TROPHY_BE.get(), BossTrophyBlockEntityRenderer::new);
     }
 }
