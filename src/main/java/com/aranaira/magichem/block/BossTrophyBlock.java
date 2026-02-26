@@ -47,6 +47,9 @@ public class BossTrophyBlock extends BaseEntityBlock {
     private static final VoxelShape
             DEMON_VOXEL_SHAPE_NORTH, DEMON_VOXEL_SHAPE_EAST, DEMON_VOXEL_SHAPE_SOUTH, DEMON_VOXEL_SHAPE_WEST,
 
+            FEY_VOXEL_SHAPE_BASE, FEY_VOXEL_SHAPE_DISC, FEY_VOXEL_SHAPE_GNOMON,
+            FEY_VOXEL_SHAPE_AGGREGATE,
+
             UNDEAD_VOXEL_SHAPE_BOWL_BODY, UNDEAD_VOXEL_SHAPE_BOWL_LIP, UNDEAD_VOXEL_SHAPE_SKULL, UNDEAD_VOXEL_SHAPE_LEG_BACK, UNDEAD_VOXEL_SHAPE_PLATE_BACK, UNDEAD_VOXEL_SHAPE_LEG1, UNDEAD_VOXEL_SHAPE_LEG2, UNDEAD_VOXEL_SHAPE_LEG3, UNDEAD_VOXEL_SHAPE_LEG4,
             UNDEAD_VOXEL_SHAPE_AGGREGATE_NORTH, UNDEAD_VOXEL_SHAPE_AGGREGATE_EAST, UNDEAD_VOXEL_SHAPE_AGGREGATE_SOUTH, UNDEAD_VOXEL_SHAPE_AGGREGATE_WEST;
     private static final ResourceLocation FACTION_COUNCIL = new ResourceLocation("mna:council");
@@ -87,13 +90,16 @@ public class BossTrophyBlock extends BaseEntityBlock {
         final Direction dir = pState.getValue(FACING);
         final Block block = pState.getBlock();
 
-        if(block == BlockRegistry.BOSS_TROPHY_DEMONS.get()) {
+        if(block == BlockRegistry.BOSS_TROPHY_FEY.get()) {
+            return FEY_VOXEL_SHAPE_AGGREGATE;
+        }
+        else if(block == BlockRegistry.BOSS_TROPHY_DEMONS.get()) {
             if (dir == Direction.NORTH) return DEMON_VOXEL_SHAPE_NORTH;
             else if (dir == Direction.EAST) return DEMON_VOXEL_SHAPE_EAST;
             else if (dir == Direction.SOUTH) return DEMON_VOXEL_SHAPE_SOUTH;
             else if (dir == Direction.WEST) return DEMON_VOXEL_SHAPE_WEST;
         }
-        if(block == BlockRegistry.BOSS_TROPHY_UNDEAD.get()) {
+        else if(block == BlockRegistry.BOSS_TROPHY_UNDEAD.get()) {
             if (dir == Direction.NORTH) return UNDEAD_VOXEL_SHAPE_AGGREGATE_NORTH;
             else if (dir == Direction.EAST) return UNDEAD_VOXEL_SHAPE_AGGREGATE_EAST;
             else if (dir == Direction.SOUTH) return UNDEAD_VOXEL_SHAPE_AGGREGATE_SOUTH;
@@ -220,6 +226,16 @@ public class BossTrophyBlock extends BaseEntityBlock {
     }
 
     static {
+        FEY_VOXEL_SHAPE_BASE = Block.box(3.253, 0, 3.253, 12.747, 4, 12.747);
+        FEY_VOXEL_SHAPE_DISC = Block.box(-0.449, 4, -0.449, 16.449, 5, 16.449);
+        FEY_VOXEL_SHAPE_GNOMON = Block.box(7.5, 5, 2.5, 8.5, 12, 8.5);
+
+        FEY_VOXEL_SHAPE_AGGREGATE = Shapes.or(
+                FEY_VOXEL_SHAPE_BASE,
+                FEY_VOXEL_SHAPE_DISC,
+                FEY_VOXEL_SHAPE_GNOMON
+        );
+
         DEMON_VOXEL_SHAPE_NORTH = Block.box(2,0, 3, 14, 15, 13);
         DEMON_VOXEL_SHAPE_EAST = MathHelper.rotateVoxelShape(DEMON_VOXEL_SHAPE_NORTH, 1);
         DEMON_VOXEL_SHAPE_SOUTH = MathHelper.rotateVoxelShape(DEMON_VOXEL_SHAPE_NORTH, 2);
