@@ -329,6 +329,7 @@ public class MagiChemMod
             event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_WINTER_1);
             event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_WINTER_2);
             event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_WINTER_3);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_WATER);
         }
     }
 }

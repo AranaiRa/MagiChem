@@ -2,25 +2,37 @@ package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.BossTrophyBlockEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.render.RenderUtils;
+import com.mna.tools.math.MathUtils;
 import com.mna.tools.render.ModelUtils;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.client.model.data.ModelData;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+
+import java.util.Iterator;
 
 public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTrophyBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_SUMMER_1 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_summer_1");
@@ -29,7 +41,9 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
     public static final ResourceLocation RENDERER_MODEL_WINTER_1 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_1");
     public static final ResourceLocation RENDERER_MODEL_WINTER_2 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_2");
     public static final ResourceLocation RENDERER_MODEL_WINTER_3 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_3");
+    public static final ResourceLocation RENDERER_MODEL_WATER = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_undead_water");
     private static final ResourceLocation TEXTURE_FEY = new ResourceLocation(MagiChemMod.MODID, "block/boss_trophy_fey");
+    private static final RandomSource rSource = RandomSource.create(81234L);
 
     public BossTrophyBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
@@ -63,7 +77,9 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         VertexConsumer buffer = pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
         PoseStack.Pose last = pPoseStack.last();
 
+        //Summer and Winter effects
         long dayTime = world.getDayTime() % 24000;
+        boolean isNight = dayTime >= 12800 && dayTime < 23200;
 
         pPoseStack.pushPose();
         if((dayTime >= 0 && dayTime < 800) || (dayTime >= 11200 && dayTime < 12000))
@@ -79,6 +95,28 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         else if((dayTime >= 15200 && dayTime < 20800))
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_WINTER_3, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
         pPoseStack.popPose();
+
+        //Gnomon shadow
+//        double phaseProgress = isNight ? (double)(dayTime - 12800) / 10400d : (double)(dayTime + 800) / 13600d;
+//        double theta = phaseProgress * Math.PI;
+//        double xN = Math.cos(theta);
+//        double zN = Math.sin(theta);
+//        double radius = 0.28125 + zN * 0.125;
+//
+//        pPoseStack.pushPose();
+//        {
+//            VertexConsumer vertexBuilder = pBuffer.getBuffer(RenderType.translucent());
+//            Matrix4f renderMatrix = pPoseStack.last().pose();
+//            Matrix3f normalMatrix = pPoseStack.last().normal();
+//            TextureAtlasSprite resolvedTexture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_FEY);
+//            int tint = isNight ? 50 : 255;
+//
+//            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (xN * 0.0625)), 1, (float)(0.5 + (xN * 0.0625))).color(tint,tint,tint,196).uv(resolvedTexture.getU(0.9375), resolvedTexture.getV(0)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
+//            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (xN * 0.0625)), 1, 0.5f).color(tint,tint,tint,196).uv(resolvedTexture.getU(0.9375), resolvedTexture.getV(0.0625)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
+//            vertexBuilder.vertex(renderMatrix, 0.5f, 1, 0).color(tint,tint,tint,196).uv(resolvedTexture.getU(1), resolvedTexture.getV(0.0625)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
+//            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (xN * 0.0625)), 1, (float)(0.5 - (zN * 0.0625))).color(tint,tint,tint,196).uv(resolvedTexture.getU(1), resolvedTexture.getV(0)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
+//        }
+//        pPoseStack.popPose();
     }
 
     private void renderUndead(BossTrophyBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
@@ -86,11 +124,38 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        VertexConsumer buffer = pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
+        VertexConsumer buffer = pBuffer.getBuffer(RenderType.translucent());
         PoseStack.Pose last = pPoseStack.last();
+        Direction facing = pBlockEntity.getBlockState().getValue(MagiChemBlockStateProperties.FACING);
 
         pPoseStack.pushPose();
-//        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_STEAM_VENTS, pPoseStack, pPackedLight, pPackedOverlay);
+
+        switch (facing) {
+            case EAST -> {
+                pPoseStack.translate(1.0f, 0.0f, 0.0f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
+            }
+            case SOUTH -> {
+                pPoseStack.translate(1.0f, 0.0f, 1.0f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+            }
+            case WEST -> {
+                pPoseStack.translate(0.0f, 0.0f, 1.0f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
+            }
+        }
+
+        {
+            BakedModel model = Minecraft.getInstance().getModelManager().getModel(RENDERER_MODEL_WATER);
+            ModelData worldModelData = world.getModelDataManager().getAt(pos);
+            ModelData data = model.getModelData(world, pos, state, worldModelData == null ? ModelData.EMPTY : worldModelData);
+            Iterator var13 = model.getQuads(state, (Direction)null, rSource, data, (RenderType)null).iterator();
+
+            while(var13.hasNext()) {
+                BakedQuad quad = (BakedQuad)var13.next();
+                buffer.putBulkData(pPoseStack.last(), quad, 0.15F, 0.1F, 0.2F, 1.0F, pPackedLight, pPackedOverlay, true);
+            }
+        }
         pPoseStack.popPose();
     }
 }
