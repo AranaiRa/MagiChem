@@ -16,6 +16,7 @@ import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.util.AdvancementUtil;
+import com.aranaira.magichem.util.BypassedItemHandler;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
@@ -173,8 +174,16 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
             }
 
             @Override
+            protected void validateSlotIndex(int slot) {
+                if (BypassedItemHandler.IsSignal(slot)) slot = BypassedItemHandler.ConvertSlot(slot);
+                super.validateSlotIndex(slot);
+            }
+
+            @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-                if(slot == SLOT_PROGRESS_HOLDER) {
+                if (slot == SLOT_PROGRESS_HOLDER || slot == SLOT_MARKS) return ItemStack.EMPTY;
+                if (slot == BypassedItemHandler.ConvertSlot(SLOT_PROGRESS_HOLDER)) {
+                    slot = BypassedItemHandler.ConvertSlot(slot);
                     final ItemStack stackInSlot = itemHandler.getStackInSlot(slot).copy();
                     stackInSlot.setTag(packCraftDataToTag());
                     if(!simulate)
@@ -183,6 +192,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                 } else if(slot == SLOT_WISDOM) {
                     return ItemStack.EMPTY;
                 }
+                if (slot == BypassedItemHandler.ConvertSlot(SLOT_MARKS)) slot = SLOT_MARKS;
 
                 return super.extractItem(slot, amount, simulate);
             }

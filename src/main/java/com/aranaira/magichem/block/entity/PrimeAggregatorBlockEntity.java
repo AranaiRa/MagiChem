@@ -14,8 +14,7 @@ import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
-import com.aranaira.magichem.util.InventoryHelper;
-import com.aranaira.magichem.util.MathHelper;
+import com.aranaira.magichem.util.*;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.PlayerOwnershipRecord;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
@@ -101,6 +100,12 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
+            protected void validateSlotIndex(int slot) {
+                if (BypassedItemHandler.IsSignal(slot)) slot = BypassedItemHandler.ConvertSlot(slot);
+                super.validateSlotIndex(slot);
+            }
+
+            @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot == SLOT_PROGRESS_HOLDER) return stack.getItem() == ItemRegistry.EXALTATION_IN_PROGRESS.get();
                 if(currentRecipe != null) {
@@ -113,7 +118,9 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-                if (slot == SLOT_PROGRESS_HOLDER) {
+                if (slot == SLOT_PROGRESS_HOLDER) return ItemStack.EMPTY;
+                if (slot == BypassedItemHandler.ConvertSlot(SLOT_PROGRESS_HOLDER)) {
+                    slot = BypassedItemHandler.ConvertSlot(slot);
                     final ItemStack stackInSlot = itemHandler.getStackInSlot(slot).copy();
                     if (!simulate) {
                         stackInSlot.setTag(packCraftDataToTag());
