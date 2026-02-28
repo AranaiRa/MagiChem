@@ -240,4 +240,8 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
         WAIT_TO_FAIL
     }
 
+    public void stop() {
+        super.stop();
+        construct.clearForcedAnimation(); // fallback cancelling
+    }
 }
