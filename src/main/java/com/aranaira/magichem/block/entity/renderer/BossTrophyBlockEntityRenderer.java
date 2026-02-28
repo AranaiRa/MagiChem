@@ -97,26 +97,38 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         pPoseStack.popPose();
 
         //Gnomon shadow
-//        double phaseProgress = isNight ? (double)(dayTime - 12800) / 10400d : (double)(dayTime + 800) / 13600d;
-//        double theta = phaseProgress * Math.PI;
-//        double xN = Math.cos(theta);
-//        double zN = Math.sin(theta);
-//        double radius = 0.28125 + zN * 0.125;
-//
-//        pPoseStack.pushPose();
-//        {
-//            VertexConsumer vertexBuilder = pBuffer.getBuffer(RenderType.translucent());
-//            Matrix4f renderMatrix = pPoseStack.last().pose();
-//            Matrix3f normalMatrix = pPoseStack.last().normal();
-//            TextureAtlasSprite resolvedTexture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_FEY);
-//            int tint = isNight ? 50 : 255;
-//
-//            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (xN * 0.0625)), 1, (float)(0.5 + (xN * 0.0625))).color(tint,tint,tint,196).uv(resolvedTexture.getU(0.9375), resolvedTexture.getV(0)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
-//            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (xN * 0.0625)), 1, 0.5f).color(tint,tint,tint,196).uv(resolvedTexture.getU(0.9375), resolvedTexture.getV(0.0625)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
-//            vertexBuilder.vertex(renderMatrix, 0.5f, 1, 0).color(tint,tint,tint,196).uv(resolvedTexture.getU(1), resolvedTexture.getV(0.0625)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
-//            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (xN * 0.0625)), 1, (float)(0.5 - (zN * 0.0625))).color(tint,tint,tint,196).uv(resolvedTexture.getU(1), resolvedTexture.getV(0)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
-//        }
-//        pPoseStack.popPose();
+        double phaseProgress = isNight ? (double)(dayTime - 12800) / 10400d : (double)((dayTime + 800) % 24000) / 13600d;
+
+        double fTheta = (phaseProgress * Math.PI) + Math.PI; //Forward vector
+        double fX = Math.cos(fTheta);
+        double fZ = Math.sin(fTheta);
+
+        double pTheta = fTheta + (Math.PI / 2); //Perpendicular vector
+        double pX = Math.cos(pTheta);
+        double pZ = Math.sin(pTheta);
+
+        double bRadius = 0.03125; //Base width
+        double tRadius = 0.00391; //Tip width
+        double lRadius = 0.28125 + (1 - Math.sin(phaseProgress * Math.PI)) * 0.125; //Length
+
+        float h1 = 0.325f;
+        float h2 = 0.325f + (float)(1 - Math.sin(phaseProgress * Math.PI)) * 0.05f;
+
+        pPoseStack.pushPose();
+        {
+            VertexConsumer vertexBuilder = pBuffer.getBuffer(RenderType.translucent());
+            Matrix4f renderMatrix = pPoseStack.last().pose();
+            Matrix3f normalMatrix = pPoseStack.last().normal();
+            TextureAtlasSprite resolvedTexture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_FEY);
+            int tint = 50;
+            int alpha = 196;
+
+            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (pX * bRadius)), h1, (float)(0.5 + (pZ * bRadius))).color(tint,tint,tint,alpha).uv(resolvedTexture.getU(1), resolvedTexture.getV(0)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
+            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (fX * lRadius) + (pX * tRadius)), h2, (float)(0.5 + (fZ * lRadius) + (pZ * tRadius))).color(tint,tint,tint,alpha).uv(resolvedTexture.getU(1), resolvedTexture.getV(0.0625)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
+            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (fX * lRadius) + (pX * -tRadius)), h2, (float)(0.5 + (fZ * lRadius) + (pZ * -tRadius))).color(tint,tint,tint,alpha).uv(resolvedTexture.getU(0.9375), resolvedTexture.getV(0.0625)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
+            vertexBuilder.vertex(renderMatrix, (float)(0.5 + (pX * -bRadius)), h1, (float)(0.5 + (pZ * -bRadius))).color(tint,tint,tint,alpha).uv(resolvedTexture.getU(0.9375), resolvedTexture.getV(0)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(normalMatrix, 0, 0, 0).endVertex();
+        }
+        pPoseStack.popPose();
     }
 
     private void renderUndead(BossTrophyBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
