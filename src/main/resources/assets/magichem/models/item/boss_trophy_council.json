@@ -13,8 +13,8 @@
 	},
 	"display": {
 		"gui": {
-			"rotation": [29, 45, 0],
-			"scale": [0.6, 0.6, 0.6],
+			"rotation": [29, -45, 0],
+			"scale": [0.8, 0.8, 0.8],
 			"translation": [0, 0, 0]
 		}
 	}
