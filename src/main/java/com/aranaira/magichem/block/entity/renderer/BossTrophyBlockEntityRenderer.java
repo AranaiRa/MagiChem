@@ -25,6 +25,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.data.ModelData;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -100,9 +101,10 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         bob = (float)Math.sin(((((float)gt + pPartialTick) % (float)period) / (float)period) * (float)Math.PI * 2) * 0.0625f;
 
         LocalPlayer player = Minecraft.getInstance().player;
-        double pX = player.getX();
-        double pZ = player.getZ();
-        double eX = pBlockEntity.getBlockPos().getX() + 0.5625;
+        final Vec3 playerPos = player.getPosition(pPartialTick);
+        double pX = playerPos.x;
+        double pZ = playerPos.z;
+        double eX = pBlockEntity.getBlockPos().getX() + 0.5;
         double eZ = pBlockEntity.getBlockPos().getZ() + 0.5;
         Vector2d dVec = new Vector2d(pX - eX, pZ - eZ);
 
