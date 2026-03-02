@@ -1,0 +1,11 @@
+# Blender MTL File: 'boss_trophies.blend'
+# Material Count: 3
+
+newmtl BOSS_TROPHY_COUNCIL
+map_Kd magichem:block/boss_trophy_council
+
+newmtl BOSS_TROPHY_COUNCIL_TEXT
+map_Kd magichem:block/boss_trophy_council_text
+
+newmtl CHIMERITE
+map_Kd mna:block/oreblockchimerite

@@ -4,14 +4,12 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.BossTrophyBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.util.render.RenderUtils;
-import com.mna.tools.math.MathUtils;
 import com.mna.tools.render.ModelUtils;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -27,21 +25,24 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.data.ModelData;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
+import org.joml.Vector2d;
 
 import java.util.Iterator;
 
 public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTrophyBlockEntity> {
-    public static final ResourceLocation RENDERER_MODEL_SUMMER_1 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_summer_1");
-    public static final ResourceLocation RENDERER_MODEL_SUMMER_2 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_summer_2");
-    public static final ResourceLocation RENDERER_MODEL_SUMMER_3 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_summer_3");
-    public static final ResourceLocation RENDERER_MODEL_WINTER_1 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_1");
-    public static final ResourceLocation RENDERER_MODEL_WINTER_2 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_2");
-    public static final ResourceLocation RENDERER_MODEL_WINTER_3 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_3");
-    public static final ResourceLocation RENDERER_MODEL_WATER = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_undead_water");
+    public static final ResourceLocation RENDERER_MODEL_COUNCIL_CRYSTAL_INNER = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_council_crystal_inner");
+    public static final ResourceLocation RENDERER_MODEL_COUNCIL_CRYSTAL_OUTER = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_council_crystal_outer");
+    public static final ResourceLocation RENDERER_MODEL_COUNCIL_SLATE = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_council_slate");
+    public static final ResourceLocation RENDERER_MODEL_FEY_SUMMER_1 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_summer_1");
+    public static final ResourceLocation RENDERER_MODEL_FEY_SUMMER_2 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_summer_2");
+    public static final ResourceLocation RENDERER_MODEL_FEY_SUMMER_3 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_summer_3");
+    public static final ResourceLocation RENDERER_MODEL_FEY_WINTER_1 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_1");
+    public static final ResourceLocation RENDERER_MODEL_FEY_WINTER_2 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_2");
+    public static final ResourceLocation RENDERER_MODEL_FEY_WINTER_3 = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_fey_winter_3");
+    public static final ResourceLocation RENDERER_MODEL_UNDEAD_WATER = new ResourceLocation(MagiChemMod.MODID, "obj/special/boss_trophy_undead_water");
     private static final ResourceLocation TEXTURE_FEY = new ResourceLocation(MagiChemMod.MODID, "block/boss_trophy_fey");
     private static final RandomSource rSource = RandomSource.create(81234L);
 
@@ -64,8 +65,57 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         VertexConsumer buffer = pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
         PoseStack.Pose last = pPoseStack.last();
 
+        int gt, period;
+        float rotYAxis, bob;
+
         pPoseStack.pushPose();
-//        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_STEAM_VENTS, pPoseStack, pPackedLight, pPackedOverlay);
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 0.5, 0.5);
+        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_COUNCIL_CRYSTAL_INNER, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.popPose();
+
+        period = 400;
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        rotYAxis = ((((float)gt + pPartialTick) % (float)period) / (float)period) * (float)Math.PI * 2;
+        period = 250;
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        bob = (float)Math.sin(((((float)gt + pPartialTick) % (float)period) / (float)period) * (float)Math.PI * 2) * 0.015625f;
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 0.96875 - bob, 0.5);
+        pPoseStack.mulPose(Axis.YN.rotation(rotYAxis));
+        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_COUNCIL_CRYSTAL_OUTER, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.popPose();
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 0.03125 + bob, 0.5);
+        pPoseStack.mulPose(Axis.YP.rotation(rotYAxis));
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
+        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_COUNCIL_CRYSTAL_OUTER, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.popPose();
+
+        period = 375;
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        bob = (float)Math.sin(((((float)gt + pPartialTick) % (float)period) / (float)period) * (float)Math.PI * 2) * 0.0625f;
+
+        LocalPlayer player = Minecraft.getInstance().player;
+        double pX = player.getX();
+        double pZ = player.getZ();
+        double eX = pBlockEntity.getBlockPos().getX() + 0.5625;
+        double eZ = pBlockEntity.getBlockPos().getZ() + 0.5;
+        Vector2d dVec = new Vector2d(pX - eX, pZ - eZ);
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 0.5 + bob, 0.5);
+        pPoseStack.mulPose(Axis.YN.rotation((float)Math.atan2(dVec.y, dVec.x) - (float)(Math.PI / 2)));
+        pPoseStack.translate(-0.425, 0, 0.25);
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(45));
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(60));
+        pPoseStack.mulPose(Axis.ZP.rotationDegrees(15));
+        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_COUNCIL_SLATE, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.popPose();
+
         pPoseStack.popPose();
     }
 
@@ -83,17 +133,17 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
 
         pPoseStack.pushPose();
         if((dayTime >= 0 && dayTime < 800) || (dayTime >= 11200 && dayTime < 12000))
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SUMMER_1, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_FEY_SUMMER_1, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
         else if((dayTime >= 800 && dayTime < 1600) || (dayTime >= 10400 && dayTime < 11200))
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SUMMER_2, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_FEY_SUMMER_2, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
         else if((dayTime >= 1600 && dayTime < 10400))
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SUMMER_3, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_FEY_SUMMER_3, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
         else if((dayTime >= 13600 && dayTime < 14400) || (dayTime >= 21600 && dayTime < 22400))
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_WINTER_1, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_FEY_WINTER_1, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
         else if((dayTime >= 14400 && dayTime < 15200) || (dayTime >= 20800 && dayTime < 21600))
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_WINTER_2, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_FEY_WINTER_2, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
         else if((dayTime >= 15200 && dayTime < 20800))
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_WINTER_3, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_FEY_WINTER_3, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
         pPoseStack.popPose();
 
         //Gnomon shadow
@@ -111,8 +161,8 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         double tRadius = 0.00391; //Tip width
         double lRadius = 0.28125 + (1 - Math.sin(phaseProgress * Math.PI)) * 0.125; //Length
 
-        float h1 = 0.325f;
-        float h2 = 0.325f + (float)(1 - Math.sin(phaseProgress * Math.PI)) * 0.05f;
+        float h1 = 0.3125f;
+        float h2 = 0.3150f + (float)(1 - Math.sin(phaseProgress * Math.PI)) * 0.050f;
 
         pPoseStack.pushPose();
         {
@@ -158,7 +208,7 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         }
 
         {
-            BakedModel model = Minecraft.getInstance().getModelManager().getModel(RENDERER_MODEL_WATER);
+            BakedModel model = Minecraft.getInstance().getModelManager().getModel(RENDERER_MODEL_UNDEAD_WATER);
             ModelData worldModelData = world.getModelDataManager().getAt(pos);
             ModelData data = model.getModelData(world, pos, state, worldModelData == null ? ModelData.EMPTY : worldModelData);
             Iterator var13 = model.getQuads(state, (Direction)null, rSource, data, (RenderType)null).iterator();

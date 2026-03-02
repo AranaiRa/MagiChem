@@ -45,6 +45,8 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACI
 
 public class BossTrophyBlock extends BaseEntityBlock {
     private static final VoxelShape
+            COUNCIL_VOXEL_SHAPE,
+
             DEMON_VOXEL_SHAPE_NORTH, DEMON_VOXEL_SHAPE_EAST, DEMON_VOXEL_SHAPE_SOUTH, DEMON_VOXEL_SHAPE_WEST,
 
             FEY_VOXEL_SHAPE_BASE, FEY_VOXEL_SHAPE_DISC, FEY_VOXEL_SHAPE_GNOMON,
@@ -82,7 +84,7 @@ public class BossTrophyBlock extends BaseEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
+        return pState.getBlock() == BlockRegistry.BOSS_TROPHY_COUNCIL.get() ? RenderShape.INVISIBLE : RenderShape.MODEL;
     }
 
     @Override
@@ -90,7 +92,10 @@ public class BossTrophyBlock extends BaseEntityBlock {
         final Direction dir = pState.getValue(FACING);
         final Block block = pState.getBlock();
 
-        if(block == BlockRegistry.BOSS_TROPHY_FEY.get()) {
+        if(block == BlockRegistry.BOSS_TROPHY_COUNCIL.get()) {
+            return COUNCIL_VOXEL_SHAPE;
+        }
+        else if(block == BlockRegistry.BOSS_TROPHY_FEY.get()) {
             return FEY_VOXEL_SHAPE_AGGREGATE;
         }
         else if(block == BlockRegistry.BOSS_TROPHY_DEMONS.get()) {
@@ -226,6 +231,8 @@ public class BossTrophyBlock extends BaseEntityBlock {
     }
 
     static {
+        COUNCIL_VOXEL_SHAPE = Block.box(3.672, 0, 3.672, 12.328, 16, 12.328);
+
         FEY_VOXEL_SHAPE_BASE = Block.box(3.253, 0, 3.253, 12.747, 4, 12.747);
         FEY_VOXEL_SHAPE_DISC = Block.box(-0.449, 4, -0.449, 16.449, 5, 16.449);
         FEY_VOXEL_SHAPE_GNOMON = Block.box(7.5, 5, 2.5, 8.5, 12, 8.5);
