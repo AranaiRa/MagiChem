@@ -1,0 +1,58 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:crown_of_glory"
+  },
+  "stages": [
+    {
+      "experience": 500,
+      "components": [
+        { "item": "mna:warding_candle" },
+        { "item": "magichem:perfected_electrum_block" },
+        { "item": "minecraft:beacon" },
+        { "item": "magichem:perfected_electrum_block" },
+        { "item": "mna:warding_candle" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_adornment", "count": 45 },
+        { "item": "magichem:admixture_violence", "count": 96 },
+        { "item": "magichem:essentia_nigredo", "count": 30 },
+        { "item": "magichem:essentia_albedo", "count": 20 }
+      ]
+    },
+    {
+      "experience": 1500,
+      "components": [
+        { "item": "magichem:boss_trophy_council" },
+        { "item": "magichem:orichalkos" },
+        { "item": "mna:book_of_rote" },
+        { "item": "magichem:orichalkos" },
+        { "item": "magichem:boss_trophy_demons" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_adornment", "count": 90 },
+        { "item": "magichem:admixture_motion", "count": 96 },
+        { "item": "magichem:essentia_albedo", "count": 30 },
+        { "item": "magichem:essentia_citrinitas", "count": 20 }
+      ]
+    },
+    {
+      "experience": 3000,
+      "components": [
+        { "item": "magichem:boss_trophy_fey" },
+        { "item": "magichem:selargyros" },
+        { "item": "mna:book_of_rote" },
+        { "item": "magichem:selargyros" },
+        { "item": "magichem:boss_trophy_undead" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_adornment", "count": 135 },
+        { "item": "magichem:admixture_sorcery", "count": 96 },
+        { "item": "magichem:essentia_citrinitas", "count": 30 },
+        { "item": "magichem:essentia_rubedo", "count": 20 }
+      ]
+    }
+  ]
+}
