@@ -17,9 +17,15 @@ public interface IEnhancementCapability {
 
     boolean hasLastDeathTargetLocation();
 
+    boolean hasDeathRecoveryLocation();
+
     Pair<BlockPos, ResourceLocation> getLastDeathTargetLocation();
 
+    Pair<BlockPos, ResourceLocation> getDeathRecoveryLocation();
+
     void setLastDeathTargetLocation(BlockPos pPos, ResourceLocation pDim);
+
+    void setDeathRecoveryLocation(BlockPos pPos, ResourceLocation pDim);
 
     void setHeart(EnhancedHeartType pHeartType);
 

@@ -8,14 +8,20 @@ import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.capabilities.IPlayerProgression;
 import com.mna.api.faction.IFaction;
+import com.mna.api.timing.DelayedEventQueue;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mna.effects.EffectInit;
 import com.mna.entities.EntityInit;
 import com.mna.entities.faction.DemonImp;
+import com.mna.events.delayed.DelayedDimensionTeleportEvent;
 import com.mna.tools.SummonUtils;
+import com.mna.tools.TeleportHelper;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,11 +43,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.LazyOptional;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.mna.api.faction.FactionIDs.UNDEAD;
 
 public class BossTrophyBlock extends BaseEntityBlock {
     private static final VoxelShape
@@ -72,6 +80,29 @@ public class BossTrophyBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        if(!pContext.getLevel().isClientSide()){
+            final Player player = pContext.getPlayer();
+            final LazyOptional<IPlayerProgression> progressionCapability = player.getCapability(PlayerProgressionProvider.PROGRESSION);
+            progressionCapability.ifPresent(pCap -> {
+                if (pCap.getTier() >= 5 && pCap.getAlliedFaction() != null && pCap.getAlliedFaction().is(UNDEAD)) {
+
+                    final LazyOptional<IEnhancementCapability> enhancementCapability = pContext.getPlayer().getCapability(EnhancementProvider.ENHANCEMENT);
+                    enhancementCapability.ifPresent(eCap -> {
+                        if (player.hasEffect(EffectInit.CIRCLE_OF_POWER.get())) {
+                            final Pair<BlockPos, ResourceLocation> deathData = eCap.getLastDeathTargetLocation();
+                            final ResourceLocation thisDimension = pContext.getLevel().dimension().location();
+
+                            eCap.setDeathRecoveryLocation(pContext.getClickedPos().above(), thisDimension);
+                            pContext.getPlayer().sendSystemMessage(Component.translatable("feedback.trophy.undead.bind"));
+                        } else {
+                            pContext.getPlayer().sendSystemMessage(Component.translatable("feedback.trophy.undead.not_in_sanctum"));
+
+                        }
+                    });
+                }
+            });
+        }
+
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
@@ -140,15 +171,15 @@ public class BossTrophyBlock extends BaseEntityBlock {
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
 
-    private void handleCouncilEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pCap) {
+    private void handleCouncilEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pECap) {
         if(!pLevel.isClientSide()) {
-            if (pLevel.getGameTime() >= pCap.getBossTrophyUseTargetTime()) {
+            if (pLevel.getGameTime() >= pECap.getBossTrophyUseTargetTime()) {
                 if (!pPlayer.hasEffect(MobEffectsRegistry.CHAINSPELL.get())) {
                     pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.council.success"));
                     pPlayer.addEffect(new MobEffectInstance(
                             MobEffectsRegistry.CHAINSPELL.get(), -1, 0, false, false, true
                     ));
-                    pCap.setBossTrophyUseTargetTime(pLevel.getGameTime() + 36000);
+                    pECap.setBossTrophyUseTargetTime(pLevel.getGameTime() + 36000);
                 }
             } else {
                 pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.council.failure"));
@@ -156,7 +187,7 @@ public class BossTrophyBlock extends BaseEntityBlock {
         }
     }
 
-    private void handleDemonsEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pCap) {
+    private void handleDemonsEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pECap) {
         if (!pLevel.isClientSide()) {
             pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.demons.success"));
 
@@ -196,12 +227,12 @@ public class BossTrophyBlock extends BaseEntityBlock {
         }
     }
 
-    private void handleFeyEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pCap) {
+    private void handleFeyEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pECap) {
         if (!pLevel.isClientSide()) {
-            if(pLevel.getGameTime() >= pCap.getBossTrophyUseTargetTime()) {
+            if(pLevel.getGameTime() >= pECap.getBossTrophyUseTargetTime()) {
                 if (!pPlayer.hasEffect(MobEffectsRegistry.REGAL_TWILIGHT.get())) {
                     pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.fey.success"));
-                    pCap.setBossTrophyUseTargetTime(pLevel.getGameTime() + 36000);
+                    pECap.setBossTrophyUseTargetTime(pLevel.getGameTime() + 36000);
 
                     pPlayer.addEffect(new MobEffectInstance(
                             MobEffectsRegistry.REGAL_TWILIGHT.get(), 36000, 0, false, false, true
@@ -214,12 +245,36 @@ public class BossTrophyBlock extends BaseEntityBlock {
         }
     }
 
-    private void handleUndeadEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pCap) {
+    private void handleUndeadEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pECap) {
         if (!pLevel.isClientSide()) {
-            if (pCap.hasLastDeathTargetLocation()) {
+            if (pECap.hasLastDeathTargetLocation()) {
 
             } else {
-                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.undead.failure"));
+                final LazyOptional<IPlayerProgression> progressCapability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
+                MutableBoolean sendFailure = new MutableBoolean(false);
+                progressCapability.ifPresent(pCap -> {
+                    if(pCap.getTier() >= 5) {
+                        final Pair<BlockPos, ResourceLocation> deathData = pECap.getLastDeathTargetLocation();
+                        final ResourceLocation thisDimension = pLevel.dimension().location();
+                        boolean matchesPos = deathData != null && pPos.equals(deathData.getFirst().below());
+                        boolean matchesDim = deathData != null && thisDimension.equals(deathData.getSecond());
+
+                        if(!pECap.hasDeathRecoveryLocation() || !(matchesPos && matchesDim)) {
+                            pECap.setDeathRecoveryLocation(pPos.above(), thisDimension);
+                            pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.undead.bind"));
+                            sendFailure.setValue(false);
+                        } else {
+                            if(pECap.hasLastDeathTargetLocation()) {
+                                final ResourceKey<Level> destinationDimension = ResourceKey.create(Registries.DIMENSION, deathData.getSecond());
+                                TeleportHelper.teleportEntity(pPlayer, destinationDimension, deathData.getFirst().getCenter());
+                                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.undead.success"));
+                                sendFailure.setValue(false);
+                            }
+                        }
+                    }
+                });
+                if(sendFailure.booleanValue())
+                    pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.undead.failure"));
             }
         }
     }

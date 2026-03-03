@@ -815,6 +815,8 @@
   "feedback.trophy.fey.success": "Your soul rises as both a sun and moon. You are the master of time and prophecy.",
   "feedback.trophy.fey.failure": "You feel your soul quiver, but nothing happens at this time.",
   "feedback.trophy.fey.expire": "Your soul sets and you are once again defined by a single Court.",
+  "feedback.trophy.undead.bind": "The Pool will draw from the power of your Sanctum to save you from death.",
+  "feedback.trophy.undead.not_in_sanctum": "The Pool will not save you in this place. It must be placed within the reach of an Undead Sanctum.",
   "feedback.trophy.undead.death_interception": "The stygian waters of the Pool save you from demise.",
   "feedback.trophy.undead.success": "You travel the dark road to where you should have fallen.",
   "feedback.trophy.undead.failure": "There is no dark road visible in these waters... Yet.",

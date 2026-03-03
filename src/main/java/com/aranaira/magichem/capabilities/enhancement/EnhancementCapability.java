@@ -12,8 +12,8 @@ import java.util.HashMap;
 public class EnhancementCapability implements IEnhancementCapability {
     private EnhancedHeartType enhancedHeartType = EnhancedHeartType.NONE;
     private long worldTimeForNextTrophyUse;
-    private BlockPos lastDeathPos = null;
-    private ResourceLocation lastDeathDim = null;
+    private BlockPos lastDeathPos = null, deathRecoveryPos = null;
+    private ResourceLocation lastDeathDim = null, deathRecoveryDim = null;
 
     @Override
     public long getBossTrophyUseTargetTime() {
@@ -27,7 +27,12 @@ public class EnhancementCapability implements IEnhancementCapability {
 
     @Override
     public boolean hasLastDeathTargetLocation() {
-        return lastDeathPos == null;
+        return !(lastDeathPos == null || lastDeathDim == null);
+    }
+
+    @Override
+    public boolean hasDeathRecoveryLocation() {
+        return !(deathRecoveryPos == null || deathRecoveryDim == null);
     }
 
     @Override
@@ -36,9 +41,20 @@ public class EnhancementCapability implements IEnhancementCapability {
     }
 
     @Override
+    public Pair<BlockPos, ResourceLocation> getDeathRecoveryLocation() {
+        return new Pair<>(deathRecoveryPos, deathRecoveryDim);
+    }
+
+    @Override
     public void setLastDeathTargetLocation(BlockPos pPos, ResourceLocation pDim) {
         lastDeathPos = pPos;
         lastDeathDim = pDim;
+    }
+
+    @Override
+    public void setDeathRecoveryLocation(BlockPos pPos, ResourceLocation pDim) {
+        deathRecoveryPos = pPos;
+        deathRecoveryDim = pDim;
     }
 
     @Override

@@ -114,7 +114,7 @@ public class BossTrophyBlockEntityRenderer implements BlockEntityRenderer<BossTr
         pPoseStack.translate(-0.425, 0, 0.25);
         pPoseStack.mulPose(Axis.YP.rotationDegrees(45));
         pPoseStack.mulPose(Axis.XP.rotationDegrees(60));
-        pPoseStack.mulPose(Axis.ZP.rotationDegrees(15));
+        pPoseStack.mulPose(Axis.ZP.rotationDegrees(15 + (bob * 160f)));
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_COUNCIL_SLATE, pPoseStack, pPackedLight, pPackedOverlay);
         pPoseStack.popPose();
 

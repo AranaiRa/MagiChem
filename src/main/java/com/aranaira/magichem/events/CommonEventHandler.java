@@ -52,6 +52,7 @@ import com.mna.entities.utility.WanderingWizard;
 import com.mna.items.ItemInit;
 import com.mna.items.sorcery.ItemSpell;
 import com.mna.tools.SummonUtils;
+import com.mna.tools.TeleportHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -60,16 +61,19 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -111,10 +115,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -294,35 +295,6 @@ public class CommonEventHandler {
                 }
             }
         }
-//        else if(target instanceof AlchemicalNexusBlockEntity || target instanceof AlchemicalNexusRouterBlockEntity) {
-//            IFluidHandler targetEntity = null;
-//            if(target instanceof AlchemicalNexusBlockEntity anbe)
-//                targetEntity = anbe;
-//            else if(target instanceof AlchemicalNexusRouterBlockEntity anrbe)
-//                targetEntity = anrbe.getMaster();
-//
-//            if(targetEntity != null) {
-//                LazyOptional<IFluidHandlerItem> itemCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-//                if(itemCap.isPresent()) {
-//                    if(itemCap.resolve().isPresent()) {
-//                        IFluidHandlerItem itemCapResolved = itemCap.resolve().get();
-//
-//                        if(stack.getItem() == ItemRegistry.ACADEMIC_SLURRY_BUCKET.get()) {
-//                            int spaceInTank = targetEntity.getTankCapacity(0) - targetEntity.getFluidInTank(0).getAmount();
-//                            if(spaceInTank >= 1000) {
-//                                FluidStack standardTransfer = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), 1000);
-//                                targetEntity.fill(standardTransfer, IFluidHandler.FluidAction.EXECUTE);
-//                            }
-//                        }
-//                        else if(itemCapResolved.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
-//                            FluidStack maxTransfer = itemCapResolved.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
-//                            int actualTransfer = targetEntity.fill(maxTransfer, IFluidHandler.FluidAction.EXECUTE);
-//                            itemCapResolved.drain(actualTransfer, IFluidHandler.FluidAction.EXECUTE);
-//                        }
-//                    }
-//                }
-//            }
-//        }
         else if(target instanceof ExperienceExchangerBlockEntity eebe) {
             if(!event.getLevel().isClientSide() && event.getHand() == InteractionHand.MAIN_HAND) {
                 if (stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
@@ -473,6 +445,63 @@ public class CommonEventHandler {
                                 cardinalIntercardinalPair.getSecond()
                         ));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityDeath(LivingDeathEvent event) {
+        if(event.getEntity() instanceof Player player) {
+            final LazyOptional<IPlayerProgression> progressCapability = player.getCapability(PlayerProgressionProvider.PROGRESSION);
+            progressCapability.ifPresent(pCap -> {
+                final IFaction faction = pCap.getAlliedFaction();
+                if(pCap.getTier() >= 5 && faction != null && faction.is(UNDEAD)) {
+                    final LazyOptional<IEnhancementCapability> enhancementCapability = player.getCapability(EnhancementProvider.ENHANCEMENT);
+                    enhancementCapability.ifPresent(eCap -> {
+                        if(eCap.hasDeathRecoveryLocation()) {
+                            final Pair<BlockPos, ResourceLocation> recoveryData = eCap.getDeathRecoveryLocation();
+                            final ServerLevel sourceLevel = event.getEntity().level().getServer().getLevel(event.getEntity().level().dimension());
+                            final ResourceKey<Level> destinationDimension = ResourceKey.create(Registries.DIMENSION, recoveryData.getSecond());
+                            final ServerLevel destinationLevel = event.getEntity().level().getServer().getLevel(destinationDimension);
+
+                            if(destinationLevel != null && destinationLevel.getGameTime() >= eCap.getBossTrophyUseTargetTime()){
+                                eCap.setLastDeathTargetLocation(event.getEntity().blockPosition(), event.getEntity().level().dimension().location());
+                                eCap.setBossTrophyUseTargetTime(destinationLevel.getGameTime() + 12000);
+
+                                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 8, 4, false, false, false));
+                                player.addEffect(new MobEffectInstance(RADIANT_RESOLVE.get(), 8, 4, false, false, false));
+                                for (MobEffectInstance mei : player.getActiveEffects()) {
+                                    if (mei.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
+                                        player.removeEffect(mei.getEffect());
+                                    }
+                                }
+
+                                player.setHealth(10);
+
+                                float wrappedYaw = Mth.wrapDegrees(player.getYRot());
+                                if (event.getEntity().level() == destinationLevel) {
+                                    event.getEntity().teleportTo(recoveryData.getFirst().getX(), recoveryData.getFirst().getY(), recoveryData.getFirst().getZ());
+                                    event.getEntity().setYHeadRot(wrappedYaw);
+                                } else {
+                                    event.getEntity().unRide();
+                                    Entity entity = event.getEntity().getType().create(sourceLevel);
+                                    if (entity == null) {
+                                        return;
+                                    }
+
+                                    entity.restoreFrom(event.getEntity());
+                                    event.getEntity().teleportTo(recoveryData.getFirst().getX(), recoveryData.getFirst().getY(), recoveryData.getFirst().getZ());
+                                    entity.setYHeadRot(wrappedYaw);
+                                    sourceLevel.addDuringTeleport(entity);
+                                    event.getEntity().remove(Entity.RemovalReason.CHANGED_DIMENSION);
+                                }
+                                event.setCanceled(true);
+
+                                player.sendSystemMessage(Component.translatable("feedback.trophy.undead.death_interception"));
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 

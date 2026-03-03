@@ -43,15 +43,25 @@ public class EnhancementProvider implements ICapabilitySerializable<Tag> {
         if(instance.getBossTrophyUseTargetTime() != 0) {
             bossTrophyTag.putLong("useTargetTime", instance.getBossTrophyUseTargetTime());
         }
+
+        CompoundTag deathTag = new CompoundTag();
         if(instance.hasLastDeathTargetLocation()) {
             final Pair<BlockPos, ResourceLocation> deathData = instance.getLastDeathTargetLocation();
             if(deathData.getFirst() != null && deathData.getSecond() != null){
-                CompoundTag deathTag = new CompoundTag();
-                deathTag.putLong("pos", deathData.getFirst().asLong());
-                deathTag.putString("dim", deathData.getSecond().toString());
-                bossTrophyTag.put("deathData", deathTag);
+                deathTag.putLong("deathPos", deathData.getFirst().asLong());
+                deathTag.putString("deathDim", deathData.getSecond().toString());
             }
         }
+        if(instance.hasDeathRecoveryLocation()) {
+            final Pair<BlockPos, ResourceLocation> recoveryData = instance.getDeathRecoveryLocation();
+            if(recoveryData.getFirst() != null && recoveryData.getSecond() != null){
+                deathTag.putLong("recoveryPos", recoveryData.getFirst().asLong());
+                deathTag.putString("recoveryDim", recoveryData.getSecond().toString());
+            }
+        }
+        if(deathTag.size() > 0)
+            bossTrophyTag.put("deathData", deathTag);
+
         if(bossTrophyTag.size() > 0) {
             nbt.put("bossTrophyData", bossTrophyTag);
         }
@@ -70,10 +80,18 @@ public class EnhancementProvider implements ICapabilitySerializable<Tag> {
                 if(bossTrophyTag.contains("useTargetTime")) instance.setBossTrophyUseTargetTime(bossTrophyTag.getLong("useTargetTime"));
                 if(bossTrophyTag.contains("deathData")) {
                     CompoundTag deathTag = bossTrophyTag.getCompound("deathData");
-                    instance.setLastDeathTargetLocation(
-                            BlockPos.of(deathTag.getLong("pos")),
-                            new ResourceLocation(deathTag.getString("dim"))
-                    );
+                    if(deathTag.contains("deathPos") && deathTag.contains("deathDim")) {
+                        instance.setLastDeathTargetLocation(
+                                BlockPos.of(deathTag.getLong("deathPos")),
+                                new ResourceLocation(deathTag.getString("deathDim"))
+                        );
+                    }
+                    if(deathTag.contains("recoveryPos") && deathTag.contains("recoveryDim")) {
+                        instance.setDeathRecoveryLocation(
+                                BlockPos.of(deathTag.getLong("recoveryPos")),
+                                new ResourceLocation(deathTag.getString("recoveryDim"))
+                        );
+                    }
                 }
             }
         }
