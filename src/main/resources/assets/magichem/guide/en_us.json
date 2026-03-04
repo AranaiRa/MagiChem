@@ -339,14 +339,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " is "
+            "text": " can be created through "
           },
           {
-            "text": "not yet craftable",
+            "text": "Sublimation",
             "color": "dark_purple"
           },
           {
-            "text": ", but is planned for Tier 5."
+            "text": " at "
+          },
+          {
+            "text": "Tier 5",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
           }
         ]
       },
@@ -13212,6 +13219,263 @@
       {
         "type": "exaltation",
         "location": "magichem:alchemical_exaltation/magichem/thewsum_porcine"
+      }
+    ]
+  },
+  "Symbols of Triumph": {
+    "index": "10000",
+    "category": "basics",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Symbols of Triumph"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The lords of the "
+          },
+          {
+            "text": "four factions",
+            "color": "dark_purple"
+          },
+          {
+            "text": " each hold a powerful magical artifact. Defeating a faction lord in a "
+          },
+          {
+            "text": "magical duel",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will reward you with one of these artifacts, a large amount of faction marks, and one of the "
+          },
+          {
+            "text": "greater spells",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of the lord's faction.\n\nAppropriate arenas for such a duel can be difficult to find, but "
+          },
+          {
+            "text": "the broker",
+            "color": "dark_purple"
+          },
+          {
+            "text": " may be able to provide you with a thaumaturgic link to these sites.\n\nWhen placed within the area affected by a "
+          },
+          {
+            "text": "Sanctum",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a Symbol of Triumph confers a very powerful benefit to those of the same faction."
+          },
+          {
+            "text": "\n\nDeveloper's Note: There is currently no direct benefit for collecting Symbols of Triumph for other factions (other than needing them to create the Crown of Glory and, by extension, the Flushed Wisdom Stone). A separate benefit for off-faction Symbols of Triumph is coming in 0.5.3.",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Shard of the Library Supernal",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_council",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The council keeps an extradimensional library of all of the knowledge they have ever hoarded. This strange magical slate and the crystalline artifact it's bound to act as a remote link to that repository of near-unlimited knowledge.\n\nWhen activated by a Council mage, the Shard confers "
+          },
+          {
+            "text": "Chainspell",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with an indefinite duration.\n\nWhile active, Chainspell "
+          },
+          {
+            "text": "reduces mana costs",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by 33% and universally "
+          },
+          {
+            "text": "reduces spell cooldowns",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to 0.2 seconds (or 0.6 seconds if a damaging component is present). "
+          },
+          {
+            "text": "Experience points",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are consumed on every Chainspell-modified cast. Spells with a larger cooldown require more experience points.\n\nOnce you no longer have experience points to spend, Chainspell ends.\n\nThe Shard of the Library Supernal can be activated once every "
+          },
+          {
+            "text": "30 minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Dial of Days and Nights",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_fey",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This is the great wheel upon which inevitability is written. The laws that govern days, nights, and the seasonal cycle itself are written in its form, if one knows how to look.\n\nWhen activated by a Fey mage, the Dial confers "
+          },
+          {
+            "text": "Regal Twilight",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for 30 minutes. While active, "
+          },
+          {
+            "text": "your Court will automatically shift",
+            "color": "dark_purple"
+          },
+          {
+            "text": " based on the time of day. Shifting Courts in this manner will also create "
+          },
+          {
+            "text": "tiny, evasive, and powerful Pixies",
+            "color": "dark_purple"
+          },
+          {
+            "text": " under your command.\n\nRegal Twilight also marks you as the arbiter of the hour of prophecy. Activating a "
+          },
+          {
+            "text": "Gnostic Orb",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will instantly charge its Prophecy.\n\nThe Dial of Days and Nights can be activated once every "
+          },
+          {
+            "text": "30 minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Brand of the Hellfire Emperor",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_demons",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This blackstone slate bears the sigil of the ruler of the Nether and the decree that binds all of demonkind into servitude. The hellfire-wrought imperial decree cannot be denied.\n\nWhen activated by a Demon mage, the Brand summons "
+          },
+          {
+            "text": "a loyal contingent of powerful imps",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that are under your command. One of these imps, the "
+          },
+          {
+            "text": "Legion Commander",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", is larger, faster, tougher, and more brutal than others of its kind.\n\nThere is no cooldown on activating the Brand of the Hellfire Emperor; each time you read the imperial decree the ranks of your "
+          },
+          {
+            "text": "Imp squadron",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are replenished."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Pool of Stygian Waters",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_undead",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A dark pool containing the waters of Death's oblivion, taken from some far shore beyond mortal reach.\n\nWhen placed within a Sanctum, the Pool will "
+          },
+          {
+            "text": "save an Undead mage from death",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Instead of facing their demise, the mage will awaken on top of the Pool, desperate for a gasp of breath that will never come. No items are dropped, negative effects are cleansed, and the mage is restored up to 5 hearts.\n\nActivating the Pool will "
+          },
+          {
+            "text": "transport the mage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to the location that they should have last died at, or will re-bind the mage's recovery location if it does not match.\n\nThe Pool can only save an undead mage from death once every "
+          },
+          {
+            "text": "ten minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", but there is no cooldown on using the Pool's dark road to teleport to the location of your would-be demise."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "mna:rituals/broker"
+      },
+      {
+        "type": "ritual",
+        "location": "mna:rituals/circle_of_power"
       }
     ]
   },
