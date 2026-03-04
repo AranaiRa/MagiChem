@@ -13,6 +13,7 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstructConstruction;
@@ -570,7 +571,8 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
                 if(insertionStack.getItem() instanceof MateriaItem mi) {
                     int insertionLimit = 0;
-                    if(insertionContainers.isEmpty()) insertionLimit = 64;
+                    boolean noBottle = InventoryHelper.hasCustomModelData(insertionStack);
+                    if(insertionContainers.isEmpty() || noBottle) insertionLimit = 64;
                     else if(insertionContainers.getItem() == Items.GLASS_BOTTLE) insertionLimit = 64 - insertionContainers.getCount();
 
                     int inserted = Math.min(insertionLimit, insertionStack.getCount());
@@ -583,7 +585,9 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                         pEntity.materiaStorage.put(mi, Math.max(extant, Math.min(pEntity.getStorageLimit(mi), extant + inserted)));
 
                         insertionStack.shrink(inserted);
-                        pEntity.itemHandler.setStackInSlot(SLOT_INPUT_RESULT, new ItemStack(Items.GLASS_BOTTLE, insertionContainers.getCount() + inserted));
+                        if (!noBottle) {
+                            pEntity.itemHandler.setStackInSlot(SLOT_INPUT_RESULT, new ItemStack(Items.GLASS_BOTTLE, insertionContainers.getCount() + inserted));
+                        }
                         pEntity.syncAndSave();
                     }
                 }
