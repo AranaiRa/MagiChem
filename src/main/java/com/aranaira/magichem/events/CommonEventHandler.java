@@ -29,6 +29,8 @@ import com.aranaira.magichem.networking.WisdomSyncS2CPacket;
 import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.aranaira.magichem.util.InteropUtil;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.MultimapBuilder;
 import com.mna.api.blocks.WizardLabBlock;
 import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.api.capabilities.IPlayerProgression;
@@ -87,6 +89,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -129,6 +132,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.network.PacketDistributor;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.*;
@@ -930,6 +935,9 @@ public class CommonEventHandler {
         }
     }
 
+    private static final UUID
+        UUID_HEAD = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c80"),
+        UUID_RING = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c81");
     @SubscribeEvent
     public static void onCurioChange(CurioChangeEvent event) {
         if(event.getIdentifier().equals("wisdom")) {
@@ -938,6 +946,22 @@ public class CommonEventHandler {
 
                 MagiChemMod.CHANNEL.send(PacketDistributor.PLAYER.with(() -> p), new ResetWisdomToggleS2CPacket());
             }
+        }
+        else if(event.getFrom().getItem() == ItemRegistry.CROWN_OF_GLORY.get()) {
+            CuriosApi.getCuriosInventory(event.getEntity()).ifPresent(inventory -> {
+                LinkedHashMultimap<@Nullable String, @Nullable AttributeModifier> map = LinkedHashMultimap.create();
+                map.put("head", new AttributeModifier(UUID_HEAD, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("ring", new AttributeModifier(UUID_RING, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                inventory.addTransientSlotModifiers(map);
+            });
+        }
+        else if(event.getTo().getItem() == ItemRegistry.CROWN_OF_GLORY.get()) {
+            CuriosApi.getCuriosInventory(event.getEntity()).ifPresent(inventory -> {
+                LinkedHashMultimap<@Nullable String, @Nullable AttributeModifier> map = LinkedHashMultimap.create();
+                map.put("head", new AttributeModifier(UUID_HEAD, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
+                map.put("ring", new AttributeModifier(UUID_RING, "crown_of_glory", 2, AttributeModifier.Operation.ADDITION));
+                inventory.addTransientSlotModifiers(map);
+            });
         }
     }
 
