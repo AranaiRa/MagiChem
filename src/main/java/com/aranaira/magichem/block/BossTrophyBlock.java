@@ -247,14 +247,16 @@ public class BossTrophyBlock extends BaseEntityBlock {
 
     private void handleUndeadEffect(Level pLevel, BlockPos pPos, Player pPlayer, IEnhancementCapability pECap) {
         if (!pLevel.isClientSide()) {
+            final Pair<BlockPos, ResourceLocation> deathData = pECap.getLastDeathTargetLocation();
             if (pECap.hasLastDeathTargetLocation()) {
-
+                final ResourceKey<Level> destinationDimension = ResourceKey.create(Registries.DIMENSION, deathData.getSecond());
+                TeleportHelper.teleportEntity(pPlayer, destinationDimension, deathData.getFirst().getCenter());
+                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.undead.success"));
             } else {
                 final LazyOptional<IPlayerProgression> progressCapability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
                 MutableBoolean sendFailure = new MutableBoolean(false);
                 progressCapability.ifPresent(pCap -> {
                     if(pCap.getTier() >= 5) {
-                        final Pair<BlockPos, ResourceLocation> deathData = pECap.getLastDeathTargetLocation();
                         final ResourceLocation thisDimension = pLevel.dimension().location();
                         boolean matchesPos = deathData != null && pPos.equals(deathData.getFirst().below());
                         boolean matchesDim = deathData != null && thisDimension.equals(deathData.getSecond());
@@ -264,12 +266,7 @@ public class BossTrophyBlock extends BaseEntityBlock {
                             pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.undead.bind"));
                             sendFailure.setValue(false);
                         } else {
-                            if(pECap.hasLastDeathTargetLocation()) {
-                                final ResourceKey<Level> destinationDimension = ResourceKey.create(Registries.DIMENSION, deathData.getSecond());
-                                TeleportHelper.teleportEntity(pPlayer, destinationDimension, deathData.getFirst().getCenter());
-                                pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.undead.success"));
-                                sendFailure.setValue(false);
-                            }
+
                         }
                     }
                 });
