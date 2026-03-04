@@ -145,12 +145,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    ItemStack item = super.extractItem(slot, amount, simulate);
-                    if (item.hasTag()) {
-                        CompoundTag nbt = item.getTag();
-                        if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
-                    }
-                    return item;
+                    if (InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(slot)))
+                        return ItemStack.EMPTY;
                 } else if(slot == SLOT_WISDOM) {
                     return ItemStack.EMPTY;
                 }
