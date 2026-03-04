@@ -1,0 +1,49 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "textures": {
+    "particle": "minecraft:block/polished_blackstone"
+  },
+  "children": {
+    "part1": {
+      "loader": "forge:obj",
+      "automatic_culling": false,
+      "shade_quads": true,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "magichem:models/obj/hefty_hopper.obj"
+    }
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "thirdperson_lefthand": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "firstperson_righthand": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "firstperson_lefthand": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "ground": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "gui": {
+      "scale": [0.625, 0.625, 0.625],
+      "rotation": [29, 315, 0],
+      "translation": [0, -1, 0]
+    }
+  }
+}

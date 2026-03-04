@@ -327,6 +327,10 @@ public class BlockEntitiesRegistry {
             ).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<HeftyHopperBlockEntity>> HEFTY_HOPPER_BE = BLOCK_ENTITIES.register("hefty_hopper", () ->
+            BlockEntityType.Builder.of(HeftyHopperBlockEntity::new, BlockRegistry.HEFTY_HOPPER.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

@@ -13215,5 +13215,73 @@
       }
     ]
   },
+  "Hefty Hopper": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Hefty Hopper"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Hefty Hopper",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an alchemically enhanced improvement on the vanilla hopper. It boasts dramatically improved throughput: Up to "
+          },
+          {
+            "text": "a stack of 64 items",
+            "color": "dark_purple"
+          },
+          {
+            "text": " every "
+          },
+          {
+            "text": "half second",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nHefty Hoppers can be "
+          },
+          {
+            "text": "oriented in any direction",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", though they cannot be "
+          },
+          {
+            "text": "bent",
+            "color": "dark_purple"
+          },
+          {
+            "text": " like a vanilla hopper. Item transfer can only occur in a straight line.\n\nUnlike a vanilla hopper, a Hefty Hopper "
+          },
+          {
+            "text": "does not have an internal inventory",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Items are directly transferred from one side to the other.\n\nHefty hoppers will always be pointed with their output side facing the block you activate during placement."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/hefty_hopper"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

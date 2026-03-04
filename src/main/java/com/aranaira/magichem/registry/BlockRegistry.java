@@ -386,6 +386,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> HEFTY_HOPPER = registerBlock("hefty_hopper",
+            () -> new HeftyHopperBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> TWO_STATE_LEVER = registerBlock("two_state_lever",
             () -> new MultiStateLeverBlock(1, BlockBehaviour.Properties.of()
                     .strength(0.5f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
