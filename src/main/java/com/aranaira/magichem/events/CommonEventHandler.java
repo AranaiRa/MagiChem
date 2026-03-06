@@ -936,7 +936,10 @@ public class CommonEventHandler {
     }
 
     private static final UUID
-        UUID_HEAD = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c80"),
+        UUID_BRACELET = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c85"),
+        UUID_NECKLACE = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c84"),
+        UUID_BELT = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c83"),
+        UUID_HEAD = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c82"),
         UUID_RING = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c81");
     @SubscribeEvent
     public static void onCurioChange(CurioChangeEvent event) {
@@ -952,6 +955,9 @@ public class CommonEventHandler {
                 LinkedHashMultimap<@Nullable String, @Nullable AttributeModifier> map = LinkedHashMultimap.create();
                 map.put("head", new AttributeModifier(UUID_HEAD, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
                 map.put("ring", new AttributeModifier(UUID_RING, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("bracelet", new AttributeModifier(UUID_BRACELET, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("necklace", new AttributeModifier(UUID_NECKLACE, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("belt", new AttributeModifier(UUID_BELT, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
                 inventory.addTransientSlotModifiers(map);
             });
         }
@@ -960,6 +966,9 @@ public class CommonEventHandler {
                 LinkedHashMultimap<@Nullable String, @Nullable AttributeModifier> map = LinkedHashMultimap.create();
                 map.put("head", new AttributeModifier(UUID_HEAD, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
                 map.put("ring", new AttributeModifier(UUID_RING, "crown_of_glory", 2, AttributeModifier.Operation.ADDITION));
+                map.put("bracelet", new AttributeModifier(UUID_BRACELET, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
+                map.put("necklace", new AttributeModifier(UUID_NECKLACE, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
+                map.put("belt", new AttributeModifier(UUID_BELT, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
                 inventory.addTransientSlotModifiers(map);
             });
         }
