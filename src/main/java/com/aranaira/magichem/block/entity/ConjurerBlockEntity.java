@@ -158,11 +158,11 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
                 return lazyCombinedItemHandler.cast();
             else if(side == Direction.UP)
                 return lazyInsertionItemHandler.cast();
-            else
+            else if(side == Direction.DOWN)
                 return lazyExtractionItemHandler.cast();
         }
 
-        return super.getCapability(cap, side);
+        return LazyOptional.empty();
     }
 
     @Override

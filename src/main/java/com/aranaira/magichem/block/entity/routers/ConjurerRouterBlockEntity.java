@@ -76,7 +76,10 @@ public class ConjurerRouterBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return getMaster() == null ? LazyOptional.empty() : getMaster().getCapability(cap, side);
+        final int routerType = getBlockState().getValue(ROUTER_TYPE_CONJURER);
+        if(routerType == 2) // top
+            return getMaster() == null ? LazyOptional.empty() : getMaster().getCapability(cap, Direction.UP);
+        return LazyOptional.empty();
     }
 
     @Override
