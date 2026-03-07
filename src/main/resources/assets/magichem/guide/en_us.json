@@ -8490,7 +8490,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " determined by the item being conjured, the process is drastically sped up and produces much larger batches at once."
+            "text": " determined by the item being conjured, the process is drastically sped up and produces much larger batches at once.\n\nConstructs, Hefty Hoppers, and other forms of automation can only extract output items from the bottom block and input items from the top block."
           }
         ]
       }
@@ -13661,6 +13661,74 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/sentinels_plackart"
+      }
+    ]
+  },
+  "Crown of Glory": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Crown of Glory"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Crown of Glory",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a statement of superiority and grandeur. It allows its wearer to equip one additional "
+          },
+          {
+            "text": "Head",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curio, one additional "
+          },
+          {
+            "text": "Neck",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curio, one additional "
+          },
+          {
+            "text": "Bracelet",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curio, and two additional "
+          },
+          {
+            "text": "Ring",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curios.\n\nHistory does not record many Crowns of Glory. The last known creation of a Crown was during a time of especial crisis where the rulers of the Council of Wizards, the Demons of the Nether, the Fey Courts, and the Undead all cooperated to fell a threat greater than their individual squabbles.\n\nGiven how the faction war has escalated, that sort of cooperation is likely impossible.\n\nIn order to obtain the four required Symbols of Triumph, "
+          },
+          {
+            "text": "violence will be necessary",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/crown_of_glory"
       }
     ]
   },

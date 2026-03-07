@@ -3,6 +3,8 @@ package com.aranaira.magichem;
 import com.aranaira.magichem.block.entity.renderer.*;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.data.DamageTypeProvider;
+import com.aranaira.magichem.events.ClientEventForgeBusHandler;
+import com.aranaira.magichem.events.ClientEventHandler;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
@@ -219,6 +221,8 @@ public class MagiChemMod
 
         @SubscribeEvent
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
+            event.register(ClientEventForgeBusHandler.RENDERER_CURIO_MODEL_CROWN_OF_GLORY);
+
             event.register(MasterItemRenderer.RENDERER_JAR);
             event.register(MasterItemRenderer.RENDERER_JAR_QUAD);
             event.register(MasterItemRenderer.RENDERER_VESSEL);

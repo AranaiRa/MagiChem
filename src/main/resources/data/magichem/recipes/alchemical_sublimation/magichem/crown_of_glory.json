@@ -43,7 +43,7 @@
       "components": [
         { "item": "magichem:boss_trophy_fey" },
         { "item": "magichem:selargyros" },
-        { "item": "mna:book_of_rote" },
+        { "item": "magichem:immaculate_vinteum_crystal" },
         { "item": "magichem:selargyros" },
         { "item": "magichem:boss_trophy_undead" }
       ],

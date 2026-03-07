@@ -25,12 +25,21 @@ import com.mna.KeybindInit;
 import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.api.config.ClientConfigValues;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
+import com.mna.tools.render.ModelUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -42,12 +51,15 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -74,6 +86,40 @@ public class ClientEventForgeBusHandler {
             TAG_MAGICHEM_WISDOM_STONES = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "wisdom_stones"));
     private static final ResourceLocation TEXTURE_WISDOM = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_active.png");
     private static final HashMap<Item, ConstructStudyMaterialRecipe> studyRecipes = new HashMap<>();
+    public static final ResourceLocation RENDERER_CURIO_MODEL_CROWN_OF_GLORY = new ResourceLocation(MagiChemMod.MODID, "obj/special/crown_of_glory");
+
+    @SubscribeEvent
+    public static void onRenderEntity(RenderLivingEvent.Post<Player, PlayerModel<Player>> event) {
+//        if(event.getEntity() instanceof Player player) {
+//            CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
+//                curiosInventory.getStacksHandler("head").ifPresent(slotsInventory -> {
+//                    for (int i = 0; i < slotsInventory.getStacks().getSlots(); i++) {
+//                        ItemStack stack = slotsInventory.getStacks().getStackInSlot(i);
+//                        if(stack.getItem() == ItemRegistry.CROWN_OF_GLORY.get() && slotsInventory.isVisible()) {
+//                            final PoseStack pose = event.getPoseStack();
+//                            final MultiBufferSource buffer = event.getMultiBufferSource();
+//                            final Vec3 pos = player.position();
+//                            final PlayerModel<Player> model = event.getRenderer().getModel();
+//                            final ModelPart body = model.body;
+//                            final ModelPart head = model.head;
+//
+//                            final PartPose storedHeadPose = head.storePose();
+//
+//                            pose.pushPose();
+//
+//                            pose.translate(0, 1.375f, 0);
+//                            pose.mulPose(Axis.YN.rotationDegrees(player.getYRot()));
+//                            pose.mulPose(Axis.YP.rotation(head.yRot));
+//                            pose.mulPose(Axis.XP.rotation(head.xRot));
+//                            pose.mulPose(Axis.ZP.rotation(head.zRot));
+//                            ModelUtils.renderEntityModel(buffer.getBuffer(RenderType.cutout()), player.level(), RENDERER_CURIO_MODEL_CROWN_OF_GLORY, pose, event.getPackedLight(), event.getPackedLight());
+//                            pose.popPose();
+//                        }
+//                    }
+//                });
+//            });
+//        }
+    }
 
     @SubscribeEvent
     public static void renderItemTooltips(ItemTooltipEvent event) {
