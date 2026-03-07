@@ -3,6 +3,7 @@ package com.aranaira.magichem.interop.jei;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.affinity.Affinity;
 import mezz.jei.api.constants.VanillaTypes;
@@ -64,6 +65,7 @@ public class ExaltationRecipeCategory implements IRecipeCategory<ExaltationRecip
         builder.addSlot(RecipeIngredientRole.INPUT, 4, 4).addItemStack(new ItemStack(recipe.getItemType()));
         builder.addSlot(RecipeIngredientRole.INPUT, 76, 4).addItemStack(new ItemStack(recipe.getMateriaType()));
         builder.addSlot(RecipeIngredientRole.OUTPUT,40,88).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.INPUT, 4096, 4096).addFluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), recipe.getSlurryRequired());
     }
 
     public void draw(ExaltationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
