@@ -14,14 +14,12 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.events.compat.FarmersDelightEventHelper;
 import com.aranaira.magichem.events.compat.HexereiEventHelper;
-import com.aranaira.magichem.foundation.ICanAbsorbConstructs;
-import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.IInteractsWithBlock;
-import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.item.ChaliceOfTearsItem;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.networking.AdvancementQueryS2CPacket;
 import com.aranaira.magichem.networking.ResetWisdomToggleS2CPacket;
 import com.aranaira.magichem.networking.WisdomSyncC2SPacket;
@@ -30,6 +28,7 @@ import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.aranaira.magichem.util.InteropUtil;
 import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.mna.api.blocks.WizardLabBlock;
 import com.mna.api.capabilities.IPlayerMagic;
@@ -62,6 +61,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -89,6 +89,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
@@ -114,6 +115,7 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
@@ -132,6 +134,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.network.PacketDistributor;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
@@ -151,9 +154,11 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 public class CommonEventHandler {
     private static final TagKey<Item>
             TAG_MINECRAFT_AXES = ItemTags.create(new ResourceLocation("minecraft", "axes")),
-            TAG_MAGICHEM_NODECAY = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "no_item_decay"));
+            TAG_MAGICHEM_NODECAY = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "no_item_decay")),
+            TAG_MAGICHEM_SENTINELS_PLACKART_VALID = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "sentinels_plackart_valid"));
     private static final Random r = new Random();
     private static final HashSet<UUID> playersGivenWarning = new HashSet<>();
+    private static final HashMap<UUID, CachedArmorData> CACHED_ARMORS = new HashMap<>();
 
     public CommonEventHandler() {}
 
@@ -440,6 +445,14 @@ public class CommonEventHandler {
                 playersGivenWarning.add(sp.getUUID());
             }
 
+            if(CACHED_ARMORS.containsKey(sp.getUUID())) {
+                CACHED_ARMORS.get(sp.getUUID()).snapshot(sp);
+            } else {
+                CachedArmorData cad = new CachedArmorData();
+                cad.snapshot(sp);
+                CACHED_ARMORS.put(sp.getUUID(), cad);
+            }
+
             final Optional<IWisdomCapability> wisdomCap = WisdomProvider.getCapability(sp);
             if(wisdomCap.isPresent()) {
                 final Pair<Short, Short> cardinalIntercardinalPair = WisdomProvider.serializeShorts(wisdomCap.get());
@@ -533,9 +546,49 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onEntityHurt(LivingHurtEvent event) {
         if(!event.getEntity().level().isClientSide()) {
-            //Chalice of Tears fill
             if(event.getEntity() instanceof Player player){
                 Inventory inventory = player.getInventory();
+                CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
+                    if(!CACHED_ARMORS.containsKey(player.getUUID())) {
+                        CachedArmorData cad = new CachedArmorData();
+                        cad.snapshot(player);
+                        CACHED_ARMORS.put(player.getUUID(), cad);
+                    }
+
+                    MutableInt wisdom = new MutableInt(0);
+                    curiosInventory.getStacksHandler("wisdom").ifPresent(slotsInventory -> {
+                        for (int i = 0; i < slotsInventory.getStacks().getSlots(); i++) {
+                            ItemStack stack = slotsInventory.getStacks().getStackInSlot(i);
+                            if(stack.getItem() instanceof PhilosophersStoneItem stone) {
+                                wisdom.setValue(stone.getWisdom());
+                            }
+                        }
+                    });
+                    curiosInventory.getStacksHandler("body").ifPresent(slotsInventory -> {
+                        for (int i = 0; i < slotsInventory.getStacks().getSlots(); i++) {
+                            ItemStack stack = slotsInventory.getStacks().getStackInSlot(i);
+                            if(stack.getItem() == ItemRegistry.SENTINELS_PLACKART.get()) {
+                                boolean doRefund = r.nextDouble() > (1d / (wisdom.intValue() + 2));
+                                for(ItemStack armorStack : inventory.armor) {
+                                    if(armorStack.getItem() instanceof ArmorItem armorItem && armorStack.is(TAG_MAGICHEM_SENTINELS_PLACKART_VALID)) {
+                                        if (!armorStack.isEmpty()) {
+                                            final CachedArmorData data = CACHED_ARMORS.get(player.getUUID());
+                                            if (data.matchesPrevious(armorItem)) {
+                                                if (doRefund) {
+                                                    data.restore(armorStack);
+                                                }
+                                            }
+                                            CACHED_ARMORS.get(player.getUUID()).setPrevious(armorItem, armorStack.getDamageValue());
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    });
+                });
+
+                //Chalice of Tears fill
                 for (ItemStack item : inventory.items) {
                     if(!item.isEmpty() && item.getItem() == ItemRegistry.CHALICE_OF_TEARS.get() && !player.getCooldowns().isOnCooldown(item.getItem())) {
                         if(item.hasTag()) {

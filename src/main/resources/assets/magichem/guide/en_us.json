@@ -13547,5 +13547,122 @@
       }
     ]
   },
+  "Sentinel's Plackart": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Sentinel's Plackart"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "While worn in a Body slot, the "
+          },
+          {
+            "text": "Sentinel's Plackart",
+            "color": "dark_purple"
+          },
+          {
+            "text": " weaves protective magic around "
+          },
+          {
+            "text": "pieces of sorcerous armor",
+            "color": "dark_purple"
+          },
+          {
+            "text": " granting a chance that the piece "
+          },
+          {
+            "text": "takes no durability damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe magic of the Sentinel's Plackart is only effective on armor that is "
+          },
+          {
+            "text": "fundamentally associated with wizardry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": mage's robes and the powerful armors commanded by the higher echelons of the "
+          },
+          {
+            "text": "four factions",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nBy default the chance to avoid durability loss is "
+          },
+          {
+            "text": "50%",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". This chance increases with a "
+          },
+          {
+            "text": "Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " equipped in your Wisdom curio slot.\n\n: 50.0%\n• Ashen: 66.7%\n• Bleached: 75.0%\n• Yellowed: 80.0%\n• Flushed: 83.3%\nPhilosopher's: 85.7%"
+          },
+          {
+            "text": "Base",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 50.0%\n"
+          },
+          {
+            "text": "Ashen",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 66.7%\n"
+          },
+          {
+            "text": "Bleached",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 75.0%\n"
+          },
+          {
+            "text": "Yellowed",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 80.0%\n"
+          },
+          {
+            "text": "Flushed",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 83.3%\n"
+          },
+          {
+            "text": "Philosopher's",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 85.7%"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/sentinels_plackart"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

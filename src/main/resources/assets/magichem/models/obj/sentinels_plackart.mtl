@@ -1,0 +1,5 @@
+# Blender MTL File: 'equipment.blend'
+# Material Count: 1
+
+newmtl SENTINELS_PLACKART
+map_Kd magichem:item/sentinels_plackart

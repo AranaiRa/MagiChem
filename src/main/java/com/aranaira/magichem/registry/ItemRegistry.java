@@ -542,6 +542,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<TooltipLoreItem> SENTINELS_PLACKART = ITEMS.register("sentinels_plackart",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<TooltipLoreItem> CROWN_OF_GLORY = ITEMS.register("crown_of_glory",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
