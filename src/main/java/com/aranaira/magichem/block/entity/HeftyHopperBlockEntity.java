@@ -28,8 +28,8 @@ public class HeftyHopperBlockEntity extends BlockEntity {
             final BlockEntity bePush = pLevel.getBlockEntity(pPos.offset(fwd.multiply(-1)));
 
             if(beSuck != null && bePush != null) {
-                final LazyOptional<IItemHandler> suckCapability = beSuck.getCapability(ForgeCapabilities.ITEM_HANDLER);
-                final LazyOptional<IItemHandler> pushCapability = bePush.getCapability(ForgeCapabilities.ITEM_HANDLER);
+                final LazyOptional<IItemHandler> suckCapability = beSuck.getCapability(ForgeCapabilities.ITEM_HANDLER, facing.getOpposite());
+                final LazyOptional<IItemHandler> pushCapability = bePush.getCapability(ForgeCapabilities.ITEM_HANDLER, facing);
 
                 suckCapability.ifPresent(suck -> {
                     pushCapability.ifPresent(push -> {
@@ -49,7 +49,7 @@ public class HeftyHopperBlockEntity extends BlockEntity {
                             for(int i=0;i<push.getSlots();i++) {
                                 ItemStack queryPush = push.insertItem(i, querySuck, false);
                                 if(queryPush.isEmpty()) {
-                                    ItemStack extractedStack = suck.extractItem(i, suck.getStackInSlot(i).getMaxStackSize(), false);
+                                    ItemStack extractedStack = suck.extractItem(querySuckIndex, suck.getStackInSlot(querySuckIndex).getMaxStackSize(), false);
                                     extracted += extractedStack.getCount();
 
                                     if(extracted >= initial)
