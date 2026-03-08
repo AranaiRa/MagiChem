@@ -120,7 +120,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
     private final ItemStackHandler itemExtractionHandler = new ItemStackHandler(SLOT_EXTRACTION_COUNT) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return true;
+            return false;
         }
 
         @Override
@@ -156,13 +156,18 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             if(side == null)
                 return lazyCombinedItemHandler.cast();
-            else if(side == Direction.UP)
-                return lazyInsertionItemHandler.cast();
-            else if(side == Direction.DOWN)
-                return lazyExtractionItemHandler.cast();
+            return lazyExtractionItemHandler.cast();
         }
 
         return LazyOptional.empty();
+    }
+
+    public LazyOptional<IItemHandler> getInsertionItemHandler() {
+        return lazyInsertionItemHandler;
+    }
+
+    public LazyOptional<IItemHandler> getExtractionItemHandler() {
+        return lazyExtractionItemHandler;
     }
 
     @Override
