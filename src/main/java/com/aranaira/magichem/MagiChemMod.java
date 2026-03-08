@@ -46,6 +46,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import java.lang.management.ManagementFactory;
 import java.util.List;
@@ -210,6 +211,8 @@ public class MagiChemMod
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SWEETBERRY_WINE_FLOWING.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SHIMMERING_WINE.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SHIMMERING_WINE_FLOWING.get(), RenderType.translucent());
+
+                CuriosRendererRegistry.register(ItemRegistry.CROWN_OF_GLORY.get(), MagiChemCurioRenderer::new);
             });
         }
 
@@ -221,7 +224,7 @@ public class MagiChemMod
 
         @SubscribeEvent
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
-            event.register(ClientEventForgeBusHandler.RENDERER_CURIO_MODEL_CROWN_OF_GLORY);
+            event.register(MagiChemCurioRenderer.RENDERER_CURIO_MODEL_CROWN_OF_GLORY);
 
             event.register(MasterItemRenderer.RENDERER_JAR);
             event.register(MasterItemRenderer.RENDERER_JAR_QUAD);
