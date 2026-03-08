@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:boss_trophy_council"
+    },
+    "title": {
+      "translate": "advancements.magichem.boss_trophy_any.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.boss_trophy_any.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:__wisdom_3",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:boss_trophy_council",
+              "magichem:boss_trophy_demons",
+              "magichem:boss_trophy_fey",
+              "magichem:boss_trophy_undead"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
