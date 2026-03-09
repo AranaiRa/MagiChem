@@ -40,7 +40,7 @@ public class MateriaItem extends Item {
     private static final Random r = new Random();
 
     public MateriaItem(String name, String color, Item.Properties properties) {
-        super(properties);
+        super(properties.craftRemainder(Items.GLASS_BOTTLE));
         this.name = name;
         this.color = Integer.parseInt(color, 16) | 0xFF000000;
     }
