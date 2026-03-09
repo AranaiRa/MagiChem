@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandFuseryRouterBlockEntity;
 import com.aranaira.magichem.events.CommonEventHelper;
@@ -8,6 +9,7 @@ import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandFuseryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.blocks.ISpellInteractibleBlock;
@@ -20,6 +22,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -39,6 +43,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
@@ -274,8 +279,18 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
                 if (holdingPowerSpike) {
                     return InteractionResult.PASS;
                 } else {
-                    if (entity instanceof GrandFuseryBlockEntity) {
-                        NetworkHooks.openScreen((ServerPlayer) player, (GrandFuseryBlockEntity) entity, pos);
+                    if (entity instanceof GrandFuseryBlockEntity grandFusery) {
+                        if (!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
+                            NetworkHooks.openScreen((ServerPlayer) player, (GrandFuseryBlockEntity) entity, pos);
+                        if (player.getItemInHand(hand).getItem() == ItemRegistry.ACADEMIC_SLURRY_BUCKET.get()) {
+                            if(player.isCreative() || (grandFusery.getFluidInTank(0).getAmount() + 1000 <= grandFusery.getTankCapacity(0))) {
+                                grandFusery.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                                grandFusery.syncAndSave();
+                                if(!player.isCreative())
+                                    player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+                            }
+                            return InteractionResult.CONSUME;
+                        }
                     } else {
                         throw new IllegalStateException("GrandFuseryBlockEntity container provider is missing!");
                     }
