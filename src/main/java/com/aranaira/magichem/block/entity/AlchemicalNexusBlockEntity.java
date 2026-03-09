@@ -83,7 +83,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     protected int
         progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
     protected boolean
-        isStalled = false, doDeferredRecipeCheck = false, preserveRecipe = false;
+        isStalled = false, doDeferredRecipeCheck = false, preserveRecipe = false, forceRecipeClear = false;
     protected Random r = new Random();
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected UUID initiatingPlayer = null;
@@ -365,6 +365,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
             initiatingPlayer = UUID.fromString(nbt.getString("initiatingPlayer"));
 
         if(nbt.contains("forceDisplayedRecipeUpdate")) forceDisplayedRecipeUpdate = true;
+        if(nbt.contains("forceRecipeClear")) forceRecipeClear = true;
         if(nbt.contains("clearRecipeAfterNextProcess")) clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
 
         satisfactionDemands.clear();
@@ -405,6 +406,8 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
 
         if(forceDisplayedRecipeUpdate)
             nbt.putBoolean("forceDisplayedRecipeUpdate", true);
+        if(forceRecipeClear)
+            nbt.putBoolean("forceRecipeClear", true);
 
         nbt.putInt("numberOfDemands", satisfactionDemands.size());
         for(int i=0; i<satisfactionDemands.size(); i++) {
@@ -596,15 +599,21 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
 
             if(anbe.doDeferredRecipeCheck) {
                 boolean changed = false;
-                Item itemQuery = ForgeRegistries.ITEMS.getValue(anbe.deferredRecipeQuery);
-                SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(pLevel, itemQuery);
+                if(anbe.forceRecipeClear) {
+                    changed = true;
+                    anbe.forceRecipeClear = false;
+                    anbe.currentRecipe = null;
+                } else {
+                    Item itemQuery = ForgeRegistries.ITEMS.getValue(anbe.deferredRecipeQuery);
+                    SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(pLevel, itemQuery);
 
-                if(recipeQuery != null) {
-                    changed = anbe.currentRecipe != recipeQuery;
-                    anbe.currentRecipe = recipeQuery;
+                    if (recipeQuery != null) {
+                        changed = anbe.currentRecipe != recipeQuery;
+                        anbe.currentRecipe = recipeQuery;
 
-                    if(anbe.animStage != ANIM_STAGE_IDLE) {
-                        anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
+                        if (anbe.animStage != ANIM_STAGE_IDLE) {
+                            anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
+                        }
                     }
                 }
                 anbe.doDeferredRecipeCheck = false;
@@ -865,8 +874,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                                     sp.getAdvancements().award(advancement, "nexus");
                                     //Clear the recipe if we're crafting something that forbids its own recipe
                                     if(anbe.currentRecipe.isForbiddenByAdvancement() && anbe.currentRecipe.grantsAdvancementOnCraft() && anbe.currentRecipe.getForbiddenAdvancement().equals(anbe.currentRecipe.getGrantedAdvancement())) {
-                                        anbe.deferredRecipeQuery = null;
-                                        anbe.doDeferredRecipeCheck = true;
+                                        anbe.forceRecipeClear = true;
                                     }
                                     anbe.forceDisplayedRecipeUpdate = true;
                                 }
