@@ -9486,7 +9486,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " of a single conduit.\n\nLesser Prismatic Conduits can be broken back into the six component Lesser Conduits by a construct using the "
+            "text": " of a single conduit.\n\nWhen broken, a Prismatic Conduit "
+          },
+          {
+            "text": "returns its buffered Eldrin Power",
+            "color": "dark_purple"
+          },
+          {
+            "text": "to its owner's Eldrin pool.\n\nLesser Prismatic Conduits can be broken back into the six component Lesser Conduits by a construct using the "
           },
           {
             "text": "Crush",
@@ -13610,7 +13617,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " equipped in your Wisdom curio slot.\n\n: 50.0%\n• Ashen: 66.7%\n• Bleached: 75.0%\n• Yellowed: 80.0%\n• Flushed: 83.3%\nPhilosopher's: 85.7%"
+            "text": " equipped in your Wisdom curio slot.\n\n"
           },
           {
             "text": "Base",

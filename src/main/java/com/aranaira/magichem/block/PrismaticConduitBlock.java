@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.PrismaticConduitBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.blocks.artifice.EldrinConduitBlock;
+import com.mna.capabilities.worlddata.WorldMagicProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -33,6 +34,15 @@ public class PrismaticConduitBlock extends EldrinConduitBlock {
         }
 
         return null;
+    }
+
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if(pLevel.getBlockEntity(pPos) instanceof PrismaticConduitBlockEntity entity) {
+            entity.dumpPowerToNetwork();
+        }
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
 
     public boolean isLesser() {

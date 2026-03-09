@@ -9,6 +9,7 @@ import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.blocks.tileentities.EldrinConduitTile;
 import com.mna.blocks.tileentities.init.TileEntityInit;
+import com.mna.capabilities.worlddata.WorldMagicProvider;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.particles.types.movers.ParticleOrbitMover;
 import com.mna.tools.math.Vector3;
@@ -57,6 +58,16 @@ public class PrismaticConduitBlockEntity extends EldrinCapacitorTile {
                 blockState.getBlock() != BlockRegistry.PRISMATIC_CONDUIT.get(),
                 pos,
                 blockState);
+    }
+
+    public void dumpPowerToNetwork() {
+        if (!level.isClientSide()) {
+            level.getCapability(WorldMagicProvider.MAGIC).ifPresent((m) -> {
+                for (Affinity affinity : AFFINITY_LIST) {
+                    m.getWellspringRegistry().insertPower(placedBy.getPlayerProfileID(), this.level, affinity, power.get(affinity));
+                }
+            });
+        }
     }
 
     @Override
