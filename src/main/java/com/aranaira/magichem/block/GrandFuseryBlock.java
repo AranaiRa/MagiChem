@@ -341,6 +341,7 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
     @Override
     public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
         if(pLevel.getBlockEntity(pPos) instanceof GrandFuseryBlockEntity fbe) {
+            boolean hasRecipe = fbe.getRecipeItem() != null && !fbe.getRecipeItem().isEmpty();
             boolean hasInputItems = !fbe.getContentsOfInputSlots(GrandFuseryBlockEntity::getVar).isEmpty();
             boolean hasOutputItems = !fbe.getContentsOfOutputSlots(GrandFuseryBlockEntity::getVar).isEmpty();
             boolean hasSlurry = false;
@@ -350,6 +351,7 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
             }
 
             int signal = 0;
+            signal = signal | (hasRecipe ? 1 : 0);
             signal = signal | (hasInputItems ? 1 << 1 : 0);
             signal = signal | (hasOutputItems ? 1 << 2 : 0);
             signal = signal | (hasSlurry ? 1 << 3 : 0);

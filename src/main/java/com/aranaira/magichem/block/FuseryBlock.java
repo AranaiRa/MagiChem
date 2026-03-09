@@ -286,6 +286,7 @@ public class FuseryBlock extends BaseEntityBlock implements ISpellInteractibleBl
     @Override
     public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
         if(pLevel.getBlockEntity(pPos) instanceof FuseryBlockEntity fbe) {
+            boolean hasRecipe = fbe.getRecipeItem() != null && !fbe.getRecipeItem().isEmpty();
             boolean hasInputItems = !fbe.getContentsOfInputSlots(FuseryBlockEntity::getVar).isEmpty();
             boolean hasOutputItems = !fbe.getContentsOfOutputSlots(FuseryBlockEntity::getVar).isEmpty();
             boolean hasSlurry = false;
@@ -295,6 +296,7 @@ public class FuseryBlock extends BaseEntityBlock implements ISpellInteractibleBl
             }
 
             int signal = 0;
+            signal = signal | (hasRecipe ? 1 : 0);
             signal = signal | (hasInputItems ? 1 << 1 : 0);
             signal = signal | (hasOutputItems ? 1 << 2 : 0);
             signal = signal | (hasSlurry ? 1 << 3 : 0);
