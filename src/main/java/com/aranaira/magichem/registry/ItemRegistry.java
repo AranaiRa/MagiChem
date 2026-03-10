@@ -510,19 +510,19 @@ public class ItemRegistry {
 
     public static final RegistryObject<TooltipLoreItem> AMBROSIA = ITEMS.register("ambrosia",
             () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(20).saturationMod(1.0F)
-                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 0, false, false), 1.0f).build()
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 3, false, false), 1.0f).build()
             ))
     );
 
     public static final RegistryObject<TooltipLoreItem> NECTAR = ITEMS.register("nectar",
             () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(20).saturationMod(1.0F)
-                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 0, false, false), 1.0f).build()
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 3, false, false), 1.0f).build()
             ))
     );
 
     public static final RegistryObject<TooltipLoreItem> FEAST_OF_THE_GODS = ITEMS.register("feast_of_the_gods",
             () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(40).saturationMod(1.0F)
-                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 4, false, false), 1.0f).build()
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 14, false, false), 1.0f).build()
             ))
     );
 
