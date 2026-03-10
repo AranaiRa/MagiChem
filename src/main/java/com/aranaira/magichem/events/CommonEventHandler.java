@@ -1003,17 +1003,6 @@ public class CommonEventHandler {
                 MagiChemMod.CHANNEL.send(PacketDistributor.PLAYER.with(() -> p), new ResetWisdomToggleS2CPacket());
             }
         }
-        else if(event.getFrom().getItem() == ItemRegistry.CROWN_OF_GLORY.get()) {
-            CuriosApi.getCuriosInventory(event.getEntity()).ifPresent(inventory -> {
-                LinkedHashMultimap<@Nullable String, @Nullable AttributeModifier> map = LinkedHashMultimap.create();
-                map.put("head", new AttributeModifier(UUID_HEAD, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
-                map.put("ring", new AttributeModifier(UUID_RING, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
-                map.put("bracelet", new AttributeModifier(UUID_BRACELET, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
-                map.put("necklace", new AttributeModifier(UUID_NECKLACE, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
-                map.put("belt", new AttributeModifier(UUID_BELT, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
-                inventory.addTransientSlotModifiers(map);
-            });
-        }
         else if(event.getTo().getItem() == ItemRegistry.CROWN_OF_GLORY.get()) {
             CuriosApi.getCuriosInventory(event.getEntity()).ifPresent(inventory -> {
                 LinkedHashMultimap<@Nullable String, @Nullable AttributeModifier> map = LinkedHashMultimap.create();
@@ -1022,6 +1011,19 @@ public class CommonEventHandler {
                 map.put("bracelet", new AttributeModifier(UUID_BRACELET, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
                 map.put("necklace", new AttributeModifier(UUID_NECKLACE, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
                 map.put("belt", new AttributeModifier(UUID_BELT, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
+                map.put("charm", new AttributeModifier(UUID_BELT, "crown_of_glory", 2, AttributeModifier.Operation.ADDITION));
+                inventory.addTransientSlotModifiers(map);
+            });
+        }
+        else if(event.getFrom().getItem() == ItemRegistry.CROWN_OF_GLORY.get()) {
+            CuriosApi.getCuriosInventory(event.getEntity()).ifPresent(inventory -> {
+                LinkedHashMultimap<@Nullable String, @Nullable AttributeModifier> map = LinkedHashMultimap.create();
+                map.put("head", new AttributeModifier(UUID_HEAD, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("ring", new AttributeModifier(UUID_RING, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("bracelet", new AttributeModifier(UUID_BRACELET, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("necklace", new AttributeModifier(UUID_NECKLACE, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("belt", new AttributeModifier(UUID_BELT, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("charm", new AttributeModifier(UUID_BELT, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
                 inventory.addTransientSlotModifiers(map);
             });
         }
