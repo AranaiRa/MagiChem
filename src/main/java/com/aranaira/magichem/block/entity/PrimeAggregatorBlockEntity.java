@@ -26,6 +26,7 @@ import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -63,7 +64,7 @@ import java.util.*;
 
 import static com.mna.api.affinity.Affinity.*;
 
-public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IHasDeviceRecipeSlot, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction, IKeepsInventoryOnBreak {
+public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IHasDeviceRecipeSlot, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester, IItemProvisionRequester, IRequiresRouterCleanupOnDestruction, IKeepsInventoryOnBreak {
     public static final int
             SLOT_COUNT = 7, SLOT_INPUT_COUNT = 2,
             SLOT_ITEM_INPUT = 0, SLOT_MATERIA_INPUT = 1, SLOT_BOTTLES_OUTPUT = 2, SLOT_PROGRESS_HOLDER = 3,
@@ -82,7 +83,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     private int animStage = ANIM_STAGE_IDLE, itemsDelivered = 0, materiaDelivered = 0, slurryDelivered = 0, progress = 0, pluginLinkageCountdown = 3;
     private final HashMap<Affinity, Integer> eldrinDelivered = new HashMap<>();
     private final HashMap<Affinity, Float> partialEldrinDelivered = new HashMap<>();
-    private boolean doDeferredRecipeCheck = false;
+    private boolean doDeferredRecipeCheck = false, itemProvisionInProgress = false;
     private ExaltationRecipe currentRecipe = null;
     private ResourceLocation deferredRecipeQuery = null;
     private FluidStack containedSlurry = FluidStack.EMPTY.copy();
@@ -376,6 +377,8 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         deliveryTag.putFloat("partialArcane", partialEldrinDelivered.get(ARCANE));
         nbt.put("partialDeliveries", partialDeliveryTag);
 
+        nbt.putBoolean("itemProvisionInProgress", itemProvisionInProgress);
+
         super.saveAdditional(nbt);
     }
 
@@ -425,6 +428,8 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             partialEldrinDelivered.put(ARCANE, partialDeliveryTag.getFloat("partialArcane"));
         }
 
+        itemProvisionInProgress = nbt.getBoolean("itemProvisionInProgress");
+
 //        updateActuatorValues(this);
     }
 
@@ -458,6 +463,8 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         deliveryTag.putInt("eldrinFire", eldrinDelivered.get(FIRE));
         deliveryTag.putInt("eldrinArcane", eldrinDelivered.get(ARCANE));
         nbt.put("deliveries", deliveryTag);
+
+        nbt.putBoolean("itemProvisionInProgress", itemProvisionInProgress);
 
         return nbt;
     }
@@ -1430,5 +1437,75 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     @Override
     public void unpackDataFromNBT(CompoundTag pNBT) {
 
+    }
+
+    ////////////////////
+    // ITEM SHLORP HANDLING
+    ////////////////////
+
+    @Override
+    public boolean needsItemProvisioning() {
+        //Has a recipe
+        if(currentRecipe != null && !itemProvisionInProgress) {
+            //In the correct phase
+            if(animStage == ANIM_STAGE_IDLE || animStage == ANIM_STAGE_GATHERING_ITEMS) {
+                int itemsNeeded = currentRecipe.getItemsRequired() - itemsDelivered;
+                ItemStack inputSlot = itemHandler.getStackInSlot(SLOT_ITEM_INPUT);
+                if(!inputSlot.isEmpty() && inputSlot.getItem() == currentRecipe.getItemType()) {
+                    itemsNeeded -= inputSlot.getCount();
+                }
+                return itemsNeeded > 0;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean needsAllItemsPresentForProvisioning() {
+        return false;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItemProvisioningNeeds() {
+        NonNullList<ItemStack> needs = NonNullList.create();
+
+        if(currentRecipe != null) {
+            int remaining = currentRecipe.getItemsRequired();
+            while(remaining > 0) {
+                int deduct = Math.min(64, remaining);
+                needs.add(new ItemStack(currentRecipe.getItemType(), deduct));
+                remaining -= deduct;
+            }
+        }
+
+        return needs;
+    }
+
+    @Override
+    public void setItemProvisioningInProgress() {
+        itemProvisionInProgress = true;
+    }
+
+    @Override
+    public void cancelItemProvisioningInProgress() {
+        itemProvisionInProgress = false;
+    }
+
+    @Override
+    public void provideItems(NonNullList<ItemStack> pStacks) {
+        if(currentRecipe != null) {
+            for(int i=0; i<pStacks.size(); i++) {
+                if(i == pStacks.size()-1) {
+                    itemHandler.insertItem(SLOT_ITEM_INPUT, pStacks.get(i), false);
+                } else {
+                    if (currentRecipe.getItemType() == pStacks.get(i).getItem()) {
+                        itemsDelivered += pStacks.get(i).getCount();
+                    }
+                }
+            }
+        }
+        itemProvisionInProgress = false;
+        syncAndSave();
     }
 }
