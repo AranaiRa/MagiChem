@@ -197,7 +197,7 @@ public class ConstructProvideItems extends ConstructAITask<ConstructProvideItems
                             this.pushDiagnosticMessage("I moved a clump of stuff into the device, boss. I like watching them fly!", true);
 
                             this.phase = ETaskPhase.WAIT_AT_DEVICE;
-                            this.waitTimer = 41;
+                            this.waitTimer = 121;
                         }
                     }
                 }
