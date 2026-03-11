@@ -456,6 +456,13 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> OCULOTOXIN = ITEMS.register("oculotoxin",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(1).saturationMod(1.0F).alwaysEat()
+                    .effect(new MobEffectInstance(MobEffects.POISON, 480, 3), 1.0f)
+                    .effect(new MobEffectInstance(MobEffects.BLINDNESS, 240, 0), 0.667f).build()
+            ))
+    );
+
     public static final RegistryObject<TooltipLoreItem> FLATBREAD = ITEMS.register("flatbread",
             () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(8).saturationMod(0.6F).build()))
     );

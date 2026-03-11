@@ -4614,6 +4614,109 @@
     ],
     "related_recipes": []
   },
+  "Command: Provide Items": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Provide Items"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause a construct to "
+          },
+          {
+            "text": "magically transport items",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from a container to devices like the "
+          },
+          {
+            "text": "Alchemical Nexus",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nIf the target device requires it, the items will be delivered in the correct order to the correct slots.\n\nConstructs will be unable to Provide Items unless "
+          },
+          {
+            "text": "all of the required items are in the input container at once",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nProviding materia requires a "
+          },
+          {
+            "text": "caster arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a "
+          },
+          {
+            "text": "smart head",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Command: Create Experience Orb": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Create Experience Orb"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause a construct to consume "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from its tank to create a single "
+          },
+          {
+            "text": "Experience Orb",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at a chosen location.\n\nThe construct's entire store of Slurry will be consumed to create the Experience Orb.\n\nCreating an Experience Orb requires a "
+          },
+          {
+            "text": "fluid nozzle arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a "
+          },
+          {
+            "text": "tank torso",
+            "color": "dark_purple"
+          },
+          {
+            "text": " filled with Academic Slurry."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Command: Clean Alchemical Device": {
     "index": "4",
     "category": "constructs",
@@ -4955,6 +5058,47 @@
           },
           {
             "text": " if it can request more materia, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it cannot."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Condition: Device Needs Item Provisioning": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Device Needs Item Provisioning"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will "
+          },
+          {
+            "text": "check whether an alchemical device can have items delivered by a construct",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", returning "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if it can request items, and "
           },
           {
             "text": "failure",
@@ -13743,6 +13887,100 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/crown_of_glory"
+      }
+    ]
+  },
+  "Distillable Exemplars": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Distillable Exemplars"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": ""
+          },
+          {
+            "text": "Distillable Exemplars",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are small projects created through "
+          },
+          {
+            "text": "Exaltation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". As their name implies, Exemplars provide an exceptional amount of materia when distilled.\n\nAn Exemplar "
+          },
+          {
+            "text": "roughly triples",
+            "color": "dark_purple"
+          },
+          {
+            "text": " one of the available types of materia from its component items at the cost of "
+          },
+          {
+            "text": "heavily reducing",
+            "color": "dark_purple"
+          },
+          {
+            "text": " the other types.\n\nSome Exemplars, like Terrariums, have their own entries in the Codex. This entry is a catch-all for Exemplars with no major effects other than being a good distillation source."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Oculotoxin",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:oculotoxin",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An excellent source of "
+          },
+          {
+            "text": "Admixture of Poison",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nConsuming Oculotoxin is not advised, as it will wrack the consumer with "
+          },
+          {
+            "text": "extremely potent poison",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and will most likely cause "
+          },
+          {
+            "text": "blindness",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_exaltation/magichem/oculotoxin"
       }
     ]
   },
