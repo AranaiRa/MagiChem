@@ -65,7 +65,7 @@ public class ConstructCreateExperienceOrb extends ConstructAITask<ConstructCreat
 
                         construct.forceAnimation(handWithCapability.get() == InteractionHand.MAIN_HAND ? Animations.SHOOT_LEFT : Animations.SHOOT_RIGHT, true);
                         this.phase = ETaskPhase.WAIT_TO_CREATE;
-                        this.waitTimer = 30;
+                        this.waitTimer = 55;
                     }
                     break;
                 }
@@ -79,12 +79,16 @@ public class ConstructCreateExperienceOrb extends ConstructAITask<ConstructCreat
                 }
                 case CREATE_ORB: {
                     if(doMove(4f)) {
+                        BlockPos target = construct.asEntity().level().getBlockState(targetPos).canBeReplaced() ? targetPos : targetPos.above();
+
                         int points = construct.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE).getAmount() / ServerConfig.fluidPerXPPoint;
 
-                        ExperienceOrb orb = new ExperienceOrb(construct.asEntity().level(), targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5, points);
+                        ExperienceOrb orb = new ExperienceOrb(construct.asEntity().level(), target.getX() + 0.5, target.getY() + 0.5, target.getZ() + 0.5, points);
                         construct.asEntity().level().addFreshEntity(orb);
+                        construct.clearForcedAnimation();
 
                         this.pushDiagnosticMessage("I turned my slurry into an experience orb, boss. Look at it roll around!", false);
+                        this.phase = ETaskPhase.SETUP;
                     }
                     break;
                 }
