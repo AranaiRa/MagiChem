@@ -290,6 +290,30 @@ public class ItemShlorpEntity extends Entity implements IEntityAdditionalSpawnDa
                 currentPosOnTrack = length + limit;
         }
         currentPosOnTrack += 0;
+
+        //Particle work
+        if (level().isClientSide()) {
+            for (int i = 0; i < stacksInTransit.size(); i++) {
+                float trackPoint = currentPosOnTrack - distanceBetweenClusters * i;
+                if (trackPoint > 0) {
+                    Vector3 mid = generatePointOnBezierCurve(trackPoint, length);
+
+                    if(level().getGameTime() % 3 == 0) {
+                        level().addParticle(new MAParticleType(ParticleInit.DUST.get())
+                                        .setMaxAge(60).setScale(0.2f)
+                                        .setColor(150 + r.nextInt(75), 150 + r.nextInt(75), 150 + r.nextInt(75), 32).setGravity(0),
+                                getPosition(0).x + mid.x - 0.5, getPosition(0).y + mid.y - 0.0, getPosition(0).z + mid.z - 0.5,
+                                (r.nextDouble() - 0.5) * 0.002, (r.nextDouble() - 0.5) * 0.01, (r.nextDouble() - 0.5) * 0.002);
+                    }
+
+                    level().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setMaxAge(20 + r.nextInt(30)).setScale(0.06f + r.nextFloat() * 0.06f)
+                                    .setColor(150 + r.nextInt(75), 150 + r.nextInt(75), 150 + r.nextInt(75), 255),
+                            getPosition(0).x + mid.x - 0.5, getPosition(0).y + mid.y - 0.0, getPosition(0).z + mid.z - 0.5,
+                            (r.nextDouble() - 0.5) * 0.03, (r.nextDouble() - 0.5) * 0.05, (r.nextDouble() - 0.5) * 0.03);
+                }
+            }
+        }
     }
 
     private void deliverPayload() {

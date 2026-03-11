@@ -53,19 +53,26 @@ public class ItemShlorpEntityRenderer extends EntityRenderer<ItemShlorpEntity> {
             return;
 
         //Otherwise, IT BEGINS
-        int period = 200;
+        int period = 90;
         int gt = (int)(pEntity.level().getGameTime() % (period * 2));
         float rot = ((float)((gt + pPartialTick) % period) / (float)period) * 360f;
 
-        for(int i=1; i<vertData.size(); i++) {
+        for(int i=0; i<vertData.size()-1; i++) {
             Vector3 current = vertData.get(i);
-            Vector3 previous = vertData.get(i-1);
+            float scale = 1f;
+            float itemTrackPos = pEntity.currentPosOnTrack - pEntity.distanceBetweenClusters*i;
+            if(itemTrackPos < pEntity.distanceBetweenClusters) {
+                scale *= itemTrackPos / pEntity.distanceBetweenClusters;
+            } else if(itemTrackPos > pEntity.length - pEntity.distanceBetweenClusters) {
+                scale *= (pEntity.length - itemTrackPos) / pEntity.distanceBetweenClusters;
+            }
+            scale = Math.min(1,Math.max(0,scale)) * 0.375f;
 
             pPoseStack.pushPose();
-            pPoseStack.translate(previous.x, previous.y, previous.z);
+            pPoseStack.translate(current.x, current.y, current.z);
             pPoseStack.mulPose(Axis.YP.rotationDegrees(rot));
-            pPoseStack.scale(0.375f, 0.375f, 0.375f);
-            Minecraft.getInstance().getItemRenderer().renderStatic(pEntity.getStacksInTransit().get(i-1), ItemDisplayContext.FIXED, pPackedLight, NO_OVERLAY, pPoseStack, pBuffer, pEntity.level(), 0);
+            pPoseStack.scale(scale, scale, scale);
+            Minecraft.getInstance().getItemRenderer().renderStatic(pEntity.getStacksInTransit().get(i), ItemDisplayContext.FIXED, pPackedLight, NO_OVERLAY, pPoseStack, pBuffer, pEntity.level(), 0);
             pPoseStack.popPose();
         }
     }

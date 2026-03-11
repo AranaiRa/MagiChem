@@ -172,7 +172,7 @@ public class ConstructProvideItems extends ConstructAITask<ConstructProvideItems
                                     sP = new Vector3(startPoint.getBlockPos().getX(), startPoint.getBlockPos().getY(), startPoint.getBlockPos().getZ());
 
                                     sO = new Vector3(0.5,0.5,0.5);
-                                    sT = new Vector3(0,6,0);
+                                    sT = Vector3.up().scale(r.nextFloat() * 2.0f + 1.5f);
 
                                     for(int i=0; i<needs.size(); i++) {
                                         payload.add(i, needs.get(i).copy());
@@ -182,7 +182,7 @@ public class ConstructProvideItems extends ConstructAITask<ConstructProvideItems
                                     shlorp.setPos(new Vec3(sP.x, sP.y, sP.z));
                                     shlorp.configure(
                                             sP, sO, sT,
-                                            eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 3.0f + 3f),
+                                            eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 2.0f + 1.5f),
                                             speedFactor, payload);
                                     level.addFreshEntity(shlorp);
                                 }
@@ -197,6 +197,7 @@ public class ConstructProvideItems extends ConstructAITask<ConstructProvideItems
                             this.pushDiagnosticMessage("I moved a clump of stuff into the device, boss. I like watching them fly!", true);
 
                             this.phase = ETaskPhase.WAIT_AT_DEVICE;
+                            this.waitTimer = 41;
                         }
                     }
                 }
