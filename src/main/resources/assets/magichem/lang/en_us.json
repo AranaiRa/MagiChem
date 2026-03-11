@@ -1512,6 +1512,7 @@
   "construct.magichem:sort_materia": "Sort Materia from Device",
   "construct.magichem:sort_materia_from_container": "Sort Materia from Container",
   "construct.magichem:provide_materia": "Provide Materia",
+  "construct.magichem:provide_items_to_device": "Provide Items to Device",
   "construct.magichem:query_check_vessel": "Condition: Check Vessel Fill",
   "construct.magichem:clean_alchemical_apparatus": "Clean Alchemical Device",
   "construct.magichem:query_has_grime_level": "Condition: Has Grime Level",
@@ -1519,12 +1520,14 @@
   "construct.magichem:study": "Study",
   "construct.magichem:harvest_crystals": "Harvest Crystals",
   "construct.magichem:query_device_needs_provisioning": "Condition: Device Needs Provisioning",
+  "construct.magichem:query_device_needs_item_provisioning": "Condition: Device Needs Item Provisioning",
   "construct.magichem:query_device_needs_sorting": "Condition: Device Needs Sorting",
   "construct.magichem:set_device_recipe": "Set Device Recipe",
   "construct.magichem:query_has_eldrin_in_buffer": "Condition: Has Eldrin Power in Buffer",
   "construct.magichem:query_device_recipe_matches": "Condition: Device Recipe Matches",
   "construct.magichem:query_is_item_distillable": "Condition: Is Item Distillable",
   "construct.magichem:query_item_has_lumins": "Condition: Item Has Lumins",
+  "construct.magichem:create_experience_orb": "Create Experience Orb",
 
   "gui.mna.codex_search.recipe.anointing": "Anointing > ",
   "gui.mna.codex_search.recipe.exaltation": "Exaltation > ",
@@ -1544,6 +1547,9 @@
   "gui.mna.parameter.provide_materia.area": "What area should the construct look for Materia Vessels inside of?",
   "gui.mna.parameter.provide_materia.int": "How many crafts worth of materia should the construct try to transport at once?",
   "gui.mna.parameter.provide_materia.boolean": "Should the construct always make sure to leave at least 1 Materia in the Jar or Vessel?",
+
+  "gui.mna.parameter.provide_items.point": "What alchemical device should the construct provide items to?",
+  "gui.mna.parameter.provide_items.point2": "What inventory should the construct take items from?",
 
   "gui.mna.parameter.query_check_vessel.point": "What Materia Vessel should the construct look at?",
   "gui.mna.parameter.query_check_vessel.int": "What percentage full must the Materia Vessel be?",

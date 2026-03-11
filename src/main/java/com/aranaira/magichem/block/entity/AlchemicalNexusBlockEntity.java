@@ -44,6 +44,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -70,7 +71,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
+public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IItemProvisionRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
 
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -83,7 +84,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     protected int
         progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
     protected boolean
-        isStalled = false, doDeferredRecipeCheck = false, preserveRecipe = false, forceRecipeClear = false;
+        isStalled = false, doDeferredRecipeCheck = false, preserveRecipe = false, forceRecipeClear = false, itemsInTransit = false;
     protected Random r = new Random();
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected UUID initiatingPlayer = null;
@@ -318,6 +319,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         nbt.putFloat("reductionRate", this.reductionRate);
         nbt.putBoolean("preventDrawingLastMateria", this.preventDrawingLastMateria);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putBoolean("itemsInTransit", this.itemsInTransit);
 
         if(currentRecipe != null) {
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
@@ -364,6 +366,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         if(nbt.contains("initiatingPlayer"))
             initiatingPlayer = UUID.fromString(nbt.getString("initiatingPlayer"));
 
+        itemsInTransit = nbt.getBoolean("itemsInTransit");
         if(nbt.contains("forceDisplayedRecipeUpdate")) forceDisplayedRecipeUpdate = true;
         if(nbt.contains("forceRecipeClear")) forceRecipeClear = true;
         if(nbt.contains("clearRecipeAfterNextProcess")) clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
@@ -394,6 +397,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         nbt.putFloat("reductionRate", this.reductionRate);
         nbt.putBoolean("preventDrawingLastMateria", this.preventDrawingLastMateria);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putBoolean("itemsInTransit", this.itemsInTransit);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -1762,5 +1766,64 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
         return currentRecipe == null ? ItemStack.EMPTY : pMakeCopy ? currentRecipe.getResultItem().copy() : currentRecipe.getResultItem();
+    }
+
+    ////////////////////
+    // ITEM SHLORP HANDLING
+    ////////////////////
+
+    @Override
+    public boolean needsItemProvisioning() {
+        if(currentRecipe == null || !(animStage == ANIM_STAGE_IDLE || animStage == ANIM_STAGE_CRAFTING_IDLE))
+            return false;
+
+        NonNullList<ItemStack> needs = getItemProvisioningNeeds();
+
+        return !(needs.isEmpty() || itemsInTransit);
+    }
+
+    @Override
+    public boolean needsAllItemsPresentForProvisioning() {
+        return true;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItemProvisioningNeeds() {
+        NonNullList<ItemStack> needs = NonNullList.create();
+
+        if(currentRecipe != null) {
+            InfusionStage stage = currentRecipe.getStages(false).get(craftingStage);
+            NonNullList<ItemStack> requirements = stage.componentItems;
+            for(int i=0; i<requirements.size(); i++) {
+                ItemStack alreadyPresent = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                if(alreadyPresent.isEmpty()) {
+                    needs.add(i, requirements.get(i));
+                }
+            }
+        }
+
+        return needs;
+    }
+
+    @Override
+    public void setItemProvisioningInProgress() {
+        itemsInTransit = true;
+    }
+
+    @Override
+    public void cancelItemProvisioningInProgress() {
+        itemsInTransit = false;
+    }
+
+    @Override
+    public void provideItems(NonNullList<ItemStack> pStacks) {
+        for(int i=0; i<pStacks.size(); i++) {
+            ItemStack query = itemHandler.insertItem(SLOT_INPUT_START + i, pStacks.get(i), false);
+            if(!query.isEmpty() && level != null) {
+                ItemEntity ie = new ItemEntity(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), query);
+                level.addFreshEntity(ie);
+            }
+        }
+        itemsInTransit = false;
     }
 }

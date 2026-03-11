@@ -989,6 +989,7 @@ public class CommonEventHandler {
     }
 
     private static final UUID
+        UUID_CHARM = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c86"),
         UUID_BRACELET = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c85"),
         UUID_NECKLACE = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c84"),
         UUID_BELT = UUID.fromString("78d0603e-1e08-42e9-80b2-84b7d9ca2c83"),
@@ -1011,7 +1012,7 @@ public class CommonEventHandler {
                 map.put("bracelet", new AttributeModifier(UUID_BRACELET, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
                 map.put("necklace", new AttributeModifier(UUID_NECKLACE, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
                 map.put("belt", new AttributeModifier(UUID_BELT, "crown_of_glory", 1, AttributeModifier.Operation.ADDITION));
-                map.put("charm", new AttributeModifier(UUID_BELT, "crown_of_glory", 2, AttributeModifier.Operation.ADDITION));
+                map.put("charm", new AttributeModifier(UUID_CHARM, "crown_of_glory", 2, AttributeModifier.Operation.ADDITION));
                 inventory.addTransientSlotModifiers(map);
             });
         }
@@ -1023,7 +1024,7 @@ public class CommonEventHandler {
                 map.put("bracelet", new AttributeModifier(UUID_BRACELET, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
                 map.put("necklace", new AttributeModifier(UUID_NECKLACE, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
                 map.put("belt", new AttributeModifier(UUID_BELT, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
-                map.put("charm", new AttributeModifier(UUID_BELT, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
+                map.put("charm", new AttributeModifier(UUID_CHARM, "crown_of_glory", 0, AttributeModifier.Operation.ADDITION));
                 inventory.addTransientSlotModifiers(map);
             });
         }

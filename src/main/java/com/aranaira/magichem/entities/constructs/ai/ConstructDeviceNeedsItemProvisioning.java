@@ -1,14 +1,12 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.foundation.IItemProvisionRequester;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.IConstruct;
 import com.mna.api.entities.construct.ai.ConstructAITask;
 import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
-import com.mna.api.entities.construct.ai.parameter.ConstructTaskIntegerParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
 import com.mna.entities.constructs.ai.conditionals.ConstructConditional;
 import net.minecraft.core.BlockPos;
@@ -17,10 +15,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.List;
 
-public class ConstructDeviceNeedsProvisioning extends ConstructConditional<ConstructDeviceNeedsProvisioning> {
+public class ConstructDeviceNeedsItemProvisioning extends ConstructConditional<ConstructDeviceNeedsItemProvisioning> {
     private BlockPos targetApparatus = null;
 
-    public ConstructDeviceNeedsProvisioning(IConstruct<?> construct, ResourceLocation guiIcon) {
+    public ConstructDeviceNeedsItemProvisioning(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
     }
 
@@ -31,8 +29,8 @@ public class ConstructDeviceNeedsProvisioning extends ConstructConditional<Const
 
         BlockEntity be = construct.asEntity().level().getBlockEntity(targetApparatus);
 
-        if(be instanceof IMateriaProvisionRequester impr) {
-            return impr.needsProvisioning();
+        if(be instanceof IItemProvisionRequester iipr) {
+            return iipr.needsItemProvisioning();
         }
 
         return false;
@@ -40,7 +38,7 @@ public class ConstructDeviceNeedsProvisioning extends ConstructConditional<Const
 
     @Override
     public ResourceLocation getType() {
-        return ManaAndArtificeMod.getConstructTaskRegistry().getKey(ConstructTasksRegistry.QUERY_DEVICE_NEEDS_PROVISIONING);
+        return ManaAndArtificeMod.getConstructTaskRegistry().getKey(ConstructTasksRegistry.QUERY_DEVICE_NEEDS_ITEM_PROVISIONING);
     }
 
     @Override
@@ -68,8 +66,8 @@ public class ConstructDeviceNeedsProvisioning extends ConstructConditional<Const
     }
 
     @Override
-    public ConstructDeviceNeedsProvisioning copyFrom(ConstructAITask<?> other) {
-        if(other instanceof ConstructDeviceNeedsProvisioning task) {
+    public ConstructDeviceNeedsItemProvisioning copyFrom(ConstructAITask<?> other) {
+        if(other instanceof ConstructDeviceNeedsItemProvisioning task) {
             this.targetApparatus = task.targetApparatus;
         }
 
@@ -77,7 +75,7 @@ public class ConstructDeviceNeedsProvisioning extends ConstructConditional<Const
     }
 
     @Override
-    public ConstructDeviceNeedsProvisioning duplicate() {
-        return new ConstructDeviceNeedsProvisioning(this.construct, this.guiIcon).copyFrom(this);
+    public ConstructDeviceNeedsItemProvisioning duplicate() {
+        return new ConstructDeviceNeedsItemProvisioning(this.construct, this.guiIcon).copyFrom(this);
     }
 }
