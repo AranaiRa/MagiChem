@@ -4743,7 +4743,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nIf the target device requires it, the items will be delivered in the correct order to the correct slots.\n\nConstructs will be unable to Provide Items unless "
+            "text": ".\n\nIf the target device requires it, the items will be delivered in the correct order to the correct slots.\n\nConstructs will be unable to Provide Items to the Alchemical Nexus unless "
           },
           {
             "text": "all of the required items are in the input container at once",
