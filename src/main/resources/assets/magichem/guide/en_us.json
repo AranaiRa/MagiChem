@@ -2849,13 +2849,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set.\n"
+          },
+          {
             "text": "2",
             "bold": true,
-            "color": "dark_red",
-            "newPage": true
+            "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and input items.\n"
           },
           {
             "text": "4",
@@ -2866,12 +2881,28 @@
             "text": ": Has output items.\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and output items.\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, input, and output items.\n"
           }
         ]
       }
@@ -3220,12 +3251,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set.\n"
+          },
+          {
             "text": "2",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and input items.\n"
           },
           {
             "text": "4",
@@ -3236,12 +3283,28 @@
             "text": ": Has output items.\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and output items.\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, input, and output items.\n"
           },
           {
             "text": "8",
@@ -3252,12 +3315,28 @@
             "text": ": Has slurry.\n"
           },
           {
+            "text": "9",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and slurry.\n"
+          },
+          {
             "text": "10",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has inputs and slurry.\n"
+          },
+          {
+            "text": "11",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, inputs, and slurry.\n"
           },
           {
             "text": "12",
@@ -3268,12 +3347,28 @@
             "text": ": Has outputs and slurry.\n"
           },
           {
+            "text": "13",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, outputs, and slurry.\n"
+          },
+          {
             "text": "14",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has inputs, outputs, and slurry.\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, inputs, outputs, and slurry.\n"
           }
         ]
       }
@@ -8035,13 +8130,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set.\n"
+          },
+          {
             "text": "2",
             "bold": true,
-            "color": "dark_red",
-            "newPage": true
+            "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and input items.\n"
           },
           {
             "text": "4",
@@ -8052,12 +8162,28 @@
             "text": ": Has output items.\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and output items.\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, input, and output items.\n"
           }
         ]
       }
@@ -8212,12 +8338,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set.\n"
+          },
+          {
             "text": "2",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and input items.\n"
           },
           {
             "text": "4",
@@ -8228,12 +8370,28 @@
             "text": ": Has output items.\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and output items.\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, input, and output items.\n"
           },
           {
             "text": "8",
@@ -8244,12 +8402,28 @@
             "text": ": Has slurry.\n"
           },
           {
+            "text": "9",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and slurry.\n"
+          },
+          {
             "text": "10",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has inputs and slurry.\n"
+          },
+          {
+            "text": "11",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, inputs, and slurry.\n"
           },
           {
             "text": "12",
@@ -8260,12 +8434,28 @@
             "text": ": Has outputs and slurry.\n"
           },
           {
+            "text": "13",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, outputs, and slurry.\n"
+          },
+          {
             "text": "14",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has inputs, outputs, and slurry.\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, inputs, outputs, and slurry.\n"
           }
         ]
       }
@@ -13986,7 +14176,7 @@
     ],
     "related_recipes": [
       {
-        "type": "sublimation",
+        "type": "exaltation",
         "location": "magichem:alchemical_exaltation/magichem/oculotoxin"
       }
     ]
