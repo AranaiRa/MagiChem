@@ -264,8 +264,10 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        int newTotal = Math.min(ServerConfig.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess() * pCyclesCompleted);
-        containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Math.min(newTotal, ServerConfig.delugePurifierTankCapacity));
+        if(!getPaused() && containedWater.getAmount() > WATER_PER_OPERATION[powerLevel] && getIsSatisfied()) {
+            int newTotal = Math.min(ServerConfig.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess() * pCyclesCompleted);
+            containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Math.min(newTotal, ServerConfig.delugePurifierTankCapacity));
+        }
     }
 
     public int getStoredMateria() {

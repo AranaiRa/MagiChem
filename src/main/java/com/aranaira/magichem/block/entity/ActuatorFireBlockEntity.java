@@ -286,9 +286,11 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        int newTotal = Math.min(ServerConfig.delugePurifierTankCapacity, containedSmoke.getAmount() + getSmokePerProcess() * pCyclesCompleted);
-        containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Math.min(newTotal, ServerConfig.delugePurifierTankCapacity));
-        syncAndSave();
+        if(!getPaused() && getIsSatisfied()) {
+            int newTotal = Math.min(ServerConfig.delugePurifierTankCapacity, containedSmoke.getAmount() + getSmokePerProcess() * pCyclesCompleted);
+            containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Math.min(newTotal, ServerConfig.delugePurifierTankCapacity));
+            syncAndSave();
+        }
     }
 
     public static boolean getIsFuelled(ActuatorFireBlockEntity entity) {
