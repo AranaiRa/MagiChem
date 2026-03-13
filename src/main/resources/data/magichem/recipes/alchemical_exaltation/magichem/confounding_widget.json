@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 2,
+  "result": { "item": "magichem:confounding_widget", "count": 1 },
+  "items": { "type": "minecraft:piston", "required": 8 },
+  "eldrin": { "type": 17, "required": 10 },
+  "materia": { "type": "magichem:essentia_wrought", "required": 24 },
+  "slurry": 600
+}

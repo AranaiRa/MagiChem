@@ -14142,6 +14142,39 @@
       },
       {
         "type": "title",
+        "value": "Confounding Widget",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:confounding_widget",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An excellent source of "
+          },
+          {
+            "text": "Admixture of Industry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nYou can confirm that its myriad bits and bobs are always doing "
+          },
+          {
+            "text": "something",
+            "italic": true
+          },
+          {
+            "text": ". A triumph of overstimulation!"
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Oculotoxin",
         "newPage": true
       },
@@ -14182,6 +14215,10 @@
       }
     ],
     "related_recipes": [
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/confounding_widget"
+      },
       {
         "type": "exaltation",
         "location": "magichem:alchemical_exaltation/magichem/oculotoxin"

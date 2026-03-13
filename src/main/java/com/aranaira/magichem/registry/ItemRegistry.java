@@ -456,6 +456,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> CONFOUNDING_WIDGET = ITEMS.register("confounding_widget",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> OCULOTOXIN = ITEMS.register("oculotoxin",
             () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(1).saturationMod(1.0F).alwaysEat()
                     .effect(new MobEffectInstance(MobEffects.POISON, 480, 3), 1.0f)
