@@ -565,7 +565,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                 anbe.handleAnimationDrivers();
                 anbe.spawnParticles();
             } else {
-                for (AbstractDirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
+                    for (AbstractDirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
                     if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                         if(anbe.animStage == ANIM_STAGE_RAMP_CIRCLE || anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pBlockState, arcane, true);
                         float newReductionRate = arcane.getSlurryReductionRate() / 100f;
@@ -882,6 +882,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                                     sp.getAdvancements().award(advancement, "nexus");
                                     //Clear the recipe if we're crafting something that forbids its own recipe
                                     if(anbe.currentRecipe.isForbiddenByAdvancement() && anbe.currentRecipe.grantsAdvancementOnCraft() && anbe.currentRecipe.getForbiddenAdvancement().equals(anbe.currentRecipe.getGrantedAdvancement())) {
+                                        anbe.currentRecipe = null;
                                         anbe.forceRecipeClear = true;
                                     }
                                     anbe.forceDisplayedRecipeUpdate = true;
@@ -1466,7 +1467,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     }
 
     public int getScaledProgress(int pWidth) {
-        return progress * pWidth / cachedSpec.ticksToCraft;
+        return currentRecipe == null ? 0 : (progress * pWidth / cachedSpec.ticksToCraft);
     }
 
     ////////////////////
