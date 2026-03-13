@@ -1577,6 +1577,7 @@
   "gui.mna.parameter.set_device_recipe.stack": "What should the construct set the device to craft?\n\nIgnored if the previous parameter is set.",
 
   "gui.mna.parameter.query_device_recipe_matches.point": "What device's recipe should the construct check?",
+  "gui.mna.parameter.query_device_recipe_matches.point2": "What block holds the recipe output that the construct should compare to the device's recipe?\n\nThe selected recipe item will be the block's first inventory slot; Blocks with a single slot inventory like Pedestals are ideal for this purpose.",
   "gui.mna.parameter.query_device_recipe_matches.item": "What item should the device's recipe be set to?",
 
   "gui.mna.parameter.query_has_eldrin_in_buffer.int.selector": "What eldrin affinity should the construct check?\n\n 0: Average of all Affinities\n 1: Ender\n 2: Earth\n 3: Water\n 4: Air\n 5: Fire\n 6: Arcane",

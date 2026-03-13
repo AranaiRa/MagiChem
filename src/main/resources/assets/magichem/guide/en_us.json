@@ -5043,7 +5043,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "of the target inventory. Blocks with a single inventory slot, like a Pedestal, are ideal for this purpose. If the first slot is empty, then the construct will clear the recipe instead. If the second point parameter is set then the item parameter will always be ignored.\n\nIf the second point parameter is not set, then the construct will try to set the device's recipe to whatever item is inserted into the task's Item parameter. If the slot is empty, the construct will clear the device's recipe instead.\n\n"
+            "text": " of the target inventory. Blocks with a single inventory slot, like a Pedestal, are ideal for this purpose. If the first slot is empty, then the construct will clear the recipe instead. If the second point parameter is set then the item parameter will always be ignored.\n\nIf the second point parameter is not set, then the construct will try to set the device's recipe to whatever item is inserted into the task's Item parameter. If the slot is empty, the construct will clear the device's recipe instead.\n\n"
           }
         ]
       }
@@ -5392,7 +5392,14 @@
             "color": "dark_red"
           },
           {
-            "text": " if it doesn't."
+            "text": " if it doesn't.\n\nIf the second point parameter is set, then the task will compare the device's recipe to the item in the "
+          },
+          {
+            "text": "first inventory slot",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of the target inventory. Blocks with a single inventory slot, like a Pedestal, are ideal for this purpose. If the first slot is empty, then the construct will check whether the device has no recipe set instead. If the second point parameter is set then the item parameter will always be ignored."
           }
         ]
       }
