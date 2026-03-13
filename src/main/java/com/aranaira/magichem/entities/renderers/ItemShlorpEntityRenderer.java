@@ -72,7 +72,7 @@ public class ItemShlorpEntityRenderer extends EntityRenderer<ItemShlorpEntity> {
             pPoseStack.translate(current.x, current.y, current.z);
             pPoseStack.mulPose(Axis.YP.rotationDegrees(rot));
             pPoseStack.scale(scale, scale, scale);
-            Minecraft.getInstance().getItemRenderer().renderStatic(pEntity.getStacksInTransit().get(i), ItemDisplayContext.FIXED, pPackedLight, NO_OVERLAY, pPoseStack, pBuffer, pEntity.level(), 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(pEntity.getNonEmptyStacksInTransit().get(i), ItemDisplayContext.FIXED, pPackedLight, NO_OVERLAY, pPoseStack, pBuffer, pEntity.level(), 0);
             pPoseStack.popPose();
         }
     }
@@ -82,7 +82,7 @@ public class ItemShlorpEntityRenderer extends EntityRenderer<ItemShlorpEntity> {
 
         //quick references
         float dbc = pEntity.distanceBetweenClusters;
-        int cc = pEntity.getStacksInTransit().size();
+        int cc = pEntity.getNonEmptyStacksInTransit().size();
         float curveP = pEntity.currentPosOnTrack + pEntity.speed * pPartialTick;
         float curveL = pEntity.length;
 

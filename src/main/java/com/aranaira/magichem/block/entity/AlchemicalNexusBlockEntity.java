@@ -1807,7 +1807,9 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
             for(int i=0; i<requirements.size(); i++) {
                 ItemStack alreadyPresent = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
                 if(alreadyPresent.isEmpty()) {
-                    needs.add(i, requirements.get(i));
+                    needs.add(requirements.get(i));
+                } else {
+                    needs.add(ItemStack.EMPTY);
                 }
             }
         }

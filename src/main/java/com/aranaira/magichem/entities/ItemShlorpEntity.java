@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -44,6 +45,7 @@ public class ItemShlorpEntity extends Entity implements IEntityAdditionalSpawnDa
     Vector3
         startLocation, endLocation, startTangent, endTangent;
     NonNullList<ItemStack> stacksInTransit;
+    NonNullList<ItemStack> nonEmptyStacksInTransit;
     BlockPos fallback = null;
     boolean doInstantPayload = false, processedFirstTick = false;
 
@@ -70,6 +72,11 @@ public class ItemShlorpEntity extends Entity implements IEntityAdditionalSpawnDa
         this.length = (float)startLocation.distanceTo(endLocation);
 
         this.stacksInTransit = pStacks;
+
+        nonEmptyStacksInTransit = NonNullList.create();
+        for (ItemStack stack : pStacks) {
+            if(!stack.isEmpty()) nonEmptyStacksInTransit.add(stack);
+        }
     }
 
     public void setInstantPayload() {
@@ -88,8 +95,25 @@ public class ItemShlorpEntity extends Entity implements IEntityAdditionalSpawnDa
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         //Itemstacks
-        CompoundTag itemsTag = pCompound.getCompound("items");
+        Tag itemsTagQuery = pCompound.get("items");
         stacksInTransit = NonNullList.create();
+        if(itemsTagQuery instanceof ListTag list) {
+            for(int i=0;i<list.size();i++) {
+                if(list.get(i) instanceof CompoundTag entry) {
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getString("item")));
+                    if(item == null) {
+                        stacksInTransit.add(ItemStack.EMPTY);
+                    } else {
+                        stacksInTransit.add(new ItemStack(item, entry.getInt("count")));
+                    }
+                }
+            }
+        }
+
+        nonEmptyStacksInTransit = NonNullList.create();
+        for (ItemStack stack : stacksInTransit) {
+            if(!stack.isEmpty()) nonEmptyStacksInTransit.add(stack);
+        }
 
         //Vectors
         startLocation = new Vector3(
@@ -215,6 +239,11 @@ public class ItemShlorpEntity extends Entity implements IEntityAdditionalSpawnDa
             stacksInTransit.add(i, additionalData.readItem());
         }
 
+        nonEmptyStacksInTransit = NonNullList.create();
+        for(ItemStack stack : stacksInTransit) {
+            if(!stack.isEmpty()) nonEmptyStacksInTransit.add(stack);
+        }
+
         //Vectors
         startLocation = new Vector3(
                 additionalData.readDouble(),
@@ -257,6 +286,10 @@ public class ItemShlorpEntity extends Entity implements IEntityAdditionalSpawnDa
         return stacksInTransit;
     }
 
+    public NonNullList<ItemStack> getNonEmptyStacksInTransit() {
+        return nonEmptyStacksInTransit;
+    }
+
     @Override
     public boolean shouldRender(double pX, double pY, double pZ) {
         return true;
@@ -274,7 +307,7 @@ public class ItemShlorpEntity extends Entity implements IEntityAdditionalSpawnDa
             }
         }
 
-        float limit = distanceBetweenClusters * (stacksInTransit.size() + 1);
+        float limit = distanceBetweenClusters * (nonEmptyStacksInTransit.size() + 1);
 
         if(currentPosOnTrack >= length + limit) {
             //deliver the payload
@@ -293,7 +326,7 @@ public class ItemShlorpEntity extends Entity implements IEntityAdditionalSpawnDa
 
         //Particle work
         if (level().isClientSide()) {
-            for (int i = 0; i < stacksInTransit.size(); i++) {
+            for (int i = 0; i < nonEmptyStacksInTransit.size(); i++) {
                 float trackPoint = currentPosOnTrack - distanceBetweenClusters * i;
                 if (trackPoint > 0) {
                     Vector3 mid = generatePointOnBezierCurve(trackPoint, length);
