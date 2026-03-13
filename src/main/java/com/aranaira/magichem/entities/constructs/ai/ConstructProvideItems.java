@@ -35,7 +35,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.IItemHandler;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.NotNull;
 
@@ -135,11 +137,12 @@ public class ConstructProvideItems extends ConstructAITask<ConstructProvideItems
                     BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                     BlockEntity tbe = construct.asEntity().level().getBlockEntity(takeFromTarget);
                     if(be instanceof IItemProvisionRequester iipr && tbe != null) {
-                        if (iipr.needsItemProvisioning()) {
+                        final LazyOptional<IItemHandler> takeItemCapability = tbe.getCapability(ForgeCapabilities.ITEM_HANDLER);
+                        if (iipr.needsItemProvisioning() && takeItemCapability.isPresent()) {
                             final NonNullList<ItemStack> needs = iipr.getItemProvisioningNeeds();
                             final NonNullList<ItemStack> payload = NonNullList.create();
 
-                            tbe.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(cap -> {
+                            takeItemCapability.ifPresent(cap -> {
                                 for (ItemStack need : needs) {
                                     int remaining = need.getCount();
                                     for(int i=0; i<cap.getSlots(); i++) {
@@ -199,6 +202,17 @@ public class ConstructProvideItems extends ConstructAITask<ConstructProvideItems
                             this.phase = ETaskPhase.WAIT_AT_DEVICE;
                             this.waitTimer = 121;
                         }
+                        else {
+                            this.waitTimer = 41;
+                            this.phase = ETaskPhase.WAIT_TO_FAIL;
+                            construct.clearForcedAnimation();
+                        }
+                    }
+                    else {
+                        this.pushDiagnosticMessage("I can't pull items out of that block, boss!", false);
+                        this.waitTimer = 41;
+                        this.phase = ETaskPhase.WAIT_TO_FAIL;
+                        construct.clearForcedAnimation();
                     }
                 }
                 case WAIT_AT_DEVICE -> {
