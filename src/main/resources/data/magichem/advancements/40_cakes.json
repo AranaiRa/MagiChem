@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:cake"
+    },
+    "title": {
+      "translate": "advancements.magichem.40_cakes.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.40_cakes.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "parent": "magichem:root",
+  "criteria": {
+    "gnostic_orb": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

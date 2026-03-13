@@ -13,12 +13,15 @@ import com.mna.capabilities.chunkdata.ChunkMagicProvider;
 import com.mna.tools.SummonUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -262,6 +265,13 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
                 new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), pEntity.materiaColor, true));
 
         pEntity.iterator++;
+
+        if(pEntity.iterator >= 39 && !pEntity.level().isClientSide() && pEntity.activatingPlayer instanceof ServerPlayer sp) {
+            final ServerAdvancementManager advancements = pEntity.level().getServer().getAdvancements();
+            final Advancement advancement = advancements.getAdvancement(new ResourceLocation(MagiChemMod.MODID, "40_cakes"));
+
+            if(advancement != null) sp.getAdvancements().award(advancement, "gnostic_orb");
+        }
     }
 
     public static void preCacheDisaster(GnosticOrbExecutorEntity pEntity) {
