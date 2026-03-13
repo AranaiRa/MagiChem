@@ -64,6 +64,7 @@ public class HarmoniscopeItem extends Item {
             }
         } else {
             DestructiveHarmonicsEntity dhe = new DestructiveHarmonicsEntity(EntitiesRegistry.DESTRUCTIVE_HARMONICS_ENTITY.get(), pContext.getLevel());
+            dhe.setInitiatingPlayer(pContext.getPlayer());
             dhe.setTargetPos(pContext.getClickedPos());
             dhe.setPos(pContext.getPlayer().getX(), pContext.getPlayer().getY(), pContext.getPlayer().getZ());
             pContext.getLevel().addFreshEntity(dhe);

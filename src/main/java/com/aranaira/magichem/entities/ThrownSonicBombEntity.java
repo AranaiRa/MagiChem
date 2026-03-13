@@ -51,6 +51,7 @@ public class ThrownSonicBombEntity extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult pResult) {
         if(!level().isClientSide()) {
             DestructiveHarmonicsEntity dhe = new DestructiveHarmonicsEntity(EntitiesRegistry.DESTRUCTIVE_HARMONICS_ENTITY.get(), level());
+            dhe.setInitiatingPlayer(sourcePlayer);
             dhe.setTargetPos(new BlockPos(pResult.getEntity().getBlockX(), pResult.getEntity().getBlockY(), pResult.getEntity().getBlockZ()));
             dhe.setPos(pResult.getLocation().x(), pResult.getLocation().y(), pResult.getLocation().z());
             level().addFreshEntity(dhe);
@@ -63,6 +64,7 @@ public class ThrownSonicBombEntity extends ThrowableItemProjectile {
     protected void onHitBlock(BlockHitResult pResult) {
         if(!level().isClientSide()){
             DestructiveHarmonicsEntity dhe = new DestructiveHarmonicsEntity(EntitiesRegistry.DESTRUCTIVE_HARMONICS_ENTITY.get(), level());
+            dhe.setInitiatingPlayer(sourcePlayer);
             dhe.setTargetPos(new BlockPos((int)Math.round(pResult.getLocation().x()), (int)Math.round(pResult.getLocation().y()), (int)Math.round(pResult.getLocation().z())));
             dhe.setPos(pResult.getLocation().x(), pResult.getLocation().y(), pResult.getLocation().z());
             level().addFreshEntity(dhe);
