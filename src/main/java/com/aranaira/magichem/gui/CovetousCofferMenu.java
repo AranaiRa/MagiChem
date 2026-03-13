@@ -7,6 +7,7 @@ import com.aranaira.magichem.util.InventoryHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -79,7 +80,10 @@ public class CovetousCofferMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         ItemStack result = InventoryHelper.quickMoveStackHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY, SPEC_CONTAINER, true);
 
-        slots.get(pIndex).set(result);
+        if(!result.isEmpty()) {
+            ItemEntity overflow = new ItemEntity(pPlayer.level(), pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), result);
+            pPlayer.level().addFreshEntity(overflow);
+        }
 
         return ItemStack.EMPTY;
     }
