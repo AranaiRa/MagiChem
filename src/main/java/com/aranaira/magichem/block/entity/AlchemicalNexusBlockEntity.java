@@ -325,6 +325,8 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
             if(keyQuery != null)
                 nbt.putString("recipe", keyQuery.toString());
+        } else {
+            nbt.putBoolean("forceRecipeClear", true);
         }
 
         if(initiatingPlayer != null)
@@ -406,6 +408,8 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
             if(keyQuery != null)
                 nbt.putString("recipe", keyQuery.toString());
+        } else {
+            nbt.putBoolean("forceRecipeClear", true);
         }
 
         if(forceDisplayedRecipeUpdate)
@@ -1750,10 +1754,16 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
 
     @Override
     public byte setRecipe(ItemStack pStack, Player player) {
+        if(pStack.isEmpty()) {
+            currentRecipe = null;
+            return ERROR_CODE_SUCCESS;
+        }
+
         final SublimationRecipe sublimationRecipeQuery = SublimationRecipe.getSublimationRecipe(getLevel(), pStack);
         if(sublimationRecipeQuery == null)
             return ERROR_CODE_NO_SUCH_RECIPE;
 
+        initiatingPlayer = player.getUUID();
         setRecipeFromOutput(getLevel(), pStack);
         return ERROR_CODE_SUCCESS;
     }
