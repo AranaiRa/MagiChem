@@ -270,6 +270,14 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     // RECIPE HANDLING
     ////////////////////
 
+    public ItemStack getRecipeItem() {
+        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : currentItemRecipe.getResultItem().copy();
+    }
+
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentItemRecipe.getResultItem().copy() : currentItemRecipe.getResultItem();
+    }
+
     public void clearRecipe() {
         if(!clearRecipeAfterNextProcess) {
             clearRecipeAfterNextProcess = true;

@@ -315,7 +315,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         SimpleContainer input = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
 
         for(int i = pVarFunc.apply(IDs.SLOT_INPUT_START); i<pVarFunc.apply(IDs.SLOT_INPUT_START)+pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
-            input.setItem(i-pVarFunc.apply(IDs.SLOT_INPUT_START), itemHandler.getStackInSlot(i).copy());
+            input.setItem(i-pVarFunc.apply(IDs.SLOT_INPUT_START), itemHandler.getStackInSlot(i));
         }
 
         return input;

@@ -450,7 +450,16 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 break;
             }
         }
-        return materiaInOutput;
+        boolean materiaInInput = false;
+        if(!materiaInOutput){
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                    materiaInInput = true;
+                    break;
+                }
+            }
+        }
+        return materiaInOutput || materiaInInput;
     }
 
     public static int getVar(IDs pID) {

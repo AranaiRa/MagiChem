@@ -4584,7 +4584,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " will move materia more quickly and will have a shorter delay between transfers."
+            "text": " will move materia more quickly and will have a shorter delay between transfers.\n\nIf the target device has a recipe selector this task will also remove "
+          },
+          {
+            "text": "unbottled materia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from the device's input tray, returning it to materia storage."
           }
         ]
       }

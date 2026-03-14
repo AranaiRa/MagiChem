@@ -1,5 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
+import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.*;
 import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
@@ -144,20 +145,55 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         BlockEntity be = construct.asEntity().level().getBlockEntity(this.takeFromTarget);
         SimpleContainer contents = new SimpleContainer(1);
 
-        if(be instanceof AbstractDistillationBlockEntity adbe) {
-            contents = adbe.getContentsOfOutputSlots();
-        } else if(be instanceof AbstractSeparationBlockEntity asbe) {
-            contents = asbe.getContentsOfOutputSlots();
-        } else if(be instanceof AbstractFixationBlockEntity asbe) {
-            contents = asbe.getContentsOfOutputSlots();
-        } else if(be instanceof IRouterBlockEntity irbe) {
-            BlockEntity mbe = irbe.getMaster();
-            if(mbe instanceof AbstractDistillationBlockEntity adbe) {
-                contents = adbe.getContentsOfOutputSlots();
-            } else if(mbe instanceof AbstractSeparationBlockEntity asbe) {
-                contents = asbe.getContentsOfOutputSlots();
-            } else if(mbe instanceof AbstractFixationBlockEntity asbe) {
-                contents = asbe.getContentsOfOutputSlots();
+        if(be instanceof AbstractDistillationBlockEntity distillation) {
+            contents = distillation.getContentsOfOutputSlots();
+        } else if(be instanceof AbstractSeparationBlockEntity separation) {
+            contents = separation.getContentsOfOutputSlots();
+            if(contents.isEmpty() && separation.getRecipeItem().isEmpty()) {
+                contents = separation.getContentsOfInputSlots();
+            }
+        } else if(be instanceof AbstractFixationBlockEntity fixation) {
+            contents = fixation.getContentsOfOutputSlots();
+            if(contents.isEmpty() && fixation.getRecipeItem().isEmpty()) {
+                contents = fixation.getContentsOfInputSlots();
+            }
+        } else if(be instanceof AbstractFabricationBlockEntity fabrication) {
+            if(fabrication.getRecipeItem().isEmpty()) {
+                contents = fabrication.getContentsOfInputSlots();
+            }
+        } else if(be instanceof IRouterBlockEntity router) {
+            BlockEntity mbe = router.getMaster();
+            if(mbe instanceof AbstractDistillationBlockEntity distillation) {
+                contents = distillation.getContentsOfOutputSlots();
+            } else if(mbe instanceof AbstractSeparationBlockEntity separation) {
+                contents = separation.getContentsOfOutputSlots();
+                if(contents.isEmpty() && separation.getRecipeItem().isEmpty()) {
+                    if(separation instanceof CentrifugeBlockEntity centrifuge) {
+                        contents = centrifuge.getContentsOfInputSlots(CentrifugeBlockEntity::getVar);
+                    }
+                    else if(separation instanceof GrandCentrifugeBlockEntity grandCentrifuge) {
+                        contents = grandCentrifuge.getContentsOfInputSlots(GrandCentrifugeBlockEntity::getVar);
+                    }
+                }
+            } else if(mbe instanceof AbstractFixationBlockEntity fixation) {
+                contents = fixation.getContentsOfOutputSlots();
+                if(contents.isEmpty() && fixation.getRecipeItem().isEmpty()) {
+                    if(fixation instanceof FuseryBlockEntity fusery) {
+                        contents = fusery.getContentsOfInputSlots(FuseryBlockEntity::getVar);
+                    }
+                    else if(fixation instanceof GrandFuseryBlockEntity grandFusery) {
+                        contents = grandFusery.getContentsOfInputSlots(GrandFuseryBlockEntity::getVar);
+                    }
+                }
+            } else if(mbe instanceof AbstractFabricationBlockEntity fabrication) {
+                if(fabrication.getRecipeItem().isEmpty()) {
+                    if(fabrication instanceof CircleFabricationBlockEntity circle) {
+                        contents = circle.getContentsOfInputSlots(CircleFabricationBlockEntity::getVar);
+                    }
+                    else if(fabrication instanceof GrandCircleFabricationBlockEntity grandCircle) {
+                        contents = grandCircle.getContentsOfInputSlots(GrandCircleFabricationBlockEntity::getVar);
+                    }
+                }
             }
         }
 
@@ -165,7 +201,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             int largestStackSize = -1;
             ItemStack stack = null;
             for(int i=0; i< contents.getContainerSize(); i++) {
-                if(contents.getItem(i) != ItemStack.EMPTY && contents.getItem(i).getItem() instanceof MateriaItem mi) {
+                if(contents.getItem(i) != ItemStack.EMPTY && contents.getItem(i).getItem() instanceof MateriaItem mi && InventoryHelper.hasCustomModelData(contents.getItem(i))) {
                     if(contents.getItem(i).getCount() > largestStackSize) {
                         stack = contents.getItem(i);
                         largestStackSize = stack.getCount();

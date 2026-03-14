@@ -1199,16 +1199,6 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return ERROR_CODE_SUCCESS;
     }
 
-    @Override
-    public ItemStack getRecipeItem() {
-        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : currentItemRecipe.getResultItem().copy();
-    }
-
-    @Override
-    public ItemStack getRecipeItem(boolean pMakeCopy) {
-        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentItemRecipe.getResultItem().copy() : currentItemRecipe.getResultItem();
-    }
-
     public ItemStack getStoneItem() {
         return itemHandler.getStackInSlot(SLOT_WISDOM);
     }
@@ -1219,7 +1209,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     @Override
     public boolean needsSorting() {
-        return !getContentsOfOutputSlots(GrandCircleFabricationBlockEntity::getVar).isEmpty();
+        if(currentItemRecipe != null || currentFluidRecipe != null) return false;
+
+        return !getContentsOfInputSlots(CircleFabricationBlockEntity::getVar).isEmpty();
     }
 
     @Override
