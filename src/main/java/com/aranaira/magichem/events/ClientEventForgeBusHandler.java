@@ -125,7 +125,7 @@ public class ClientEventForgeBusHandler {
         IWisdomCapability playerWisdomCap = null;
         ICuriosItemHandler playerCuriosCap = null;
 
-        if(player != null) {
+        if(player != null && !player.isDeadOrDying()) {
             final LazyOptional<IPlayerMagic> query = player.getCapability(PlayerMagicProvider.MAGIC);
             if (query.isPresent() && query.resolve().isPresent())
                 playerMagicCap = query.resolve().get();
