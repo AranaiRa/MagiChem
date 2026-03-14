@@ -38,7 +38,7 @@ public class RegalTwilightEffect extends MobEffect {
                     boolean daytime = player.level().isDay();
                     boolean summer = player.getPersistentData().getInt("faction_casting_resource_idx") == 0;
 
-                    if((daytime && summer) || (!daytime && !summer)) {
+                    if((daytime && !summer) || (!daytime && summer)) {
                         if (summer) {
                             player.getPersistentData().putInt("faction_casting_resource_idx", 1);
                         } else {
