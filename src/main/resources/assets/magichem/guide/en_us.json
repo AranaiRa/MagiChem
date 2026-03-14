@@ -13109,14 +13109,14 @@
       }
     ]
   },
-  "Exaltation of Alchemy Essentia": {
+  "House of Alchemy Exemplars": {
     "index": "-10",
     "category": "magichem_wonders",
     "tier": 2,
     "sections": [
       {
         "type": "title",
-        "value": "Exaltation of Alchemy Essentia"
+        "value": "House of Alchemy Exemplars"
       },
       {
         "type": "text",
@@ -13158,7 +13158,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " over the diamonds alone.\n\nAs you increase in Tier, additional items associated with the House of Alchemy will appear as recipe options in the Prime Aggregator. Each one will require 60 of one House of Alchemy Essentia type to Exalt. The resulting item yields 30 of the next House of Alchemy Essentia when distilled (for example, 60 Albedo to create 30 Citrinitas)."
+            "text": " over the diamonds alone.\n\nAs you increase in Tier, additional exemplars associated with the House of Alchemy will appear as recipe options in the Prime Aggregator. These don't follow an exemplar's normal pattern: each one will require 60 of one House of Alchemy Essentia type to Exalt. The resulting item yields 30 of the next House of Alchemy Essentia when distilled (for example, 60 Albedo to create 30 Citrinitas)."
           }
         ]
       }
