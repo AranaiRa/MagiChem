@@ -2,7 +2,7 @@
   "type": "magichem:exaltation",
   "tier": 2,
   "result": { "item": "magichem:terrarium_ominous", "count": 1 },
-  "items": { "type": "magichem:wildergob_ominous", "required": 8 },
+  "items": { "type": "magichem:wildergob_ominous", "required": 16 },
   "eldrin": { "type": 1, "required": 10 },
   "materia": { "type": "magichem:essentia_ender", "required": 16 },
   "slurry": 400

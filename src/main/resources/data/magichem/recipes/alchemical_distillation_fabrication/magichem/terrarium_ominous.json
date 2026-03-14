@@ -10,6 +10,6 @@
     { "item": "magichem:admixture_protection", "count": 6 },
     { "item": "magichem:admixture_domestication", "count": 3 },
     { "item": "magichem:essentia_wrought", "count": 8 },
-    { "item": "magichem:essentia_nigredo", "count": 160 }
+    { "item": "magichem:essentia_nigredo", "count": 120 }
   ]
 }
