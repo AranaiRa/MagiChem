@@ -227,6 +227,9 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
     }
 
     public int getIdealInsertingAmount(ItemStack toCheck, int numExisted) {
+        if(toCheck.getItem() == Items.ENCHANTED_BOOK) {
+            return heldItem.getItem() == Items.ENCHANTED_BOOK ? 0 : 1;
+        }
         FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(level, toCheck.getItem());
         if (recipe == null) return toCheck.getCount();
         return Math.min(toCheck.getCount(), recipe.getInput().getCount() - numExisted);
