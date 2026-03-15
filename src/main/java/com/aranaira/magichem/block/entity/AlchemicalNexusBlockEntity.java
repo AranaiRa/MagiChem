@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.entity.ext.*;
+import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
@@ -1071,7 +1072,8 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                             markedPairs.add(new Pair<>(single, markedPos));
                         }
                         else if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
-                            markedPairs.add(new Pair<>(multi, markedPos));
+                            if(!(multi instanceof MagicMirrorBlockEntity) && !(multi instanceof MirrorLabyrinthBlockEntity) && !(multi instanceof MirrorLabyrinthRouterBlockEntity))
+                                markedPairs.add(new Pair<>(multi, markedPos));
                         }
                     }
                 }

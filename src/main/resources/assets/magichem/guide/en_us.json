@@ -3701,7 +3701,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " task on a Lodestar is necessary to search for materia in a zone)."
+            "text": " task on a Lodestar is necessary to search for materia in a zone).\n\nThe Nexus also cannot directly draw materia from a "
+          },
+          {
+            "text": "Mirror Labyrinth",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or a "
+          },
+          {
+            "text": "Magic Mirror",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". A construct or a "
+          },
+          {
+            "text": "Labyrinthine Navigator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is needed as an intermediary."
           }
         ]
       },
