@@ -206,7 +206,7 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
                         //If container is empty or has steam
                         else if(fluidInItem.isEmpty() || fluidInItem.getFluid() == FluidRegistry.STEAM.get()) {
                             if(player.getItemInHand(hand).getItem() == Items.BUCKET) {
-                                if(awbe.getFluidInTank(0).getAmount() >= 1000) {
+                                if(awbe.getFluidInTank(1).getAmount() >= 1000) {
                                     awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
                                     player.getItemInHand(hand).shrink(1);
                                     ItemEntity ie = new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), new ItemStack(ItemRegistry.STEAM_BUCKET.get()));
