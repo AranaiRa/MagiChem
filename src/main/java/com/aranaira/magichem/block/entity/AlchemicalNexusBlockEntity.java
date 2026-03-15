@@ -893,6 +893,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                         if(anbe.clearRecipeAfterNextProcess) {
                             anbe.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
                             anbe.clearRecipeAfterNextProcess = false;
+                            anbe.currentRecipe = null;
                         }
                         if(stagePreCraft > 0)
                             anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_ADVANCED;
