@@ -227,8 +227,14 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
     }
 
     public int getIdealInsertingAmount(ItemStack toCheck, int numExisted) {
+        
+
         if(toCheck.getItem() == Items.ENCHANTED_BOOK) {
             return heldItem.getItem() == Items.ENCHANTED_BOOK ? 0 : 1;
+        } else if(toCheck.getItem() == ItemInit.TORN_JOURNAL_PAGE.get()) {
+            return heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get() ? 0 : 1;
+        } else if(toCheck.getItem() == ItemInit.SPELL_PART_THESIS.get()) {
+            return heldItem.getItem() == ItemInit.SPELL_PART_THESIS.get() ? 0 : 1;
         }
         FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(level, toCheck.getItem());
         if (recipe == null) return toCheck.getCount();
