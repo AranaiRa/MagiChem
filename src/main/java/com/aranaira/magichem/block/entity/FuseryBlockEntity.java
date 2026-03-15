@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
@@ -8,6 +9,7 @@ import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.gui.FuseryMenu;
@@ -79,6 +81,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             materiaToVent = 0;
     public float
             wheelAngle, wheelSpeed, cogAngle, cogSpeed;
+    private int analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -437,6 +440,18 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
 
         //Particles
         generateCauldronSmokeParticles(pLevel, pPos, pEntity);
+
+        if(!pLevel.isClientSide()) {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, FuseryRouterType, DevicePlugDirection> offset : FuseryBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
+        }
 
         AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, FuseryBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }

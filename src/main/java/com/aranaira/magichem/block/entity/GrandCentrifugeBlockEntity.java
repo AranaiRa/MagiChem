@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.GrandCentrifugeBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -8,6 +9,7 @@ import com.aranaira.magichem.block.entity.routers.GrandCentrifugeRouterBlockEnti
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType;
 import com.aranaira.magichem.gui.GrandCentrifugeMenu;
@@ -97,6 +99,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
     public float
             circlePercent = 0f, particlePercent = 0f, wheelAngle = 0f, wheelSpeed = 0f;
+    private int analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -741,6 +744,18 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                             0, 0, 0);
                 }
             }
+        }
+
+        if(!pLevel.isClientSide()) {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, GrandCentrifugeRouterType, DevicePlugDirection> offset : GrandCentrifugeBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
         }
 
         if(!pEntity.redstonePaused)

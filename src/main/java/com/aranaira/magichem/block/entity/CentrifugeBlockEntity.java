@@ -69,6 +69,8 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
 
     public float
             wheelAngle, wheelSpeed, cogAngle, cogSpeed;
+    private int
+            analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -376,6 +378,16 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
 
         if(pLevel.isClientSide()) {
             pEntity.handleAnimationDrivers();
+        } else {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> offset : CentrifugeBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
         }
 
         AbstractSeparationBlockEntity.tick(pLevel, pPos, pState, pEntity, CentrifugeBlockEntity::getVar, pEntity::getPoweredOperationTime);

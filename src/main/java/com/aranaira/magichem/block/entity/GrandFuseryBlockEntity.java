@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.GrandFuseryBlock;
 import com.aranaira.magichem.block.entity.routers.GrandFuseryRouterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
@@ -9,6 +10,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.foundation.enums.GrandFuseryRouterType;
 import com.aranaira.magichem.gui.GrandFuseryMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
@@ -105,6 +107,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     private int
             materiaToVent = 0;
+    private int analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -701,6 +704,18 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     }
                 }
             }
+        }
+
+        if(!pLevel.isClientSide()) {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, GrandFuseryRouterType, DevicePlugDirection> offset : GrandFuseryBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
         }
 
         if(!pEntity.redstonePaused)

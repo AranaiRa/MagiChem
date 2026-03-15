@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
@@ -9,6 +10,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.gui.GrandDistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
@@ -91,6 +93,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
     public float circlePercent = 0f;
     public float particlePercent = 0f;
+    private int analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -656,6 +659,18 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                             0, 0, 0);
                 }
             }
+        }
+
+        if(!pLevel.isClientSide()) {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection> offset : GrandDistilleryBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
         }
 
         if(!pEntity.redstonePaused)

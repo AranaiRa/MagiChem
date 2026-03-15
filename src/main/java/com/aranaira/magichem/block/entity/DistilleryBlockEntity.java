@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
@@ -10,6 +11,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEnti
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
+import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.gui.DistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -69,6 +71,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50, GUI_HEAT_GAUGE_HEIGHT = 16,
         DATA_COUNT = 7, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2, DATA_HEAT_DURATION = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5, DATA_BATCH_SIZE = 6;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
+    private int analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -513,6 +516,18 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
                     pEntity.syncAndSave();
                 }
             }
+        }
+
+        if(!pLevel.isClientSide()) {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> offset : DistilleryBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
         }
 
         AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, DistilleryBlockEntity::getVar, pEntity::getPoweredOperationTime);
