@@ -3,6 +3,7 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.block.entity.BossTrophyBlockEntity;
 import com.aranaira.magichem.capabilities.enhancement.EnhancementProvider;
 import com.aranaira.magichem.capabilities.enhancement.IEnhancementCapability;
+import com.aranaira.magichem.effects.RegalTwilightEffect;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -25,6 +26,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Mob;
@@ -147,25 +149,30 @@ public class BossTrophyBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pHand == InteractionHand.MAIN_HAND && pPlayer.hasEffect(EffectInit.CIRCLE_OF_POWER.get())) {
-            final LazyOptional<IPlayerProgression> progressionCapability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
-            final Optional<IEnhancementCapability> enhancementCapability = EnhancementProvider.getCapability(pPlayer);
-            final Block block = pState.getBlock();
-            progressionCapability.ifPresent(pCap -> {
-                enhancementCapability.ifPresent(eCap -> {
-                    final IFaction alliedFaction = pCap.getAlliedFaction();
-                    if(alliedFaction != null) {
-                        if (block == BlockRegistry.BOSS_TROPHY_COUNCIL.get() && alliedFaction.is(FACTION_COUNCIL))
-                            handleCouncilEffect(pLevel, pPos, pPlayer, eCap);
-                        else if (block == BlockRegistry.BOSS_TROPHY_DEMONS.get() && alliedFaction.is(FACTION_DEMONS))
-                            handleDemonsEffect(pLevel, pPos, pPlayer, eCap);
-                        else if (block == BlockRegistry.BOSS_TROPHY_FEY.get() && alliedFaction.is(FACTION_FEY))
-                            handleFeyEffect(pLevel, pPos, pPlayer, eCap);
-                        else if (block == BlockRegistry.BOSS_TROPHY_UNDEAD.get() && alliedFaction.is(FACTION_UNDEAD))
-                            handleUndeadEffect(pLevel, pPos, pPlayer, eCap);
-                    }
+        if(pHand == InteractionHand.MAIN_HAND) {
+            if (pPlayer.hasEffect(EffectInit.CIRCLE_OF_POWER.get())) {
+                final LazyOptional<IPlayerProgression> progressionCapability = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
+                final Optional<IEnhancementCapability> enhancementCapability = EnhancementProvider.getCapability(pPlayer);
+                final Block block = pState.getBlock();
+                progressionCapability.ifPresent(pCap -> {
+                    enhancementCapability.ifPresent(eCap -> {
+                        final IFaction alliedFaction = pCap.getAlliedFaction();
+                        if (alliedFaction != null) {
+                            if (block == BlockRegistry.BOSS_TROPHY_COUNCIL.get() && alliedFaction.is(FACTION_COUNCIL))
+                                handleCouncilEffect(pLevel, pPos, pPlayer, eCap);
+                            else if (block == BlockRegistry.BOSS_TROPHY_DEMONS.get() && alliedFaction.is(FACTION_DEMONS))
+                                handleDemonsEffect(pLevel, pPos, pPlayer, eCap);
+                            else if (block == BlockRegistry.BOSS_TROPHY_FEY.get() && alliedFaction.is(FACTION_FEY))
+                                handleFeyEffect(pLevel, pPos, pPlayer, eCap);
+                            else if (block == BlockRegistry.BOSS_TROPHY_UNDEAD.get() && alliedFaction.is(FACTION_UNDEAD))
+                                handleUndeadEffect(pLevel, pPos, pPlayer, eCap);
+                        }
+                    });
                 });
-            });
+            } else {
+                if(!pLevel.isClientSide())
+                    pPlayer.sendSystemMessage(Component.translatable("feedback.trophy.not_in_sanctum"));
+            }
         }
 
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
@@ -237,6 +244,7 @@ public class BossTrophyBlock extends BaseEntityBlock {
                     pPlayer.addEffect(new MobEffectInstance(
                             MobEffectsRegistry.REGAL_TWILIGHT.get(), 36000, 0, false, false, true
                     ));
+                    RegalTwilightEffect.updatePixies(pPlayer);
                 }
             }
             else {

@@ -812,6 +812,7 @@
   "feedback.ritual.celestial_awakening.lunar": "This ritual can only be performed at night.",
   "feedback.ritual.reborn_rose.abjuration": "The Abjuration crumbles to dust.",
   "feedback.ritual.surgical_cultivation.success": "You feel raw power thundering in your chest like a storm.",
+  "feedback.trophy.not_in_sanctum": "You cannot draw upon this artifact's magic unless you are in a place of power. An allied sanctum should suffice.",
   "feedback.trophy.council.success": "The experience and skill of thousands of wizard-lords floods your mind.",
   "feedback.trophy.council.failure": "The Library Supernal will not yield its secrets at this time.",
   "feedback.trophy.council.expire": "The great works of the Library Supernal depart your mind. You feel oddly alone.",

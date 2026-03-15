@@ -55,7 +55,7 @@ public class RegalTwilightEffect extends MobEffect {
         }
     }
 
-    private void updatePixies(Player pPlayer) {
+    public static void updatePixies(Player pPlayer) {
         int existingPixies = 0;
         //TODO: Force pixie elements and set custom names by element once the API allows element forcing
         boolean hasEarth = false, hasWater = false, hasAir = false, hasFire = false;
@@ -70,15 +70,19 @@ public class RegalTwilightEffect extends MobEffect {
             }
         }
 
+        int remainingDuration = 1;
+        final MobEffectInstance instance = pPlayer.getEffect(MobEffectsRegistry.REGAL_TWILIGHT.get());
+        if(instance != null) remainingDuration = instance.getDuration() - 1;
         for(int i=0; i<4-existingPixies; i++) {
             Pixie pixie = new Pixie(EntityInit.PIXIE.get(), pPlayer.level());
             pixie.setPos(pPlayer.blockPosition().getCenter());
             pixie.setTier(2);
+            SummonUtils.setSummon(pixie, pPlayer, remainingDuration);
             pPlayer.level().addFreshEntity(pixie);
             pixie.addEffect(new MobEffectInstance(EffectInit.REDUCE.get(), -1, 6, false, false));
-            pixie.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST, -1, 10, false, false));
+            pixie.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST, -1, 6, false, false));
             pixie.addEffect(new MobEffectInstance(MobEffectsRegistry.EVANESCENCE.get(), -1, 2, false, false));
-            SummonUtils.setSummon(pixie, pPlayer, 0);
+
         }
     }
 
