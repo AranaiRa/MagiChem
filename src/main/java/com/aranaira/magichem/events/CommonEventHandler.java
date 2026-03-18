@@ -134,6 +134,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.network.PacketDistributor;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -469,6 +470,7 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
         if(event.getEntity() instanceof Player player) {
+            MutableBoolean shouldSkipWisdomRevival = new MutableBoolean(false);
             final LazyOptional<IPlayerProgression> progressCapability = player.getCapability(PlayerProgressionProvider.PROGRESSION);
             progressCapability.ifPresent(pCap -> {
                 final IFaction faction = pCap.getAlliedFaction();
@@ -520,6 +522,26 @@ public class CommonEventHandler {
                     });
                 }
             });
+
+            if(!shouldSkipWisdomRevival.booleanValue()) {
+                if(player.hasEffect(GOLDEN_RESURGENCE.get())) {
+                    CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
+                        curiosInventory.getStacksHandler("wisdom").ifPresent(slotsInventory -> {
+                            for(int i=0; i<slotsInventory.getStacks().getSlots(); i++) {
+                                final ItemStack query = slotsInventory.getStacks().getStackInSlot(i);
+                                if(query.getItem() instanceof PhilosophersStoneItem wisdom && wisdom.getWisdom() >= 4) {
+                                    if (!player.getCooldowns().isOnCooldown(wisdom)) {
+                                        player.getCooldowns().addCooldown(wisdom, wisdom.getWisdom() > 4 ? 12000 : 72000);
+                                        if(player.level().isClientSide()) {
+                                            player.displayClientMessage(Component.translatable("feedback.item.wisdom.death_protection"), true);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    });
+                }
+            }
         }
     }
 
@@ -612,6 +634,10 @@ public class CommonEventHandler {
                 }
             }
 
+            //Golden Resurgence cancellation
+            if (event.getEntity().hasEffect(MobEffectsRegistry.GOLDEN_RESURGENCE.get())) {
+                event.setCanceled(true);
+            }
             //Brutality damage reduction
             if (event.getEntity().hasEffect(MobEffectsRegistry.BRUTALITY.get())) {
                 final MobEffectInstance effect = event.getEntity().getEffect(MobEffectsRegistry.BRUTALITY.get());
