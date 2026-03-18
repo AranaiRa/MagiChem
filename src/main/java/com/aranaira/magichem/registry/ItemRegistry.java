@@ -989,6 +989,14 @@ public class ItemRegistry {
             () -> new EssentiaDropletsItem("arcane", "\u0556", "elements", 5, "b870ef")
     );
 
+    public static final RegistryObject<Item> PROBLEMITE = ITEMS.register("problemite",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> ADMIXTURE_PROBLEMS = ITEMS.register("admixture_problems",
+            () -> new MateriaItem("problems", "ff00ff", new Item.Properties())
+    );
+
     ///////////////
     // TECHNICAL HELPERS
     ///////////////
@@ -999,7 +1007,8 @@ public class ItemRegistry {
             DUMMY_ANOINTING,DUMMY_INFO_PANEL,DUMMY_VITRIOLATION,DUMMY_ILLUMINATION,
             DUMMY_PROCESS_FULMINATION, DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL, DUMMY_PROCESS_COLORATION, DUMMY_PROCESS_CONJURATION,
             DUMMY_PROCESS_FLUID_DISTILLATION, DUMMY_PROCESS_FLUID_FABRICATION, DUMMY_PROCESS_EXALTATION,
-            ESSENTIA_DROPLETS_ENDER, ESSENTIA_DROPLETS_EARTH, ESSENTIA_DROPLETS_WATER, ESSENTIA_DROPLETS_AIR, ESSENTIA_DROPLETS_FIRE, ESSENTIA_DROPLETS_ARCANE
+            ESSENTIA_DROPLETS_ENDER, ESSENTIA_DROPLETS_EARTH, ESSENTIA_DROPLETS_WATER, ESSENTIA_DROPLETS_AIR, ESSENTIA_DROPLETS_FIRE, ESSENTIA_DROPLETS_ARCANE,
+            ADMIXTURE_PROBLEMS
     );
 
     public static void register(IEventBus eventBus) {

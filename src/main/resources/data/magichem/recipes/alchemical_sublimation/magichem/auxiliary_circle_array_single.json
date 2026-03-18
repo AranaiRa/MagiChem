@@ -12,7 +12,7 @@
         { "item": "magichem:perfected_electrum" },
         { "item": "magichem:bleached_amethyst_shard" },
         { "item": "mna:animus_dust" },
-        { "item": "mna:rune_ritual_air" }
+        { "item": "mna:rune_air" }
       ],
       "materia": [
         { "item": "magichem:admixture_flight", "count": 55 },

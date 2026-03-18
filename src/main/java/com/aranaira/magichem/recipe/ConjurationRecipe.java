@@ -18,6 +18,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -181,9 +182,19 @@ public class ConjurationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             int suppliedChargeUsage = GsonHelper.getAsInt(suppliedData, "charge_usage");
 
             Item catalyst = ForgeRegistries.ITEMS.getValue(new ResourceLocation(catalystQuery));
+            if(catalyst == null || catalyst == Items.AIR)
+                catalyst = ItemRegistry.PROBLEMITE.get();
             Item passiveItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(passiveItemQuery));
+            if(passiveItem == null || passiveItem == Items.AIR)
+                passiveItem = ItemRegistry.PROBLEMITE.get();
             Item suppliedItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(suppliedItemQuery));
-            MateriaItem materia = materiaMap.get(materiaQuery);
+            if(suppliedItem == null || suppliedItem == Items.AIR)
+                suppliedItem = ItemRegistry.PROBLEMITE.get();
+            MateriaItem materia;
+            if(materiaMap.containsKey(materiaQuery))
+                materia = materiaMap.get(materiaQuery);
+            else
+                materia = (MateriaItem)ItemRegistry.ADMIXTURE_PROBLEMS.get();
 
             return new ConjurationRecipe(pRecipeId, catalyst, materia, new ItemStack(passiveItem, passiveCount), passivePeriod, new ItemStack(suppliedItem, suppliedCount), suppliedPeriod, suppliedChargeUsage);
         }

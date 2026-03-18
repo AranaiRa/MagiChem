@@ -16,6 +16,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -242,8 +243,8 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer>, I
         public DistillationFabricationRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
 
             ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
-            if(recipeObject.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
-                recipeObject = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:barrier")));
+            if(recipeObject.getItem() == Items.AIR)
+                recipeObject = new ItemStack(ItemRegistry.PROBLEMITE.get());
 
             byte wisdom = GsonHelper.getAsByte(pSerializedRecipe, "wisdom");
             byte categories = GsonHelper.getAsByte(pSerializedRecipe, "categories");
@@ -269,6 +270,7 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer>, I
                 if(matQuery != null) {
                     ing = new ItemStack(matQuery);
                 } else {
+                    ing = new ItemStack(ItemRegistry.ADMIXTURE_PROBLEMS.get());
                     MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for distillation_fabrication recipe \""+pRecipeId);
                 }
 

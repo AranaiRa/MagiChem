@@ -184,6 +184,7 @@
   "item.magichem.wildergob_swamps": "Tropical Wildergob",
   "item.magichem.wildergob_wastes": "Arid Wildergob",
   "item.magichem.winter_charge": "Winter Charge",
+  "item.magichem.problemite": "Problemite",
 
   "item.magichem.inert_wisdom_stone": "Inert Wisdom Stone",
   "item.magichem.wisdom_stone_nigredo": "Ashen Wisdom Stone",
@@ -801,6 +802,7 @@
   "item.magichem.admixture_philosophers_concoction": "Philosopher's Concoction",
   "item.magichem.admixture_philosophers_concoction.short": "Philosopher's Concoction",
   "item.magichem.admixture_philosophers_concoction.truncated": "Phil. Conc.",
+  "item.magichem.admixture_problems": "Admixture of Problems",
 
   "feedback.ritual.sublimation.novessel": "This ritual requires Materia Jars or Vessels in very specific locations. Make sure there's a Materia Jar or Vessel with the proper type of materia in the \"crook\" of the scale pattern on both sides.",
   "feedback.ritual.sublimation.insufficient.a": "This recipe requires ",
@@ -943,6 +945,8 @@
   "tooltip.magichem.four_state_lever": "A fancy lever with four possible states. Outputs a signal between 0 and 3.",
   "tooltip.magichem.five_state_lever": "A fancy lever with five possible states. Outputs a signal between 0 and 4.",
   "tooltip.magichem.six_state_lever": "A fancy lever with six possible states. Outputs a signal between 0 and 5.",
+  "tooltip.magichem.problemite": "Well that's not right. Something is wrong with this recipe, check your datapack!",
+  "tooltip.magichem.admixture_problems": "Well that's not right. Something is wrong with this recipe, check your datapack!",
 
   "tooltip.magichem.inert_wisdom_stone": "The first stage of the Magnum Opus. Incredible potential, but useless on its own.",
   "tooltip.magichem.wisdom_stone_nigredo": "The second stage of the Magnum Opus. Reduced until no excess remains.",

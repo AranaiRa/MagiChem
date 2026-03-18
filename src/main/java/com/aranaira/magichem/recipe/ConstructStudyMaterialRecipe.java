@@ -13,6 +13,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -142,6 +143,8 @@ public class ConstructStudyMaterialRecipe implements Recipe<SimpleContainer>, IM
             
             String itemRL = GsonHelper.getAsString(pSerializedRecipe, "item");
             Item itemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemRL));
+            if(itemAsItem == null || itemAsItem == Items.AIR)
+                itemAsItem = ItemRegistry.PROBLEMITE.get();
 
             int experience = GsonHelper.getAsInt(pSerializedRecipe, "experience");
             boolean consumed = GsonHelper.getAsBoolean(pSerializedRecipe, "consumed");

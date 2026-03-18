@@ -2,6 +2,7 @@ package com.aranaira.magichem.recipe;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.enums.LuminType;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonObject;
 import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.RegistryAccess;
@@ -12,6 +13,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -141,6 +143,8 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             String inputItemRL = GsonHelper.getAsString(pSerializedRecipe, "input");
             Item inputItemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(inputItemRL));
+            if(inputItemAsItem == null || inputItemAsItem == Items.AIR)
+                inputItemAsItem = ItemRegistry.PROBLEMITE.get();
 
             JsonObject luminObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "lumins", null);
             JsonObject resultItemObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "result", null);
@@ -156,18 +160,20 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 craftTime = GsonHelper.getAsInt(luminObject, "minutes");
             }
 
-            Item resultItemAsItem = null;
+            Item resultItemAsItem = ItemRegistry.PROBLEMITE.get();
             String resultItemRL = null;
             int resultItemCount = 0;
             if(resultItemObject != null) {
                 resultItemRL = GsonHelper.getAsString(resultItemObject, "item");
                 resultItemCount = GsonHelper.getAsInt(resultItemObject, "count");
                 resultItemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(resultItemRL));
+                if(resultItemAsItem == null || resultItemAsItem == Items.AIR)
+                    resultItemAsItem = ItemRegistry.PROBLEMITE.get();
             }
 
             return new IlluminationRecipe(pRecipeId,
-                    inputItemAsItem == null ? ItemStack.EMPTY : new ItemStack(inputItemAsItem),
-                    resultItemAsItem == null ? ItemStack.EMPTY : new ItemStack(resultItemAsItem, resultItemCount),
+                    new ItemStack(inputItemAsItem),
+                    new ItemStack(resultItemAsItem, resultItemCount),
                     luminTypeAsType, craftTime
             );
         }

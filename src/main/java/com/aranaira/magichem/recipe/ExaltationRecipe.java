@@ -36,13 +36,14 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final Item itemType;
     private final MateriaItem materiaType;
     private final int itemsRequired, materiaRequired, slurryRequired, eldrinRequired;
-    private final byte tier, eldrinType;
+    private final byte tier, wisdom, eldrinType;
     private ItemStack itemAsStack = ItemStack.EMPTY, materiaAsStack = ItemStack.EMPTY;
 
-    public ExaltationRecipe(ResourceLocation pID, ItemStack pResult, byte pTier, Item pItemType, int pItemsRequired, MateriaItem pMateriaType, int pMateriaRequired, byte pEldrinType, int pEldrinRequired, int pSlurryRequired) {
+    public ExaltationRecipe(ResourceLocation pID, ItemStack pResult, byte pTier, byte pWisdom, Item pItemType, int pItemsRequired, MateriaItem pMateriaType, int pMateriaRequired, byte pEldrinType, int pEldrinRequired, int pSlurryRequired) {
         this.id = pID;
         this.result = pResult;
         this.tier = pTier;
+        this.wisdom = pWisdom;
         this.itemType = pItemType;
         this.itemsRequired = pItemsRequired;
         this.materiaType = pMateriaType;
@@ -210,6 +211,10 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         return tier;
     }
 
+    public int getWisdom() {
+        return wisdom;
+    }
+
     public static class Type implements RecipeType<ExaltationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
@@ -228,8 +233,12 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             JsonObject itemsObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "items", null);
             JsonObject eldrinObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "eldrin", null);
             JsonObject materiaObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "materia", null);
-            int slurryRequired = GsonHelper.getAsInt(pSerializedRecipe, "slurry");
+            byte wisdom = 0;
+            if(pSerializedRecipe.has("wisdom")) {
+                wisdom = GsonHelper.getAsByte(pSerializedRecipe, "wisdom");
+            }
             byte tier = GsonHelper.getAsByte(pSerializedRecipe, "tier");
+            int slurryRequired = GsonHelper.getAsInt(pSerializedRecipe, "slurry");
 
             ItemStack result = ItemStack.EMPTY;
             if(resultObject != null) {
@@ -237,7 +246,10 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemRL));
                 int count = GsonHelper.getAsInt(resultObject, "count");
 
-                if(item == null) MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find output item \""+itemRL.toString()+"\"!");
+                if(item == null) {
+                    result = new ItemStack(ItemRegistry.PROBLEMITE.get());
+                    MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find output item \""+itemRL.toString()+"\"!");
+                }
                 else {
                     result = new ItemStack(item, count);
                 }
@@ -249,7 +261,10 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 String typeRL = GsonHelper.getAsString(itemsObject, "type");
                 itemType = ForgeRegistries.ITEMS.getValue(new ResourceLocation(typeRL));
                 itemsRequired = GsonHelper.getAsInt(itemsObject, "required");
-                if(itemType == null) MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find required item \""+typeRL.toString()+"\"!");
+                if(itemType == null) {
+                    itemType = ItemRegistry.PROBLEMITE.get();
+                    MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find required item \"" + typeRL.toString() + "\"!");
+                }
             }
 
             MateriaItem materiaType = null;
@@ -259,7 +274,10 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 Item materiaTypeQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(typeRL));
                 materiaRequired = GsonHelper.getAsInt(materiaObject, "required");
                 if(materiaTypeQuery instanceof MateriaItem mi) materiaType = mi;
-                if(materiaType == null) MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find materia type \""+typeRL.toString()+"\"!");
+                if(materiaType == null) {
+                    materiaType = (MateriaItem) ItemRegistry.ADMIXTURE_PROBLEMS.get();
+                    MagiChemMod.LOGGER.warn("&&&&& Exaltation recipe couldn't find materia type \""+typeRL.toString()+"\"!");
+                }
             }
 
             byte eldrinType = 0;
@@ -269,7 +287,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 eldrinRequired = GsonHelper.getAsInt(eldrinObject, "required");
             }
 
-            return new ExaltationRecipe(pRecipeId, result, tier, itemType, itemsRequired, materiaType, materiaRequired, eldrinType, eldrinRequired, slurryRequired);
+            return new ExaltationRecipe(pRecipeId, result, tier, wisdom, itemType, itemsRequired, materiaType, materiaRequired, eldrinType, eldrinRequired, slurryRequired);
         }
 
         @Override
@@ -281,6 +299,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             ItemStack result = ItemStack.of(nbt.getCompound("result"));
             byte tier = nbt.getByte("tier");
+            byte wisdom = nbt.getByte("wisdom");
 
             Item itemType = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemTag.getString("type")));
             int itemsRequired = itemTag.getInt("required");
@@ -295,7 +314,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             int slurryRequired = nbt.getInt("slurry");
 
-            return new ExaltationRecipe(pRecipeId, result, tier, itemType, itemsRequired, materiaType, materiaRequired, eldrinType, eldrinRequired, slurryRequired);
+            return new ExaltationRecipe(pRecipeId, result, tier, wisdom, itemType, itemsRequired, materiaType, materiaRequired, eldrinType, eldrinRequired, slurryRequired);
         }
 
         @Override
@@ -304,6 +323,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             nbt.put("result", pRecipe.result.serializeNBT());
             nbt.putByte("tier", pRecipe.tier);
+            nbt.putByte("wisdom", pRecipe.wisdom);
 
             CompoundTag itemTag = new CompoundTag();
             itemTag.putString("type", ForgeRegistries.ITEMS.getKey(pRecipe.itemType).toString());

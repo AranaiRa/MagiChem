@@ -160,7 +160,7 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer>, IMARec
 
             ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
             if(recipeObject.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
-                recipeObject = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:barrier")));
+                recipeObject = new ItemStack(ItemRegistry.ADMIXTURE_PROBLEMS.get());
 
             JsonArray components = GsonHelper.getAsJsonArray(pSerializedRecipe, "components");
             NonNullList<ItemStack> extractedIngredients = NonNullList.create();
@@ -173,6 +173,7 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer>, IMARec
                 if(matQuery != null) {
                     ing = new ItemStack(matQuery);
                 } else {
+                    ing = new ItemStack(ItemRegistry.ADMIXTURE_PROBLEMS.get());
                     MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for fixation_separation recipe \""+pRecipeId+"\"");
                 }
 

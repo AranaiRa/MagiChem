@@ -280,6 +280,7 @@ public class FluidDistillationFabricationRecipe implements Recipe<SimpleContaine
                 if(matQuery != null) {
                     ing = new ItemStack(matQuery);
                 } else {
+                    ing = new ItemStack(ItemRegistry.ADMIXTURE_PROBLEMS.get());
                     MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for distillation_fabrication recipe \""+pRecipeId);
                 }
 

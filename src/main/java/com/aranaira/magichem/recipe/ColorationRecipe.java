@@ -16,6 +16,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -224,7 +225,7 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             ItemStack colorlessDefault = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "colorless_default"));
             if(colorlessDefault.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
-                colorlessDefault = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:barrier")));
+                colorlessDefault = new ItemStack(ItemRegistry.PROBLEMITE.get());
 
             JsonArray components = GsonHelper.getAsJsonArray(pSerializedRecipe, "outputs");
             HashMap<DyeColor, ItemStack> extractedOutputs = new HashMap<>();
@@ -232,12 +233,13 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 String color = element.getAsJsonObject().get("color").getAsString();
                 String item = element.getAsJsonObject().get("item").getAsString();
 
-                ItemStack ing = ItemStack.EMPTY;
+                ItemStack ing;
 
                 Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(item));
-                if(query != null) {
+                if(query != null && query != Items.AIR) {
                     ing = new ItemStack(query);
                 } else {
+                    ing = new ItemStack(ItemRegistry.PROBLEMITE.get());
                     MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+item+"\" for color \""+color+"\" in coloration recipe \""+pRecipeId+"\"");
                 }
 
