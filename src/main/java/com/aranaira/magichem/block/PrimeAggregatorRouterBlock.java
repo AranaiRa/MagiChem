@@ -276,14 +276,14 @@ public class PrimeAggregatorRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_TOP_NORTH),1)
         );
         VOXEL_SHAPE_AGGREGATE_REAR_LEFT_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_BASE_NORTH),1),
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_MID_NORTH),1),
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_TOP_NORTH),1)
-        );
-        VOXEL_SHAPE_AGGREGATE_REAR_LEFT_WEST = Shapes.or(
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_BASE_NORTH),2),
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_MID_NORTH),2),
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_TOP_NORTH),2)
+        );
+        VOXEL_SHAPE_AGGREGATE_REAR_LEFT_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_BASE_NORTH),3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_MID_NORTH),3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_TOP_NORTH),3)
         );
 
         VOXEL_SHAPE_AGGREGATE_REAR_RIGHT_NORTH = Shapes.or(

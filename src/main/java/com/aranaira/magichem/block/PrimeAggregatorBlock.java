@@ -117,39 +117,39 @@ public class PrimeAggregatorBlock extends BaseEntityBlock {
         if(pFacing == Direction.NORTH) {
             offsets.add(new Triplet<>(origin.south(), FRONT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.north(), REAR, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.south().west(), FRONT_LEFT, DevicePlugDirection.WEST));
-            offsets.add(new Triplet<>(origin.south().east(), FRONT_RIGHT, DevicePlugDirection.EAST));
+            offsets.add(new Triplet<>(origin.south().west(), FRONT_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.south().east(), FRONT_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.west(), PLUG_LEFT, DevicePlugDirection.WEST));
             offsets.add(new Triplet<>(origin.east(), PLUG_RIGHT, DevicePlugDirection.EAST));
-            offsets.add(new Triplet<>(origin.north().west(), REAR_LEFT, DevicePlugDirection.WEST));
-            offsets.add(new Triplet<>(origin.north().east(), REAR_RIGHT, DevicePlugDirection.EAST));
+            offsets.add(new Triplet<>(origin.north().west(), REAR_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.north().east(), REAR_RIGHT, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.SOUTH) {
             offsets.add(new Triplet<>(origin.north(), FRONT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.south(), REAR, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.north().east(), PLUG_LEFT, DevicePlugDirection.EAST));
-            offsets.add(new Triplet<>(origin.north().west(), PLUG_RIGHT, DevicePlugDirection.WEST));
+            offsets.add(new Triplet<>(origin.north().east(), FRONT_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.north().west(), FRONT_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.east(), PLUG_LEFT, DevicePlugDirection.EAST));
             offsets.add(new Triplet<>(origin.west(), PLUG_RIGHT, DevicePlugDirection.WEST));
-            offsets.add(new Triplet<>(origin.south().east(), REAR_LEFT, DevicePlugDirection.EAST));
-            offsets.add(new Triplet<>(origin.south().west(), REAR_RIGHT, DevicePlugDirection.WEST));
+            offsets.add(new Triplet<>(origin.south().east(), REAR_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.south().west(), REAR_RIGHT, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.EAST) {
             offsets.add(new Triplet<>(origin.west(), FRONT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.east(), REAR, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.west().north(), FRONT_LEFT, DevicePlugDirection.NORTH));
-            offsets.add(new Triplet<>(origin.west().south(), FRONT_RIGHT, DevicePlugDirection.SOUTH));
+            offsets.add(new Triplet<>(origin.west().north(), FRONT_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.west().south(), FRONT_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.north(), PLUG_LEFT, DevicePlugDirection.NORTH));
             offsets.add(new Triplet<>(origin.south(), PLUG_RIGHT, DevicePlugDirection.SOUTH));
-            offsets.add(new Triplet<>(origin.east().north(), REAR_LEFT, DevicePlugDirection.NORTH));
-            offsets.add(new Triplet<>(origin.east().south(), REAR_RIGHT, DevicePlugDirection.SOUTH));
+            offsets.add(new Triplet<>(origin.east().north(), REAR_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.east().south(), REAR_RIGHT, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.WEST) {
             offsets.add(new Triplet<>(origin.east(), FRONT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.west(), REAR, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.east().south(), FRONT_LEFT, DevicePlugDirection.SOUTH));
-            offsets.add(new Triplet<>(origin.east().north(), FRONT_RIGHT, DevicePlugDirection.NORTH));
+            offsets.add(new Triplet<>(origin.east().south(), FRONT_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.east().north(), FRONT_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.south(), PLUG_LEFT, DevicePlugDirection.SOUTH));
             offsets.add(new Triplet<>(origin.north(), PLUG_RIGHT, DevicePlugDirection.NORTH));
-            offsets.add(new Triplet<>(origin.west().south(), REAR_LEFT, DevicePlugDirection.SOUTH));
-            offsets.add(new Triplet<>(origin.west().north(), REAR_RIGHT, DevicePlugDirection.NORTH));
+            offsets.add(new Triplet<>(origin.west().south(), REAR_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.west().north(), REAR_RIGHT, DevicePlugDirection.NONE));
         }
         return offsets;
     }
