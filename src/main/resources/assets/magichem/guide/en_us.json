@@ -1781,7 +1781,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A construct can be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. The construct must be in follow mode, and only one construct can be bound to a single Circle of Toil at a time.\n\nThe "
+            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A construct can be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. The construct "
+          },
+          {
+            "text": "must be in follow mode",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and only one construct can be bound to a single Circle of Toil at a time.\n\nThe "
           },
           {
             "text": "composition of the construct",
