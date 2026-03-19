@@ -341,8 +341,16 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             if(outputForCodexString != null) {
                 ResourceLocation outputForCodexRL = new ResourceLocation(outputForCodexString);
                 outputForCodexAsItem = ForgeRegistries.ITEMS.getValue(outputForCodexRL);
+            }
 
-                if(outputForCodexAsItem == null || outputForCodexAsItem == Items.AIR) MagiChemMod.LOGGER.warn("&&&&& Vitriolation recipe couldn't find codex tab item \""+outputForCodexRL.toString()+"\"!");
+            if(outputForCodexAsItem == null || outputForCodexAsItem == Items.AIR) {
+                if(resultItemAsItem != null && resultItemAsItem != Items.AIR) {
+                    outputForCodexAsItem = resultItemAsItem;
+                } else if(resultFluidAsFluid != null && resultFluidAsFluid != Fluids.EMPTY) {
+                    outputForCodexAsItem = resultFluidAsFluid.getBucket();
+                } else {
+                    outputForCodexAsItem = ItemRegistry.PROBLEMITE.get();
+                }
             }
 
             return new VitriolationRecipe(pRecipeId,
@@ -351,7 +359,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                     resultFluidAsFluid == null ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
                     craftTicks, minimumAcidStrength, mBConsumed,
                     inputFluidOverrideAsFluid,
-                    outputForCodexAsItem == null ? new ItemStack(ItemRegistry.PROBLEMITE.get()) : new ItemStack(outputForCodexAsItem)
+                    new ItemStack((outputForCodexAsItem == null || outputForCodexAsItem == Items.AIR) ? ItemRegistry.PROBLEMITE.get() : outputForCodexAsItem)
             );
         }
 
