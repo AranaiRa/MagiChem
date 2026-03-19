@@ -699,6 +699,15 @@ public class CommonEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onEffectRemoved(MobEffectEvent.Remove event) {
+        if (event.getEffectInstance() != null) {
+            if (event.getEffectInstance().getEffect() == GOLDEN_RESURGENCE.get()) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
     private static final SpellEffect[] DAMAGE_COMPONENTS = new SpellEffect[]{
             FIRE_DAMAGE, BACKDRAFT, FROST_DAMAGE, SHATTER, LIGHTNING_DAMAGE, MAGIC_DAMAGE, IMPALE, WIND_SHEAR, PURGE
     };
