@@ -24,6 +24,7 @@ public class MagiChemCommand {
         dispatcher.register(Commands.literal("magichem")
                 .then(resetOrreryCommand())
                 .then(resetChaliceCommand())
+                .then(resetWisdomCommand())
                 .then(setHeartCommand())
         );
     }
@@ -36,26 +37,29 @@ public class MagiChemCommand {
     }
 
     private static int resetOrreryExecution(CommandSourceStack source, Collection<ServerPlayer> players) {
-        if (players != null && players.size() != 0) {
+        if(source.hasPermission(2)) {
+            if (players != null && players.size() != 0) {
 
-            for (ServerPlayer spe : players) {
-                final EldrinOrreryLimiterSD eldrinOrreryData = spe.getServer().overworld().getDataStorage().computeIfAbsent(EldrinOrreryLimiterSD::load, EldrinOrreryLimiterSD::create, "eldrinOrreryData");
-                if (eldrinOrreryData.playerHasOrrery(spe)) {
-                    eldrinOrreryData.removeOrrery(spe.getStringUUID());
-                    source.sendSuccess(() -> {
-                        return Component.translatable("magichem.commands.reset_orrery.success", (players.iterator().next()).getDisplayName());
-                    }, true);
-                } else {
-                    source.sendSuccess(() -> {
-                        return Component.translatable("magichem.commands.reset_orrery.failure", (players.iterator().next()).getDisplayName());
-                    }, true);
+                for (ServerPlayer spe : players) {
+                    final EldrinOrreryLimiterSD eldrinOrreryData = spe.getServer().overworld().getDataStorage().computeIfAbsent(EldrinOrreryLimiterSD::load, EldrinOrreryLimiterSD::create, "eldrinOrreryData");
+                    if (eldrinOrreryData.playerHasOrrery(spe)) {
+                        eldrinOrreryData.removeOrrery(spe.getStringUUID());
+                        source.sendSuccess(() -> {
+                            return Component.translatable("magichem.commands.reset_orrery.success", (players.iterator().next()).getDisplayName());
+                        }, true);
+                    } else {
+                        source.sendSuccess(() -> {
+                            return Component.translatable("magichem.commands.reset_orrery.failure", (players.iterator().next()).getDisplayName());
+                        }, true);
+                    }
                 }
-            }
 
-            return 1;
+                return 1;
+            }
         } else {
-            return 0;
+            source.sendFailure(Component.translatable("magichem.commands.permission_failure", (players.iterator().next()).getDisplayName()));
         }
+        return 0;
     }
 
     private static ArgumentBuilder<CommandSourceStack, ?> resetChaliceCommand() {
@@ -66,16 +70,49 @@ public class MagiChemCommand {
     }
 
     private static int resetChaliceExecution(CommandSourceStack source, Collection<ServerPlayer> players) {
-        if (players != null && players.size() != 0) {
+        if(source.hasPermission(2)) {
+            if (players != null && players.size() != 0) {
 
-            for (ServerPlayer spe : players) {
-                spe.getCooldowns().removeCooldown(ItemRegistry.CHALICE_OF_TEARS.get());
+                for (ServerPlayer spe : players) {
+                    spe.getCooldowns().removeCooldown(ItemRegistry.CHALICE_OF_TEARS.get());
+                    source.sendSuccess(() -> {
+                        return Component.translatable("magichem.commands.reset_chalice.success", (players.iterator().next()).getDisplayName());
+                    }, true);
+                }
+
+                return 1;
             }
-
-            return 1;
         } else {
-            return 0;
+            source.sendFailure(Component.translatable("magichem.commands.permission_failure", (players.iterator().next()).getDisplayName()));
         }
+        return 0;
+    }
+
+    private static ArgumentBuilder<CommandSourceStack, ?> resetWisdomCommand() {
+        return (Commands.literal("resetWisdomResurrection")
+                .then(Commands.argument("player", EntityArgument.players()).executes((context) -> {
+                    return resetWisdomExecution((CommandSourceStack)context.getSource(), EntityArgument.getPlayers(context, "player"));
+                })));
+    }
+
+    private static int resetWisdomExecution(CommandSourceStack source, Collection<ServerPlayer> players) {
+        if(source.hasPermission(2)) {
+            if (players != null && players.size() != 0) {
+
+                for (ServerPlayer spe : players) {
+                    spe.getCooldowns().removeCooldown(ItemRegistry.FLUSHED_WISDOM_STONE.get());
+                    spe.getCooldowns().removeCooldown(ItemRegistry.PHILOSOPHERS_STONE.get());
+                    source.sendSuccess(() -> {
+                        return Component.translatable("magichem.commands.reset_chalice.success", (players.iterator().next()).getDisplayName());
+                    }, true);
+                }
+
+                return 1;
+            }
+        } else {
+            source.sendFailure(Component.translatable("magichem.commands.permission_failure", (players.iterator().next()).getDisplayName()));
+        }
+        return 0;
     }
 
     private static ArgumentBuilder<CommandSourceStack, ?> setHeartCommand() {
@@ -89,23 +126,27 @@ public class MagiChemCommand {
     }
 
     private static int setHeartExecution(CommandSourceStack source, Collection<ServerPlayer> players, IEnhancementCapability.EnhancedHeartType type) {
-        if (players != null && players.size() != 0) {
-
-            for (ServerPlayer spe : players) {
-                final LazyOptional<IEnhancementCapability> capLazy = spe.getCapability(EnhancementProvider.ENHANCEMENT);
-                if(capLazy.isPresent()) {
-                    final Optional<IEnhancementCapability> capQuery = capLazy.resolve();
-                    if(capQuery.isPresent()) {
-                        final IEnhancementCapability cap = capQuery.get();
-                        cap.setHeart(type);
-//                        spe.sendSystemMessage(Component.literal("heart type set to "+type.name()));
+        if(source.hasPermission(2)) {
+            if (players != null && players.size() != 0) {
+                for (ServerPlayer spe : players) {
+                    final LazyOptional<IEnhancementCapability> capLazy = spe.getCapability(EnhancementProvider.ENHANCEMENT);
+                    if (capLazy.isPresent()) {
+                        final Optional<IEnhancementCapability> capQuery = capLazy.resolve();
+                        if (capQuery.isPresent()) {
+                            final IEnhancementCapability cap = capQuery.get();
+                            cap.setHeart(type);
+                            source.sendSuccess(() -> {
+                                return Component.translatable("magichem.commands.set_heart.success", (players.iterator().next()).getDisplayName());
+                            }, true);
+                        }
                     }
                 }
-            }
 
-            return 1;
+                return 1;
+            }
         } else {
-            return 0;
+            source.sendFailure(Component.translatable("magichem.commands.permission_failure", (players.iterator().next()).getDisplayName()));
         }
+        return 0;
     }
 }
