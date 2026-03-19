@@ -192,17 +192,26 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     private CompoundTag packCraftDataToTag() {
         CompoundTag nbt = new CompoundTag();
 
+        int existingAnimStage = -1;
+        final ItemStack progressHolder = itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER);
+        if(!progressHolder.isEmpty() && progressHolder.hasTag()) {
+            CompoundTag existing = progressHolder.getTag();
+            if(existing.contains("animStage")) existingAnimStage = existing.getInt("animStage");
+        }
+
         if(currentRecipe != null) {
-            nbt.putString("result", ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem()).toString());
-            nbt.putInt("animStage", animStage);
-            nbt.putInt("itemsDelivered", itemsDelivered);
-            nbt.putInt("materiaDelivered", materiaDelivered);
-            nbt.putInt("slurryDelivered", slurryDelivered);
-            CompoundTag eldrinDeliveryTag = new CompoundTag();
-            for(Affinity aff : eldrinDelivered.keySet()) {
-                eldrinDeliveryTag.putInt(aff.name(), eldrinDelivered.get(aff));
+            if(existingAnimStage <= animStage){
+                nbt.putString("result", ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem()).toString());
+                nbt.putInt("animStage", animStage);
+                nbt.putInt("itemsDelivered", itemsDelivered);
+                nbt.putInt("materiaDelivered", materiaDelivered);
+                nbt.putInt("slurryDelivered", slurryDelivered);
+                CompoundTag eldrinDeliveryTag = new CompoundTag();
+                for (Affinity aff : eldrinDelivered.keySet()) {
+                    eldrinDeliveryTag.putInt(aff.name(), eldrinDelivered.get(aff));
+                }
+                nbt.put("eldrinDelivered", eldrinDeliveryTag);
             }
-            nbt.put("eldrinDelivered", eldrinDeliveryTag);
         }
 
         return nbt;
@@ -306,6 +315,11 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public void clearRecipe() {
+        final ItemStack progressHolder = this.itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER);
+        if(!progressHolder.isEmpty()) {
+            progressHolder.setTag(packCraftDataToTag());
+        }
+
         this.currentRecipe = null;
         this.clearDeliveries();
         this.animStage = ANIM_STAGE_IDLE;
