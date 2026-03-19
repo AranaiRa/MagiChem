@@ -233,7 +233,6 @@ public class SignaliteBlock extends BaseEntityBlock implements IHasNonStandardTo
             SignaliteBlockType myType = ((SignaliteBlock) myState.getBlock()).getType();
             int oldSignalStrength = myState.getValue(POWER);
             sbe.clearLastInputSignals();
-            boolean changed = false;
 
             for (Direction dir : sbe.getTransmittingDirections()) {
                 if(myType != SignaliteBlockType.STANDARD && sbe.isTransmittingDirectionOneWay(dir)) {
@@ -297,6 +296,7 @@ public class SignaliteBlock extends BaseEntityBlock implements IHasNonStandardTo
             if(signalStrength != oldSignalStrength) {
                 pLevel.setBlock(pPos, myState.setValue(POWER, Math.min(15, signalStrength)), 3);
                 pLevel.sendBlockUpdated(pPos, myState, myState.setValue(POWER, Math.min(15, signalStrength)), 2);
+                sbe.setChanged();
             }
 
             sbe.syncAndSave();
