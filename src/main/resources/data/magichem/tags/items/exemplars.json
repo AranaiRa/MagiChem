@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:black_diamond",
+    "magichem:alabaster_pearl",
+    "magichem:xanthotic_gold",
+    "magichem:scarlet_coral",
+    "magichem:oculotoxin",
+    "magichem:confounding_widget",
+    "magichem:terrarium_cold",
+    "magichem:terrarium_depths",
+    "magichem:terrarium_end",
+    "magichem:terrarium_forests",
+    "magichem:terrarium_hells",
+    "magichem:terrarium_mountains",
+    "magichem:terrarium_ominous",
+    "magichem:terrarium_plains",
+    "magichem:terrarium_swamps",
+    "magichem:terrarium_wastes"
+  ]
+}

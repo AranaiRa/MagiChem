@@ -853,6 +853,7 @@
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixture_general": "A distilled alchemical concoction.",
   "tooltip.magichem.admixture_formula": "Formula:",
+  "tooltip.magichem.exemplar": "Exemplar",
 
   "tooltip.magichem.alchemically_treated_glass": "Glass that has been treated with Alchemical Waste to be non-reactive to Materia. Can be used for decoration.",
   "tooltip.magichem.alchemically_treated_glass.electrum": "Electrum Trim",

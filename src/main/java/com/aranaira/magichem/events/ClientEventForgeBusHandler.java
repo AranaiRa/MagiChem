@@ -83,6 +83,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 )
 public class ClientEventForgeBusHandler {
     private static final TagKey<Item>
+            TAG_MAGICHEM_EXEMPLARS = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "exemplars")),
             TAG_MAGICHEM_WISDOM_STONES = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "wisdom_stones"));
     private static final ResourceLocation TEXTURE_WISDOM = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_active.png");
     private static final HashMap<Item, ConstructStudyMaterialRecipe> studyRecipes = new HashMap<>();
@@ -90,25 +91,36 @@ public class ClientEventForgeBusHandler {
     @SubscribeEvent
     public static void renderItemTooltips(ItemTooltipEvent event) {
         if(event.getEntity() != null && event.getEntity().level() != null){
-            if (studyRecipes.size() == 0) {
-                for (ConstructStudyMaterialRecipe recipe : ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(event.getEntity().level())) {
-                    studyRecipes.put(recipe.getItem(), recipe);
+            //Study tooltip
+            {
+                if (studyRecipes.size() == 0) {
+                    for (ConstructStudyMaterialRecipe recipe : ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(event.getEntity().level())) {
+                        studyRecipes.put(recipe.getItem(), recipe);
+                    }
+                }
+
+                if (event.getItemStack().hasTag() && event.getItemStack().getTag().contains("alreadyStudied")) {
+                    event.getToolTip().add(1,
+                            Component.empty().withStyle(ChatFormatting.BLUE)
+                                    .append(Component.translatable("tooltip.magichem.event.study.part1"))
+                                    .append(Component.translatable("tooltip.magichem.event.study.part2.complete"))
+                    );
+                } else if (studyRecipes.containsKey(event.getItemStack().getItem())) {
+                    event.getToolTip().add(1,
+                            Component.empty().withStyle(ChatFormatting.GREEN)
+                                    .append(Component.translatable("tooltip.magichem.event.study.part1"))
+                                    .append(Component.literal("" + studyRecipes.get(event.getItemStack().getItem()).getExperience()))
+                                    .append(Component.translatable("tooltip.magichem.event.study.part2.xp"))
+                                    .append(Component.translatable(studyRecipes.get(event.getItemStack().getItem()).isConsumed() ? "tooltip.magichem.event.study.part3.destroys" : "tooltip.magichem.event.study.part3.once"))
+                    );
                 }
             }
-
-            if (event.getItemStack().hasTag() && event.getItemStack().getTag().contains("alreadyStudied")) {
+            
+            //Exemplar tooltip
+            if(event.getItemStack().is(TAG_MAGICHEM_EXEMPLARS)) {
                 event.getToolTip().add(1,
                         Component.empty().withStyle(ChatFormatting.BLUE)
-                                .append(Component.translatable("tooltip.magichem.event.study.part1"))
-                                .append(Component.translatable("tooltip.magichem.event.study.part2.complete"))
-                );
-            } else if (studyRecipes.containsKey(event.getItemStack().getItem())) {
-                event.getToolTip().add(1,
-                        Component.empty().withStyle(ChatFormatting.GREEN)
-                                .append(Component.translatable("tooltip.magichem.event.study.part1"))
-                                .append(Component.literal("" + studyRecipes.get(event.getItemStack().getItem()).getExperience()))
-                                .append(Component.translatable("tooltip.magichem.event.study.part2.xp"))
-                                .append(Component.translatable(studyRecipes.get(event.getItemStack().getItem()).isConsumed() ? "tooltip.magichem.event.study.part3.destroys" : "tooltip.magichem.event.study.part3.once"))
+                                .append(Component.translatable("tooltip.magichem.exemplar").withStyle(ChatFormatting.ITALIC, ChatFormatting.GOLD))
                 );
             }
         }
