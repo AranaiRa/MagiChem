@@ -76,7 +76,7 @@ public class MagiChemCommand {
                 for (ServerPlayer spe : players) {
                     spe.getCooldowns().removeCooldown(ItemRegistry.CHALICE_OF_TEARS.get());
                     source.sendSuccess(() -> {
-                        return Component.translatable("magichem.commands.reset_chalice.success", (players.iterator().next()).getDisplayName());
+                        return Component.translatable("magichem.commands.reset_general.success", (players.iterator().next()).getDisplayName());
                     }, true);
                 }
 
@@ -103,7 +103,7 @@ public class MagiChemCommand {
                     spe.getCooldowns().removeCooldown(ItemRegistry.FLUSHED_WISDOM_STONE.get());
                     spe.getCooldowns().removeCooldown(ItemRegistry.PHILOSOPHERS_STONE.get());
                     source.sendSuccess(() -> {
-                        return Component.translatable("magichem.commands.reset_chalice.success", (players.iterator().next()).getDisplayName());
+                        return Component.translatable("magichem.commands.reset_general.success", (players.iterator().next()).getDisplayName());
                     }, true);
                 }
 

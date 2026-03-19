@@ -470,7 +470,6 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
         if(event.getEntity() instanceof Player player) {
-            MutableBoolean shouldSkipWisdomRevival = new MutableBoolean(false);
             final LazyOptional<IPlayerProgression> progressCapability = player.getCapability(PlayerProgressionProvider.PROGRESSION);
             progressCapability.ifPresent(pCap -> {
                 final IFaction faction = pCap.getAlliedFaction();
@@ -522,26 +521,6 @@ public class CommonEventHandler {
                     });
                 }
             });
-
-            if(!shouldSkipWisdomRevival.booleanValue()) {
-                if(player.hasEffect(GOLDEN_RESURGENCE.get())) {
-                    CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
-                        curiosInventory.getStacksHandler("wisdom").ifPresent(slotsInventory -> {
-                            for(int i=0; i<slotsInventory.getStacks().getSlots(); i++) {
-                                final ItemStack query = slotsInventory.getStacks().getStackInSlot(i);
-                                if(query.getItem() instanceof PhilosophersStoneItem wisdom && wisdom.getWisdom() >= 4) {
-                                    if (!player.getCooldowns().isOnCooldown(wisdom)) {
-                                        player.getCooldowns().addCooldown(wisdom, wisdom.getWisdom() > 4 ? 12000 : 72000);
-                                        if(player.level().isClientSide()) {
-                                            player.displayClientMessage(Component.translatable("feedback.item.wisdom.death_protection"), true);
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    });
-                }
-            }
         }
     }
 
@@ -680,6 +659,28 @@ public class CommonEventHandler {
                     event.getEntity().hurt(event.getEntity().damageSources().magic(), damage);
                 }
             }
+        }
+
+        if(event.getEntity() instanceof Player player && event.getEntity().getHealth() - event.getAmount() <= 0) {
+            if(!player.hasEffect(GOLDEN_RESURGENCE.get())) {
+                CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
+                    curiosInventory.getStacksHandler("wisdom").ifPresent(slotsInventory -> {
+                        for(int i=0; i<slotsInventory.getStacks().getSlots(); i++) {
+                            final ItemStack query = slotsInventory.getStacks().getStackInSlot(i);
+                            if(query.getItem() instanceof PhilosophersStoneItem wisdom && wisdom.getWisdom() >= 4) {
+                                if (!player.getCooldowns().isOnCooldown(wisdom)) {
+                                    player.getCooldowns().addCooldown(wisdom, wisdom.getWisdom() > 4 ? 12000 : 72000);
+                                    player.addEffect(new MobEffectInstance(GOLDEN_RESURGENCE.get(), 120, 0, true, true));
+                                    player.addEffect(new MobEffectInstance(RADIANT_RESOLVE.get(), 120, 0, true, true));
+                                    player.heal(200f);
+                                    player.displayClientMessage(Component.translatable("feedback.item.wisdom.death_protection"), true);
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+            event.setCanceled(true);
         }
     }
 

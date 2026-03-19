@@ -854,6 +854,7 @@
   "tooltip.magichem.admixture_general": "A distilled alchemical concoction.",
   "tooltip.magichem.admixture_formula": "Formula:",
   "tooltip.magichem.exemplar": "Exemplar",
+  "tooltip.magichem.wisdom_cooldown": "Will protect you from death again in ",
 
   "tooltip.magichem.alchemically_treated_glass": "Glass that has been treated with Alchemical Waste to be non-reactive to Materia. Can be used for decoration.",
   "tooltip.magichem.alchemically_treated_glass.electrum": "Electrum Trim",
@@ -2009,6 +2010,10 @@
 
   "magichem.commands.reset_orrery.success": "Successfully reset Orrery limit for %s",
   "magichem.commands.reset_orrery.failure": "Unable to reset Orrery limit!",
+  "magichem.commands.reset_general.success": "Successfully reset item cooldown for %s",
+  "magichem.commands.reset_general.failure": "Unable to reset item cooldown!",
+  "magichem.commands.set_heart.success": "Successfully changed %s's heart!",
+  "magichem.commands.permission_failure": "You don't have permission to use that command.",
 
   "curios.identifier.wisdom": "Wisdom Stone",
 

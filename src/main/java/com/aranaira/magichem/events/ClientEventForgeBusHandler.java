@@ -50,6 +50,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -115,13 +116,28 @@ public class ClientEventForgeBusHandler {
                     );
                 }
             }
-            
+
             //Exemplar tooltip
             if(event.getItemStack().is(TAG_MAGICHEM_EXEMPLARS)) {
                 event.getToolTip().add(1,
                         Component.empty().withStyle(ChatFormatting.BLUE)
                                 .append(Component.translatable("tooltip.magichem.exemplar").withStyle(ChatFormatting.ITALIC, ChatFormatting.GOLD))
                 );
+            }
+
+            //Wisdom stone cooldown tooltip
+            if(event.getItemStack().getItem() instanceof PhilosophersStoneItem wisdom && wisdom.getWisdom() >= 4){
+                ItemCooldowns cooldowns = Minecraft.getInstance().player.getCooldowns();
+                if(cooldowns.isOnCooldown(wisdom)){
+                    float cooldownPercent = cooldowns.getCooldownPercent(wisdom, 0);
+                    int remainingMinutes = (int)Math.ceil((wisdom.getWisdom() == 4 ? 60f : 10f) * cooldownPercent);
+                    event.getToolTip().add(
+                            Component.empty().withStyle(ChatFormatting.BLUE)
+                                    .append(Component.translatable("tooltip.magichem.wisdom_cooldown")
+                                            .append(Component.literal(remainingMinutes+"m"))
+                                            .withStyle(ChatFormatting.ITALIC, ChatFormatting.GREEN))
+                    );
+                }
             }
         }
     }
