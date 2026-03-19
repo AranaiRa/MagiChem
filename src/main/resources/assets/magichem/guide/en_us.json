@@ -353,7 +353,42 @@
             "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ".\n\nThe Flushed Wisdom Stone slowly produces the "
+          },
+          {
+            "text": "Elixir of Life",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": in the event of your death, the small amount of Elixir pooled within the Stone will "
+          },
+          {
+            "text": "fully restore your health",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", render you "
+          },
+          {
+            "text": "invulnerable to harm",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and render you "
+          },
+          {
+            "text": "impervious to negative status",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for six seconds.\n\nAfter being depleted, the Elixir of Life takes "
+          },
+          {
+            "text": "60 minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to replenish and mature."
           }
         ]
       },
@@ -386,7 +421,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ", but is planned for late Tier 5."
+            "text": " and will be implemented in MagiChem 0.5.3.\n\nThe Philosopher's Stone perfects the production of the "
+          },
+          {
+            "text": "Elixir of Life",
+            "color": "dark_purple"
+          },
+          {
+            "text": " started by the Flushed Wisdom Stone, reducing the replenishment and maturation time to "
+          },
+          {
+            "text": "10 minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
           }
         ]
       }
