@@ -32,7 +32,7 @@ public class MagiChemCurioRenderer implements ICurioRenderer {
     private void renderCrownOfGlory(ItemStack itemStack, SlotContext slotContext, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, float netHeadYaw, float headPitch) {
         if (itemStack.getItem() == ItemRegistry.CROWN_OF_GLORY.get() && slotContext.entity() instanceof Player player) {
             poseStack.pushPose();
-            poseStack.translate(0, 0, 0);
+            poseStack.translate(0, slotContext.entity().isCrouching() ? 0.265625 : 0, 0);
             poseStack.mulPose(Axis.YP.rotationDegrees(netHeadYaw));
             poseStack.mulPose(Axis.XP.rotationDegrees(headPitch));
             poseStack.mulPose(Axis.ZP.rotationDegrees(180f));
