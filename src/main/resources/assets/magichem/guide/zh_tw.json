@@ -339,14 +339,56 @@
             "color": "dark_purple"
           },
           {
-            "text": "現在"
+            "text": "可以在"
           },
           {
-            "text": "尚無法製作",
+            "text": "等階5",
             "color": "dark_purple"
           },
           {
-            "text": "，但預計將來可在等階5時製作。"
+            "text": "時透過"
+          },
+          {
+            "text": "昇華",
+            "color": "dark_purple"
+          },
+          {
+            "text": "工序製作。\n\n赤化智慧石會緩慢地生成"
+          },
+          {
+            "text": "不終之藥",
+            "color": "dark_purple"
+          },
+          {
+            "text": "：一旦你喪命，積聚在智慧石裡的少量靈藥將會"
+          },
+          {
+            "text": "完全恢復你的生命值",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，並在六秒內使你"
+          },
+          {
+            "text": "不受任何傷害",
+            "color": "dark_purple"
+          },
+          {
+            "text": "且"
+          },
+          {
+            "text": "免疫負面狀態",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n不終之藥耗盡後，需要"
+          },
+          {
+            "text": "60分鐘",
+            "color": "dark_purple"
+          },
+          {
+            "text": "才能補滿並熟成。"
           }
         ]
       },
@@ -379,7 +421,21 @@
             "color": "dark_purple"
           },
           {
-            "text": "，但預計將來可在等階5後期時製作。"
+            "text": "，將在魔法煉金0.5.3版本實裝。\n\n賢者之石完善了從赤化智慧石開始的"
+          },
+          {
+            "text": "不終之藥",
+            "color": "dark_purple"
+          },
+          {
+            "text": "生產過程，將補滿並熟成所需的時間縮短為"
+          },
+          {
+            "text": "10分鐘",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。"
           }
         ]
       }
@@ -400,6 +456,10 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_citrinitas"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_rubedo"
       }
     ]
   },
@@ -521,7 +581,7 @@
             "text": "、"
           },
           {
-            "text": "血肉",
+            "text": "豐盈",
             "color": "dark_purple"
           },
           {
@@ -542,7 +602,7 @@
             "text": "、"
           },
           {
-            "text": "礦物",
+            "text": "礦藏",
             "color": "dark_purple"
           },
           {
@@ -791,6 +851,47 @@
       {
         "type": "manaweaving-altar",
         "location": "magichem:alchemical_sublimation/magichem/grand_distillery"
+      }
+    ]
+  },
+  "Process: Exaltation": {
+    "index": "1110",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "工序：升變"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/process_exaltation",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "升變",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是將大量的單一種類的物品、單一種類的原質、艾德靈能量以及學術黏漿融合為一件新的物品。升變是在"
+          },
+          {
+            "text": "元始聚合器",
+            "color": "dark_purple"
+          },
+          {
+            "text": "中進行。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/prime_aggregator"
       }
     ]
   },
@@ -1263,11 +1364,11 @@
             "text": "強行引發雷擊。一塊雷霆石可以同時啟動"
           },
           {
-            "text": "多個天怒祭壇",
+            "text": "最多四個",
             "color": "dark_purple"
           },
           {
-            "text": "。\n\n天怒祭壇也能利用雷擊給能儲存FE的物品"
+            "text": "天怒祭壇。\n\n天怒祭壇也能利用雷擊給能儲存FE的物品"
           },
           {
             "text": "充電",
@@ -1301,14 +1402,14 @@
     "sections": [
       {
         "type": "title",
-        "value": "天怒聚合器"
+        "value": "天怒凝結器"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "天怒聚合器",
+            "text": "天怒凝結器",
             "color": "dark_purple"
           },
           {
@@ -1326,14 +1427,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "的需求。\n\n天怒祭壇必須被放置在天怒聚合器下方三格處（祭壇與聚合器之間需有兩格空氣存在）。一座天怒聚合器可同時啟動最多九座（排成3×3方陣的）天怒祭壇。\n\n聚合器需要供應"
+            "text": "的需求。\n\n天怒祭壇必須被放置在天怒凝結器下方三格處（祭壇與凝結器之間需有兩格空氣存在）。一座天怒凝結器可同時啟動最多九座（排成3×3方陣的）天怒祭壇。\n\n凝結器需要供應"
           },
           {
             "text": "風暴複合原質",
             "color": "dark_purple"
           },
           {
-            "text": "才能運作。只要設備裡有充足的風暴複合原質，天怒聚合器就會在"
+            "text": "才能運作。只要設備裡有充足的風暴複合原質，天怒凝結器就會在"
           },
           {
             "text": "接收到紅石訊號",
@@ -1347,7 +1448,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "擊中時，嘗試啟動其下方的天怒祭壇。\n\n被閃電傷害法術啟動時，所消耗的風暴複合原質量會顯著減少，且祭壇的合成作業會瞬間完成。\n\n手持天怒聚合器右鍵天怒祭壇會自動將聚合器放置在正確的位置上（除非該位置已被其他方塊佔據）。"
+            "text": "擊中時，嘗試啟動其下方的天怒祭壇。\n\n被閃電傷害法術啟動時，所消耗的風暴複合原質量會顯著減少，且祭壇的合成作業會瞬間完成。\n\n手持天怒凝結器右鍵天怒祭壇會自動將凝結器放置在正確的位置上（除非該位置已被其他方塊佔據）。"
           }
         ]
       }
@@ -1650,7 +1751,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "藉由讓構裝體推動其齒輪來發電。利用命令之鐘指示構裝體與勞役之環互動可以使其與之綁定。構裝體必須處於跟隨模式，且一座勞役之環同一時間只能與一個構裝體綁定。\n\n"
+            "text": "藉由讓構裝體推動其齒輪來發電。利用命令之鐘指示構裝體與勞役之環互動可以使其與之綁定。構裝體"
+          },
+          {
+            "text": "必須處於跟隨模式",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，且一座勞役之環同一時間只能與一個構裝體綁定。\n\n"
           },
           {
             "text": "構裝體的組成零件",
@@ -2728,7 +2836,7 @@
             "color": "dark_red"
           },
           {
-            "text": "：第一位元未使用；設備中有未處理的輸入物品時，第二位元會是1；設備中有未整理的輸出物品時，第三位元會是1。\n在與分離機的比較器訊號進行互動時，"
+            "text": "：設備已設定配方時，第一位元會是1，否則為0；設備中有未處理的輸入物品時，第二位元會是1；設備中有未整理的輸出物品時，第三位元會是1。\n在與分離機的比較器訊號進行互動時，"
           },
           {
             "text": "精細訊號石",
@@ -2752,13 +2860,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方。\n"
+          },
+          {
             "text": "2",
             "bold": true,
-            "color": "dark_red",
-            "newPage": true
+            "color": "dark_red"
           },
           {
             "text": "：有輸入物品。\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入物品。\n"
           },
           {
             "text": "4",
@@ -2769,12 +2892,28 @@
             "text": "：有輸出物品。\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸出物品。\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入及輸出物品。\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入及輸出物品。\n"
           }
         ]
       }
@@ -3087,7 +3226,7 @@
             "color": "dark_red"
           },
           {
-            "text": "：第一位元未使用；設備中有未處理的輸入物品時，第二位元會是1；設備中有未整理的輸出物品時，第三位元會是1；設備的水槽中有學術黏漿時，第四位元會是1。\n在與融合機的比較器訊號進行互動時，"
+            "text": "：設備已設定配方時，第一位元會是1，否則為0；設備中有未處理的輸入物品時，第二位元會是1；設備中有未整理的輸出物品時，第三位元會是1；設備的水槽中有學術黏漿時，第四位元會是1。\n在與融合機的比較器訊號進行互動時，"
           },
           {
             "text": "精細訊號石",
@@ -3111,12 +3250,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方。\n"
+          },
+          {
             "text": "2",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入物品。\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入物品。\n"
           },
           {
             "text": "4",
@@ -3127,12 +3282,28 @@
             "text": "：有輸出物品。\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸出物品。\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入及輸出物品。\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入及輸出物品。\n"
           },
           {
             "text": "8",
@@ -3143,12 +3314,28 @@
             "text": "：有學術黏漿。\n"
           },
           {
+            "text": "9",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有學術黏漿。\n"
+          },
+          {
             "text": "10",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入物品及學術黏漿。\n"
+          },
+          {
+            "text": "11",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入物品及學術黏漿。\n"
           },
           {
             "text": "12",
@@ -3159,12 +3346,28 @@
             "text": "：有輸出物品及學術黏漿。\n"
           },
           {
+            "text": "13",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸出物品及學術黏漿。\n"
+          },
+          {
             "text": "14",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入物品、輸出物品及學術黏漿。\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入物品、輸出物品及學術黏漿。\n"
           }
         ]
       }
@@ -3235,8 +3438,22 @@
             "italic": true
           },
           {
-            "text": "的隨機一種顏色。舉例而言，如果你提供白色、淺灰色、灰色與黑色染料，則物品會被染成白色、淺灰色、灰色與黑色以外的顏色。減色模式下的著色釜裡的每一份染料可以為五件物品著色，但每一種顏色都只能投入一份染料，直到著色釜內燃料全耗盡，或是被切換到加色模式。\n\n物品在減色模式下著色速度明顯較快：使用一種染料時是加色模式的兩倍多一點，而使用十五種染料時則是加色模式的大約十倍。",
+            "text": "的隨機一種顏色。舉例而言，如果你提供白色、淺灰色、灰色與黑色染料，則物品會被染成白色、淺灰色、灰色與黑色以外的顏色。減色模式下的著色釜裡的每一份染料可以為五件物品著色，但每一種顏色都只能投入一份染料，直到著色釜內燃料全耗盡，或是被切換到加色模式。\n\n物品在減色模式下著色速度明顯較快：使用一種染料時是加色模式的兩倍多一點，而使用十五種染料時則是加色模式的大約十倍。\n\n利用構裝體或者漏斗，可以從頂面",
             "italic": false
+          },
+          {
+            "text": "輸入",
+            "color": "dark_purple"
+          },
+          {
+            "text": "物品。著色完畢的產物可以從其他任何一面"
+          },
+          {
+            "text": "取出",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。"
           }
         ]
       },
@@ -3488,7 +3705,28 @@
             "color": "dark_purple"
           },
           {
-            "text": "」指令）。"
+            "text": "」指令）。\n\n煉金樞紐也不能直接從"
+          },
+          {
+            "text": "魔鏡迷宮",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或"
+          },
+          {
+            "text": "魔鏡",
+            "color": "dark_purple"
+          },
+          {
+            "text": "抽取原質。必須要有構裝體或"
+          },
+          {
+            "text": "迷宮導航儀",
+            "color": "dark_purple"
+          },
+          {
+            "text": "作為媒介。"
           }
         ]
       },
@@ -3526,6 +3764,123 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/actuator_arcane"
+      }
+    ]
+  },
+  "Prime Aggregator": {
+    "index": "1208",
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "元始聚合器"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3格寬、2格高、3格深\n\n視覺效果：\n3格寬、4格高、3格深\n",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "元始聚合器",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是一種可以執行煉金"
+          },
+          {
+            "text": "升變",
+            "color": "dark_purple"
+          },
+          {
+            "text": "工序的先進設備。\n\n升變配方需要單一種類的"
+          },
+          {
+            "text": "物品",
+            "color": "dark_purple"
+          },
+          {
+            "text": "、單一種類的"
+          },
+          {
+            "text": "原質",
+            "color": "dark_purple"
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "艾德靈能量",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，以及"
+          },
+          {
+            "text": "學術黏漿",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n將學術黏漿輸入設備的方式有將"
+          },
+          {
+            "text": "經驗交換器",
+            "color": "dark_purple"
+          },
+          {
+            "text": "插在設備的水槽上，讓"
+          },
+          {
+            "text": "構裝體",
+            "color": "dark_purple"
+          },
+          {
+            "text": "輸入黏漿，或是（當你達到了等階4）將"
+          },
+          {
+            "text": "神秘矩陣",
+            "color": "dark_purple"
+          },
+          {
+            "text": "安裝在設備上。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "最左側是一個有十五格槽位的面板，用來選擇你要讓元始聚合器製作的物品。面板上方的黑色輸入欄可以用來篩選配方。當你選擇了一個配方，它會同步出現在中間的煉金升變符號的下方。\n\n中央的煉金升變符號用來表示目前製作的進度。它會在所有原料跟原質都到位後開始填充，並會隨著製作完成度而逐漸填滿。\n\n在煉金升變符號的左側是四個圖示，用來表示目前的製作階段。由上至下依序為：物品、原質、艾德靈能量、學術黏漿。\n\n在中央面板的周圍有四個小面板，分別對應四個製作階段的其中一個。目前正在進行的製作階段對應的面板會亮起，而其餘三個面板則會變暗。在滿足該階段需求的過程中，面板底部的進度條會逐漸被填滿，而其上方的文字則會顯示剩餘的需求量。\n\n如果你想暫停製作，可以從煉金升變符號正上方的槽位取出「"
+          },
+          {
+            "text": "進行中的升變",
+            "color": "dark_purple"
+          },
+          {
+            "text": "」。將此物品放回此槽位便可從中斷處繼續進行製作。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/prime_aggregator"
       }
     ]
   },
@@ -3962,14 +4317,14 @@
     "sections": [
       {
         "type": "title",
-        "value": "迷宮導航器"
+        "value": "迷宮導航儀"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "迷宮導航器",
+            "text": "迷宮導航儀",
             "color": "dark_purple"
           },
           {
@@ -4015,7 +4370,7 @@
         "value": "",
         "json": [
           {
-            "text": "最左邊的量表用來設定迷宮導航器每次循環要消耗多少艾德靈能量。其右側的終界元素符號用來顯示距離下次消耗艾德靈能量前還剩多少時間。\n\n在它右側有一個物品槽位，用來放置"
+            "text": "最左邊的量表用來設定迷宮導航儀每次循環要消耗多少艾德靈能量。其右側的終界元素符號用來顯示距離下次消耗艾德靈能量前還剩多少時間。\n\n在它右側有一個物品槽位，用來放置"
           },
           {
             "text": "標記符文",
@@ -4179,7 +4534,14 @@
             "text": "這項指令會讓構裝體從煉金設備抽出原質，並試圖將其放入特定區域內的原質容器中。\n\n在從煉金設備中取出原質時，構裝體總是會從最大堆疊數的原質先取。\n\n這項工作需要"
           },
           {
-            "text": "流體噴嘴手臂",
+            "text": "施法手臂",
+            "color": "dark_purple"
+          },
+          {
+            "text": "與"
+          },
+          {
+            "text": "智能頭部",
             "color": "dark_purple"
           },
           {
@@ -4204,48 +4566,21 @@
             "color": "dark_purple"
           },
           {
-            "text": "，則構裝體每次可以多移動32打蘭的原質。\n\n流水親和性可以增加基礎整理構裝體在將原質放入容器時的觸及距離。"
-          }
-        ]
-      },
-      {
-        "type": "title",
-        "value": "進階整理"
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
-          {
-            "text": "整理原質的過程可以被大大地加速，只要構裝體擁有"
+            "text": "，則構裝體每次可以多移動32打蘭的原質。\n\n用"
           },
           {
-            "text": "智能頭部",
+            "text": "等階較高的材料",
             "color": "dark_purple"
           },
           {
-            "text": "與"
+            "text": "製作的構裝體運送原質的速度較快，且兩次運送之間的延遲時間也較短。\n\n如果目標設備有配方選擇器，則這項任務還會從設備的輸入區移除"
           },
           {
-            "text": "施法手臂",
+            "text": "非瓶裝原質",
             "color": "dark_purple"
           },
           {
-            "text": "，且完全以"
-          },
-          {
-            "text": "等階3以上的材料",
-            "color": "dark_purple"
-          },
-          {
-            "text": "製成。\n\n當所有的需求都被滿足，構裝體將不再需要物理性地來回搬運原質，而是能引導原質直接"
-          },
-          {
-            "text": "在空中飛",
-            "color": "dark_purple"
-          },
-          {
-            "text": "向其目的地。"
+            "text": "，並將其退還給原質倉儲系統。"
           }
         ]
       }
@@ -4275,6 +4610,13 @@
             "text": "、"
           },
           {
+            "text": "元始聚合器",
+            "color": "dark_purple"
+          },
+          {
+            "text": "、"
+          },
+          {
             "text": "分離機",
             "color": "dark_purple"
           },
@@ -4293,6 +4635,13 @@
             "color": "dark_purple"
           },
           {
+            "text": "，或任何具備內部原質緩存區的設備（例如"
+          },
+          {
+            "text": "天怒凝結器",
+            "color": "dark_purple"
+          },
+          {
             "text": "、"
           },
           {
@@ -4307,14 +4656,21 @@
             "color": "dark_purple"
           },
           {
-            "text": "。\n\n供應原質需要"
+            "text": "）。\n\n供應原質需要"
           },
           {
-            "text": "流體噴嘴手臂",
+            "text": "施法手臂",
             "color": "dark_purple"
           },
           {
-            "text": "才能進行。預設狀態下，構裝體每次可以移動兩打蘭的原質。如果構裝體召喚時帶有"
+            "text": "與"
+          },
+          {
+            "text": "智能頭部",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n預設狀態下，構裝體每次可以移動兩打蘭的原質。如果構裝體召喚時帶有"
           },
           {
             "text": "奧術親和性",
@@ -4335,48 +4691,124 @@
             "color": "dark_purple"
           },
           {
-            "text": "，則構裝體每次可以多移動32打蘭的原質。\n\n流水親和性可以增加基礎整理構裝體在將原質放入容器時的觸及距離。\n\n透過構裝體供應原質給煉金樞紐比讓樞紐自己抽取原質要來得慢，並且無法受益於因增加每個階段製作的經驗成本而提升的速度。"
+            "text": "，則構裝體每次可以多移動32打蘭的原質。\n\n透過構裝體供應原質給煉金樞紐比讓樞紐自己抽取原質要來得慢，並且無法受益於因增加每個階段製作的經驗成本而提升的速度。\n\n用"
+          },
+          {
+            "text": "等階較高的材料",
+            "color": "dark_purple"
+          },
+          {
+            "text": "製作的構裝體運送原質的速度較快，且兩次運送之間的延遲時間也較短。"
           }
         ]
-      },
+      }
+    ],
+    "related_recipes": []
+  },
+  "Command: Provide Items": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
       {
         "type": "title",
-        "value": "進階供應"
+        "value": "指令：供應物品"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "供應原質的過程可以被大大地加速，只要構裝體擁有"
+            "text": "這項指令會讓構裝體"
           },
           {
-            "text": "智能頭部",
+            "text": "用魔法運送物品",
             "color": "dark_purple"
           },
           {
-            "text": "與"
+            "text": "，從一個容器運往像"
+          },
+          {
+            "text": "煉金樞紐",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或"
+          },
+          {
+            "text": "元始聚合器",
+            "color": "dark_purple"
+          },
+          {
+            "text": "這樣的設備。\n\n如果目標設備需要這些物品，它們將會以正確的順序被運送到正確的槽位裡。\n\n只有當"
+          },
+          {
+            "text": "所有需要的物品同時存在於輸入容器內",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的時候，構裝體才能向煉金樞紐供應物品。\n\n供應物品需要"
           },
           {
             "text": "施法手臂",
             "color": "dark_purple"
           },
           {
-            "text": "，且完全以"
+            "text": "與"
           },
           {
-            "text": "等階3以上的材料",
+            "text": "智能頭部",
             "color": "dark_purple"
           },
           {
-            "text": "製成。\n\n當所有的需求都被滿足，構裝體將不再需要物理性地來回搬運原質，而是能引導原質直接"
+            "text": "。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Command: Create Experience Orb": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "指令：生成經驗球"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "這項指令會讓構裝體消耗其儲罐軀幹內的"
           },
           {
-            "text": "在空中飛",
+            "text": "學術黏漿",
             "color": "dark_purple"
           },
           {
-            "text": "向其目的地。"
+            "text": "，以在指定地點生成一枚"
+          },
+          {
+            "text": "經驗球",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n構裝體將會消耗其儲存的全部學術黏漿來生成這枚經驗球。\n\n生成經驗球需要"
+          },
+          {
+            "text": "噴嘴手臂",
+            "color": "dark_purple"
+          },
+          {
+            "text": "與裝有學術黏漿的"
+          },
+          {
+            "text": "儲罐軀幹",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。"
           }
         ]
       }
@@ -4430,12 +4862,19 @@
         "value": "",
         "json": [
           {
-            "text": "這項指令會讓構裝體"
+            "text": "這項指令會讓構裝體在一張"
           },
           {
-            "text": "研習其手持的物品",
+            "text": "研習桌",
             "color": "dark_purple"
           },
+		  {
+		    "text": "上"
+		  },
+		  {
+		    "text": "研習其手持的物品",
+		    "color": "dark_purple"
+		  },
           {
             "text": "，盡其所能去"
           },
@@ -4456,7 +4895,12 @@
         ]
       }
     ],
-    "related_recipes": []
+	"related_recipes": [
+	  {
+	    "type": "manaweaving-altar",
+	    "location": "mna:manaweaving/study_desk"
+	  }
+	]
   },
   "Command: Gather Experience": {
     "index": "4",
@@ -4725,6 +5169,47 @@
     ],
     "related_recipes": []
   },
+  "Condition: Device Needs Item Provisioning": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "條件：設備需要供應物品"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "這項條件會"
+          },
+          {
+            "text": "檢查煉金設備是否可以由構裝體供應物品",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，若設備可以接受物品，則返回"
+          },
+          {
+            "text": "成功",
+            "color": "dark_green"
+          },
+          {
+            "text": "，若設備無法接受物品，則返回"
+          },
+          {
+            "text": "失敗",
+            "color": "dark_red"
+          },
+          {
+            "text": "。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Condition: Device Needs Sorting": {
     "index": "4",
     "category": "constructs",
@@ -4903,7 +5388,14 @@
             "color": "dark_red"
           },
           {
-            "text": "。"
+            "text": "。\n\n如果設定了第二指向參數，構裝體會將設備的配方與目標物品欄內"
+          },
+          {
+            "text": "第一格物品槽位",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的物品進行比對。物品欄只有一格的方塊（例如基座）最適合用於此用途。如果第一格槽位是空的，則構裝體會檢查設備是否未設定配方。如果設定了第二指向參數，則物品參數會被忽略。"
           }
         ]
       }
@@ -5694,7 +6186,7 @@
             "text": "的通道。\n\n構裝體以及安裝了被妥善連結過的"
           },
           {
-            "text": "迷宮導航器",
+            "text": "迷宮導航儀",
             "color": "dark_purple"
           },
           {
@@ -6091,6 +6583,211 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/abjuration_dendritic"
+      }
+    ]
+  },
+  "Ritual of Surgical Cultivation": {
+    "index": "0",
+    "tier": 5,
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "煉臟化形儀式"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "這個儀式能將符文鍛造工具魔法化，使其轉化為"
+          },
+          {
+            "text": "魔法外科手術器械",
+            "color": "dark_purple"
+          },
+          {
+            "text": "並讓儀式的執行者在轉瞬間"
+          },
+          {
+            "text": "替換自己的身體部位",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n這個過程極度凶險，只有最強韌的法師才有可能從瞬間完成且無麻醉的侵入性手術所帶來的痛苦及肉體創傷中存活下來。儀式執行者必須能一口氣承受"
+          },
+          {
+            "text": "30顆心的傷害",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。充分準備是確保儀式成功的必要條件。\n\n如果儀式成功，身體部位會被替換，而儀式執行者的舊身體部位則會作為"
+          },
+          {
+            "text": "雜碎",
+            "color": "dark_purple"
+          },
+          {
+            "text": "從其體內被強行排出。"
+          },
+          {
+            "text": "儀式失敗會殺死儀式執行者",
+            "color": "dark_red"
+          },
+          {
+            "text": "，並讓整個儀式場地灑滿大量的雜碎。儀式失敗時，用於替換的主臟器不會被摧毀，但其他所有的材料（符文鍛造工具除外）都會被消耗掉。\n\n透過這個儀式替換進來的身體部位是永久性的，甚至在"
+          },
+          {
+            "text": "死亡後仍會繼續存在",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n關於更換身體部位的好處，更多資訊請見"
+          },
+          {
+            "text": "煉金奇物",
+            "color": "dark_purple"
+          },
+          {
+            "text": "章節裡該身體部位的個別條目。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "煉臟目錄",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "下列身體部位可被替換：\n\n"
+          },
+          {
+            "text": "心臟：",
+            "bold": true
+          },
+          {
+            "text": "\n．不朽之心"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/surgical_cultivation"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/immortal_heart"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/vintage_shimmering_wine"
+      }
+    ]
+  },
+  "Ritual of Celestial Awakening": {
+    "index": "0",
+    "tier": 5,
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "天覺儀式"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "一組成對的儀式，用於將"
+          },
+          {
+            "text": "休眠日金",
+            "color": "dark_purple"
+          },
+          {
+            "text": "與"
+          },
+          {
+            "text": "休眠月銀",
+            "color": "dark_purple"
+          },
+          {
+            "text": "喚醒，使其恢復原本應有的魔法型態。\n\n日之儀式只能"
+          },
+          {
+            "text": "在白天",
+            "color": "dark_purple"
+          },
+          {
+            "text": "執行，而月之儀式則只能"
+          },
+          {
+            "text": "在夜間",
+            "color": "dark_purple"
+          },
+          {
+            "text": "執行。\n\n日耀寶珠與月華寶珠"
+          },
+          {
+            "text": "不會被消耗",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。儀式魔法需要借助寶珠的力量才能在覺醒過程中進行複雜多變的星象排列，但永遠不會直接消耗儲存在寶珠內的力量。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "儀式互扣",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/gui/guide/img/guide_celestial_awakening_rituals.png",
+        "width": 104,
+        "height": 104
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "這兩個儀式可以"
+          },
+          {
+            "text": "彼此互扣",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，共享大部分操作空間。\n\n前面那張圖展示了這兩個儀式是如何互扣的。橙色的位置是日之儀式的儀式中心點，而藍色的位置則是月之儀式的儀式中心點。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/celestial_awakening_solar"
+      },
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/celestial_awakening_lunar"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/dormant_orichalkos"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/dormant_selargyros"
       }
     ]
   },
@@ -6801,7 +7498,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "。已經內含流明的物品會立刻填滿該類型流明，而新的物品則會立刻填滿目前所在時間段及月相所對應的流明。\n\n你可以將它放進潰裂焚盆或天怒聚合器的原質槽裡，它會成為該設備所需原質的"
+            "text": "。已經內含流明的物品會立刻填滿該類型流明，而新的物品則會立刻填滿目前所在時間段及月相所對應的流明。\n\n你可以將它放進潰裂焚盆或天怒凝結器的原質槽裡，它會成為該設備所需原質的"
           },
           {
             "text": "無限來源",
@@ -7384,7 +8081,7 @@
             "color": "dark_red"
           },
           {
-            "text": "：第一位元未使用；設備中有未處理的輸入物品時，第二位元會是1；設備中有未整理的輸出物品時，第三位元會是1。\n\n在與巨型分離機的比較器訊號進行互動時，"
+            "text": "：設備已設定配方時，第一位元會是1，否則為0；設備中有未處理的輸入物品時，第二位元會是1；設備中有未整理的輸出物品時，第三位元會是1。\n\n在與巨型分離機的比較器訊號進行互動時，"
           },
           {
             "text": "精細訊號石",
@@ -7408,13 +8105,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方。\n"
+          },
+          {
             "text": "2",
             "bold": true,
-            "color": "dark_red",
-            "newPage": true
+            "color": "dark_red"
           },
           {
             "text": "：有輸入物品。\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入物品。\n"
           },
           {
             "text": "4",
@@ -7425,12 +8137,28 @@
             "text": "：有輸出物品。\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸出物品。\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入及輸出物品。\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入及輸出物品。\n"
           }
         ]
       }
@@ -7557,7 +8285,7 @@
             "color": "dark_red"
           },
           {
-            "text": "：第一位元未使用；設備中有未處理的輸入物品時，第二位元會是1；設備中有未整理的輸出物品時，第三位元會是1；設備的水槽中有學術黏漿時，第四位元會是1。\n\n在與巨型融合機的比較器訊號進行互動時，"
+            "text": "：設備已設定配方時，第一位元會是1，否則為0；設備中有未處理的輸入物品時，第二位元會是1；設備中有未整理的輸出物品時，第三位元會是1；設備的水槽中有學術黏漿時，第四位元會是1。\n\n在與巨型融合機的比較器訊號進行互動時，"
           },
           {
             "text": "精細訊號石",
@@ -7581,12 +8309,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方。\n"
+          },
+          {
             "text": "2",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入物品。\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入物品。\n"
           },
           {
             "text": "4",
@@ -7597,12 +8341,28 @@
             "text": "：有輸出物品。\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸出物品。\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入及輸出物品。\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入及輸出物品。\n"
           },
           {
             "text": "8",
@@ -7613,12 +8373,28 @@
             "text": "：有學術黏漿。\n"
           },
           {
+            "text": "9",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有學術黏漿。\n"
+          },
+          {
             "text": "10",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入物品及學術黏漿。\n"
+          },
+          {
+            "text": "11",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入物品及學術黏漿。\n"
           },
           {
             "text": "12",
@@ -7629,12 +8405,28 @@
             "text": "：有輸出物品及學術黏漿。\n"
           },
           {
+            "text": "13",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸出物品及學術黏漿。\n"
+          },
+          {
             "text": "14",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": "：有輸入物品、輸出物品及學術黏漿。\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": "：有設定配方且有輸入物品、輸出物品及學術黏漿。\n"
           }
         ]
       }
@@ -8007,7 +8799,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "（具體取決於喚物的對象），將大大加快喚物的速度，且每次製作可產出更大批量。"
+            "text": "（具體取決於喚物的對象），將大大加快喚物的速度，且每次製作可產出更大批量。\n\n構裝體、重型漏斗，以及其他自動化裝置只能從底部方塊提取輸出物品，並從頂部方塊輸入物品。"
           }
         ]
       }
@@ -8997,7 +9789,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "。\n\n弱化稜彩艾德靈傳輸核心可以被構裝體以"
+            "text": "。\n\n被拆除時，稜彩艾德靈傳輸核心會"
+          },
+          {
+            "text": "將其內部緩存的艾德靈能量返還",
+            "color": "dark_purple"
+          },
+          {
+            "text": "至其擁有者的艾德靈緩存池。\n\n弱化稜彩艾德靈傳輸核心可以被構裝體以"
           },
           {
             "text": "打磨",
@@ -9499,6 +10298,55 @@
       }
     ]
   },
+  "Celestial Reagents": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "required_advancement": "magichem:__wisdom_2",
+    "sections": [
+      {
+        "type": "title",
+        "value": "天體試劑"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "在"
+          },
+          {
+            "text": "星體觀測臺",
+            "color": "dark_purple"
+          },
+          {
+            "text": "上被注入了宇宙中三種能量之一的奇特魔法材料。\n\n天體試劑可作為組成成分用於"
+          },
+          {
+            "text": "曠世鉅作",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的最終階段，也可以選擇性地將它們蒸餾成有用的原質。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/blaze_powder_to_sunburn"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/honey_bottle_to_moonshine"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/vinteum_dust_to_stardust"
+      }
+    ]
+  },
   "Acids": {
     "index": "0",
     "category": "magichem_wonders",
@@ -9719,14 +10567,21 @@
             "color": "dark_purple"
           },
           {
-            "text": "的酸液，現階段尚"
+            "text": "的酸液，透過將"
           },
           {
-            "text": "無法製作",
+            "text": "赤礬粒",
             "color": "dark_purple"
           },
           {
-            "text": "。\n\n放置在世界中的礬油將會破壞石頭與任何未經過煉金術處理的玻璃（以及所有較弱的酸所能破壞的東西）。"
+            "text": "溶於"
+          },
+          {
+            "text": "王水",
+            "color": "dark_purple"
+          },
+          {
+            "text": "中獲得。\n\n放置在世界中的礬油將會破壞石頭與任何未經過煉金術處理的玻璃（以及所有較弱的酸所能破壞的東西）。"
           }
         ]
       },
@@ -9787,12 +10642,16 @@
     ],
     "related_recipes": [
       {
-        "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/aristose"
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/aristose"
       },
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/regulus_of_gold"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/red_vitriol"
       },
       {
         "type": "vitriolation",
@@ -9805,6 +10664,10 @@
       {
         "type": "vitriolation",
         "location": "magichem:vitriolation/magichem/aqua_regia"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/oil_of_vitriol"
       }
     ]
   },
@@ -10113,11 +10976,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "大量銅綠來製造。\n\n"
-          },
-          {
-            "text": "開發者筆記：在魔法煉金0.5.1版導入流體蒸餾機制之前，利用酸化銅方塊的方式取得銅綠會把銅浪費掉。",
-            "italic": true
+            "text": "大量銅綠來製造。"
           }
         ]
       }
@@ -10306,7 +11165,7 @@
             "text": "中製成。\n\n飲用後，甜莓酒將給予你"
           },
           {
-            "text": "6顆暫時性的紅心",
+            "text": "6顆暫時性的心",
             "color": "dark_purple"
           },
           {
@@ -10853,6 +11712,49 @@
       },
       {
         "type": "title",
+        "value": "睡眠",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_sleep",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "10分鐘",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "在"
+          },
+          {
+            "text": "7×7區塊範圍",
+            "color": "dark_purple"
+          },
+          {
+            "text": "內所有的"
+          },
+          {
+            "text": "殘餘魔法",
+            "color": "dark_purple"
+          },
+          {
+            "text": "將被瞬間消除，如同那片區域內未曾有人施放過魔法一樣。"
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "思維",
         "newPage": true
       },
@@ -11227,21 +12129,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "。\n\n強大的附魔書留下的有可能不是焦黑定理，而是單獨一條"
+            "text": "。\n\n大量的焦黑定理可以在元始聚合器升變為一份"
           },
           {
             "text": "焦黑深奧",
             "color": "dark_purple"
           },
           {
-            "text": "。透過昇華，焦黑深奧也能被人為地製造出來，但整個過程需要"
-          },
-          {
-            "text": "付出非常大量的學術黏漿",
-            "color": "dark_purple"
-          },
-          {
-            "text": "作為代價。\n\n雷暴後留下焦黑定理的數量，以及留下焦黑深奧的機率，取決於兩項要素，分別是附魔書中"
+            "text": "，所吸收的定理中每一點最值得注意的知識與意義的萃集。\n\n雷暴後留下焦黑定理的數量取決於兩項要素，分別是附魔書中"
           },
           {
             "text": "附魔等級的總和",
@@ -11255,7 +12150,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "。\n\n有些煉金配方需要直接使用焦黑定理或焦黑深奧，但更強力或更複雜的配方則需要你先將它們編排成"
+            "text": "。\n\n"
+          },
+          {
+            "text": "日誌殘頁",
+            "color": "dark_purple"
+          },
+          {
+            "text": "也可以被雷暴成焦黑定理。法術構件的等級愈高，獲得的焦黑定理數量就愈多。\n\n有些煉金配方需要直接使用焦黑定理或焦黑深奧，但更強力或更複雜的配方則需要你先將它們編排成"
           },
           {
             "text": "定理冊",
@@ -11283,8 +12185,8 @@
     ],
     "related_recipes": [
       {
-        "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/scorched_profundity"
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/scorched_profundity"
       },
       {
         "type": "crafting",
@@ -11347,7 +12249,7 @@
           },
           {
             "text": "只會",
-            "italics": true
+            "italic": true
           },
           {
             "text": "讓魔法花卉生長（不會有任何其他種類的植物長出來，包括雜草），而且也只會讓特化的巫化土壤上長東西。\n\n藉由滿足靈知寶珠的"
@@ -11573,7 +12475,6 @@
     "index": "-10",
     "category": "magichem_wonders",
     "tier": 1,
-    "required_advancement": "magichem:__wisdom_1",
     "sections": [
       {
         "type": "title",
@@ -11642,7 +12543,7 @@
   "Alchemical Ore Processing": {
     "index": "-10",
     "category": "magichem_wonders",
-    "tier": 3,
+    "tier": 2,
     "required_advancement": "magichem:acid_basin",
     "sections": [
       {
@@ -11721,6 +12622,1514 @@
       {
         "type": "vitriolation",
         "location": "magichem:vitriolation/magichem/liquefacted_debris"
+      }
+    ]
+  },
+  "Covetous Coffer": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "貪婪金庫"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "貪婪金庫",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是一種被煉金術改良過，具備奇特空間性質的儲物箱。它只能儲存"
+          },
+          {
+            "text": "四種",
+            "color": "dark_purple"
+          },
+          {
+            "text": "物品，但每種物品都能容納"
+          },
+          {
+            "text": "超過一個大型儲物箱的容量",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n當某種物品的儲存量已經達到容量上限，多餘的物品就會消失在金庫深處，永不復見。\n\n如果與金庫內容物同種的物品接觸到金庫，金庫會"
+          },
+          {
+            "text": "將該物品吸收",
+            "color": "dark_purple"
+          },
+          {
+            "text": "進金庫裡。金庫裡的空槽無法以此方式填入。\n\n受損的物品及帶有附魔的物品無法放入貪婪金庫。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/covetous_coffer"
+      }
+    ]
+  },
+  "Ambrosia & Nectar": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "仙饌與蜜酒"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "以傳說中諸神的食物與飲料為名，"
+          },
+          {
+            "text": "仙饌",
+            "color": "dark_purple"
+          },
+          {
+            "text": "與"
+          },
+          {
+            "text": "蜜酒",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是煉金術上完美的食物。\n\n吃下其中一方將會"
+          },
+          {
+            "text": "完全填滿你的飢餓度與飽食度",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。這精美無比的一餐將給用餐者留下4等級的"
+          },
+          {
+            "text": "頹廢回憶",
+            "color": "dark_purple"
+          },
+          {
+            "text": "；當飽食度掉到2點以下時，用餐者將會再次體驗"
+          },
+          {
+            "text": "飢餓度與飽食度完全恢復",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的感覺，而頹廢回憶的效果則會衰減一個等級。\n\n仙饌與蜜酒可被合併成"
+          },
+          {
+            "text": "諸神饗宴",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，一頓美味程度遠超其成分之總和的大餐。享用後，諸神饗宴將給予用餐者"
+          },
+          {
+            "text": "15等級",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的頹廢回憶。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/ambrosia"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/nectar"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/feast_of_the_gods"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_savor"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_spice"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_sweetness"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_umami"
+      }
+    ]
+  },
+  "Fork of the Gulaporrigo": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "饕餮之叉"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "饕餮之叉",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是一柄精緻的餐叉，裏頭寄宿著饕餮——一位強大的暴食魂靈——的一縷殘魂。該魂靈的力量會侵染任何一塊用這柄餐叉吃下的"
+          },
+          {
+            "text": "蛋糕片",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n對著已放置的蛋糕使用這柄餐叉將會"
+          },
+          {
+            "text": "儲存一片蛋糕",
+            "color": "dark_purple"
+          },
+          {
+            "text": "在餐叉上，並保留它直到再次使用餐叉來食用這片蛋糕。"
+          },
+          {
+            "text": "不論飢餓度如何",
+            "color": "dark_purple"
+          },
+          {
+            "text": "都可以食用蛋糕片，且蛋糕片的營養將會被劇烈地提升（6點飢餓度與8點飽食度）。\n\n用這柄餐叉食用蛋糕片還會給予食用者一個"
+          },
+          {
+            "text": "長效性的最大魔力提升",
+            "color": "dark_purple"
+          },
+          {
+            "text": "效果。如果食用蛋糕片時，食用者身處"
+          },
+          {
+            "text": "友盟聖所",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的效果範圍內，且／或擁有透過食用仙饌、蜜酒或諸神饗宴而獲得的"
+          },
+          {
+            "text": "頹廢回憶",
+            "color": "dark_purple"
+          },
+          {
+            "text": "狀態，則食用蛋糕片帶來的最大魔力提升效果將會獲得進一步增幅。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/fork_of_the_gulaporrigo"
+      }
+    ]
+  },
+  "Auroral Silk": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "極光絲綢"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "極光絲綢",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是一種極為強大的魔法材料，由多種顏色的完美絲綢經繁複工序結合而成。它是強大的"
+          },
+          {
+            "text": "稜彩法術構件",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的一項關鍵要素。（"
+          },
+          {
+            "text": "作者提示：這些法術構件尚不存在，將在0.5.3版本實裝",
+            "italic": true
+          },
+          {
+            "text": "）\n\n首先，需將蘊魔絲綢升變為"
+          },
+          {
+            "text": "未染彩絹",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。未染彩絹可以被"
+          },
+          {
+            "text": "多彩儀",
+            "color": "dark_purple"
+          },
+          {
+            "text": "著色，且消耗"
+          },
+          {
+            "text": "非常大量",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的染料或色彩複合原質。最後，在煉金樞紐裡將全部十二色的彩絹昇華為"
+          },
+          {
+            "text": "極光絲綢",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/auroral_silk"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/infused_bolt"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/honey_bottle_to_moonshine"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/vinteum_dust_to_stardust"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/chromatic_silk"
+      }
+    ]
+  },
+  "Terrariums": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "生態瓶"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "生態瓶",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是世界裡無數生態域中的一或多種的微縮版本，被用魔法縮小並收納在玻璃箱中。\n\n創造一個生態瓶需要一定數量的"
+          },
+          {
+            "text": "生態核",
+            "color": "dark_purple"
+          },
+          {
+            "text": "——來自相同生態域的植物的奇異混合體。奇怪的是，生態核會失去其組成成分的幾乎所有原質。\n\n生態核可以在"
+          },
+          {
+            "text": "元始聚合器",
+            "color": "dark_purple"
+          },
+          {
+            "text": "裡升變為生態瓶。雖然組成成分裡絕大多數的次要原質都會遺失，（例如木材複合原質與植物複合原質），但生態瓶裡的"
+          },
+          {
+            "text": "生態域複合原質",
+            "color": "dark_purple"
+          },
+          {
+            "text": "將會是其組成成分所含量的總和的"
+          },
+          {
+            "text": "三倍以上",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n特別值得注意的是用伏聆製成的"
+          },
+          {
+            "text": "不祥生態瓶",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。蒸餾時，不祥生態瓶會提供非常大量的"
+          },
+          {
+            "text": "黑化基礎原質",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，而非任何一種生態域複合原質。\n\n生態瓶也可放置在世界裡，作為裝飾用途。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_forests"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_forests_small"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/terrarium_forests"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_ominous"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/terrarium_ominous"
+      }
+    ]
+  },
+  "House of Alchemy Exemplars": {
+    "index": "-10",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "煉金組典範"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "許多造物及昇華配方需要"
+          },
+          {
+            "text": "煉金組",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的基礎原質：黑化、白化、黃化，以及赤化。隨著煉金技藝增進，這四種基礎原質會愈來愈頻繁地做為必要條件出現。那麼，一位初出茅蘆的煉金師應該從哪裡取得足夠大量的煉金組基礎原質來進行實驗呢？\n\n整套流程從在"
+          },
+          {
+            "text": "元始聚合器",
+            "color": "dark_purple"
+          },
+          {
+            "text": "裡創造"
+          },
+          {
+            "text": "黑鑽石",
+            "color": "dark_purple"
+          },
+          {
+            "text": "開始。儘管這些密度驚人的鑽石失去了構成用來創造它們的鑽石的絕大部分原質，但黑鑽石裡的"
+          },
+          {
+            "text": "黑化基礎原質",
+            "color": "dark_purple"
+          },
+          {
+            "text": "卻是普通鑽石的總和的"
+          },
+          {
+            "text": "三倍",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n隨著等階提升，與煉金組有關的其他典範將作為可用配方出現在元始聚合器中。它們並未遵循典範的正常模式：每一個都需要一種煉金組基礎原質60份用於升變。產物將在蒸餾時提供30份下一級煉金組基礎原質（舉例來說，用60份白化創造30份黃化）。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/black_diamond"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/alabaster_pearl"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/xanthotic_gold"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/scarlet_coral"
+      }
+    ]
+  },
+  "Chalice of Tears": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "承淚聖爵"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "承淚聖爵",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是一個會在"
+          },
+          {
+            "text": "其持有者受到傷害",
+            "color": "dark_purple"
+          },
+          {
+            "text": "時盛滿苦澀靈液，將苦痛轉化為力量的神奇容器。\n\n每"
+          },
+          {
+            "text": "承受半顆心的傷害",
+            "color": "dark_purple"
+          },
+          {
+            "text": "都會在承淚聖爵中填入一單位的苦澀靈液。聖爵不需要被拿在手上，但需要被放在物品欄的可用格中。被放進布儀者之袋、裂隙，或以其他類似存儲手段收納起來的聖爵"
+          },
+          {
+            "text": "將無法積累苦澀靈液",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n喝下承淚聖爵的內容物，將賜予飲用者一個長達90秒的"
+          },
+          {
+            "text": "效果取決於派系的強大戰鬥恩惠",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。預設配置下，聖爵在被飲盡後將有"
+          },
+          {
+            "text": "十分鐘",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的時間無法積累苦澀靈液。\n\n聖爵所賜予的恩惠強度取決於飲用時聖爵內苦澀靈液的存量。你可以在物品的工具提示中查看效果強度（等級由1級到5級）。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "捨心",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/equanimity.png",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "遠古巫師議會派系的法師們會在飲用聖爵後獲得"
+          },
+          {
+            "text": "捨心",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n在捨心狀態下法師會在消耗魔力時"
+          },
+          {
+            "text": "恢復生命值",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。法術消耗的魔力愈多，治療的效果就愈強\n\n受影響的法師還會在受傷時"
+          },
+          {
+            "text": "恢復大量魔力",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "幻滅",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/evanescence.png",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "仙女之庭派系的法師們會在飲用聖爵後獲得"
+          },
+          {
+            "text": "幻滅",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n在幻滅狀態下法師偶爾會"
+          },
+          {
+            "text": "閃避來襲的傷害源",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n受影響的法師還會得到"
+          },
+          {
+            "text": "持續性的回復效果",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。這個回復效果會與其他來源的隨時間治療效果疊加，例如回復藥水或包紮傷口法術。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "殘忍",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/brutality.png",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "地獄惡魔派系的法師們會在飲用聖爵後獲得"
+          },
+          {
+            "text": "殘忍",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n在殘忍狀態下法師會在用武器或赤手空拳戰鬥時"
+          },
+          {
+            "text": "顯著造成更多傷害",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。基礎傷害值與總傷害值會分別得到強化，並且會與其他來源的增傷效果疊加，例如力量藥水。\n\n受影響的法師還會"
+          },
+          {
+            "text": "顯著減少所受傷害",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，對所有傷害來源均有效。這個減傷效果會與其他來源的傷害抗性效果疊加，例如龜仙藥水。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "惡意",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/malice.png",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "不死亡靈派系的法師們會在飲用聖爵後獲得"
+          },
+          {
+            "text": "惡意",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n在惡意狀態下法師會在消耗靈魂時"
+          },
+          {
+            "text": "向周圍的一切存在施加凋零詛咒",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。法師自己的構裝體及所召喚的生物不受此卑劣法術所害。\n\n惡意狀態下的法師會在用武器或赤手空拳攻擊"
+          },
+          {
+            "text": "凋零狀態下的敵人",
+            "color": "dark_purple"
+          },
+          {
+            "text": "時，將目標身上的"
+          },
+          {
+            "text": "凋零詛咒消耗掉",
+            "color": "dark_purple"
+          },
+          {
+            "text": "並造成一波額外的魔法傷害。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/chalice_of_tears"
+      }
+    ]
+  },
+  "Immortal Heart": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "不朽之心"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "不朽之心",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是一種能自我維持的魔法生命力。其為血肉，然其搏動有如無盡風暴之不息轟鳴，即使肉身消亡仍拒絕停息。透過執行"
+          },
+          {
+            "text": "煉臟化形儀式",
+            "color": "dark_purple"
+          },
+          {
+            "text": "可將其植入體內。\n\n移植後，不朽之心會將有益狀態效果的持續時間增加為"
+          },
+          {
+            "text": "三倍",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，並將有害狀態效果的持續時間縮減為"
+          },
+          {
+            "text": "三分之一",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n不朽之心的擁有者每分鐘還能從其不屈不撓的生命力中汲取一次"
+          },
+          {
+            "text": "吸收之心",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n議會與仙女派系的法師會得到"
+          },
+          {
+            "text": "6顆心",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n亡靈派系法師的身體不再適應心跳，所以獲得的效益將縮減為"
+          },
+          {
+            "text": "4顆心",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n惡魔派系的法師會得到"
+          },
+          {
+            "text": "10顆心",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，而且是每"
+          },
+          {
+            "text": "30秒",
+            "color": "dark_purple"
+          },
+          {
+            "text": "就能獲得一次，而不是每分鐘。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "創造不朽之心",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "創造不朽之心是一個包含多個步驟的複雜程序。\n\n首先，需要用六種動物各數百隻的血肉進行升變，以生成六個"
+          },
+          {
+            "text": "筋肉核",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。這些可怕的血肉團塊是由構成它們的每塊肉中最精華的部分組合而成的。每一個都由一種動物組成，並與六大魔法元素之一相關。\n\n接著，需要將六個筋肉核組合成一個"
+          },
+          {
+            "text": "不淨肉塊",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n然後，將不淨肉塊浸泡在使用非常強的酸液（至少要是"
+          },
+          {
+            "text": "礬油",
+            "color": "dark_purple"
+          },
+          {
+            "text": "）的酸化盆裡。這個步驟會摧毀肉團裡所有並非不朽的部分，只留下一顆"
+          },
+          {
+            "text": "無搏之心",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n最後，需要用煉金樞紐將無搏之心昇華為"
+          },
+          {
+            "text": "不朽之心",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/surgical_cultivation"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/immortal_heart"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/unbeating_heart"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/revolting_mass_of_meat"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/thewsum_porcine"
+      }
+    ]
+  },
+  "Symbols of Triumph": {
+    "index": "10000",
+    "category": "basics",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "勝利之證"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "四大派系",
+            "color": "dark_purple"
+          },
+          {
+            "text": "之主各自擁有一件強大的魔法神器。在一場"
+          },
+          {
+            "text": "魔法對決",
+            "color": "dark_purple"
+          },
+          {
+            "text": "中擊敗派系之主將可獲得獎賞，內容包括四大神器之一、大量的派系標誌，以及該派系所擁有的"
+          },
+          {
+            "text": "強大法術",
+            "color": "dark_purple"
+          },
+          {
+            "text": "之一。\n\n要找到可以進行這種決鬥的決鬥場可能很難，但"
+          },
+          {
+            "text": "派系中間人",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或許會出售這些場所的魔法連接。\n\n被放置在"
+          },
+          {
+            "text": "聖所",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的效力範圍內時，勝利之證能為相同派系的玩家帶來非常強大的益處。"
+          },
+          {
+            "text": "\n\n開發者筆記：目前收集其他派系的勝利之證並無直接的好處（除了需要用它們來製作榮耀之冕，以及進一步製作赤化智慧石）。不同派系的勝利之證帶來的另外好處會在0.5.3實裝。",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "至高圖書館碎片",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_council",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "議會擁有一座收藏著他們所積累的一切知識的異次元圖書館。這塊奇特的魔法石板以及與之綁定的水晶神器是用來遠端連接這座近乎無限的知識寶庫的終端。\n\n議會派系法師啟動碎片時，會得到無限時長的"
+          },
+          {
+            "text": "連續施法",
+            "color": "dark_purple"
+          },
+          {
+            "text": "狀態。\n\n連續施法狀態生效時，會"
+          },
+          {
+            "text": "減少33%的魔力消耗",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，並"
+          },
+          {
+            "text": "縮短所有法術的冷卻時間",
+            "color": "dark_purple"
+          },
+          {
+            "text": "至0.2秒（如果法術包含傷害類型構件，則是0.6秒）。每一發受到連續施法影響的法術都會消耗"
+          },
+          {
+            "text": "經驗值",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。冷卻時間較長的法術會消耗更多的經驗值。\n\n當你的經驗值消耗殆盡，連續施法狀態便會結束。\n\n至高圖書館碎片每"
+          },
+          {
+            "text": "30分鐘",
+            "color": "dark_purple"
+          },
+          {
+            "text": "可啟用一次。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "晝夜之晷",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_fey",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "這是銘刻命數的巨輪。支配晝夜更迭與四時流轉的法則盡皆銘刻其上，前提是你懂得如何解讀它。\n\n仙女派系法師啟動日晷時，會得到時長30分鐘的"
+          },
+          {
+            "text": "晨昏之冕",
+            "color": "dark_purple"
+          },
+          {
+            "text": "狀態。晨昏之冕狀態生效時，依據目前的時間是白天抑或晚上，"
+          },
+          {
+            "text": "你所屬的王庭將自動進行切換",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。用這個手段切換王庭會同時生成"
+          },
+          {
+            "text": "體型嬌小、行動敏捷、力量強大的小精靈們",
+            "color": "dark_purple"
+          },
+          {
+            "text": "供你差遣。\n\n晨昏之冕還會將你標記為預言時刻的仲裁者。啟動"
+          },
+          {
+            "text": "靈知寶珠",
+            "color": "dark_purple"
+          },
+          {
+            "text": "將會立即完成其預言。\n\n晝夜之晷每"
+          },
+          {
+            "text": "30分鐘",
+            "color": "dark_purple"
+          },
+          {
+            "text": "可啟用一次。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "獄火帝烙鐵",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_demons",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "這塊黑石板上刻有地獄統治者的印記，以及將所有惡魔束縛於其奴役之下的法令。這由獄火鑄就的帝國法令，不容置疑。\n\n惡魔派系法師啟動烙鐵時，它將召喚"
+          },
+          {
+            "text": "一支絕對忠誠且力量強大的小惡魔隊伍",
+            "color": "dark_purple"
+          },
+          {
+            "text": "供你差遣。其中一隻擔任"
+          },
+          {
+            "text": "軍團指揮官",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的小惡魔比它的同類體型更大、速度更快、更強壯，也更殘忍。\n\n啟用獄火帝烙鐵沒有冷卻時間；每次宣讀帝國法令時，你的"
+          },
+          {
+            "text": "小惡魔中隊",
+            "color": "dark_purple"
+          },
+          {
+            "text": "都會得到補充。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "冥河水池",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_undead",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "一汪盛滿了死冥忘卻之水的幽池，乃是由凡人無法企及的遙遠彼岸汲取而來。\n\n當被放置在聖所中，這個水池會"
+          },
+          {
+            "text": "從死亡的手中救亡靈派系法師一命",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。法師不會直面消亡的命運，而是在水池上醒來，渴求著永遠不會到來的最後一口氣。不會掉落任何物品，負面狀態全被清除，法師的生命值還會回復到最多5顆心。\n\n啟動水池會"
+          },
+          {
+            "text": "將法師傳送",
+            "color": "dark_purple"
+          },
+          {
+            "text": "回他們本應死亡的最後位置，如果該位置不匹配，則重新綁定法師的恢復位置。\n\n水池每"
+          },
+          {
+            "text": "十分鐘",
+            "color": "dark_purple"
+          },
+          {
+            "text": "只能救亡靈派系法師一次，但使用水池的暗路傳送回你原應喪命之地則沒有冷卻時間。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "mna:rituals/broker"
+      },
+      {
+        "type": "ritual",
+        "location": "mna:rituals/circle_of_power"
+      }
+    ]
+  },
+  "Hefty Hopper": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "重型漏斗"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "重型漏斗",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是用煉金術對原版漏斗進行強化改進的成果。它的吞吐量獲得了顯著的提升：每"
+          },
+          {
+            "text": "半秒",
+            "color": "dark_purple"
+          },
+          {
+            "text": "最多可傳送"
+          },
+          {
+            "text": "一整組64個物品",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n重型漏斗可以"
+          },
+          {
+            "text": "朝向任何方向",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，但無法像原版漏斗一樣"
+          },
+          {
+            "text": "轉彎",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。物品只能沿著直線方向進行轉移。\n\n不同於原版漏斗，重型漏斗"
+          },
+          {
+            "text": "不具備內部儲物空間",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。物品會直接從一端轉移到另一端。\n\n重型漏斗的輸出端永遠會指向你在放置過程中啟動的方塊。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/hefty_hopper"
+      }
+    ]
+  },
+  "Sentinel's Plackart": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "哨兵胸板甲"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "當穿戴於胸飾槽位時，"
+          },
+          {
+            "text": "哨兵胸板甲",
+            "color": "dark_purple"
+          },
+          {
+            "text": "會在"
+          },
+          {
+            "text": "巫師護甲",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的周圍編織保護性魔法，使護甲有機率"
+          },
+          {
+            "text": "免於損失耐久度",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n哨兵胸板甲的魔法只對"
+          },
+          {
+            "text": "與巫術密切相關",
+            "color": "dark_purple"
+          },
+          {
+            "text": "的護甲有效：巫師長袍，以及"
+          },
+          {
+            "text": "四大派系",
+            "color": "dark_purple"
+          },
+          {
+            "text": "高層所裝備的強力護甲。\n\n預設情況下免於損失耐久度的機率是"
+          },
+          {
+            "text": "50%",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。這個機率會依據你裝備在飾品欄智慧石槽的"
+          },
+          {
+            "text": "智慧石",
+            "color": "dark_purple"
+          },
+          {
+            "text": "而提升。\n\n"
+          },
+          {
+            "text": "基礎",
+            "color": "dark_purple"
+          },
+          {
+            "text": "：50.0%\n"
+          },
+          {
+            "text": "黑化",
+            "color": "dark_purple"
+          },
+          {
+            "text": "：66.7%\n"
+          },
+          {
+            "text": "白化",
+            "color": "dark_purple"
+          },
+          {
+            "text": "：75.0%\n"
+          },
+          {
+            "text": "黃化",
+            "color": "dark_purple"
+          },
+          {
+            "text": "：80.0%\n"
+          },
+          {
+            "text": "赤化",
+            "color": "dark_purple"
+          },
+          {
+            "text": "：83.3%\n"
+          },
+          {
+            "text": "賢者",
+            "color": "dark_purple"
+          },
+          {
+            "text": "：85.7%"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/sentinels_plackart"
+      }
+    ]
+  },
+  "Crown of Glory": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "榮耀之冕"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "榮耀之冕",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是對優越性與顯赫地位的直接表述。戴上它能讓配戴者額外多裝備一個"
+          },
+          {
+            "text": "頭飾",
+            "color": "dark_purple"
+          },
+          {
+            "text": "、一條"
+          },
+          {
+            "text": "項鍊",
+            "color": "dark_purple"
+          },
+          {
+            "text": "、一個"
+          },
+          {
+            "text": "手鐲",
+            "color": "dark_purple"
+          },
+          {
+            "text": "、一條"
+          },
+          {
+            "text": "腰帶",
+            "color": "dark_purple"
+          },
+          {
+            "text": "、兩枚"
+          },
+          {
+            "text": "戒指",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，以及兩個"
+          },
+          {
+            "text": "護符",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n歷史上鮮有關於榮耀之冕的記載。已知最後一次製作榮耀之冕是在一場特殊危機時期，當時巫師議會、地獄惡魔、仙女之庭，以及不死亡靈的統治者們通力合作，共同對抗一個危險程度遠超他們彼此之間紛爭的巨大威脅。\n\n鑒於派系戰爭日趨激烈，像這樣的合作無望再現。\n\n要獲得製作榮耀之冕所需的四項勝利之證，"
+          },
+          {
+            "text": "唯有訴諸暴力一途",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/crown_of_glory"
+      }
+    ]
+  },
+  "Distillable Exemplars": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "可蒸餾典範"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": ""
+          },
+          {
+            "text": "可蒸餾典範",
+            "color": "dark_purple"
+          },
+          {
+            "text": "是透過"
+          },
+          {
+            "text": "升變",
+            "color": "dark_purple"
+          },
+          {
+            "text": "創造的小型專案項目。顧名思義，典範在蒸餾時能提供數量驚人的原質。\n\n典範會使其成分物品中某種類型原質的含量提升至"
+          },
+          {
+            "text": "大約三倍",
+            "color": "dark_purple"
+          },
+          {
+            "text": "，而代價則是"
+          },
+          {
+            "text": "大幅減少",
+            "color": "dark_purple"
+          },
+          {
+            "text": "其他種類原質的含量。\n\n某些典範，例如生態瓶，在古籍裡有它們自己的專屬條目。本條目涵蓋了除作為優質蒸餾來源外無重大影響的典範。"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "混淆部件",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:confounding_widget",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "極佳的"
+          },
+          {
+            "text": "工業複合原質",
+            "color": "dark_purple"
+          },
+          {
+            "text": "來源。\n\n你確信它那數不清的細碎零件始終都在"
+          },
+          {
+            "text": "運作",
+            "italic": true
+          },
+          {
+            "text": "。這是過度刺激的勝利！"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "蛛眼毒素",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:oculotoxin",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "極佳的"
+          },
+          {
+            "text": "毒素複合原質",
+            "color": "dark_purple"
+          },
+          {
+            "text": "來源。\n\n不建議服食蛛眼毒素，因為它會讓服用者遭受"
+          },
+          {
+            "text": "極強烈劇毒",
+            "color": "dark_purple"
+          },
+          {
+            "text": "折磨，且很可能導致"
+          },
+          {
+            "text": "失明",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/confounding_widget"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/oculotoxin"
       }
     ]
   },
