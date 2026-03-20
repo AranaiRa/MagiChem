@@ -10,6 +10,7 @@ import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.Vector3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -28,6 +29,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,12 +59,102 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     private static final Random r = new Random();
     private DyeColor lastSuccessfulCraft = null;
 
+    private LazyOptional<IItemHandler> lazyInsertionItemHandler = LazyOptional.empty();
+    private LazyOptional<IItemHandler> lazyExtractionItemHandler = LazyOptional.empty();
+    private final ItemStackHandler insertionItemHandler = new ItemStackHandler(1) {
+        @Override
+        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            if(containedItem.isEmpty()) {
+                if(!simulate) {
+                    stack.shrink(1);
+                    containedItem = new ItemStack(stack.getItem(), 1);
+                    syncAndSave();
+                }
+                return stack.getCount() > 1 ? new ItemStack(stack.getItem(), stack.getCount()-1) : ItemStack.EMPTY;
+            }
+            return stack;
+        }
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            ItemStack out = containedItem;
+            if(!simulate) {
+                containedItem = ItemStack.EMPTY;
+                recipe = null;
+                readyToCollect = false;
+            }
+            return out;
+        }
+
+        @Override
+        public @NotNull ItemStack getStackInSlot(int slot) {
+            return containedItem;
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            setChanged();
+            syncAndSave();
+        }
+    };
+    private final ItemStackHandler extractionItemHandler = new ItemStackHandler(1) {
+        @Override
+        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            return stack;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return false;
+        }
+
+        @Override
+        public @NotNull ItemStack getStackInSlot(int slot) {
+            return readyToCollect ? containedItem : ItemStack.EMPTY;
+        }
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if(!readyToCollect) return ItemStack.EMPTY;
+
+            ItemStack out = containedItem;
+            if(!simulate) {
+                containedItem = ItemStack.EMPTY;
+                recipe = null;
+                readyToCollect = false;
+                syncAndSave();
+            }
+            return out;
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            setChanged();
+            syncAndSave();
+        }
+    };
+
     public ColoringCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.COLORING_CAULDRON_BE.get(), pos, state);
     }
 
     public ColoringCauldronBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) {
+            if(side == Direction.UP) {
+                return lazyInsertionItemHandler.cast();
+            } else {
+                return lazyExtractionItemHandler.cast();
+            }
+        }
+
+        return super.getCapability(cap, side);
     }
 
     public boolean insertItemStack(ItemStack pStack) {
@@ -160,8 +256,17 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     }
 
     @Override
+    public void invalidateCaps() {
+        lazyInsertionItemHandler.invalidate();
+        lazyExtractionItemHandler.invalidate();
+        super.invalidateCaps();
+    }
+
+    @Override
     public void onLoad() {
         super.onLoad();
+        lazyInsertionItemHandler = LazyOptional.of(() -> insertionItemHandler);
+        lazyExtractionItemHandler = LazyOptional.of(() -> extractionItemHandler);
     }
 
     @Override
