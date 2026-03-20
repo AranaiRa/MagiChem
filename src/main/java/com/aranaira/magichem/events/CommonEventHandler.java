@@ -703,7 +703,11 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onEffectRemoved(MobEffectEvent.Remove event) {
         if (event.getEffectInstance() != null) {
-            if (event.getEffectInstance().getEffect() == GOLDEN_RESURGENCE.get()) {
+            if (event.getEffectInstance().getEffect() == GOLDEN_RESURGENCE.get() ||
+                event.getEffectInstance().getEffect() == EQUANIMITY.get() ||
+                event.getEffectInstance().getEffect() == EVANESCENCE.get() ||
+                event.getEffectInstance().getEffect() == BRUTALITY.get() ||
+                event.getEffectInstance().getEffect() == MALICE.get()) {
                 event.setCanceled(true);
             }
         }
