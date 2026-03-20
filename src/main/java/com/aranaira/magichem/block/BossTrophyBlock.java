@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.BossTrophyBlockEntity;
 import com.aranaira.magichem.capabilities.enhancement.EnhancementProvider;
 import com.aranaira.magichem.capabilities.enhancement.IEnhancementCapability;
 import com.aranaira.magichem.effects.RegalTwilightEffect;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -38,6 +39,8 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
@@ -288,6 +291,18 @@ public class BossTrophyBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new BossTrophyBlockEntity(pPos, pState);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        if(pLevel.isClientSide()) {
+            if (pBlockEntityType == BlockEntitiesRegistry.BOSS_TROPHY_BE.get()) {
+                return BossTrophyBlockEntity::tick;
+            }
+        }
+
+        return null;
     }
 
     static {
