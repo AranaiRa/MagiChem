@@ -63,12 +63,24 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     private LazyOptional<IItemHandler> lazyExtractionItemHandler = LazyOptional.empty();
     private final ItemStackHandler insertionItemHandler = new ItemStackHandler(1) {
         @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return containedItem.isEmpty();
+        }
+
+        @Override
         public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
             if(containedItem.isEmpty()) {
                 if(!simulate) {
+                    final ColorationRecipe recipeQuery = ColorationRecipe.getFilteredColorationRecipe(getLevel(), stack, false);
+                    if (recipeQuery != null) {
+                        containedItem = stack.copy();
+                        containedItem.setCount(1);
+                        recipe = recipeQuery;
+                        if(bitpackedColors != 0)
+                            progress = getOperationTicks();
+                        syncAndSave();
+                    }
                     stack.shrink(1);
-                    containedItem = new ItemStack(stack.getItem(), 1);
-                    syncAndSave();
                 }
                 return stack.getCount() > 1 ? new ItemStack(stack.getItem(), stack.getCount()-1) : ItemStack.EMPTY;
             }
@@ -275,6 +287,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("bitpackedColors", this.bitpackedColors);
         nbt.putInt("operationsRemaining", this.operationsRemaining);
+        nbt.putBoolean("readyToCollect", this.readyToCollect);
         super.saveAdditional(nbt);
     }
 
@@ -284,9 +297,12 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getCompound("inventory").getString("id")));
         if(query != null)
             containedItem = new ItemStack(query);
+        else
+            containedItem = ItemStack.EMPTY;
         progress = nbt.getInt("craftingProgress");
         bitpackedColors = nbt.getInt("bitpackedColors");
         operationsRemaining = nbt.getInt("operationsRemaining");
+        readyToCollect = nbt.getBoolean("readyToCollect");
     }
 
     @Override
@@ -296,6 +312,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("bitpackedColors", this.bitpackedColors);
         nbt.putInt("operationsRemaining", this.operationsRemaining);
+        nbt.putBoolean("readyToCollect", this.readyToCollect);
         return nbt;
     }
 

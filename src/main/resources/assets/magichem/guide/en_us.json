@@ -3498,8 +3498,22 @@
             "italic": true
           },
           {
-            "text": " the colors supplied. For example, if you supply White, Light Gray, Gray, and Black dye the item will be set to a color except White, Light Gray, Gray, or Black. Dyes added to a Subtractive cauldron can color 5 items, but only one of each dye color can be added until the Cauldron is empty or changed to Positive mode.\n\nItems are colored significantly faster in Subtractive mode: A little more than twice as quickly as Additive mode with one dye, and around ten times as quickly if fifteen dye colors are supplied.",
+            "text": " the colors supplied. For example, if you supply White, Light Gray, Gray, and Black dye the item will be set to a color except White, Light Gray, Gray, or Black. Dyes added to a Subtractive cauldron can color 5 items, but only one of each dye color can be added until the Cauldron is empty or changed to Positive mode.\n\nItems are colored significantly faster in Subtractive mode: A little more than twice as quickly as Additive mode with one dye, and around ten times as quickly if fifteen dye colors are supplied.\n\nWhen using constructs or hoppers, items can be ",
             "italic": false
+          },
+          {
+            "text": "inserted",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from the top face. Completed crafts can be "
+          },
+          {
+            "text": "extracted",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from any other face."
           }
         ]
       },
