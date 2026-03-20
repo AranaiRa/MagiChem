@@ -48,6 +48,7 @@ public class HeftyHopperBlockEntity extends BlockEntity {
                             int extracted = 0;
                             for(int i=0;i<push.getSlots();i++) {
                                 ItemStack queryPush = push.insertItem(i, querySuck, false);
+                                int a = 0;
                                 if(queryPush.isEmpty()) {
                                     ItemStack extractedStack = suck.extractItem(querySuckIndex, suck.getStackInSlot(querySuckIndex).getMaxStackSize(), false);
                                     extracted += extractedStack.getCount();
@@ -55,6 +56,7 @@ public class HeftyHopperBlockEntity extends BlockEntity {
                                     if(extracted >= initial)
                                         break;
                                 } else {
+                                    extracted += querySuck.getCount() - queryPush.getCount();
                                     querySuck = queryPush;
                                 }
                             }
