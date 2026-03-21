@@ -114,7 +114,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                 if(foundTarget) {
                                     this.phase = ETaskPhase.CREATE_SHLORP;
                                 } else {
-                                    this.pushDiagnosticMessage("I can't find any of the materia the device needs. I'll just wait for a bit!", false);
+                                    this.pushDiagnosticMessage("I can't find enough "+getTranslatedNameFromItem(this.filter)+" (I need "+impr.getProvisioningNeeds().get(filter)+" more). I'll just wait for a bit!", false);
                                     this.waitTimer = 41;
                                     this.phase = ETaskPhase.WAIT_TO_FAIL;
                                     construct.clearForcedAnimation();
