@@ -674,13 +674,13 @@ public class CommonEventHandler {
                                     player.addEffect(new MobEffectInstance(RADIANT_RESOLVE.get(), 120, 0, true, true));
                                     player.heal(200f);
                                     player.displayClientMessage(Component.translatable("feedback.item.wisdom.death_protection"), true);
+                                    event.setCanceled(true);
                                 }
                             }
                         }
                     });
                 });
             }
-            event.setCanceled(true);
         }
     }
 
