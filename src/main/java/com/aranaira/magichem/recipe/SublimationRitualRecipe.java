@@ -172,7 +172,7 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer>, IMAReci
                 String key = outputObject.get("item").getAsString();
                 int count = 1;
                 if(outputObject.has("count"))
-                    outputObject.get("count").getAsInt();
+                    count = outputObject.get("count").getAsInt();
 
                 Item outputQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
                 if(outputQuery != null && outputQuery != Items.AIR) {
