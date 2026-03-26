@@ -188,7 +188,7 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer>, IMAReci
                 String key = materia1Object.get("item").getAsString();
                 int count = 1;
                 if(materia1Object.has("count"))
-                    materia1Object.get("count").getAsInt();
+                    count = materia1Object.get("count").getAsInt();
 
                 Item materia1Query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
                 if(materia1Query != null && materia1Query != Items.AIR) {
@@ -204,7 +204,7 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer>, IMAReci
                 String key = materia2Object.get("item").getAsString();
                 int count = 1;
                 if(materia2Object.has("count"))
-                    materia2Object.get("count").getAsInt();
+                    count = materia2Object.get("count").getAsInt();
 
                 Item materia2Query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
                 if(materia2Query != null && materia2Query != Items.AIR) {
