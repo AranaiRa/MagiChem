@@ -25,8 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * This recipe type is used by the Coloring Cauldron and the Variegator.
@@ -38,6 +37,8 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final boolean validOnCauldron, validOnVariegator;
     private final ItemStack colorlessDefault;
     private final HashMap<DyeColor, ItemStack> potentialOutputs;
+    private static final ArrayList<ColorationRecipe> ALL_COLORATION_RECIPES = new ArrayList<>();
+    private static final ArrayList<Item> ALL_INPUT_ITEMS = new ArrayList<>();
 
     public ColorationRecipe(ResourceLocation id, int pChargeUsage, float pCraftingTimeMultiplier, boolean pValidOnCauldron, boolean pValidOnVariegator, ItemStack pColorlessDefault, HashMap<DyeColor, ItemStack> pPotentialOutputs) {
         this.id = id;
@@ -201,6 +202,31 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     @Override
     public int getTier() {
         return validOnCauldron ? 1 : 3;
+    }
+
+    public static ArrayList<ColorationRecipe> getAllColorationRecipes(Level level) {
+        if(ALL_COLORATION_RECIPES.size() == 0) {
+            List<ColorationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+            ALL_COLORATION_RECIPES.addAll(allRecipes);
+        }
+
+        return ALL_COLORATION_RECIPES;
+    }
+
+    public static ArrayList<Item> getAllRecipeInputItems(Level level) {
+        if(ALL_INPUT_ITEMS.size() == 0) {
+            if (ALL_COLORATION_RECIPES.size() == 0) getAllColorationRecipes(level);
+
+            for (ColorationRecipe cr : ALL_COLORATION_RECIPES) {
+                for (ItemStack stack : cr.getResultsAsList()) {
+                    if(!ALL_INPUT_ITEMS.contains(stack.getItem())) ALL_INPUT_ITEMS.add(stack.getItem());
+                }
+                if(!ALL_INPUT_ITEMS.contains(cr.getColorlessDefault().getItem()))
+                    ALL_INPUT_ITEMS.add(cr.getColorlessDefault().getItem());
+            }
+        }
+
+        return ALL_INPUT_ITEMS;
     }
 
     public static class Type implements RecipeType<ColorationRecipe> {

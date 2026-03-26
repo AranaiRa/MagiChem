@@ -64,12 +64,26 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     private final ItemStackHandler insertionItemHandler = new ItemStackHandler(1) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return containedItem.isEmpty();
+            if(containedItem.isEmpty()) {
+                final ArrayList<Item> allRecipeInputItems = ColorationRecipe.getAllRecipeInputItems(level);
+                return allRecipeInputItems.contains(stack.getItem());
+            }
+            return false;
         }
 
         @Override
         public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            if(stack.getItem() instanceof DyeItem) {
+                if(insertItemStack(new ItemStack(stack.getItem(), 1))) {
+                    stack.shrink(1);
+                    return stack;
+                }
+            }
+
             if(containedItem.isEmpty()) {
+                final ArrayList<Item> allRecipeInputItems = ColorationRecipe.getAllRecipeInputItems(level);
+                if(!allRecipeInputItems.contains(stack.getItem())) return stack;
+
                 if(!simulate) {
                     final ColorationRecipe recipeQuery = ColorationRecipe.getFilteredColorationRecipe(getLevel(), stack, false);
                     if (recipeQuery != null) {
@@ -94,6 +108,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
                 containedItem = ItemStack.EMPTY;
                 recipe = null;
                 readyToCollect = false;
+                syncAndSave();
             }
             return out;
         }
