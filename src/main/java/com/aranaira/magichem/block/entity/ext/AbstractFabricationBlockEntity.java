@@ -474,6 +474,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
         if(pEntity.outputTank.isEmpty()) {
             pEntity.outputTank = pRecipe.getAlchemyFluid().copy();
+            pEntity.outputTank.setAmount(pEntity.batchSize * 1000);
         } else {
             pEntity.outputTank.setAmount(Math.min(pEntity.getTankCapacity(0), pEntity.outputTank.getAmount() + 1000 * pEntity.batchSize));
         }
