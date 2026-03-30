@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 24,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "ars_nouveau:starby_gift"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_fey",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_luck",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

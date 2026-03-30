@@ -6,10 +6,10 @@
   "batch_size": 1,
   "object": { "item": "minecraft:budding_amethyst" },
   "components": [
-    { "item": "magichem:essentia_arcane", "count": 64 },
     { "item": "magichem:admixture_crystal", "count": 24 },
-    { "item": "magichem:admixture_darkness", "count": 12 },
     { "item": "magichem:admixture_permanence", "count": 20 },
+    { "item": "magichem:admixture_potential", "count": 18 },
+    { "item": "magichem:admixture_darkness", "count": 12 },
     { "item": "magichem:essentia_albedo", "count": 10 }
   ]
 }

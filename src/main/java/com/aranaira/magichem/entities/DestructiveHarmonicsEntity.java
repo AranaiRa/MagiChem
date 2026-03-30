@@ -1,9 +1,11 @@
 package com.aranaira.magichem.entities;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.mna.api.items.IPositionalItem;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
-import com.mna.particles.types.movers.ParticleVelocityMover;
+import com.mna.items.ItemInit;
+import com.mna.items.runes.ItemRuneMarking;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,16 +18,23 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
+import org.apache.commons.lang3.mutable.MutableBoolean;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import java.util.*;
-
-import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
 public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditionalSpawnData {
     public DestructiveHarmonicsEntity(EntityType<?> pEntityType, Level pLevel) {
@@ -38,6 +47,9 @@ public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditio
     private ArrayList<BlockPos> scannedHighPriorityBlocks = new ArrayList();
     private ArrayList<BlockPos> scannedLowPriorityBlocks = new ArrayList();
     private int phaseTimer = 0;
+    private UUID initiatingPlayer = null;
+    private Player initiatingPlayerResolved = null;
+    private LazyOptional<ICuriosItemHandler> curiosInventory = null;
 
     public static final TagKey<Block> TAG_HIGH_PRIORITY = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "harmoniscope_high_priority"));
     public static final TagKey<Block> TAG_LOW_PRIORITY = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "harmoniscope_low_priority"));
@@ -55,12 +67,16 @@ public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditio
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         if(pCompound.contains("targetPos"))
             targetPos = BlockPos.of(pCompound.getLong("targetPos"));
+        if(pCompound.contains("initiatingPlayer"))
+            initiatingPlayer = pCompound.getUUID("initiatingPlayer");
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         if(targetPos != null)
             pCompound.putLong("targetPos", targetPos.asLong());
+        if(initiatingPlayer != null)
+            pCompound.putUUID("initiatingPlayer", initiatingPlayer);
     }
 
     @Override
@@ -71,17 +87,31 @@ public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditio
     @Override
     public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeLong(targetPos != null ? targetPos.asLong() : 0);
+        buffer.writeUUID(initiatingPlayer);
     }
 
     @Override
     public void readSpawnData(FriendlyByteBuf additionalData) {
         long pos = additionalData.readLong();
         targetPos = BlockPos.of(pos);
+        initiatingPlayer = additionalData.readUUID();
+    }
+
+    public void setInitiatingPlayer(Player pPlayer){
+        initiatingPlayer = pPlayer.getUUID();
+        initiatingPlayerResolved = pPlayer;
     }
 
     @Override
     public void tick() {
         super.tick();
+
+        if(initiatingPlayer != null && initiatingPlayerResolved == null) {
+            initiatingPlayerResolved = level().getPlayerByUUID(initiatingPlayer);
+        }
+        if(initiatingPlayerResolved != null && curiosInventory == null) {
+            curiosInventory = CuriosApi.getCuriosInventory(initiatingPlayerResolved);
+        }
 
         if(level().getGameTime() % 2 > 0) return;
 
@@ -137,9 +167,8 @@ public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditio
             if(scannedHighPriorityBlocks.size() > 0) {
                 BlockPos posQuery = scannedHighPriorityBlocks.remove(r.nextInt(scannedHighPriorityBlocks.size()));
                 BlockState stateQuery = level().getBlockState(posQuery);
-                ItemEntity ie = new ItemEntity(level(), posQuery.getX(), posQuery.getY(), posQuery.getZ(), new ItemStack(stateQuery.getBlock().asItem()));
+                dropItemResult(level(), posQuery.getCenter(), new ItemStack(stateQuery.getBlock().asItem()));
                 level().destroyBlock(posQuery, false);
-                level().addFreshEntity(ie);
             } else {
                 phase = Phase.SHATTER_LOW_PRIORITY;
             }
@@ -148,9 +177,8 @@ public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditio
             if(scannedLowPriorityBlocks.size() > 0) {
                 BlockPos posQuery = scannedLowPriorityBlocks.remove(r.nextInt(scannedLowPriorityBlocks.size()));
                 BlockState stateQuery = level().getBlockState(posQuery);
-                ItemEntity ie = new ItemEntity(level(), posQuery.getX(), posQuery.getY(), posQuery.getZ(), new ItemStack(stateQuery.getBlock().asItem()));
+                dropItemResult(level(), posQuery.getCenter(), new ItemStack(stateQuery.getBlock().asItem()));
                 level().destroyBlock(posQuery, false);
-                level().addFreshEntity(ie);
             } else {
                 phase = Phase.CLEANUP;
             }
@@ -189,6 +217,65 @@ public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditio
                         scannedLowPriorityBlocks.add(posQuery);
                 }
             }
+        }
+    }
+
+    private void dropItemResult(Level pLevel, Vec3 pPos, ItemStack pStack) {
+        if(initiatingPlayerResolved != null && curiosInventory != null) {
+            curiosInventory.ifPresent(cap -> {
+                cap.getStacksHandler("ring").ifPresent(slotsInventory -> {
+                    boolean isLesser = false;
+                    boolean isGreater = false;
+                    boolean hasRune = false;
+                    BlockPos targetInventoryPos = null;
+                    if(initiatingPlayerResolved.getOffhandItem().getItem() instanceof IPositionalItem ipi) {
+                        hasRune = true;
+                        targetInventoryPos = ipi.getLocation(initiatingPlayerResolved.getOffhandItem());
+                    }
+
+                    for (int i = 0; i < slotsInventory.getStacks().getSlots(); i++) {
+                        ItemStack stack = slotsInventory.getStacks().getStackInSlot(i);
+                        isLesser = isLesser || stack.getItem() == ItemInit.COLLECTOR_RING_LESSER.get();
+                        isGreater = isGreater || stack.getItem() == ItemInit.COLLECTOR_RING_GREATER.get();
+                    }
+
+                    MutableBoolean sentToInventory = new MutableBoolean(false);
+                    if (isGreater && hasRune && targetInventoryPos != null) {
+                        BlockEntity targetInventory = pLevel.getBlockEntity(targetInventoryPos);
+                        if(targetInventory != null) {
+                            LazyOptional<IItemHandler> targetInventoryCap = targetInventory.getCapability(ForgeCapabilities.ITEM_HANDLER);
+                            targetInventoryCap.ifPresent(tCap -> {
+                                ItemStack query = pStack;
+                                for(int i=0; i<tCap.getSlots(); i++) {
+                                    query = tCap.insertItem(i, query, false);
+                                    if(query.isEmpty())
+                                        break;
+                                }
+                                if(!query.isEmpty()) {
+                                    final Vec3 playerPos = initiatingPlayerResolved.position();
+                                    ItemEntity ie = new ItemEntity(level(), playerPos.x(), playerPos.y(), playerPos.z(), pStack);
+                                    pLevel.addFreshEntity(ie);
+                                }
+                                sentToInventory.setValue(true);
+                            });
+                        }
+                    }
+                    if(!sentToInventory.booleanValue()){
+                        if (isLesser || isGreater) {
+                            final Vec3 playerPos = initiatingPlayerResolved.position();
+                            ItemEntity ie = new ItemEntity(level(), playerPos.x(), playerPos.y(), playerPos.z(), pStack);
+                            pLevel.addFreshEntity(ie);
+                        } else {
+                            ItemEntity ie = new ItemEntity(level(), pPos.x(), pPos.y(), pPos.z(), pStack);
+                            pLevel.addFreshEntity(ie);
+                        }
+                    }
+                });
+            });
+        }
+        else {
+            ItemEntity ie = new ItemEntity(level(), pPos.x(), pPos.y(), pPos.z(), pStack);
+            pLevel.addFreshEntity(ie);
         }
     }
 

@@ -1,0 +1,14 @@
+{
+	"parent": "item/amethyst_bud",
+	"textures": {
+		"layer0": "magichem:block/cluster_diavrosite_large"
+	},
+	"display": {
+		"fixed": {
+			"translation": [ 0, 4, 0 ]
+		},
+		"gui": {
+			"translation": [ 0, 0, 0 ]
+		}
+	}
+}

@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 4,
+        "object": {
+          "item": "ars_nouveau:smooth_sourcestone_large_bricks_slab"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

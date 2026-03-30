@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 1,
+  "input": "magichem:diavrosite_block",
+  "output": "magichem:diavrosite_shard",
+  "output_quantity": 4
+}

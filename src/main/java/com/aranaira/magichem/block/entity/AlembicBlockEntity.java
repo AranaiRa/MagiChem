@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
@@ -45,6 +46,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_PASSIVE_HEAT;
@@ -392,5 +395,10 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
 
             default -> -1;
         };
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return new ArrayList<>();
     }
 }

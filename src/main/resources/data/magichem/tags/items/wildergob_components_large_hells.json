@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "minecraft:crimson_fungus",
-    "minecraft:warped_fungus"
+    "minecraft:crimson_stem",
+    "minecraft:warped_fungus",
+    "minecraft:warped_stem"
   ]
 }

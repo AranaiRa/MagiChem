@@ -1,6 +1,6 @@
 {
   "type": "magichem:exaltation",
-  "tier": 3,
+  "tier": 2,
   "result": { "item": "magichem:black_diamond", "count": 1 },
   "items": { "type": "minecraft:diamond", "required": 13 },
   "eldrin": { "type": 2, "required": 80 },

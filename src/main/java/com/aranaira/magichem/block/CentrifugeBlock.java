@@ -254,10 +254,12 @@ public class CentrifugeBlock extends BaseEntityBlock implements ISpellInteractib
     @Override
     public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
         if(pLevel.getBlockEntity(pPos) instanceof CentrifugeBlockEntity cbe) {
+            boolean hasRecipe = cbe.getRecipeItem() != null && !cbe.getRecipeItem().isEmpty();
             boolean hasInputItems = !cbe.getContentsOfInputSlots(CentrifugeBlockEntity::getVar).isEmpty();
             boolean hasOutputItems = !cbe.getContentsOfOutputSlots(CentrifugeBlockEntity::getVar).isEmpty();
 
             int signal = 0;
+            signal = signal | (hasRecipe ? 1 : 0);
             signal = signal | (hasInputItems ? 1 << 1 : 0);
             signal = signal | (hasOutputItems ? 1 << 2 : 0);
 

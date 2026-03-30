@@ -1,0 +1,11 @@
+# Blender MTL File: 'boss_trophies.blend'
+# Material Count: 3
+
+newmtl BREAK_DULL_IRON
+map_Kd magichem:block/breakparticle_dull_iron
+
+newmtl FIRE
+map_Kd mna:block/hellfire/fire_1
+
+newmtl POLISHED_BLACKSTONE
+map_Kd minecraft:block/polished_blackstone

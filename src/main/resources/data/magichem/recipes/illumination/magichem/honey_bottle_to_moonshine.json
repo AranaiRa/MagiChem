@@ -1,0 +1,12 @@
+{
+  "type": "magichem:illumination",
+  "input": "minecraft:honey_bottle",
+  "lumins": {
+    "type": 2,
+    "minutes": 5
+  },
+  "result": {
+    "item": "magichem:moonshine",
+    "count": 1
+  }
+}

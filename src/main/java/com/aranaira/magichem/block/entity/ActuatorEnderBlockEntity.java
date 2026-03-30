@@ -46,7 +46,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import team.chisel.ctm.client.util.Dir;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,7 +111,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
+                    if(InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
                         return ItemStack.EMPTY;
                 }
 
@@ -386,7 +385,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public void dropContents() {
-        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
+        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
             ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION));
             getLevel().addFreshEntity(ie);
         }
@@ -416,7 +415,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
         if(activeProvisionRequests.size() > 0)
             return false;
         ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
-        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+        if(InventoryHelper.hasCustomModelData(insertionStack)) {
             return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2;
         }
         return insertionStack.isEmpty();

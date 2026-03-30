@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "ars_nouveau:rotating_spell_turret"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_signals",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 15
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 16
+          }
+        ]
+      }
+    }
+  ]
+}

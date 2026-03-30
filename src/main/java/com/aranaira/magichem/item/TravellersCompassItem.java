@@ -148,6 +148,8 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
 
     @Override
     public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+        super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
+
         if(level.isClientSide())
             return;
 
@@ -173,8 +175,6 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
                 stack.setTag(nbtCompass);
             }
         }
-
-        super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
     }
 
     @Override

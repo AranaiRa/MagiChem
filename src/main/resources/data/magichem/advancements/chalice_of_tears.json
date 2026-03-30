@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:chalice_of_tears"
+    },
+    "title": {
+      "translate": "advancements.magichem.chalice_of_tears.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.chalice_of_tears.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:__wisdom_3",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:chalice_of_tears"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

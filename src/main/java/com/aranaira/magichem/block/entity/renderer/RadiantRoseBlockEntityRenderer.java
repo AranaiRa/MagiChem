@@ -21,6 +21,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2d;
 
 public class RadiantRoseBlockEntityRenderer implements BlockEntityRenderer<RadiantRoseBlockEntity> {
@@ -39,8 +40,9 @@ public class RadiantRoseBlockEntityRenderer implements BlockEntityRenderer<Radia
 
             TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE);
 
-            double pX = player.getX();
-            double pZ = player.getZ();
+            final Vec3 playerPos = player.getPosition(pPartialTick);
+            double pX = playerPos.x;
+            double pZ = playerPos.z;
 
             double eX = pBlockEntity.getBlockPos().getX() + 0.5625;
             double eZ = pBlockEntity.getBlockPos().getZ() + 0.5;

@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
+import com.aranaira.magichem.util.BypassedItemHandler;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.items.ItemInit;
 import com.mojang.datafixers.util.Pair;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import static com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity.*;
@@ -45,11 +47,13 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            BypassedItemHandler bypassed = new BypassedItemHandler.Extract(handler, AlchemicalNexusBlockEntity.SLOT_MARKS, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER);
+
             //Mark slot
-            this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_MARKS, 134, -5));
+            this.addSlot(new SlotItemHandler(bypassed, AlchemicalNexusBlockEntity.SLOT_MARKS, 134, -5));
 
             //Processing slot
-            this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER, 80, -5));
+            this.addSlot(new SlotItemHandler(bypassed, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER, 80, -5));
 
             //Input item slots
             for(int i = SLOT_INPUT_START; i< SLOT_INPUT_START + AlchemicalNexusBlockEntity.SLOT_INPUT_COUNT; i++)
@@ -102,7 +106,9 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
         return blockEntity.getCurrentRecipe();
     }
 
+    @Nullable
     public InfusionStage getStage(int id) {
+        if(id >= blockEntity.getCurrentRecipe().getStages(false).size()) return null;
         return blockEntity.getCurrentRecipe().getStages(false).get(id);
     }
 

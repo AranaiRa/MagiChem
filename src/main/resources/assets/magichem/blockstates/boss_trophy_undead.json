@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/boss_trophy_undead"
+    },
+    "facing=east": {
+      "model": "magichem:block/boss_trophy_undead",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/boss_trophy_undead",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/boss_trophy_undead",
+      "y": 270
+    }
+  }
+}

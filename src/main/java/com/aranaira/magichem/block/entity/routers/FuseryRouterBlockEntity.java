@@ -30,11 +30,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.aranaira.magichem.block.FuseryRouterBlock.*;
-import static com.aranaira.magichem.foundation.IHasDeviceRecipeSlot.ERROR_CODE_NO_BLOCK_ENTITY;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot {
@@ -101,6 +102,18 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
     @Override
     public void linkPluginsDeferred() {
         getMaster().linkPluginsDeferred();
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        if(master == null) {
+            if (masterPos != null)
+                master = (FuseryBlockEntity) getLevel().getBlockEntity(masterPos);
+        }
+        if(master == null)
+            return new ArrayList<AbstractDirectionalPluginBlockEntity>();
+
+        return master.getPlugins();
     }
 
     public FuseryBlockEntity getMaster(){

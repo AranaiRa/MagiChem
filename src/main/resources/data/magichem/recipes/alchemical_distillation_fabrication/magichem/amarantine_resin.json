@@ -6,8 +6,8 @@
   "batch_size": 1,
   "object": { "item": "magichem:resin_amarantine" },
   "components": [
-    { "item": "magichem:admixture_sorcery", "count": 60 },
-    { "item": "magichem:admixture_filth", "count": 11 },
+    { "item": "magichem:admixture_sorcery", "count": 123 },
+    { "item": "magichem:admixture_filth", "count": 14 },
     { "item": "magichem:admixture_change", "count": 8 },
     { "item": "magichem:essentia_mineral", "count": 36 }
   ]

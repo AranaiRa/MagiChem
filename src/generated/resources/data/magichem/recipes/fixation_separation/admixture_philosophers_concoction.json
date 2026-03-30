@@ -6,23 +6,23 @@
   "components": [
     {
       "item": "magichem:essentia_conceptual",
-      "count": 25
+      "count": 21
     },
     {
       "item": "magichem:essentia_nigredo",
-      "count": 18
+      "count": 17
     },
     {
       "item": "magichem:essentia_albedo",
-      "count": 13
+      "count": 15
     },
     {
       "item": "magichem:essentia_citrinitas",
-      "count": 10
+      "count": 13
     },
     {
       "item": "magichem:essentia_rubedo",
-      "count": 7
+      "count": 11
     }
   ]
 }

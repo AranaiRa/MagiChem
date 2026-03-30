@@ -3,13 +3,16 @@ package com.aranaira.magichem.item;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.networking.ParticleSpawnAnointingS2CPacket;
 import com.aranaira.magichem.recipe.AnointingRecipe;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.Vector3;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -19,14 +22,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -40,7 +47,7 @@ public class MateriaItem extends Item {
     private static final Random r = new Random();
 
     public MateriaItem(String name, String color, Item.Properties properties) {
-        super(properties);
+        super(properties.craftRemainder(Items.GLASS_BOTTLE));
         this.name = name;
         this.color = Integer.parseInt(color, 16) | 0xFF000000;
     }
@@ -200,6 +207,14 @@ public class MateriaItem extends Item {
                         pos.x, pos.y, pos.z,
                         (r.nextDouble() - 0.5) * speed, r.nextDouble() * speed, (r.nextDouble() - 0.5) * speed);
             }
+        }
+    }@OnlyIn(Dist.CLIENT)
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+        if (stack.getItem() == ItemRegistry.ADMIXTURE_PROBLEMS.get()) {
+            tooltipComponents.add(
+                    Component.translatable("tooltip.magichem.admixture_problems")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
         }
     }
 }

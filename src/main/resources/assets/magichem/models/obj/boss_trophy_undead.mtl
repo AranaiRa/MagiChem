@@ -1,0 +1,5 @@
+# Blender MTL File: 'boss_trophies.blend'
+# Material Count: 1
+
+newmtl BOSS_TROPHY_UNDEAD
+map_Kd magichem:block/boss_trophy_undead

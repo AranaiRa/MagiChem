@@ -1,6 +1,6 @@
 {
   "type": "magichem:exaltation",
-  "tier": 4,
+  "tier": 5,
   "result": { "item": "magichem:scarlet_coral", "count": 1 },
   "items": { "type": "minecraft:fire_coral_fan", "required": 48 },
   "eldrin": { "type": 63, "required": 375 },

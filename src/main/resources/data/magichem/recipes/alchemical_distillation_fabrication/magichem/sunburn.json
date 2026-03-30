@@ -1,0 +1,14 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "wisdom": 6,
+  "categories": 1,
+  "output_rate": 1.0,
+  "batch_size": 1,
+  "object": { "item": "magichem:sunburn" },
+  "components": [
+    { "item": "magichem:admixture_disaster", "count": 12 },
+    { "item": "magichem:admixture_firmament", "count": 8 },
+    { "item": "magichem:admixture_light", "count": 6 },
+    { "item": "magichem:essentia_albedo", "count": 2 }
+  ]
+}

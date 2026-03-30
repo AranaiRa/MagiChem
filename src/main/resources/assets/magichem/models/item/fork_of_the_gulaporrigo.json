@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "magichem:item/fork_of_the_gulaporrigo"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "magichem:item/fork_of_the_gulaporrigo_caked"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:crown_of_glory"
+    },
+    "title": {
+      "translate": "advancements.magichem.crown_of_glory.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.crown_of_glory.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:boss_trophy_any",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:crown_of_glory"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

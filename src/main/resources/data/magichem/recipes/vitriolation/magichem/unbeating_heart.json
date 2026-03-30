@@ -1,0 +1,8 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 4,
+  "acidConsumed": 2500,
+  "duration": 1200,
+  "inputItem": { "item": "magichem:revolting_mass_of_meat", "count": 1 },
+  "resultItem": { "item": "magichem:unbeating_heart", "count": 1 }
+}

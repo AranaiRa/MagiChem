@@ -9,14 +9,20 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.util.List;
+
 public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_circle_power.png");
+    private static final int
+            PANEL_MAIN_W = 176, PANEL_MAIN_H = 167,
+            PANEL_STONE_X = 180, PANEL_STONE_Y = 10;
 
     public CirclePowerScreen(CirclePowerMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -33,8 +39,8 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
         RenderSystem.setShaderColor(1,1,1,1);
         RenderSystem.setShaderTexture(0, TEXTURE);
 
-        int w = 176;
-        int h = 167;
+        int w = PANEL_MAIN_W;
+        int h = PANEL_MAIN_H;
 
         int x = (width - w) / 2;
         int y = (height - h) / 2;
@@ -62,7 +68,7 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
         else if(menu.blockEntity.hasReagent(4))
             gui.blit(TEXTURE, x + 131, y + 42, 0, 253, 22, 3);
 
-        gui.blit(TEXTURE, x + w + 4, y + 10, 176, 0, 32, 32);
+        gui.blit(TEXTURE, x + PANEL_STONE_X, y + PANEL_STONE_Y, 176, 0, 32, 32);
 
         //generation panel
         gui.blit(TEXTURE, x + 2, y - 30, 0, 167, 172, 25);
@@ -106,5 +112,13 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
                 .append(Component.literal(" FE / tick"))
                 );
         pGuiGraphics.drawString(font, generation, 25, -21, 0x00000000, false);
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(CirclePowerScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_STONE_X, yOrigin + PANEL_STONE_Y, 32, 32)
+        );
     }
 }

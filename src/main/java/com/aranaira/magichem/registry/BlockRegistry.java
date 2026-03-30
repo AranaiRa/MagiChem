@@ -386,6 +386,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> HEFTY_HOPPER = registerBlock("hefty_hopper",
+            () -> new HeftyHopperBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> TWO_STATE_LEVER = registerBlock("two_state_lever",
             () -> new MultiStateLeverBlock(1, BlockBehaviour.Properties.of()
                     .strength(0.5f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
@@ -580,6 +585,36 @@ public class BlockRegistry {
                     .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
+    public static final RegistryObject<Block> DIAVROSITE_BLOCK = registerBlock("diavrosite_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> BUDDING_DIAVROSITE_BLOCK = registerBlock("diavrosite_block_budding",
+            () -> new BuddingDiavrositeBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> DIAVROSITE_CLUSTER = registerBlock("cluster_diavrosite",
+            () -> new CrystalClusterBudBlock(7, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> LARGE_DIAVROSITE_CLUSTER = registerBlock("cluster_diavrosite_large",
+            () -> new CrystalClusterBudBlock(5, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> MEDIUM_DIAVROSITE_CLUSTER = registerBlock("cluster_diavrosite_medium",
+            () -> new CrystalClusterBudBlock(4, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> SMALL_DIAVROSITE_CLUSTER = registerBlock("cluster_diavrosite_small",
+            () -> new CrystalClusterBudBlock(3, 4, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
     public static final RegistryObject<Block> VINTEUM_CRYSTAL_BLOCK = registerBlock("vinteum_crystal_block",
             () -> new VinteumCrystalBlock(BlockBehaviour.Properties.of()
                     .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
@@ -707,6 +742,26 @@ public class BlockRegistry {
                     .strength(0.125f).forceSolidOn())
     );
 
+    public static final RegistryObject<BossTrophyBlock> BOSS_TROPHY_COUNCIL = registerBlock("boss_trophy_council",
+            () -> new BossTrophyBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<BossTrophyBlock> BOSS_TROPHY_DEMONS = registerBlock("boss_trophy_demons",
+            () -> new BossTrophyBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<BossTrophyBlock> BOSS_TROPHY_FEY = registerBlock("boss_trophy_fey",
+            () -> new BossTrophyBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<BossTrophyBlock> BOSS_TROPHY_UNDEAD = registerBlock("boss_trophy_undead",
+            () -> new BossTrophyBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
     public static final RegistryObject<LecternWithCodexMateriaBlock> LECTERN_WITH_CODEX_MATERIA = registerBlock("lectern_with_codex_materia",
             () -> new LecternWithCodexMateriaBlock(BlockBehaviour.Properties.of()
                     .strength(3.0f).forceSolidOn())
@@ -727,8 +782,10 @@ public class BlockRegistry {
             case "standing_retort" -> ItemRegistry.ITEMS.register(name, () -> new StandingRetortBlockItem(block.get(), new Item.Properties()));
             case "bleached_amethyst_block", "signalite_block", "signalite_block_budding", "cluster_signalite", "cluster_signalite_large",
                     "cluster_signalite_medium", "cluster_signalite_small", "vinteum_crystal_block", "vinteum_crystal_block_budding", "cluster_vinteum",
+                    "cluster_diavrosite_large", "cluster_diavrosite_medium", "cluster_diavrosite_small", "diavrosite_block", "diavrosite_block_budding", "cluster_diavrosite",
                     "cluster_vinteum_large", "cluster_vinteum_medium", "cluster_vinteum_small", "perfected_electrum_block", "alchemical_waste_block" ->
                     ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+            case "boss_trophy_council", "boss_trophy_demons", "boss_trophy_fey", "boss_trophy_undead" -> ItemRegistry.ITEMS.register(name, () -> new IndestructibleBlockItem(block.get(), new Item.Properties().stacksTo(1)));
             default -> ItemRegistry.ITEMS.register(name, () -> new TooltipLoreBlockItem(block.get(), new Item.Properties()));
         };
     }

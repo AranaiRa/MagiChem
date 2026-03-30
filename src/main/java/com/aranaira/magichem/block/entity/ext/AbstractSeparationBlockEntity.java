@@ -3,7 +3,6 @@ package com.aranaira.magichem.block.entity.ext;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.foundation.ICanHaveRecipeChanged;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.item.MateriaItem;
@@ -21,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -32,7 +30,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -158,7 +155,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                             final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
                             for (int i = 0; i < inputs.getContainerSize(); i++) {
                                 final ItemStack inputQuery = inputs.getItem(i);
-                                if(!inputQuery.isEmpty() && InventoryHelper.isMateriaUnbottled(inputQuery)) {
+                                if(!inputQuery.isEmpty() && InventoryHelper.hasCustomModelData(inputQuery)) {
                                     pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractSeparationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
                                     ender.createShlorpToTarget(inputQuery, instant);
                                 }
@@ -437,7 +434,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
                 }
                 ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
-                if(!InventoryHelper.isMateriaUnbottled(processingSlotContents)) {
+                if(!InventoryHelper.hasCustomModelData(processingSlotContents)) {
                     bottlesToInsert++;
                 }
                 processingSlotContents.shrink(1);

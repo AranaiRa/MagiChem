@@ -4,10 +4,8 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.gui.DisintegrationPyreMenu;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.recipe.IlluminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -30,7 +28,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -202,7 +199,7 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
                             ItemStack materiaStack = entity.itemHandler.getStackInSlot(SLOT_MATERIA);
                             ItemStack bottleStack = entity.itemHandler.getStackInSlot(SLOT_BOTTLES);
 
-                            if (InventoryHelper.isMateriaUnbottled(materiaStack)) {
+                            if (InventoryHelper.hasCustomModelData(materiaStack)) {
                                 materiaStack.shrink(1);
                                 entity.droplets = Math.min(limit, entity.droplets + fill);
                                 changed = true;
@@ -261,7 +258,7 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
             return false;
         }
         ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA);
-        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+        if(InventoryHelper.hasCustomModelData(insertionStack)) {
             return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA) / 2;
         }
         return insertionStack.isEmpty();

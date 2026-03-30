@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 20,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "ars_nouveau:poof_mob",
+        "object": {
+          "item": "ars_nouveau:starbuncle_shards"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_fey",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

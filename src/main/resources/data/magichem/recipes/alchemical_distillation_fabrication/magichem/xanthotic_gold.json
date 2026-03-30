@@ -7,7 +7,8 @@
   "object": { "item": "magichem:xanthotic_gold" },
   "components": [
     { "item": "magichem:admixture_metal", "count": 18 },
-    { "item": "magichem:admixture_adornment", "count": 1 },
+    { "item": "magichem:admixture_adornment", "count": 2 },
+    { "item": "magichem:admixture_radiation", "count": 1 },
     { "item": "magichem:essentia_precious", "count": 36 },
     { "item": "magichem:essentia_citrinitas", "count": 30 }
   ]

@@ -31,6 +31,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaSortingRequester {
@@ -94,6 +97,18 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
     @Override
     public void linkPluginsDeferred() {
         getMaster().linkPluginsDeferred();
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        if(master == null) {
+            if (masterPos != null)
+                master = (DistilleryBlockEntity) getLevel().getBlockEntity(masterPos);
+        }
+        if(master == null)
+            return new ArrayList<AbstractDirectionalPluginBlockEntity>();
+
+        return master.getPlugins();
     }
 
     public DistilleryBlockEntity getMaster(){

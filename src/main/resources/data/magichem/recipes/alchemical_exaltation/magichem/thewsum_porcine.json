@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 5,
+  "result": { "item": "magichem:thewsum_porcine", "count": 1 },
+  "items": { "type": "minecraft:porkchop", "required": 1200 },
+  "eldrin": { "type": 32, "required": 4000 },
+  "materia": { "type": "magichem:essentia_fleshy", "required": 375 },
+  "slurry": 9600
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "mna:entities/demon_lord"
+    }
+  ],
+  "item": "magichem:boss_trophy_demons",
+  "chance": 1.0,
+  "min": 1,
+  "max": 1
+}

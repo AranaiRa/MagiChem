@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 5,
+  "result": { "item": "magichem:thewsum_galline", "count": 1 },
+  "items": { "type": "minecraft:chicken", "required": 1200 },
+  "eldrin": { "type": 8, "required": 4000 },
+  "materia": { "type": "magichem:essentia_fleshy", "required": 375 },
+  "slurry": 9600
+}

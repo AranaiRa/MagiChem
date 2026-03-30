@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 2,
+  "result": { "item": "magichem:oculotoxin", "count": 1 },
+  "items": { "type": "minecraft:spider_eye", "required": 16 },
+  "eldrin": { "type": 4, "required": 10 },
+  "materia": { "type": "magichem:admixture_sight", "required": 10 },
+  "slurry": 400
+}

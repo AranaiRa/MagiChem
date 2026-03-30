@@ -124,6 +124,7 @@ public class SignaliteBlockEntity extends BlockEntity {
 
         if(level != null) {
             level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
+            setChanged();
         }
     }
 

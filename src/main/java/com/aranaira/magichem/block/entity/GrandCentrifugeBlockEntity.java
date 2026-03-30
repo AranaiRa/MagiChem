@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.GrandCentrifugeBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -8,6 +9,7 @@ import com.aranaira.magichem.block.entity.routers.GrandCentrifugeRouterBlockEnti
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType;
 import com.aranaira.magichem.gui.GrandCentrifugeMenu;
@@ -97,6 +99,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
     public float
             circlePercent = 0f, particlePercent = 0f, wheelAngle = 0f, wheelSpeed = 0f;
+    private int analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -109,7 +112,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(slot)))
+                    if(InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(slot)))
                         return ItemStack.EMPTY;
                 }
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
@@ -467,6 +470,11 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         }
     }
 
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
     ////////////////////
     // INTERACTION AND VFX
     ////////////////////
@@ -512,13 +520,13 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                     if(componentMateria[i/2] != null) {
                         if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                             ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                                 itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             }
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                         }
                     }
@@ -738,6 +746,18 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             }
         }
 
+        if(!pLevel.isClientSide()) {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, GrandCentrifugeRouterType, DevicePlugDirection> offset : GrandCentrifugeBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
+        }
+
         if(!pEntity.redstonePaused)
             AbstractSeparationBlockEntity.tick(pLevel, pPos, pState, pEntity, GrandCentrifugeBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
@@ -780,7 +800,16 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                 break;
             }
         }
-        return materiaInOutput;
+        boolean materiaInInput = false;
+        if(!materiaInOutput){
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                    materiaInInput = true;
+                    break;
+                }
+            }
+        }
+        return materiaInOutput || materiaInInput;
     }
 
     public static int getVar(IDs pID) {
@@ -835,6 +864,9 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
     @Override
     public boolean needsProvisioning() {
+        if(currentRecipe == null)
+            return false;
+
         //make sure there's space to PUT the provision
         int openSlots = 0;
         for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
@@ -896,7 +928,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                 inputSlots.setItem(i-SLOT_INPUT_START, pStack);
                 break;
             } else if(itemHandler.getStackInSlot(i).getItem() == pStack.getItem()) {
-                if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(i))) {
+                if(InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(i))) {
                     inputSlots.getItem(i-SLOT_INPUT_START).grow(pStack.getCount());
                     break;
                 }

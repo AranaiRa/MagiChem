@@ -4,6 +4,7 @@
     "minecraft:amethyst_cluster",
     "magichem:cluster_vinteum",
     "magichem:cluster_signalite",
-    { "id": "hexerei:selenite_cluster", "required": false }
+    { "id": "hexerei:selenite_cluster", "required": false },
+    { "id": "ae2:certus_quartz_cluster", "required": false }
   ]
 }

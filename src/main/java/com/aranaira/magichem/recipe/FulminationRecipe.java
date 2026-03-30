@@ -13,6 +13,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -139,11 +140,15 @@ public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             int resultCount = GsonHelper.getAsInt(pSerializedRecipe, "result_count");
 
             Item inputAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(inputRL));
+            if(inputAsItem == null || inputAsItem == Items.AIR)
+                inputAsItem = ItemRegistry.PROBLEMITE.get();
             Item resultAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(resultRL));
+            if(resultAsItem == null || resultAsItem == Items.AIR)
+                resultAsItem = ItemRegistry.PROBLEMITE.get();
 
             return new FulminationRecipe(pRecipeId,
-                    inputAsItem == null ? ItemStack.EMPTY : new ItemStack(inputAsItem, inputCount),
-                    resultAsItem == null ? ItemStack.EMPTY : new ItemStack(resultAsItem, resultCount));
+                    new ItemStack(inputAsItem, inputCount),
+                    new ItemStack(resultAsItem, resultCount));
         }
 
         @Override

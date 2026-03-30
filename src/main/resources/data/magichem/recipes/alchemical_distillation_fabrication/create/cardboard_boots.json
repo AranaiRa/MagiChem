@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "create:cardboard_leggings"
+          "item": "create:cardboard_boots"
         },
         "components": [
           { "item": "magichem:admixture_whimsy", "count": 8 },

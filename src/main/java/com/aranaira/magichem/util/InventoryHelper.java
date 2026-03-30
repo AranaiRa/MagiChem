@@ -1,8 +1,6 @@
 package com.aranaira.magichem.util;
 
-import com.aranaira.magichem.block.entity.MagicMirrorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeStaticBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
 import com.aranaira.magichem.foundation.enums.LuminType;
@@ -100,7 +98,7 @@ public class InventoryHelper {
                 int count = isOrb ? Integer.MAX_VALUE : containerStack.getCount();
                 limitedStack.setCount(Math.min(count, limitedStack.getCount()));
 
-                if(limitedStack.getItem() instanceof MateriaItem && InventoryHelper.isMateriaUnbottled(limitedStack)) {
+                if(limitedStack.getItem() instanceof MateriaItem && InventoryHelper.hasCustomModelData(limitedStack)) {
                     limitedStack.removeTagKey("CustomModelData");
                 }
 
@@ -284,7 +282,7 @@ public class InventoryHelper {
         return new Pair<>(a, b);
     }
 
-    public static boolean isMateriaUnbottled(ItemStack pStack) {
+    public static boolean hasCustomModelData(ItemStack pStack) {
         if(pStack.hasTag()) {
             final CompoundTag tag = pStack.getTag();
             if(tag.contains("CustomModelData")) {

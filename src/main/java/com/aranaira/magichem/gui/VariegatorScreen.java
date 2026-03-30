@@ -45,6 +45,10 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
     public VariegatorScreen(VariegatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
 
+        getOrCreateDyeStacks();
+    }
+
+    public static HashMap<DyeColor, ItemStack> getOrCreateDyeStacks() {
         if(STACK_DYES.size() == 0) {
             STACK_DYES.put(DyeColor.RED, new ItemStack(Items.RED_DYE));
             STACK_DYES.put(DyeColor.ORANGE, new ItemStack(Items.ORANGE_DYE));
@@ -63,6 +67,8 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
             STACK_DYES.put(DyeColor.LIGHT_GRAY, new ItemStack(Items.LIGHT_GRAY_DYE));
             STACK_DYES.put(DyeColor.WHITE, new ItemStack(Items.WHITE_DYE));
         }
+
+        return STACK_DYES;
     }
 
     @Override

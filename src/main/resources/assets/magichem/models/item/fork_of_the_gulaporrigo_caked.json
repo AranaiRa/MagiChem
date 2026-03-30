@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "magichem:item/fork_of_the_gulaporrigo_caked"
+  }
+}

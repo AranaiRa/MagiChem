@@ -17,6 +17,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -207,9 +208,21 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
         @Override
         public SublimationRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
-            ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
-            if(recipeObject.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
-                recipeObject = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:barrier")));
+            JsonObject recipeObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "object");
+            ItemStack recipeStack = new ItemStack(ItemRegistry.PROBLEMITE.get());
+            if(recipeObject != null) {
+                String key = recipeObject.get("item").getAsString();
+                int count = 1;
+                if(recipeObject.has("count"))
+                    count = recipeObject.get("count").getAsInt();
+
+                Item outputQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
+                if(outputQuery != null && outputQuery != Items.AIR) {
+                    recipeStack = new ItemStack(outputQuery, count);
+                } else {
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for sublimation recipe \""+pRecipeId);
+                }
+            }
 
             int tier = GsonHelper.getAsInt(pSerializedRecipe, "tier");
             int wisdom = GsonHelper.getAsInt(pSerializedRecipe, "wisdom");
@@ -234,9 +247,10 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                         String key = itemElement.getAsJsonObject().get("item").getAsString();
 
                         Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
-                        if (itemQuery != null) {
+                        if (itemQuery != null && itemQuery != Items.AIR) {
                             items.add(new ItemStack(itemQuery));
                         } else {
+                            items.add(new ItemStack(ItemRegistry.PROBLEMITE.get()));
                             MagiChemMod.LOGGER.warn("&&& Couldn't find item \"" + key + "\" for sublimation recipe \"" + pRecipeId);
                         }
                     }
@@ -247,9 +261,10 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                     int count = materiaElement.getAsJsonObject().get("count").getAsInt();
 
                     Item materiaQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
-                    if(materiaQuery != null) {
+                    if(materiaQuery != null && materiaQuery != Items.AIR) {
                         materia.add(new ItemStack(materiaQuery, count));
                     } else {
+                        materia.add(new ItemStack(ItemRegistry.ADMIXTURE_PROBLEMS.get()));
                         MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for sublimation recipe \""+pRecipeId);
                     }
                 });
@@ -269,7 +284,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             if(pSerializedRecipe.has("granted_advancement"))
                 grantedAdvancementRL = new ResourceLocation(GsonHelper.getAsString(pSerializedRecipe, "granted_advancement"));
 
-            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeObject, extractedStages, requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL);
+            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeStack, extractedStages, requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL);
         }
 
         @Override

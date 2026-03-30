@@ -1,0 +1,5 @@
+# Blender MTL File: 'chalice_of_tears.blend'
+# Material Count: 1
+
+newmtl CHALICE
+map_Kd magichem:item/chalice_of_tears

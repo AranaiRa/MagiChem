@@ -3,7 +3,7 @@
   "wisdom": 1,
   "categories": 7,
   "output_rate": 1.0,
-  "batch_size": 16,
+  "batch_size": 4,
   "object": { "item": "minecraft:packed_ice" },
   "components": [
     { "item": "magichem:essentia_water", "count": 6 },

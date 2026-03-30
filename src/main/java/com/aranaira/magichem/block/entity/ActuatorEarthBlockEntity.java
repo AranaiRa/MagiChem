@@ -119,13 +119,15 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                         return mi == ESSENTIA_EARTH;
                     }
                 }
+                else if(slot == SLOT_WASTE || slot == SLOT_RAREFIED_WASTE)
+                    return stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                 return false;
             }
 
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
+                    if(InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
                         return ItemStack.EMPTY;
                 }
 
@@ -276,36 +278,40 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
 
                 //Dump grime to waste
                 if (entity.currentGrime > ServerConfig.grimePerWaste) {
-                    ItemStack wasteStack = entity.itemHandler.getStackInSlot(SLOT_WASTE);
-                    int maxWasteToAdd = entity.currentGrime / ServerConfig.grimePerWaste;
-                    int actualWasteToAdd;
-                    if (wasteStack == ItemStack.EMPTY) {
-                        actualWasteToAdd = Math.min(maxWasteToAdd, 64);
-                        wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), actualWasteToAdd);
-                    } else {
-                        actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
-                        wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
+                    if(entity.itemHandler.getStackInSlot(SLOT_WASTE).isEmpty() || entity.itemHandler.getStackInSlot(SLOT_WASTE).getItem() != ItemRegistry.DEBUG_ORB.get()) {
+                        ItemStack wasteStack = entity.itemHandler.getStackInSlot(SLOT_WASTE);
+                        int maxWasteToAdd = entity.currentGrime / ServerConfig.grimePerWaste;
+                        int actualWasteToAdd;
+                        if (wasteStack == ItemStack.EMPTY) {
+                            actualWasteToAdd = Math.min(maxWasteToAdd, 64);
+                            wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), actualWasteToAdd);
+                        } else {
+                            actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
+                            wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
+                        }
+                        entity.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
+                        entity.currentGrime -= actualWasteToAdd * ServerConfig.grimePerWaste;
+                        entity.syncAndSave();
                     }
-                    entity.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
-                    entity.currentGrime -= actualWasteToAdd * ServerConfig.grimePerWaste;
-                    entity.syncAndSave();
                 }
 
                 //Dump rarefied
                 if (entity.currentRarefiedGrime > ServerConfig.grimePerWaste) {
-                    ItemStack wasteStack = entity.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE);
-                    int maxWasteToAdd = entity.currentRarefiedGrime / ServerConfig.grimePerWaste;
-                    int actualWasteToAdd;
-                    if (wasteStack == ItemStack.EMPTY) {
-                        actualWasteToAdd = Math.min(maxWasteToAdd, 64);
-                        wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), actualWasteToAdd);
-                    } else {
-                        actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
-                        wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
+                    if (entity.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE).isEmpty() || entity.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE).getItem() != ItemRegistry.DEBUG_ORB.get()) {
+                        ItemStack wasteStack = entity.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE);
+                        int maxWasteToAdd = entity.currentRarefiedGrime / ServerConfig.grimePerWaste;
+                        int actualWasteToAdd;
+                        if (wasteStack == ItemStack.EMPTY) {
+                            actualWasteToAdd = Math.min(maxWasteToAdd, 64);
+                            wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), actualWasteToAdd);
+                        } else {
+                            actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
+                            wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
+                        }
+                        entity.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
+                        entity.currentRarefiedGrime -= actualWasteToAdd * ServerConfig.grimePerWaste;
+                        entity.syncAndSave();
                     }
-                    entity.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
-                    entity.currentRarefiedGrime -= actualWasteToAdd * ServerConfig.grimePerWaste;
-                    entity.syncAndSave();
                 }
             }
         }
@@ -427,8 +433,10 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         }
 
         //Final application
-        currentGrime += insertion;
-        currentRarefiedGrime = Math.min(ServerConfig.quakeRefineryGrimeCapacity, currentRarefiedGrime + rarefied);
+        if(itemHandler.getStackInSlot(SLOT_WASTE).isEmpty() || itemHandler.getStackInSlot(SLOT_WASTE).getItem() != ItemRegistry.DEBUG_ORB.get())
+            currentGrime += insertion;
+        if(itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE).isEmpty() || itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE).getItem() != ItemRegistry.DEBUG_ORB.get())
+            currentRarefiedGrime = Math.min(ServerConfig.quakeRefineryGrimeCapacity, currentRarefiedGrime + rarefied);
         syncAndSave();
         return overflow;
     }
@@ -488,7 +496,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
             ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), is);
             getLevel().addFreshEntity(ie);
         }
-        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
+        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
             ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION));
             getLevel().addFreshEntity(ie);
         }
@@ -514,7 +522,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         if(activeProvisionRequests.size() > 0)
             return false;
         ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
-        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+        if(InventoryHelper.hasCustomModelData(insertionStack)) {
             return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2;
         }
         return insertionStack.isEmpty();

@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.entity.ext.*;
+import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
@@ -16,6 +17,7 @@ import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.util.AdvancementUtil;
+import com.aranaira.magichem.util.BypassedItemHandler;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
@@ -43,6 +45,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -69,7 +72,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
+public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IItemProvisionRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
 
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -82,7 +85,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     protected int
         progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
     protected boolean
-        isStalled = false, doDeferredRecipeCheck = false, preserveRecipe = false;
+        isStalled = false, doDeferredRecipeCheck = false, preserveRecipe = false, forceRecipeClear = false, itemsInTransit = false;
     protected Random r = new Random();
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected UUID initiatingPlayer = null;
@@ -173,8 +176,16 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
             }
 
             @Override
+            protected void validateSlotIndex(int slot) {
+                if (BypassedItemHandler.IsSignal(slot)) slot = BypassedItemHandler.ConvertSlot(slot);
+                super.validateSlotIndex(slot);
+            }
+
+            @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-                if(slot == SLOT_PROGRESS_HOLDER) {
+                if (slot == SLOT_PROGRESS_HOLDER || slot == SLOT_MARKS) return ItemStack.EMPTY;
+                if (slot == BypassedItemHandler.ConvertSlot(SLOT_PROGRESS_HOLDER)) {
+                    slot = BypassedItemHandler.ConvertSlot(slot);
                     final ItemStack stackInSlot = itemHandler.getStackInSlot(slot).copy();
                     stackInSlot.setTag(packCraftDataToTag());
                     if(!simulate)
@@ -183,6 +194,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                 } else if(slot == SLOT_WISDOM) {
                     return ItemStack.EMPTY;
                 }
+                if (slot == BypassedItemHandler.ConvertSlot(SLOT_MARKS)) slot = SLOT_MARKS;
 
                 return super.extractItem(slot, amount, simulate);
             }
@@ -308,11 +320,14 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         nbt.putFloat("reductionRate", this.reductionRate);
         nbt.putBoolean("preventDrawingLastMateria", this.preventDrawingLastMateria);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putBoolean("itemsInTransit", this.itemsInTransit);
 
         if(currentRecipe != null) {
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
             if(keyQuery != null)
                 nbt.putString("recipe", keyQuery.toString());
+        } else {
+            nbt.putBoolean("forceRecipeClear", true);
         }
 
         if(initiatingPlayer != null)
@@ -354,7 +369,9 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         if(nbt.contains("initiatingPlayer"))
             initiatingPlayer = UUID.fromString(nbt.getString("initiatingPlayer"));
 
+        itemsInTransit = nbt.getBoolean("itemsInTransit");
         if(nbt.contains("forceDisplayedRecipeUpdate")) forceDisplayedRecipeUpdate = true;
+        if(nbt.contains("forceRecipeClear")) forceRecipeClear = true;
         if(nbt.contains("clearRecipeAfterNextProcess")) clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
 
         satisfactionDemands.clear();
@@ -383,6 +400,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         nbt.putFloat("reductionRate", this.reductionRate);
         nbt.putBoolean("preventDrawingLastMateria", this.preventDrawingLastMateria);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putBoolean("itemsInTransit", this.itemsInTransit);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -391,10 +409,14 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
             if(keyQuery != null)
                 nbt.putString("recipe", keyQuery.toString());
+        } else {
+            nbt.putBoolean("forceRecipeClear", true);
         }
 
         if(forceDisplayedRecipeUpdate)
             nbt.putBoolean("forceDisplayedRecipeUpdate", true);
+        if(forceRecipeClear)
+            nbt.putBoolean("forceRecipeClear", true);
 
         nbt.putInt("numberOfDemands", satisfactionDemands.size());
         for(int i=0; i<satisfactionDemands.size(); i++) {
@@ -544,7 +566,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                 anbe.handleAnimationDrivers();
                 anbe.spawnParticles();
             } else {
-                for (AbstractDirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
+                    for (AbstractDirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
                     if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                         if(anbe.animStage == ANIM_STAGE_RAMP_CIRCLE || anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pBlockState, arcane, true);
                         float newReductionRate = arcane.getSlurryReductionRate() / 100f;
@@ -586,15 +608,21 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
 
             if(anbe.doDeferredRecipeCheck) {
                 boolean changed = false;
-                Item itemQuery = ForgeRegistries.ITEMS.getValue(anbe.deferredRecipeQuery);
-                SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(pLevel, itemQuery);
+                if(anbe.forceRecipeClear) {
+                    changed = true;
+                    anbe.forceRecipeClear = false;
+                    anbe.currentRecipe = null;
+                } else {
+                    Item itemQuery = ForgeRegistries.ITEMS.getValue(anbe.deferredRecipeQuery);
+                    SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(pLevel, itemQuery);
 
-                if(recipeQuery != null) {
-                    changed = anbe.currentRecipe != recipeQuery;
-                    anbe.currentRecipe = recipeQuery;
+                    if (recipeQuery != null) {
+                        changed = anbe.currentRecipe != recipeQuery;
+                        anbe.currentRecipe = recipeQuery;
 
-                    if(anbe.animStage != ANIM_STAGE_IDLE) {
-                        anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
+                        if (anbe.animStage != ANIM_STAGE_IDLE) {
+                            anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
+                        }
                     }
                 }
                 anbe.doDeferredRecipeCheck = false;
@@ -855,8 +883,8 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                                     sp.getAdvancements().award(advancement, "nexus");
                                     //Clear the recipe if we're crafting something that forbids its own recipe
                                     if(anbe.currentRecipe.isForbiddenByAdvancement() && anbe.currentRecipe.grantsAdvancementOnCraft() && anbe.currentRecipe.getForbiddenAdvancement().equals(anbe.currentRecipe.getGrantedAdvancement())) {
-                                        anbe.deferredRecipeQuery = null;
-                                        anbe.doDeferredRecipeCheck = true;
+                                        anbe.currentRecipe = null;
+                                        anbe.forceRecipeClear = true;
                                     }
                                     anbe.forceDisplayedRecipeUpdate = true;
                                 }
@@ -865,6 +893,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                         if(anbe.clearRecipeAfterNextProcess) {
                             anbe.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
                             anbe.clearRecipeAfterNextProcess = false;
+                            anbe.currentRecipe = null;
                         }
                         if(stagePreCraft > 0)
                             anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_ADVANCED;
@@ -1044,7 +1073,8 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                             markedPairs.add(new Pair<>(single, markedPos));
                         }
                         else if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
-                            markedPairs.add(new Pair<>(multi, markedPos));
+                            if(!(multi instanceof MagicMirrorBlockEntity) && !(multi instanceof MirrorLabyrinthBlockEntity) && !(multi instanceof MirrorLabyrinthRouterBlockEntity))
+                                markedPairs.add(new Pair<>(multi, markedPos));
                         }
                     }
                 }
@@ -1440,7 +1470,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     }
 
     public int getScaledProgress(int pWidth) {
-        return progress * pWidth / cachedSpec.ticksToCraft;
+        return currentRecipe == null ? 0 : (progress * pWidth / cachedSpec.ticksToCraft);
     }
 
     ////////////////////
@@ -1654,6 +1684,11 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     }
 
     @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
+    @Override
     public void destroyRouters() {
         AlchemicalNexusBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
@@ -1723,10 +1758,16 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
 
     @Override
     public byte setRecipe(ItemStack pStack, Player player) {
+        if(pStack.isEmpty()) {
+            currentRecipe = null;
+            return ERROR_CODE_SUCCESS;
+        }
+
         final SublimationRecipe sublimationRecipeQuery = SublimationRecipe.getSublimationRecipe(getLevel(), pStack);
         if(sublimationRecipeQuery == null)
             return ERROR_CODE_NO_SUCH_RECIPE;
 
+        initiatingPlayer = player.getUUID();
         setRecipeFromOutput(getLevel(), pStack);
         return ERROR_CODE_SUCCESS;
     }
@@ -1739,5 +1780,66 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
         return currentRecipe == null ? ItemStack.EMPTY : pMakeCopy ? currentRecipe.getResultItem().copy() : currentRecipe.getResultItem();
+    }
+
+    ////////////////////
+    // ITEM SHLORP HANDLING
+    ////////////////////
+
+    @Override
+    public boolean needsItemProvisioning() {
+        if(currentRecipe == null || !(animStage == ANIM_STAGE_IDLE || animStage == ANIM_STAGE_CRAFTING_IDLE))
+            return false;
+
+        NonNullList<ItemStack> needs = getItemProvisioningNeeds();
+
+        return !(needs.isEmpty() || itemsInTransit);
+    }
+
+    @Override
+    public boolean needsAllItemsPresentForProvisioning() {
+        return true;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItemProvisioningNeeds() {
+        NonNullList<ItemStack> needs = NonNullList.create();
+
+        if(currentRecipe != null) {
+            InfusionStage stage = currentRecipe.getStages(false).get(craftingStage);
+            NonNullList<ItemStack> requirements = stage.componentItems;
+            for(int i=0; i<requirements.size(); i++) {
+                ItemStack alreadyPresent = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                if(alreadyPresent.isEmpty()) {
+                    needs.add(requirements.get(i));
+                } else {
+                    needs.add(ItemStack.EMPTY);
+                }
+            }
+        }
+
+        return needs;
+    }
+
+    @Override
+    public void setItemProvisioningInProgress() {
+        itemsInTransit = true;
+    }
+
+    @Override
+    public void cancelItemProvisioningInProgress() {
+        itemsInTransit = false;
+    }
+
+    @Override
+    public void provideItems(NonNullList<ItemStack> pStacks) {
+        for(int i=0; i<pStacks.size(); i++) {
+            ItemStack query = itemHandler.insertItem(SLOT_INPUT_START + i, pStacks.get(i), false);
+            if(!query.isEmpty() && level != null) {
+                ItemEntity ie = new ItemEntity(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), query);
+                level.addFreshEntity(ie);
+            }
+        }
+        itemsInTransit = false;
     }
 }

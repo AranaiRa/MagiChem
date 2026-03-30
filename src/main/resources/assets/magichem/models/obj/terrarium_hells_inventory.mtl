@@ -1,0 +1,14 @@
+# Blender MTL File: 'terrariums.blend'
+# Material Count: 4
+
+newmtl ARCANE_STONE
+map_Kd mna:block/artifice/decoration/arcane_stone
+
+newmtl LAVA
+map_Kd minecraft:block/lava_still
+
+newmtl TERRARIUM_BASE
+map_Kd magichem:block/terrarium_base
+
+newmtl TERRARIUM_HELLS
+map_Kd magichem:block/terrarium_hells

@@ -6,6 +6,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.MobEffectsRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -95,8 +96,12 @@ public class GnosticOrbBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         final ItemStack stack = pPlayer.getItemInHand(pHand);
         if(pLevel.getBlockEntity(pPos) instanceof GnosticOrbBlockEntity orb) {
-            if(stack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+            if(stack.getItem() == ItemRegistry.DEBUG_ORB.get() || pPlayer.hasEffect(MobEffectsRegistry.REGAL_TWILIGHT.get())) {
                 if(orb.hasProphecyCooking()) orb.skipToFullCharge();
+                else if(orb.isProphecyReady()) {
+                    orb.finalizeProphecy(pPlayer);
+                    return InteractionResult.CONSUME;
+                }
             }
             else if (!pLevel.isClientSide()) {
                 if (!orb.hasProphecyCooking()) {

@@ -1,9 +1,13 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.gui.AstralObserverMenu;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
@@ -211,6 +215,7 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
             return stack.is(ASTRAL_OBSERVER_LENSES) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
         }
     };
+    private int analogSignalLastTick = 0;
 
     public AstralObserverBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.ASTRAL_OBSERVER_BE.get(), pPos, pBlockState);
@@ -477,11 +482,16 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
             }
 
             if(!pLevel.isClientSide()) {
-
                 if(pState.getValue(NEEDS_HARD_UPDATE)) {
                     pLevel.setBlock(pPos, pState.setValue(NEEDS_HARD_UPDATE, false), 3);
                     pLevel.sendBlockUpdated(pPos, pState, pState.setValue(NEEDS_HARD_UPDATE, false), 3);
                 }
+
+                int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+                if(analogSignalThisTick != entity.analogSignalLastTick) {
+                    entity.setChanged();
+                }
+                entity.analogSignalLastTick = analogSignalThisTick;
             }
         }
     }

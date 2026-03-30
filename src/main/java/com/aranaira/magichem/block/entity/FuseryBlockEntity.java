@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
@@ -8,6 +9,7 @@ import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.gui.FuseryMenu;
@@ -79,6 +81,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             materiaToVent = 0;
     public float
             wheelAngle, wheelSpeed, cogAngle, cogSpeed;
+    private int analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -91,12 +94,8 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    ItemStack item = super.extractItem(slot, amount, simulate);
-                    if(item.hasTag()) {
-                        CompoundTag nbt = item.getTag();
-                        if(nbt.contains("CustomModelData")) return ItemStack.EMPTY;
-                    }
-                    return item;
+                    if (InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(slot)))
+                        return ItemStack.EMPTY;
                 }
                 else if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
                     ItemStack bottleStack = getStackInSlot(SLOT_BOTTLES);
@@ -442,6 +441,18 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         //Particles
         generateCauldronSmokeParticles(pLevel, pPos, pEntity);
 
+        if(!pLevel.isClientSide()) {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, FuseryRouterType, DevicePlugDirection> offset : FuseryBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
+        }
+
         AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, FuseryBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
 
@@ -454,7 +465,16 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 break;
             }
         }
-        return materiaInOutput;
+        boolean materiaInInput = false;
+        if(!materiaInOutput){
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                    materiaInInput = true;
+                    break;
+                }
+            }
+        }
+        return materiaInOutput || materiaInInput;
     }
 
     public static int getVar(IDs pID) {
@@ -517,6 +537,11 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 }
             }
         }
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
     }
 
     ////////////////////
@@ -594,7 +619,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 if (componentMateria[i / 2] != null) {
                     if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if (InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i / 2].getItem()) {
+                        if (InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i / 2].getItem()) {
                             materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;
@@ -602,7 +627,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                     }
                 } else {
                     ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                    if (InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i / 2].getItem()) {
+                    if (InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i / 2].getItem()) {
                         materiaToVent = materiaToVent | (1 << i);
                         itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                         continue;

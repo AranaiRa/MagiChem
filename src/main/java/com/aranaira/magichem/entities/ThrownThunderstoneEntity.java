@@ -23,6 +23,7 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -97,9 +98,12 @@ public class ThrownThunderstoneEntity extends ThrowableItemProjectile {
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         if(!level().isClientSide()){
-            BlockPos tPos = pResult.getBlockPos().above();
+            BlockPos oPos = pResult.getBlockPos();
+            BlockState oState = level().getBlockState(oPos);
+            BlockPos tPos = oPos.above();
+            BlockState tState = level().getBlockState(tPos);
 
-            if (level().getBlockState(tPos).isAir()) {
+            if (tState.isAir() || (oState.getBlock() == Blocks.LIGHTNING_ROD || tState.getBlock() == Blocks.LIGHTNING_ROD)) {
                 boolean isAltarInRange = false;
                 for(int y=-2;y<=2;y++) {
                     for (int x=-2;x<=2;x++) {

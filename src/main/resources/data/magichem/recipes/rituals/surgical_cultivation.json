@@ -1,0 +1,121 @@
+{
+	"type": "mna:ritual",
+	"tier": 5,
+	"pattern":
+	[
+		[ 0, 0, 0,19,21,20, 0, 0, 0 ],
+		[ 0,15, 0, 0,-1, 0, 0,17, 0 ],
+		[ 0, 0,19,-1,14,-1,20, 0, 0 ],
+		[ 0,16, 0, 0,-1, 0, 0,18, 0 ],
+		[ 0, 0, 0, 9,10, 8, 0, 0, 0 ],
+		[ 0, 0, 2, 0, 0, 0, 7, 0, 0 ],
+		[ 0, 0,11,-1, 1,-1,13, 0, 0 ],
+		[ 0, 0, 3, 0, 0, 0, 6, 0, 0 ],
+		[ 0, 0, 0, 4,12, 5, 0, 0, 0 ]
+	],
+	"displayPattern":
+	[
+		[ 0, 0, 0,15,13,16, 0, 0, 0 ],
+		[ 0,21, 0, 0,-1, 0, 0,25, 0 ],
+		[ 0,18,22,-1,-1,-1,26,19, 0 ],
+		[ 0,23, 0, 0,-1, 0, 0,27, 0 ],
+		[ 0, 0, 0, 5,12, 4, 0, 0, 0 ],
+		[ 0, 0, 6, 0, 0, 0, 3, 0, 0 ],
+		[ 0, 0, 1,-1,-1,-1, 2, 0, 0 ],
+		[ 0, 0, 7, 0, 0, 0,10, 0, 0 ],
+		[ 0, 0, 0, 8,-1, 9, 0, 0, 0 ]
+	],
+	"reagents":
+	[
+		"   G G   ",
+		" P     P ",
+		"  N M N  ",
+		" P     P ",
+		"   RBR   ",
+		"  R   R  ",
+		"  H I C  ",
+		"  R   R  ",
+		"   RTR   "
+	],
+	"keys":
+	{
+		"B":
+		{
+			"item": "magichem:infused_bolt",
+			"optional": false,
+			"consume": true,
+			"is_dynamic": false
+		},
+		"C":
+		{
+			"item": "mna:runesmith_chisel",
+			"optional": false,
+			"consume": false,
+			"is_dynamic": false
+		},
+		"G":
+		{
+			"item": "minecraft:ghast_tear",
+			"optional": false,
+			"consume": true,
+			"is_dynamic": false
+		},
+		"H":
+		{
+			"item": "mna:runesmith_hammer",
+			"optional": false,
+			"consume": false,
+			"is_dynamic": false
+		},
+		"I":
+		{
+			"item": "magichem:immortal_heart",
+			"optional": false,
+			"consume": true,
+			"is_dynamic": false
+		},
+		"M":
+		{
+			"item": "magichem:moonshine",
+			"optional": false,
+			"consume": true,
+			"is_dynamic": false
+		},
+		"N":
+		{
+			"item": "minecraft:nether_star",
+			"optional": false,
+			"consume": true,
+			"is_dynamic": false
+		},
+		"P":
+		{
+			"item": "mna:healing_poultice",
+			"optional": false,
+			"consume": true,
+			"is_dynamic": false
+		},
+		"R":
+		{
+			"item": "minecraft:red_candle",
+			"optional": false,
+			"consume": true,
+			"is_dynamic": false
+		},
+		"T":
+		{
+			"item": "magichem:glass_cutting_tools",
+			"optional": false,
+			"consume": false,
+			"is_dynamic": false
+		}
+	},
+	"parameters":
+	{
+		"innerColor": "0xb31504",
+		"outerColor": "0x24976e",
+		"displayIndexes": false,
+		"connectBeam": false,
+		"beamColor": "0xf11c06"
+	}
+}

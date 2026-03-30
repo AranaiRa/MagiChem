@@ -11,6 +11,7 @@ import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.mna.tools.math.MathUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -20,6 +21,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -57,7 +59,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     private FixationSeparationRecipe lastRecipe = null;
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
     private ItemStack lastRecipeResultAdmixture = ItemStack.EMPTY;
-    private boolean recipesChanged = false;
+    private String lastUsedFilter = null;
 
     public FuseryScreen(FuseryMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -104,11 +106,11 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;
-        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
-            return true;
-        } else {
-            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
+        if (Minecraft.getInstance().options.keyInventory.matches(pKeyCode, pScanCode)) {
+            if (recipeFilterBox.canConsumeInput()) return recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     private void initializeRecipeSelectorButtons(){
@@ -141,32 +143,8 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                return super.charTyped(pCodePoint, pModifiers);
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                super.deleteChars(pNum);
-            }
-
-            @Override
-            public void deleteWords(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                super.deleteWords(pNum);
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
@@ -191,6 +169,9 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     private List<ItemStack> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
+        if (Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         List<FixationSeparationRecipe> fixationRecipeOutputs = getAllRecipes();
         filteredRecipes.clear();
 
@@ -202,8 +183,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
-
-        recipesChanged = false;
+        recipeFilterRow = MathUtils.clamp(recipeFilterRow, 0, recipeFilterRowTotal - 5);
     }
 
     private List<FixationSeparationRecipe> allRecipes = new ArrayList<>();
@@ -273,8 +253,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        if(recipesChanged)
-            updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
+        updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(gui);
         updateFilterBoxContents();
     }
@@ -607,5 +586,14 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         }
 
         gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(FuseryScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
+                new Rect2i(xOrigin + PANEL_GRIME_X, yOrigin + PANEL_GRIME_Y, PANEL_GRIME_W, PANEL_GRIME_H)
+        );
     }
 }

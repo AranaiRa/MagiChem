@@ -132,7 +132,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
+                    if(InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
                         return ItemStack.EMPTY;
                 }
 
@@ -602,7 +602,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public void dropContents() {
-        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
+        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
             ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION));
             getLevel().addFreshEntity(ie);
         }
@@ -628,7 +628,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         if(activeProvisionRequests.size() > 0)
             return false;
         ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
-        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+        if(InventoryHelper.hasCustomModelData(insertionStack)) {
             return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2;
         }
         return insertionStack.isEmpty();

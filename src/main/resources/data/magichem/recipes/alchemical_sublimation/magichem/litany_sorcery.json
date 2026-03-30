@@ -12,7 +12,7 @@
       "components": [
         { "item": "mna:vellum" },
         { "item": "mna:mana_resevoir" },
-        { "item": "mna:mote_magic" }
+        { "item": "mna:mote_arcane" }
       ],
       "materia": [
         { "item": "magichem:essentia_nourishing", "count": 20 },

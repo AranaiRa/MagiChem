@@ -1,0 +1,49 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:auroral_silk"
+  },
+  "stages": [
+    {
+      "experience": 10,
+      "components": [
+        { "item": "magichem:chromatic_silk_red" },
+        { "item": "magichem:chromatic_silk_orange" },
+        { "item": "magichem:radiant_rose" },
+        { "item": "magichem:chromatic_silk_yellow" },
+        { "item": "magichem:chromatic_silk_lime" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_color", "count": 56 }
+      ]
+    },
+    {
+      "experience": 20,
+      "components": [
+        { "item": "magichem:chromatic_silk_green" },
+        { "item": "magichem:chromatic_silk_cyan" },
+        { "item": "magichem:immaculate_vinteum_crystal" },
+        { "item": "magichem:chromatic_silk_light_blue" },
+        { "item": "magichem:chromatic_silk_blue" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_comfort", "count": 48 }
+      ]
+    },
+    {
+      "experience": 40,
+      "components": [
+        { "item": "magichem:chromatic_silk_purple" },
+        { "item": "magichem:chromatic_silk_magenta" },
+        { "item": "magichem:radiant_rose" },
+        { "item": "magichem:chromatic_silk_pink" },
+        { "item": "magichem:chromatic_silk_brown" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_sight", "count": 40 }
+      ]
+    }
+  ]
+}

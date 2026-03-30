@@ -1,0 +1,66 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:wisdom_stone_rubedo"
+  },
+  "stages": [
+    {
+      "experience": 135,
+      "components": [
+        { "item": "magichem:daunting_esoterica" },
+        { "item": "magichem:auroral_silk" },
+        { "item": "magichem:daunting_esoterica" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_potential", "count": 100 },
+        { "item": "magichem:admixture_sorcery", "count": 70 },
+        { "item": "magichem:admixture_violence", "count": 70 },
+        { "item": "magichem:essentia_rubedo", "count": 50 }
+      ]
+    },
+    {
+      "experience": 180,
+      "components": [
+        { "item": "magichem:ambrosia" },
+        { "item": "magichem:fork_of_the_gulaporrigo" },
+        { "item": "magichem:nectar" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_alcohol", "count": 70 },
+        { "item": "magichem:admixture_delight", "count": 70 },
+        { "item": "magichem:admixture_gourmet", "count": 70 },
+        { "item": "magichem:admixture_satiety", "count": 70 }
+      ]
+    },
+    {
+      "experience": 225,
+      "components": [
+        { "item": "magichem:immortal_heart" },
+        { "item": "magichem:chalice_of_tears" },
+        { "item": "magichem:crown_of_glory" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_demon", "count": 70 },
+        { "item": "magichem:admixture_exanimate", "count": 70 },
+        { "item": "magichem:admixture_fey", "count": 70 },
+        { "item": "magichem:admixture_wizard", "count": 70 }
+      ]
+    },
+    {
+      "experience": 270,
+      "components": [
+        { "item": "magichem:daunting_esoterica" },
+        { "item": "magichem:wisdom_stone_citrinitas" },
+        { "item": "magichem:daunting_esoterica" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_change", "count": 100 },
+        { "item": "magichem:admixture_healing", "count": 70 },
+        { "item": "magichem:admixture_blood", "count": 70 },
+        { "item": "magichem:essentia_rubedo", "count": 40 }
+      ]
+    }
+  ]
+}

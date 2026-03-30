@@ -1,0 +1,27 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:nectar"
+  },
+  "stages": [
+    {
+      "experience": 30,
+      "components": [
+        { "item": "magichem:glowberry_mash" },
+        { "item": "magichem:morsel_sweetness" },
+        { "item": "magichem:morsel_spice" },
+        { "item": "magichem:morsel_sweetness" },
+        { "item": "minecraft:honeycomb" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_nectar", "count": 45 },
+        { "item": "magichem:admixture_gourmet", "count": 20 },
+        { "item": "magichem:admixture_light", "count": 15 },
+        { "item": "magichem:admixture_adornment", "count": 3 },
+        { "item": "magichem:essentia_citrinitas", "count": 12 }
+      ]
+    }
+  ]
+}

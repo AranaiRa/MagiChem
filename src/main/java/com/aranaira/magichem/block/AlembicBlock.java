@@ -265,6 +265,7 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
                 BlockEntity be = level.getBlockEntity(blockPos);
                 if(be instanceof AlembicBlockEntity abe) {
                     abe.setHeat(Math.round(damage * duration * 20));
+                    abe.syncAndSave();
                     return true;
                 }
             } else if(isp.getPart().equals(Components.SPLASH)) {

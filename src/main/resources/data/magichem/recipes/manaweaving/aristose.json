@@ -1,0 +1,15 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:aristose",
+  "tier": 2,
+  "items": [
+    "minecraft:blue_orchid",
+    "minecraft:sugar",
+    "magichem:verdigris",
+    "minecraft:sugar",
+    "minecraft:dandelion"
+  ],
+  "patterns": [
+    "mna:knot3"
+  ]
+}

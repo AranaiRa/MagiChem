@@ -13,6 +13,7 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -31,12 +32,14 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_ALCHEMICAL_NEXUS;
 
-public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot {
+public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IItemProvisionRequester, IHasDeviceRecipeSlot {
 
     private BlockPos masterPos;
     private AlchemicalNexusBlockEntity master;
@@ -93,6 +96,18 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     @Override
     public void linkPluginsDeferred() {
         getMaster().linkPluginsDeferred();
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        if(master == null) {
+            if (masterPos != null)
+                master = (AlchemicalNexusBlockEntity) getLevel().getBlockEntity(masterPos);
+        }
+        if(master == null)
+            return new ArrayList<AbstractDirectionalPluginBlockEntity>();
+
+        return master.getPlugins();
     }
 
     public AlchemicalNexusBlockEntity getMaster(){
@@ -325,5 +340,51 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
             return null;
 
         return getMaster().getRecipeItem(pMakeCopy);
+    }
+
+    ////////////////////
+    // ITEM SHLORP HANDLING
+    ////////////////////
+
+    @Override
+    public boolean needsItemProvisioning() {
+        if(masterPos == null)
+            return false;
+
+        return getMaster().needsItemProvisioning();
+    }
+
+    @Override
+    public boolean needsAllItemsPresentForProvisioning() {
+        if(masterPos == null)
+            return false;
+
+        return getMaster().needsAllItemsPresentForProvisioning();
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItemProvisioningNeeds() {
+        if(masterPos == null)
+            return NonNullList.create();
+
+        return getMaster().getItemProvisioningNeeds();
+    }
+
+    @Override
+    public void setItemProvisioningInProgress() {
+        if(masterPos != null)
+            getMaster().setItemProvisioningInProgress();
+    }
+
+    @Override
+    public void cancelItemProvisioningInProgress() {
+        if(masterPos != null)
+            getMaster().cancelItemProvisioningInProgress();
+    }
+
+    @Override
+    public void provideItems(NonNullList<ItemStack> pStacks) {
+        if(masterPos != null)
+            getMaster().provideItems(pStacks);
     }
 }
