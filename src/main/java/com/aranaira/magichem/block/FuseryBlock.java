@@ -10,6 +10,7 @@ import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.blocks.ISpellInteractibleBlock;
 import com.mna.api.spells.base.IModifiedSpellPart;
@@ -21,6 +22,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -39,6 +42,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
@@ -214,9 +218,18 @@ public class FuseryBlock extends BaseEntityBlock implements ISpellInteractibleBl
                 return InteractionResult.PASS;
             if(!holdingCleaningBrush) {
                 BlockEntity entity = level.getBlockEntity(pos);
-                if (entity instanceof FuseryBlockEntity) {
+                if (entity instanceof FuseryBlockEntity fusery) {
                         if (!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
-                        NetworkHooks.openScreen((ServerPlayer) player, (FuseryBlockEntity) entity, pos);
+                            NetworkHooks.openScreen((ServerPlayer) player, (FuseryBlockEntity) entity, pos);
+                        if (player.getItemInHand(hand).getItem() == ItemRegistry.ACADEMIC_SLURRY_BUCKET.get()) {
+                            if(player.isCreative() || (fusery.getFluidInTank(0).getAmount() + 1000 <= fusery.getTankCapacity(0))) {
+                                fusery.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                                fusery.syncAndSave();
+                                if(!player.isCreative())
+                                    player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+                            }
+                            return InteractionResult.CONSUME;
+                        }
                 } else {
                     throw new IllegalStateException("FuseryBlockEntity container provider is missing!");
                 }
@@ -273,6 +286,7 @@ public class FuseryBlock extends BaseEntityBlock implements ISpellInteractibleBl
     @Override
     public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
         if(pLevel.getBlockEntity(pPos) instanceof FuseryBlockEntity fbe) {
+            boolean hasRecipe = fbe.getRecipeItem() != null && !fbe.getRecipeItem().isEmpty();
             boolean hasInputItems = !fbe.getContentsOfInputSlots(FuseryBlockEntity::getVar).isEmpty();
             boolean hasOutputItems = !fbe.getContentsOfOutputSlots(FuseryBlockEntity::getVar).isEmpty();
             boolean hasSlurry = false;
@@ -282,6 +296,7 @@ public class FuseryBlock extends BaseEntityBlock implements ISpellInteractibleBl
             }
 
             int signal = 0;
+            signal = signal | (hasRecipe ? 1 : 0);
             signal = signal | (hasInputItems ? 1 << 1 : 0);
             signal = signal | (hasOutputItems ? 1 << 2 : 0);
             signal = signal | (hasSlurry ? 1 << 3 : 0);

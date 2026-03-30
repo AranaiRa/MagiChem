@@ -18,6 +18,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class EntitiesRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES;
     public static final RegistryObject<EntityType<ShlorpEntity>> SHLORP_ENTITY;
+    public static final RegistryObject<EntityType<ItemShlorpEntity>> ITEM_SHLORP_ENTITY;
     public static final RegistryObject<EntityType<SublimationRitualVFXEntity>> SUBLIMATION_RITUAL_VFX_ENTITY;
     public static final RegistryObject<EntityType<ThrownThunderstoneEntity>> THROWN_THUNDERSTONE_ENTITY;
     public static final RegistryObject<EntityType<ThrownSonicBombEntity>> THROWN_SONIC_BOMB_ENTITY;
@@ -35,6 +36,12 @@ public class EntitiesRegistry {
                 Builder.of(ShlorpEntity::new, MobCategory.MISC)
                 .sized(0.2f, 0.2f)
                 .build(MagiChemMod.MODID+":shlorp")
+        );
+
+        ITEM_SHLORP_ENTITY = ENTITY_TYPES.register("item_shlorp", () ->
+                Builder.of(ItemShlorpEntity::new, MobCategory.MISC)
+                .sized(0.2f, 0.2f)
+                .build(MagiChemMod.MODID+":item_shlorp")
         );
 
         SUBLIMATION_RITUAL_VFX_ENTITY = ENTITY_TYPES.register("infusion_ritual_vfx", () ->

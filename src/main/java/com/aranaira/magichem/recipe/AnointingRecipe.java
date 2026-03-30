@@ -152,7 +152,11 @@ public class AnointingRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             Block targetAsBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(targetRL));
             Block resultAsBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(resultRL));
-            MateriaItem materiaItem = materiaMap.get(materiaRL);
+            MateriaItem materiaItem;
+            if(materiaMap.containsKey(materiaRL))
+                materiaItem = materiaMap.get(materiaRL);
+            else
+                materiaItem = (MateriaItem)ItemRegistry.ADMIXTURE_PROBLEMS.get();
 
             return new AnointingRecipe(pRecipeId, materiaItem, chance, targetAsBlock, resultAsBlock);
         }

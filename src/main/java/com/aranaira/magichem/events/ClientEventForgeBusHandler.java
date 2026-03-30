@@ -25,12 +25,21 @@ import com.mna.KeybindInit;
 import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.api.config.ClientConfigValues;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
+import com.mna.tools.render.ModelUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -41,13 +50,17 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -71,6 +84,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 )
 public class ClientEventForgeBusHandler {
     private static final TagKey<Item>
+            TAG_MAGICHEM_EXEMPLARS = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "exemplars")),
             TAG_MAGICHEM_WISDOM_STONES = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "wisdom_stones"));
     private static final ResourceLocation TEXTURE_WISDOM = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_active.png");
     private static final HashMap<Item, ConstructStudyMaterialRecipe> studyRecipes = new HashMap<>();
@@ -78,26 +92,52 @@ public class ClientEventForgeBusHandler {
     @SubscribeEvent
     public static void renderItemTooltips(ItemTooltipEvent event) {
         if(event.getEntity() != null && event.getEntity().level() != null){
-            if (studyRecipes.size() == 0) {
-                for (ConstructStudyMaterialRecipe recipe : ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(event.getEntity().level())) {
-                    studyRecipes.put(recipe.getItem(), recipe);
+            //Study tooltip
+            {
+                if (studyRecipes.size() == 0) {
+                    for (ConstructStudyMaterialRecipe recipe : ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(event.getEntity().level())) {
+                        studyRecipes.put(recipe.getItem(), recipe);
+                    }
+                }
+
+                if (event.getItemStack().hasTag() && event.getItemStack().getTag().contains("alreadyStudied")) {
+                    event.getToolTip().add(1,
+                            Component.empty().withStyle(ChatFormatting.BLUE)
+                                    .append(Component.translatable("tooltip.magichem.event.study.part1"))
+                                    .append(Component.translatable("tooltip.magichem.event.study.part2.complete"))
+                    );
+                } else if (studyRecipes.containsKey(event.getItemStack().getItem())) {
+                    event.getToolTip().add(1,
+                            Component.empty().withStyle(ChatFormatting.GREEN)
+                                    .append(Component.translatable("tooltip.magichem.event.study.part1"))
+                                    .append(Component.literal("" + studyRecipes.get(event.getItemStack().getItem()).getExperience()))
+                                    .append(Component.translatable("tooltip.magichem.event.study.part2.xp"))
+                                    .append(Component.translatable(studyRecipes.get(event.getItemStack().getItem()).isConsumed() ? "tooltip.magichem.event.study.part3.destroys" : "tooltip.magichem.event.study.part3.once"))
+                    );
                 }
             }
 
-            if (event.getItemStack().hasTag() && event.getItemStack().getTag().contains("alreadyStudied")) {
+            //Exemplar tooltip
+            if(event.getItemStack().is(TAG_MAGICHEM_EXEMPLARS)) {
                 event.getToolTip().add(1,
                         Component.empty().withStyle(ChatFormatting.BLUE)
-                                .append(Component.translatable("tooltip.magichem.event.study.part1"))
-                                .append(Component.translatable("tooltip.magichem.event.study.part2.complete"))
+                                .append(Component.translatable("tooltip.magichem.exemplar").withStyle(ChatFormatting.ITALIC, ChatFormatting.GOLD))
                 );
-            } else if (studyRecipes.containsKey(event.getItemStack().getItem())) {
-                event.getToolTip().add(1,
-                        Component.empty().withStyle(ChatFormatting.GREEN)
-                                .append(Component.translatable("tooltip.magichem.event.study.part1"))
-                                .append(Component.literal("" + studyRecipes.get(event.getItemStack().getItem()).getExperience()))
-                                .append(Component.translatable("tooltip.magichem.event.study.part2.xp"))
-                                .append(Component.translatable(studyRecipes.get(event.getItemStack().getItem()).isConsumed() ? "tooltip.magichem.event.study.part3.destroys" : "tooltip.magichem.event.study.part3.once"))
-                );
+            }
+
+            //Wisdom stone cooldown tooltip
+            if(event.getItemStack().getItem() instanceof PhilosophersStoneItem wisdom && wisdom.getWisdom() >= 4){
+                ItemCooldowns cooldowns = Minecraft.getInstance().player.getCooldowns();
+                if(cooldowns.isOnCooldown(wisdom)){
+                    float cooldownPercent = cooldowns.getCooldownPercent(wisdom, 0);
+                    int remainingMinutes = (int)Math.ceil((wisdom.getWisdom() == 4 ? 60f : 10f) * cooldownPercent);
+                    event.getToolTip().add(
+                            Component.empty().withStyle(ChatFormatting.BLUE)
+                                    .append(Component.translatable("tooltip.magichem.wisdom_cooldown")
+                                            .append(Component.literal(remainingMinutes+"m"))
+                                            .withStyle(ChatFormatting.ITALIC, ChatFormatting.GREEN))
+                    );
+                }
             }
         }
     }
@@ -113,7 +153,7 @@ public class ClientEventForgeBusHandler {
         IWisdomCapability playerWisdomCap = null;
         ICuriosItemHandler playerCuriosCap = null;
 
-        if(player != null) {
+        if(player != null && !player.isDeadOrDying()) {
             final LazyOptional<IPlayerMagic> query = player.getCapability(PlayerMagicProvider.MAGIC);
             if (query.isPresent() && query.resolve().isPresent())
                 playerMagicCap = query.resolve().get();
@@ -264,6 +304,12 @@ public class ClientEventForgeBusHandler {
                     } else if (blockEntity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
                         if (anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_LEFT || anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_RIGHT) {
                             if(CommonEventHelper.checkDirectionAndPos(anrbe.getPlugDirection(), bhr)) {
+                                mode = 2;
+                            }
+                        }
+                    } else if (blockEntity instanceof PrimeAggregatorRouterBlockEntity parbe) {
+                        if (parbe.getRouterType() == PrimeAggregatorRouterType.PLUG_LEFT || parbe.getRouterType() == PrimeAggregatorRouterType.PLUG_RIGHT) {
+                            if(CommonEventHelper.checkDirectionAndPos(parbe.getPlugDirection(), bhr)) {
                                 mode = 2;
                             }
                         }

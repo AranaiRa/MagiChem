@@ -5,6 +5,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
+import com.aranaira.magichem.util.BypassedItemHandler;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,11 +42,11 @@ public class PrimeAggregatorMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-
+            BypassedItemHandler bypassed = new BypassedItemHandler.Extract(handler, PrimeAggregatorBlockEntity.SLOT_PROGRESS_HOLDER);
             this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_ITEM_INPUT, -6, -28));
             this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_MATERIA_INPUT, 152, -28));
             this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_BOTTLES_OUTPUT, 184, -28));
-            this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_PROGRESS_HOLDER, 80, -7));
+            this.addSlot(new SlotItemHandler(bypassed, PrimeAggregatorBlockEntity.SLOT_PROGRESS_HOLDER, 80, -7));
 
             //Output item slots
             for(int i = PrimeAggregatorBlockEntity.SLOT_OUTPUT_START; i< PrimeAggregatorBlockEntity.SLOT_OUTPUT_START + PrimeAggregatorBlockEntity.SLOT_OUTPUT_COUNT; i++)

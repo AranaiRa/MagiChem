@@ -316,10 +316,12 @@ public class GrandCentrifugeBlock extends BaseEntityBlock implements ISpellInter
     @Override
     public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
         if(pLevel.getBlockEntity(pPos) instanceof GrandCentrifugeBlockEntity cbe) {
+            boolean hasRecipe = cbe.getRecipeItem() != null && !cbe.getRecipeItem().isEmpty();
             boolean hasInputItems = !cbe.getContentsOfInputSlots(GrandCentrifugeBlockEntity::getVar).isEmpty();
             boolean hasOutputItems = !cbe.getContentsOfOutputSlots(GrandCentrifugeBlockEntity::getVar).isEmpty();
 
             int signal = 0;
+            signal = signal | (hasRecipe ? 1 : 0);
             signal = signal | (hasInputItems ? 1 << 1 : 0);
             signal = signal | (hasOutputItems ? 1 << 2 : 0);
 

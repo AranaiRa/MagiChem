@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 5,
+  "result": { "item": "magichem:morsel_savor", "count": 1 },
+  "items": { "type": "minecraft:carrot", "required": 86 },
+  "eldrin": { "type": 2, "required": 375 },
+  "materia": { "type": "magichem:admixture_satiety", "required": 86 },
+  "slurry": 8600
+}

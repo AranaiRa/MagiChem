@@ -109,8 +109,9 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         boolean hasValidRecipe = recipe != null && heldItem.getCount() >= recipe.getInput().getCount();
         boolean canStoreRF = heldItem.getCapability(ForgeCapabilities.ENERGY).isPresent();
         boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
+        boolean isJournalFragment = heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get();
 
-        if(hasValidRecipe || canStoreRF || isEnchantedBook) {
+        if(hasValidRecipe || canStoreRF || isEnchantedBook || isJournalFragment) {
             craftCountdown = CRAFT_COUNTDOWN_LENGTH;
             syncAndSave();
         }
@@ -226,6 +227,13 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
     }
 
     public int getIdealInsertingAmount(ItemStack toCheck, int numExisted) {
+        if(toCheck.getItem() == Items.ENCHANTED_BOOK) {
+            return heldItem.getItem() == Items.ENCHANTED_BOOK ? 0 : 1;
+        } else if(toCheck.getItem() == ItemInit.TORN_JOURNAL_PAGE.get()) {
+            return heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get() ? 0 : 1;
+        } else if(toCheck.getItem() == ItemInit.SPELL_PART_THESIS.get()) {
+            return heldItem.getItem() == ItemInit.SPELL_PART_THESIS.get() ? 0 : 1;
+        }
         FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(level, toCheck.getItem());
         if (recipe == null) return toCheck.getCount();
         return Math.min(toCheck.getCount(), recipe.getInput().getCount() - numExisted);
@@ -268,7 +276,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.putString("heldItem", ForgeRegistries.ITEMS.getKey(heldItem.getItem()).toString());
+        nbt.put("heldItem", heldItem.serializeNBT());
         nbt.putInt("heldItemCount", heldItem.getCount());
         nbt.putInt("craftCountdown", craftCountdown);
 
@@ -279,17 +287,13 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         craftCountdown = nbt.getInt("craftCountdown");
-
-        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("heldItem")));
-        if(item != null) {
-            heldItem = new ItemStack(item, nbt.getInt("heldItemCount"));
-        }
+        heldItem = ItemStack.of(nbt.getCompound("heldItem"));
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putString("heldItem", ForgeRegistries.ITEMS.getKey(heldItem.getItem()).toString());
+        nbt.put("heldItem", heldItem.serializeNBT());
         nbt.putInt("heldItemCount", heldItem.getCount());
         nbt.putInt("craftCountdown", craftCountdown);
         return nbt;

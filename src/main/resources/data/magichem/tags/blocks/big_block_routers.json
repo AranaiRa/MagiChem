@@ -22,6 +22,7 @@
     "magichem:grand_fusery_router",
     "magichem:materia_manifest_router",
     "magichem:mirror_labyrinth_router",
+    "magichem:prime_aggregator_router",
     "magichem:variegator_router"
   ]
 }

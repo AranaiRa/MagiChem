@@ -2,7 +2,7 @@
   "type": "magichem:distillation_fabrication",
   "wisdom": 2,
   "categories": 11,
-  "output_rate": 1.0,
+  "output_rate": 0.5,
   "batch_size": 1,
   "object": { "item": "minecraft:dark_prismarine_slab" },
   "components": [

@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class MagiChemDamageTypes {
     public static final ResourceKey<DamageType> ACID = create("acid");
+    public static final ResourceKey<DamageType> SURGERY = create("surgery");
 
     private static ResourceKey<DamageType> create(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(MagiChemMod.MODID, name));

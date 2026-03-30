@@ -120,7 +120,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
     private final ItemStackHandler itemExtractionHandler = new ItemStackHandler(SLOT_EXTRACTION_COUNT) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return true;
+            return false;
         }
 
         @Override
@@ -156,13 +156,18 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             if(side == null)
                 return lazyCombinedItemHandler.cast();
-            else if(side == Direction.UP)
-                return lazyInsertionItemHandler.cast();
-            else
-                return lazyExtractionItemHandler.cast();
+            return lazyExtractionItemHandler.cast();
         }
 
-        return super.getCapability(cap, side);
+        return LazyOptional.empty();
+    }
+
+    public LazyOptional<IItemHandler> getInsertionItemHandler() {
+        return lazyInsertionItemHandler;
+    }
+
+    public LazyOptional<IItemHandler> getExtractionItemHandler() {
+        return lazyExtractionItemHandler;
     }
 
     @Override
@@ -289,7 +294,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
 
                 if(insert.getItem() == entity.recipe.getMateria()) {
                     boolean allowInsertion = false;
-                    boolean doBottles = !InventoryHelper.isMateriaUnbottled(insert);
+                    boolean doBottles = !InventoryHelper.hasCustomModelData(insert);
                     if(entity.materiaType == null) allowInsertion = true;
                     else if(entity.materiaType == insert.getItem()) allowInsertion = true;
 
@@ -523,7 +528,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
                 //Otherwise, only report that Admixture of Color is necessary if we're below half capacity
                 if (materiaAmount < ServerConfig.conjurerMateriaCapacity * 0.75f) {
                     ItemStack insertionStack = itemInsertionHandler.getStackInSlot(SLOT_INSERTION_MATERIA);
-                    if(insertionStack.isEmpty() || InventoryHelper.isMateriaUnbottled(insertionStack)) {
+                    if(insertionStack.isEmpty() || InventoryHelper.hasCustomModelData(insertionStack)) {
                         int needed = 8;
                         result.put(recipe.getMateria(), needed);
                     }
@@ -552,7 +557,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
             ItemStack insertionStack = itemInsertionHandler.getStackInSlot(SLOT_INSERTION_MATERIA);
             if(insertionStack.isEmpty()) {
                 itemInsertionHandler.setStackInSlot(SLOT_INSERTION_MATERIA, pStack);
-            } else if(insertionStack.getItem() == pStack.getItem() && InventoryHelper.isMateriaUnbottled(insertionStack)) {
+            } else if(insertionStack.getItem() == pStack.getItem() && InventoryHelper.hasCustomModelData(insertionStack)) {
                 insertionStack.setCount(Math.min(64, insertionStack.getCount() + pStack.getCount()));
             }
             syncAndSave();

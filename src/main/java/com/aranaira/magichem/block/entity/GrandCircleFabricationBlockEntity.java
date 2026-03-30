@@ -145,12 +145,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    ItemStack item = super.extractItem(slot, amount, simulate);
-                    if (item.hasTag()) {
-                        CompoundTag nbt = item.getTag();
-                        if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
-                    }
-                    return item;
+                    if (InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(slot)))
+                        return ItemStack.EMPTY;
                 } else if(slot == SLOT_WISDOM) {
                     return ItemStack.EMPTY;
                 }
@@ -805,7 +801,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             clearRecipeAfterNextProcess = false;
             batchSize = 1;
 
-            if (currentItemRecipe != null && previousItemRecipe.getAlchemyObject().getItem() != pQuery) {
+            if (currentItemRecipe != null && (previousItemRecipe == null || previousItemRecipe.getAlchemyObject().getItem() != pQuery)) {
                 ItemStack[] componentMateria = new ItemStack[5];
                 currentItemRecipe.getComponentMateria().toArray(componentMateria);
 
@@ -813,7 +809,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                     if(componentMateria[i/2] != null) {
                         if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                             ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                                 materiaToVent = materiaToVent | (1 << i);
                                 itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                                 continue;
@@ -821,7 +817,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                             materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;
@@ -849,7 +845,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             clearRecipeAfterNextProcess = false;
             batchSize = 1;
 
-            if (currentFluidRecipe != null && previousFluidRecipe.getAlchemyFluid().getFluid() != pQuery) {
+            if (currentFluidRecipe != null && (previousFluidRecipe == null || previousFluidRecipe.getAlchemyFluid().getFluid() != pQuery)) {
                 ItemStack[] componentMateria = new ItemStack[5];
                 currentFluidRecipe.getComponentMateria().toArray(componentMateria);
 
@@ -857,7 +853,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                     if(componentMateria[i/2] != null) {
                         if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                             ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                                 materiaToVent = materiaToVent | (1 << i);
                                 itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                                 continue;
@@ -865,7 +861,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                             materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;
@@ -969,7 +965,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     @Override
     public boolean needsProvisioning() {
-        if(currentItemRecipe == null || !isFESatisfied || redstonePaused)
+        if((currentItemRecipe == null && currentFluidRecipe == null) || !isFESatisfied || redstonePaused)
             return false;
 
         return getProvisioningNeeds().size() > 0;
@@ -1169,6 +1165,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
+    }
+
+    @Override
     public byte setRecipe(ItemStack pStack, Player player) {
         final DistillationFabricationRecipe distillationRecipeQuery = DistillationFabricationRecipe.getDistillingRecipe(getLevel(), pStack);
         if(distillationRecipeQuery == null || distillationRecipeQuery.getWisdom() == 6)
@@ -1198,16 +1199,6 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return ERROR_CODE_SUCCESS;
     }
 
-    @Override
-    public ItemStack getRecipeItem() {
-        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : currentItemRecipe.getResultItem().copy();
-    }
-
-    @Override
-    public ItemStack getRecipeItem(boolean pMakeCopy) {
-        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentItemRecipe.getResultItem().copy() : currentItemRecipe.getResultItem();
-    }
-
     public ItemStack getStoneItem() {
         return itemHandler.getStackInSlot(SLOT_WISDOM);
     }
@@ -1218,7 +1209,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     @Override
     public boolean needsSorting() {
-        return !getContentsOfOutputSlots(GrandCircleFabricationBlockEntity::getVar).isEmpty();
+        if(currentItemRecipe != null || currentFluidRecipe != null) return false;
+
+        return !getContentsOfInputSlots(CircleFabricationBlockEntity::getVar).isEmpty();
     }
 
     @Override

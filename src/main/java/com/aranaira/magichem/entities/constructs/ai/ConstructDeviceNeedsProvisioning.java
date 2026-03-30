@@ -40,7 +40,7 @@ public class ConstructDeviceNeedsProvisioning extends ConstructConditional<Const
 
     @Override
     public ResourceLocation getType() {
-        return ManaAndArtificeMod.getConstructTaskRegistry().getKey(ConstructTasksRegistry.QUERY_HAS_GRIME_LEVEL);
+        return ManaAndArtificeMod.getConstructTaskRegistry().getKey(ConstructTasksRegistry.QUERY_DEVICE_NEEDS_PROVISIONING);
     }
 
     @Override

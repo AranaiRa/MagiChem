@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
@@ -59,9 +60,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
@@ -108,12 +107,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    ItemStack item = super.extractItem(slot, amount, simulate);
-                    if (item.hasTag()) {
-                        CompoundTag nbt = item.getTag();
-                        if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
-                    }
-                    return item;
+                    if (InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(slot)))
+                        return ItemStack.EMPTY;
                 }
 
                 return super.extractItem(slot, amount, simulate);
@@ -675,7 +670,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                     if(componentMateria[i/2] != null) {
                         if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                             ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                                 materiaToVent = materiaToVent | (1 << i);
                                 itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                                 continue;
@@ -683,7 +678,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                             materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;
@@ -712,7 +707,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 if(componentMateria[i/2] != null) {
                     if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                             materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;
@@ -720,7 +715,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                     }
                 } else {
                     ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                    if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                    if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
                         materiaToVent = materiaToVent | (1 << i);
                         itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                         continue;
@@ -798,7 +793,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     @Override
     public boolean needsProvisioning() {
-        if(currentItemRecipe == null)
+        if(currentItemRecipe == null && currentFluidRecipe == null)
             return false;
 
         return getProvisioningNeeds().size() > 0;
@@ -941,18 +936,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     }
 
     @Override
-    public ItemStack getRecipeItem() {
-        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : currentItemRecipe.getResultItem().copy();
-    }
-
-    @Override
-    public ItemStack getRecipeItem(boolean pMakeCopy) {
-        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentItemRecipe.getResultItem().copy() : currentItemRecipe.getResultItem();
-    }
-
-    @Override
     public boolean needsSorting() {
-        return !getContentsOfOutputSlots(CircleFabricationBlockEntity::getVar).isEmpty();
+        if(currentItemRecipe != null || currentFluidRecipe != null) return false;
+
+        return !getContentsOfInputSlots(CircleFabricationBlockEntity::getVar).isEmpty();
     }
 
     @Override
@@ -963,5 +950,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     @Override
     public int getTankCapacity(int tank) {
         return ServerConfig.circleFabricationTankCapacity;
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return new ArrayList<>();
     }
 }

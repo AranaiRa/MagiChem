@@ -318,6 +318,19 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(PrimeAggregatorRouterBlockEntity::new, BlockRegistry.PRIME_AGGREGATOR_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<BossTrophyBlockEntity>> BOSS_TROPHY_BE = BLOCK_ENTITIES.register("boss_trophy", () ->
+            BlockEntityType.Builder.of(BossTrophyBlockEntity::new,
+                    BlockRegistry.BOSS_TROPHY_COUNCIL.get(),
+                    BlockRegistry.BOSS_TROPHY_DEMONS.get(),
+                    BlockRegistry.BOSS_TROPHY_FEY.get(),
+                    BlockRegistry.BOSS_TROPHY_UNDEAD.get()
+            ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<HeftyHopperBlockEntity>> HEFTY_HOPPER_BE = BLOCK_ENTITIES.register("hefty_hopper", () ->
+            BlockEntityType.Builder.of(HeftyHopperBlockEntity::new, BlockRegistry.HEFTY_HOPPER.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

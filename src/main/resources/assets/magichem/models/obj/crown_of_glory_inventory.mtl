@@ -1,0 +1,8 @@
+# Blender MTL File: 'equipment.blend'
+# Material Count: 2
+
+newmtl AURORAL_SILK
+map_Kd magichem:item/auroral_silk
+
+newmtl SENTINELS_PLACKART
+map_Kd magichem:item/sentinels_plackart

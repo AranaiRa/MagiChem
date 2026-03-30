@@ -6,8 +6,8 @@
   "batch_size": 1,
   "object": { "item": "minecraft:amethyst_block" },
   "components": [
-    { "item": "magichem:essentia_arcane", "count": 24 },
-    { "item": "magichem:admixture_crystal", "count": 8 },
-    { "item": "magichem:admixture_darkness", "count": 4 }
+    { "item": "magichem:essentia_arcane", "count": 6 },
+    { "item": "magichem:admixture_crystal", "count": 4 },
+    { "item": "magichem:admixture_darkness", "count": 2 }
   ]
 }

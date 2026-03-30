@@ -1,13 +1,13 @@
 package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.entity.renderer.*;
-import com.aranaira.magichem.commands.MagiChemCommand;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.data.DamageTypeProvider;
+import com.aranaira.magichem.events.ClientEventForgeBusHandler;
+import com.aranaira.magichem.events.ClientEventHandler;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
-import com.aranaira.magichem.item.ChargingTalismanItem;
 import com.aranaira.magichem.item.renderer.*;
 import com.aranaira.magichem.item.renderer.mna.CodexMateriaItemRenderer;
 import com.aranaira.magichem.item.renderer.mna.SublimationPrimerItemRenderer;
@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -47,6 +46,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import java.lang.management.ManagementFactory;
 import java.util.List;
@@ -211,6 +211,8 @@ public class MagiChemMod
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SWEETBERRY_WINE_FLOWING.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SHIMMERING_WINE.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SHIMMERING_WINE_FLOWING.get(), RenderType.translucent());
+
+                CuriosRendererRegistry.register(ItemRegistry.CROWN_OF_GLORY.get(), MagiChemCurioRenderer::new);
             });
         }
 
@@ -222,6 +224,8 @@ public class MagiChemMod
 
         @SubscribeEvent
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
+            event.register(MagiChemCurioRenderer.RENDERER_CURIO_MODEL_CROWN_OF_GLORY);
+
             event.register(MasterItemRenderer.RENDERER_JAR);
             event.register(MasterItemRenderer.RENDERER_JAR_QUAD);
             event.register(MasterItemRenderer.RENDERER_VESSEL);
@@ -322,6 +326,17 @@ public class MagiChemMod
             event.register(DisintegrationPyreBlockEntityRenderer.RENDERER_MODEL_FLAME_LARGE);
 
             event.register(CovetousCofferBlockEntityRenderer.RENDERER_MODEL_LID);
+
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_COUNCIL_CRYSTAL_INNER);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_COUNCIL_CRYSTAL_OUTER);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_COUNCIL_SLATE);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_FEY_SUMMER_1);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_FEY_SUMMER_2);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_FEY_SUMMER_3);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_FEY_WINTER_1);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_FEY_WINTER_2);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_FEY_WINTER_3);
+            event.register(BossTrophyBlockEntityRenderer.RENDERER_MODEL_UNDEAD_WATER);
         }
     }
 }

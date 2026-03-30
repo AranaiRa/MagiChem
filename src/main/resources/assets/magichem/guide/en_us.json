@@ -339,14 +339,56 @@
             "color": "dark_purple"
           },
           {
-            "text": " is "
+            "text": " can be created through "
           },
           {
-            "text": "not yet craftable",
+            "text": "Sublimation",
             "color": "dark_purple"
           },
           {
-            "text": ", but is planned for Tier 5."
+            "text": " at "
+          },
+          {
+            "text": "Tier 5",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Flushed Wisdom Stone slowly produces the "
+          },
+          {
+            "text": "Elixir of Life",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": in the event of your death, the small amount of Elixir pooled within the Stone will "
+          },
+          {
+            "text": "fully restore your health",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", render you "
+          },
+          {
+            "text": "invulnerable to harm",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and render you "
+          },
+          {
+            "text": "impervious to negative status",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for six seconds.\n\nAfter being depleted, the Elixir of Life takes "
+          },
+          {
+            "text": "60 minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to replenish and mature."
           }
         ]
       },
@@ -379,7 +421,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ", but is planned for late Tier 5."
+            "text": " and will be implemented in MagiChem 0.5.3.\n\nThe Philosopher's Stone perfects the production of the "
+          },
+          {
+            "text": "Elixir of Life",
+            "color": "dark_purple"
+          },
+          {
+            "text": " started by the Flushed Wisdom Stone, reducing the replenishment and maturation time to "
+          },
+          {
+            "text": "10 minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
           }
         ]
       }
@@ -400,6 +456,10 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_citrinitas"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_rubedo"
       }
     ]
   },
@@ -800,6 +860,50 @@
       {
         "type": "manaweaving-altar",
         "location": "magichem:alchemical_sublimation/magichem/grand_distillery"
+      }
+    ]
+  },
+  "Process: Exaltation": {
+    "index": "1110",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Exaltation"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/process_exaltation",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Exalt",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is to fuse a large quantity of one type of item, one type of materia, Eldrin power, and Academic Slurry into a new item. Exaltation is performed at a "
+          },
+          {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/prime_aggregator"
       }
     ]
   },
@@ -1281,11 +1385,11 @@
             "text": ". A single Thunderstone can trigger "
           },
           {
-            "text": "multiple Skywrath Altars",
+            "text": "up to four",
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nThe Skywrath Altar will also use a lightning strike to "
+            "text": " Skywrath Altars.\n\nThe Skywrath Altar will also use a lightning strike to "
           },
           {
             "text": "refill some charge",
@@ -1677,7 +1781,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A construct can be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. The construct must be in follow mode, and only one construct can be bound to a single Circle of Toil at a time.\n\nThe "
+            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A construct can be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. The construct "
+          },
+          {
+            "text": "must be in follow mode",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and only one construct can be bound to a single Circle of Toil at a time.\n\nThe "
           },
           {
             "text": "composition of the construct",
@@ -2770,7 +2881,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process; and the third bit is 1 if the device has output items that have yet to be sorted.\n\n\n"
+            "text": ": the first bit is 1 if the device has a recipe set and 0 if it does not; the second bit is 1 if the device has input items it has yet to process; and the third bit is 1 if the device has output items that have yet to be sorted.\n\n\n"
           },
           {
             "text": "Meticulous Signalite",
@@ -2794,13 +2905,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set.\n"
+          },
+          {
             "text": "2",
             "bold": true,
-            "color": "dark_red",
-            "newPage": true
+            "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and input items.\n"
           },
           {
             "text": "4",
@@ -2811,12 +2937,28 @@
             "text": ": Has output items.\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and output items.\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, input, and output items.\n"
           }
         ]
       }
@@ -3141,7 +3283,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first is unused; the second bit is 1 if the device has input items it has yet to process; the third bit is 1 if the device has output items that have yet to be sorted; and the fourth bit is 1 if the device has Academic Slurry in its tank.\n"
+            "text": ": the first bit is 1 if the device has a recipe set and 0 if it does not; the second bit is 1 if the device has input items it has yet to process; the third bit is 1 if the device has output items that have yet to be sorted; and the fourth bit is 1 if the device has Academic Slurry in its tank.\n"
           },
           {
             "text": "Meticulous Signalite",
@@ -3165,12 +3307,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set.\n"
+          },
+          {
             "text": "2",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and input items.\n"
           },
           {
             "text": "4",
@@ -3181,12 +3339,28 @@
             "text": ": Has output items.\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and output items.\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, input, and output items.\n"
           },
           {
             "text": "8",
@@ -3197,12 +3371,28 @@
             "text": ": Has slurry.\n"
           },
           {
+            "text": "9",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and slurry.\n"
+          },
+          {
             "text": "10",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has inputs and slurry.\n"
+          },
+          {
+            "text": "11",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, inputs, and slurry.\n"
           },
           {
             "text": "12",
@@ -3213,12 +3403,28 @@
             "text": ": Has outputs and slurry.\n"
           },
           {
+            "text": "13",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, outputs, and slurry.\n"
+          },
+          {
             "text": "14",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has inputs, outputs, and slurry.\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, inputs, outputs, and slurry.\n"
           }
         ]
       }
@@ -3292,8 +3498,22 @@
             "italic": true
           },
           {
-            "text": " the colors supplied. For example, if you supply White, Light Gray, Gray, and Black dye the item will be set to a color except White, Light Gray, Gray, or Black. Dyes added to a Subtractive cauldron can color 5 items, but only one of each dye color can be added until the Cauldron is empty or changed to Positive mode.\n\nItems are colored significantly faster in Subtractive mode: A little more than twice as quickly as Additive mode with one dye, and around ten times as quickly if fifteen dye colors are supplied.",
+            "text": " the colors supplied. For example, if you supply White, Light Gray, Gray, and Black dye the item will be set to a color except White, Light Gray, Gray, or Black. Dyes added to a Subtractive cauldron can color 5 items, but only one of each dye color can be added until the Cauldron is empty or changed to Positive mode.\n\nItems are colored significantly faster in Subtractive mode: A little more than twice as quickly as Additive mode with one dye, and around ten times as quickly if fifteen dye colors are supplied.\n\nWhen using constructs or hoppers, items can be ",
             "italic": false
+          },
+          {
+            "text": "inserted",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from the top face. Completed crafts can be "
+          },
+          {
+            "text": "extracted",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from any other face."
           }
         ]
       },
@@ -3551,7 +3771,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " task on a Lodestar is necessary to search for materia in a zone)."
+            "text": " task on a Lodestar is necessary to search for materia in a zone).\n\nThe Nexus also cannot directly draw materia from a "
+          },
+          {
+            "text": "Mirror Labyrinth",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or a "
+          },
+          {
+            "text": "Magic Mirror",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". A construct or a "
+          },
+          {
+            "text": "Labyrinthine Navigator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is needed as an intermediary."
           }
         ]
       },
@@ -3589,6 +3830,126 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/actuator_arcane"
+      }
+    ]
+  },
+  "Prime Aggregator": {
+    "index": "1208",
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Prime Aggregator"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3 Wide, 2 Tall, 3 Deep\n\nVisuals:\n3 Wide, 4 Tall, 3 Deep\n",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an advanced device capable of performing "
+          },
+          {
+            "text": "Exaltation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nExaltation recipes require one type of "
+          },
+          {
+            "text": "item",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", one type of "
+          },
+          {
+            "text": "materia",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Eldrin Power",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAcademic Slurry can be inserted into the device by attaching an "
+          },
+          {
+            "text": "Experience Exchanger",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to the device's tank, having a "
+          },
+          {
+            "text": "Construct",
+            "color": "dark_purple"
+          },
+          {
+            "text": " insert the Slurry, or (once you reach Tier 4) attaching an "
+          },
+          {
+            "text": "Occult Matrix",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Prime Aggregator to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Exaltation symbol in the center.\n\nThe alchemical Exaltation symbol in the center represents the progress on the current craft. It begins filling once all ingredients and materia are provided, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Exaltation symbol are four icons that represent the current stage of the craft. From top to bottom: Items, Materia, Eldrin Power, Academic Slurry.\n\nSurrounding the central panel are four smaller panels, each associated with one of the four stages. The currently active stage's panel will be lit up, while the other three will be dimmed. As the stage's requirements are satisfied the bar on the bottom of the panel will fill up and the text above it will display how much of the requirement is left.\n\nIf you wish to pause a craft, remove the "
+          },
+          {
+            "text": "Exaltation in Progress",
+            "color": "dark_purple"
+          },
+          {
+            "text": " item from the slot. Inserting this item back into the slot later will allow you to resume the craft where you left off."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/prime_aggregator"
       }
     ]
   },
@@ -4275,7 +4636,14 @@
             "text": "This command will cause a construct to extract materia from an alchemical device and attempt to place it in Materia Vessels within a specified area.\n\nWhen emptying the alchemical device, the construct will always take materia from the largest stack first.\n\nIt requires a "
           },
           {
-            "text": "fluid nozzle arm",
+            "text": "caster arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a "
+          },
+          {
+            "text": "smart head",
             "color": "dark_purple"
           },
           {
@@ -4300,48 +4668,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " inside, it can move 32 additional drams of materia per operation.\n\nWater affinity increases the reach distance of basic sorting constructs when putting materia into containers."
-          }
-        ]
-      },
-      {
-        "type": "title",
-        "value": "Advanced Sorting"
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
-          {
-            "text": "The materia sorting process can be greatly sped up if the construct has a "
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\nConstructs made from "
           },
           {
-            "text": "Smart Head",
+            "text": "higher tier materials",
             "color": "dark_purple"
           },
           {
-            "text": ", a "
+            "text": " will move materia more quickly and will have a shorter delay between transfers.\n\nIf the target device has a recipe selector this task will also remove "
           },
           {
-            "text": "Caster Arm",
+            "text": "unbottled materia",
             "color": "dark_purple"
           },
           {
-            "text": ", and is made entirely of "
-          },
-          {
-            "text": "Tier 3 or higher materials",
-            "color": "dark_purple"
-          },
-          {
-            "text": ".\n\nWhen all of these requirements are met, the construct can direct the materia to "
-          },
-          {
-            "text": "fly through the air",
-            "color": "dark_purple"
-          },
-          {
-            "text": " to its destination instead of needing to physically move the materia from location to location."
+            "text": " from the device's input tray, returning it to materia storage."
           }
         ]
       }
@@ -4371,6 +4712,13 @@
             "text": ", "
           },
           {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
             "text": "Centrifuge",
             "color": "dark_purple"
           },
@@ -4389,6 +4737,13 @@
             "color": "dark_purple"
           },
           {
+            "text": ", or any device with an internal Materia buffer (such as the "
+          },
+          {
+            "text": "Skywrath Condenser",
+            "color": "dark_purple"
+          },
+          {
             "text": ", "
           },
           {
@@ -4403,14 +4758,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nProviding materia requires a "
+            "text": ").\n\nProviding materia requires a "
           },
           {
-            "text": "fluid nozzle arm",
+            "text": "caster arm",
             "color": "dark_purple"
           },
           {
-            "text": ". The construct is capable of moving two drams of materia per operation by default. If the construct was summoned with "
+            "text": " and a "
+          },
+          {
+            "text": "smart head",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe construct is capable of moving two drams of materia per operation by default. If the construct was summoned with "
           },
           {
             "text": "Arcane affinity",
@@ -4431,48 +4793,124 @@
             "color": "dark_purple"
           },
           {
-            "text": " inside, it can move 32 additional drams of materia per operation.\n\nWater affinity increases the reach distance of basic sorting constructs when putting materia into containers.\n\nMateria provided to an Alchemical Nexus by a construct transfers at a slower rate than the Nexus can pull on its own, and it does not benefit from the increased speed from increasing the experience cost per crafting stage."
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\nMateria provided to an Alchemical Nexus by a construct transfers at a slower rate than the Nexus can pull on its own, and it does not benefit from the increased speed from increasing the experience cost per crafting stage.\n\nConstructs made from "
+          },
+          {
+            "text": "higher tier materials",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will move materia more quickly and will have a shorter delay between transfers."
           }
         ]
-      },
+      }
+    ],
+    "related_recipes": []
+  },
+  "Command: Provide Items": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
       {
         "type": "title",
-        "value": "Advanced Sorting"
+        "value": "Command: Provide Items"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "The materia sorting process can be greatly sped up if the construct has a "
+            "text": "This command will cause a construct to "
           },
           {
-            "text": "Smart Head",
+            "text": "magically transport items",
             "color": "dark_purple"
           },
           {
-            "text": ", a "
+            "text": " from a container to devices like the "
           },
           {
-            "text": "Caster Arm",
+            "text": "Alchemical Nexus",
             "color": "dark_purple"
           },
           {
-            "text": ", and is made entirely of "
+            "text": " or the "
           },
           {
-            "text": "Tier 3 or higher materials",
+            "text": "Prime Aggregator",
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nWhen all of these requirements are met, the construct can direct the materia to "
+            "text": ".\n\nIf the target device requires it, the items will be delivered in the correct order to the correct slots.\n\nConstructs will be unable to Provide Items to the Alchemical Nexus unless "
           },
           {
-            "text": "fly through the air",
+            "text": "all of the required items are in the input container at once",
             "color": "dark_purple"
           },
           {
-            "text": " to its destination instead of needing to physically move the materia from location to location."
+            "text": ".\n\nProviding items requires a "
+          },
+          {
+            "text": "caster arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a "
+          },
+          {
+            "text": "smart head",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Command: Create Experience Orb": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Create Experience Orb"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause a construct to consume "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from its tank to create a single "
+          },
+          {
+            "text": "Experience Orb",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at a chosen location.\n\nThe construct's entire store of Slurry will be consumed to create the Experience Orb.\n\nCreating an Experience Orb requires a "
+          },
+          {
+            "text": "fluid nozzle arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a "
+          },
+          {
+            "text": "tank torso",
+            "color": "dark_purple"
+          },
+          {
+            "text": " filled with Academic Slurry."
           }
         ]
       }
@@ -4703,7 +5141,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "of the target inventory. Blocks with a single inventory slot, like a Pedestal, are ideal for this purpose. If the first slot is empty, then the construct will clear the recipe instead. If the second point parameter is set then the item parameter will always be ignored.\n\nIf the second point parameter is not set, then the construct will try to set the device's recipe to whatever item is inserted into the task's Item parameter. If the slot is empty, the construct will clear the device's recipe instead.\n\n"
+            "text": " of the target inventory. Blocks with a single inventory slot, like a Pedestal, are ideal for this purpose. If the first slot is empty, then the construct will clear the recipe instead. If the second point parameter is set then the item parameter will always be ignored.\n\nIf the second point parameter is not set, then the construct will try to set the device's recipe to whatever item is inserted into the task's Item parameter. If the slot is empty, the construct will clear the device's recipe instead.\n\n"
           }
         ]
       }
@@ -4820,6 +5258,47 @@
           },
           {
             "text": " if it can request more materia, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it cannot."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Condition: Device Needs Item Provisioning": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Device Needs Item Provisioning"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will "
+          },
+          {
+            "text": "check whether an alchemical device can have items delivered by a construct",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", returning "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if it can request items, and "
           },
           {
             "text": "failure",
@@ -5011,7 +5490,14 @@
             "color": "dark_red"
           },
           {
-            "text": " if it doesn't."
+            "text": " if it doesn't.\n\nIf the second point parameter is set, then the task will compare the device's recipe to the item in the "
+          },
+          {
+            "text": "first inventory slot",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of the target inventory. Blocks with a single inventory slot, like a Pedestal, are ideal for this purpose. If the first slot is empty, then the construct will check whether the device has no recipe set instead. If the second point parameter is set then the item parameter will always be ignored."
           }
         ]
       }
@@ -6217,6 +6703,211 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/abjuration_dendritic"
+      }
+    ]
+  },
+  "Ritual of Surgical Cultivation": {
+    "index": "0",
+    "tier": 5,
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Ritual of Surgical Cultivation"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This ritual ensorcells runesmithing tools, repurposing them as "
+          },
+          {
+            "text": "magical surgical implements",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and allowing the ritualist to "
+          },
+          {
+            "text": "replace their own body parts",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in the blink of an eye.\n\nThe process is exceptionally dangerous and only the hardiest of mages are likely to survive the pain and physical trauma of an invasive surgery performed in a split-second with no anaesthesia. The ritualist must be able to withstand "
+          },
+          {
+            "text": "thirty hearts of damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at once. Careful preparation is necessary to ensure success.\n\nIf the ritual is successful, the body part is replaced and the ritualist's old body part is forcefully ejected from their body as "
+          },
+          {
+            "text": "Giblets",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". "
+          },
+          {
+            "text": "Failure will kill the ritualist",
+            "color": "dark_red"
+          },
+          {
+            "text": ", scattering a large amount of Giblets all over the ritual area. The primary organ is not destroyed in a failed ritual, but all of the ingredients (other than the runesmith tools) are consumed.\n\nBody parts replaced with this ritual are permanent, even "
+          },
+          {
+            "text": "persisting through death",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nMore information on the benefits of replacement body parts can be found on the part's individual page in the "
+          },
+          {
+            "text": "Alchemical Wonders",
+            "color": "dark_purple"
+          },
+          {
+            "text": " chapter."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Catalogue of Cultivation",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The following body parts can be replaced:\n\n"
+          },
+          {
+            "text": "Hearts:",
+            "bold": true
+          },
+          {
+            "text": "\n• Immortal Heart"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/surgical_cultivation"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/immortal_heart"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/vintage_shimmering_wine"
+      }
+    ]
+  },
+  "Ritual of Celestial Awakening": {
+    "index": "0",
+    "tier": 5,
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Rituals of Celestial Awakening"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A pair of rituals used to awaken "
+          },
+          {
+            "text": "Dormant Orichalkos",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "Dormant Selargyros",
+            "color": "dark_purple"
+          },
+          {
+            "text": " into their true, magical forms.\n\nThe Solar ritual can only be performed "
+          },
+          {
+            "text": "during the day",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and the Lunar ritual can only be performed "
+          },
+          {
+            "text": "at night",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Solar Orb and Lunar Orb are "
+          },
+          {
+            "text": "not consumed",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by the ritual. Their power is required for the ritual's magic to perform difficult and ever-changing astrological alignments during the awakening process, but the power within the orbs is never directly consumed."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Interlocking the Rituals",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/gui/guide/img/guide_celestial_awakening_rituals.png",
+        "width": 104,
+        "height": 104
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "The two rituals can be "
+          },
+          {
+            "text": "interlocked",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", sharing much of their operating area.\n\nThe diagram above shows how the two rituals fit together. The orange space is the ritual center for the Solar ritual, and the blue space is the center for the Lunar ritual."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/celestial_awakening_solar"
+      },
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/celestial_awakening_lunar"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/dormant_orichalkos"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/dormant_selargyros"
       }
     ]
   },
@@ -7520,7 +8211,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process; and the third bit is 1 if the device has output items that have yet to be sorted.\n\n\n"
+            "text": ": the first bit is 1 if the device has a recipe set and 0 if it does not; the second bit is 1 if the device has input items it has yet to process; and the third bit is 1 if the device has output items that have yet to be sorted.\n\n\n"
           },
           {
             "text": "Meticulous Signalite",
@@ -7544,13 +8235,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set.\n"
+          },
+          {
             "text": "2",
             "bold": true,
-            "color": "dark_red",
-            "newPage": true
+            "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and input items.\n"
           },
           {
             "text": "4",
@@ -7561,12 +8267,28 @@
             "text": ": Has output items.\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and output items.\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, input, and output items.\n"
           }
         ]
       }
@@ -7697,7 +8419,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first is unused; the second bit is 1 if the device has input items it has yet to process; the third bit is 1 if the device has output items that have yet to be sorted; and the fourth bit is 1 if the device has Academic Slurry in its tank.\n"
+            "text": ": the first bit is 1 if the device has a recipe set and 0 if it does not; the second bit is 1 if the device has input items it has yet to process; the third bit is 1 if the device has output items that have yet to be sorted; and the fourth bit is 1 if the device has Academic Slurry in its tank.\n"
           },
           {
             "text": "Meticulous Signalite",
@@ -7721,12 +8443,28 @@
             "bold": true
           },
           {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set.\n"
+          },
+          {
             "text": "2",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and input items.\n"
           },
           {
             "text": "4",
@@ -7737,12 +8475,28 @@
             "text": ": Has output items.\n"
           },
           {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and output items.\n"
+          },
+          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, input, and output items.\n"
           },
           {
             "text": "8",
@@ -7753,12 +8507,28 @@
             "text": ": Has slurry.\n"
           },
           {
+            "text": "9",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set and slurry.\n"
+          },
+          {
             "text": "10",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has inputs and slurry.\n"
+          },
+          {
+            "text": "11",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, inputs, and slurry.\n"
           },
           {
             "text": "12",
@@ -7769,12 +8539,28 @@
             "text": ": Has outputs and slurry.\n"
           },
           {
+            "text": "13",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, outputs, and slurry.\n"
+          },
+          {
             "text": "14",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has inputs, outputs, and slurry.\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has a recipe set, inputs, outputs, and slurry.\n"
           }
         ]
       }
@@ -8150,7 +8936,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " determined by the item being conjured, the process is drastically sped up and produces much larger batches at once."
+            "text": " determined by the item being conjured, the process is drastically sped up and produces much larger batches at once.\n\nConstructs, Hefty Hoppers, and other forms of automation can only extract output items from the bottom block and input items from the top block."
           }
         ]
       }
@@ -9146,7 +9932,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " of a single conduit.\n\nLesser Prismatic Conduits can be broken back into the six component Lesser Conduits by a construct using the "
+            "text": " of a single conduit.\n\nWhen broken, a Prismatic Conduit "
+          },
+          {
+            "text": "returns its buffered Eldrin Power",
+            "color": "dark_purple"
+          },
+          {
+            "text": "to its owner's Eldrin pool.\n\nLesser Prismatic Conduits can be broken back into the six component Lesser Conduits by a construct using the "
           },
           {
             "text": "Crush",
@@ -9660,6 +10453,55 @@
       }
     ]
   },
+  "Celestial Reagents": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "required_advancement": "magichem:__wisdom_2",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Celestial Reagents"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Strange, magical materials infused with one of the three energies of the cosmos on an "
+          },
+          {
+            "text": "Astral Observer",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nCelestial Reagents are used as components of the final stages of the "
+          },
+          {
+            "text": "Magnum Opus",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and can optionally be distilled for helpful materia."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/blaze_powder_to_sunburn"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/honey_bottle_to_moonshine"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/vinteum_dust_to_stardust"
+      }
+    ]
+  },
   "Acids": {
     "index": "0",
     "category": "magichem_wonders",
@@ -9880,10 +10722,17 @@
             "color": "dark_purple"
           },
           {
-            "text": ", which is "
+            "text": ", crafted by dissolving "
           },
           {
-            "text": "not yet craftable",
+            "text": "Granules of Red Vitriol",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "Aqua Regia",
             "color": "dark_purple"
           },
           {
@@ -9948,12 +10797,16 @@
     ],
     "related_recipes": [
       {
-        "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/aristose"
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/aristose"
       },
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/regulus_of_gold"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/red_vitriol"
       },
       {
         "type": "vitriolation",
@@ -9966,6 +10819,10 @@
       {
         "type": "vitriolation",
         "location": "magichem:vitriolation/magichem/aqua_regia"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/oil_of_vitriol"
       }
     ]
   },
@@ -11019,6 +11876,49 @@
       },
       {
         "type": "title",
+        "value": "Sleep",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_sleep",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "10 Minutes",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "All "
+          },
+          {
+            "text": "residual magic",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in a "
+          },
+          {
+            "text": "7x7 chunk area",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is instantly eliminated, as though no spells had ever been cast in the region."
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Thought",
         "newPage": true
       },
@@ -11399,21 +12299,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nPowerful enchanted books may leave behind a single "
+            "text": ".\n\nA large number of Scorched Theories can be exalted in the Prime Aggregator into a "
           },
           {
             "text": "Scorched Profundity",
             "color": "dark_purple"
           },
           {
-            "text": " instead. A Scorched Profundity can also be created through Sublimation, but this process has a "
-          },
-          {
-            "text": "very high Academic Slurry cost",
-            "color": "dark_purple"
-          },
-          {
-            "text": ".\n\nThe number of Theorems left behind and the chance that a Profundity is left behind are influenced by both the "
+            "text": ", a collection of the most notable bits of knowledge and implication in the Theories consumed.\n\nThe number of Theorems left behind is influenced by both the "
           },
           {
             "text": "total number of enchantment levels",
@@ -11427,7 +12320,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " on the book.\n\nSome alchemical recipes require Theorems or Profundities directly, but more powerful or complicated recipes may require you to compile them into "
+            "text": " on the book.\n\n"
+          },
+          {
+            "text": "Torn Journal Fragments",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can also be fulminated for Scorched Theories. Higher level spell components will result in more Theories.\n\nSome alchemical recipes require Theorems or Profundities directly, but more powerful or complicated recipes may require you to compile them into "
           },
           {
             "text": "Collated Theories",
@@ -11455,8 +12355,8 @@
     ],
     "related_recipes": [
       {
-        "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/scorched_profundity"
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/scorched_profundity"
       },
       {
         "type": "crafting",
@@ -11519,7 +12419,7 @@
           },
           {
             "text": "only",
-            "italics": true
+            "italic": true
           },
           {
             "text": " grow magical flowers (no other plants will be created, including grass) and will only grow anything on aspected Ensorcelled Soils.\n\nAspected Ensorcelled Soils can also be filled with magical flowers by fulfilling a "
@@ -11745,7 +12645,6 @@
     "index": "-10",
     "category": "magichem_wonders",
     "tier": 1,
-    "required_advancement": "magichem:__wisdom_1",
     "sections": [
       {
         "type": "title",
@@ -11950,6 +12849,1484 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/covetous_coffer"
+      }
+    ]
+  },
+  "Ambrosia & Nectar": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Ambrosia & Nectar"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Named after the purported food and drink of the gods, "
+          },
+          {
+            "text": "Ambrosia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "Nectar",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are alchemically perfect foods.\n\nConsuming either will "
+          },
+          {
+            "text": "completely fill your hunger and saturation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". The meal is so exquisite that it leaves the diner with four levels of "
+          },
+          {
+            "text": "Memories of Decadence",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; once saturation drops below one shank the diner will experience another "
+          },
+          {
+            "text": "complete refill of hunger and saturation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and the Memories of Decadence effect will decay by one level.\n\nAmbrosia and Nectar can be combined into a "
+          },
+          {
+            "text": "Feast of the Gods",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a meal far greater than the sum of its parts. When consumed, a Feast of the Gods grants "
+          },
+          {
+            "text": "fifteen levels",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of Memories of Decadence."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/ambrosia"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/nectar"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/feast_of_the_gods"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_savor"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_spice"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_sweetness"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/morsel_umami"
+      }
+    ]
+  },
+  "Fork of the Gulaporrigo": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Fork of the Gulaporrigo"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Fork of the Gulaporrigo",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an exquisite dining fork housing a fragment of the Gulaporrigo, a powerful spirit of gluttony. The spirit's power infests any "
+          },
+          {
+            "text": "slice of cake",
+            "color": "dark_purple"
+          },
+          {
+            "text": " eaten with the Fork.\n\nUsing the Fork on a placed cake will "
+          },
+          {
+            "text": "store a slice",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", saving it until the fork is used again to consume the slice. Cake slices can be consumed "
+          },
+          {
+            "text": "regardless of hunger level",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and their nutrition is drastically enhanced (3 shanks of hunger and 4 shanks of saturation).\n\nEating a piece of cake with the Fork also confers a "
+          },
+          {
+            "text": "long-lasting boost to maximum Mana",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". This effect is amplified if the cake slice is eaten within the effect of an "
+          },
+          {
+            "text": "allied sanctum",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and/or while the diner has "
+          },
+          {
+            "text": "Memories of Decadence",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from eating Ambrosia, Nectar, or a Feast of the Gods."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/fork_of_the_gulaporrigo"
+      }
+    ]
+  },
+  "Auroral Silk": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Auroral Silk"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Auroral Silk",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a profoundly powerful magical material made by the exhausting process of combining perfect silks of many colors. It is a vital component of the powerful "
+          },
+          {
+            "text": "Prismatic spell components",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". ("
+          },
+          {
+            "text": "Creator's note: these spell components do not yet exist and will be implemented in 0.5.3",
+            "italic": true
+          },
+          {
+            "text": ")\n\nFirst, infused silk must be Exalted into "
+          },
+          {
+            "text": "Chromatic Silk",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Chromatic Silk can be colored with a "
+          },
+          {
+            "text": "Variegator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and consumes a "
+          },
+          {
+            "text": "very large amount",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of dye or Admixture of Color charge. Finally, all twelve colors of Chromatic Silk are sublimated into "
+          },
+          {
+            "text": "Auroral Silk",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the Nexus."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/auroral_silk"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/infused_bolt"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/honey_bottle_to_moonshine"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/vinteum_dust_to_stardust"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/chromatic_silk"
+      }
+    ]
+  },
+  "Terrariums": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Terrariums"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Terrarium",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a small version of one or more of the world's many biomes, magically shrunk and contained in glass.\n\nCreating a Terrarium requires a number of "
+          },
+          {
+            "text": "Wildergobs",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", strange mixes of flora that all come from the same biome. Strangely, Wildergobs lose almost all of the materia of their component parts.\n\nWildergobs can be Exalted into a Terrarium on the "
+          },
+          {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Though most incidental materia from the component parts is lost (such as Admixtures of Wood and the Plant), the amount of "
+          },
+          {
+            "text": "biome admixture",
+            "color": "dark_purple"
+          },
+          {
+            "text": " present in a Terrarium "
+          },
+          {
+            "text": "more than triples",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nOf special note is the "
+          },
+          {
+            "text": "Ominous Terrarium",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", created using sculk. When distilled, an Ominous Terrarium is a very large source of "
+          },
+          {
+            "text": "Nigredo Essentia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in place of a biome admixture.\n\nTerrariums can also be placed decoratively."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_forests"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_forests_small"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/terrarium_forests"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/wildergob_ominous"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/terrarium_ominous"
+      }
+    ]
+  },
+  "House of Alchemy Exemplars": {
+    "index": "-10",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "House of Alchemy Exemplars"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Many fabrications and sublimations require essentia of the "
+          },
+          {
+            "text": "House of Alchemy",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": Nigredo, Albedo, Citrinitas, and Rubedo. As one progresses in the arts alchemical these four types of essentia appear as requirements more frequently. So where can a budding alchemist source large enough quantities to work with?\n\nThe process begins with the creation of "
+          },
+          {
+            "text": "Black Diamonds",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the "
+          },
+          {
+            "text": "Prime Aggregator",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Though these frighteningly dense diamonds lose most of the materia that make up the diamonds that go into their creation, the amount of "
+          },
+          {
+            "text": "Nigredo Essentia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " present in the Black Diamond "
+          },
+          {
+            "text": "triples",
+            "color": "dark_purple"
+          },
+          {
+            "text": " over the diamonds alone.\n\nAs you increase in Tier, additional exemplars associated with the House of Alchemy will appear as recipe options in the Prime Aggregator. These don't follow an exemplar's normal pattern: each one will require 60 of one House of Alchemy Essentia type to Exalt. The resulting item yields 30 of the next House of Alchemy Essentia when distilled (for example, 60 Albedo to create 30 Citrinitas)."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/black_diamond"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/alabaster_pearl"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/xanthotic_gold"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/scarlet_coral"
+      }
+    ]
+  },
+  "Chalice of Tears": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Chalice of Tears"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Chalice of Tears",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a wondrous vessel that fills with Bitter Ichor "
+          },
+          {
+            "text": "as its holder is injured",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", transmuting suffering into power.\n\nEvery "
+          },
+          {
+            "text": "half heart of damage sustained",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will fill the Chalice of Tears with one unit of Bitter Ichor. The Chalice does not have to be held, but it does need to be in an accessible inventory slot. A Chalice in a Practitioner's Pouch, a Rift, or other such storage methods "
+          },
+          {
+            "text": "will not accumulate Bitter Ichor",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nDrinking from the Chalice of Tears grants the imbiber a "
+          },
+          {
+            "text": "powerful combat boon based on their Faction",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for 90 seconds. By default, the Chalice cannot accumulate Bitter Ichor for "
+          },
+          {
+            "text": "ten minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": " after being drained.\n\nThe boon granted by the Chalice scales in intensity with how full of Bitter Ichor it is at the time of drinking. You can check how strong the effect will be (rated from level 1 to level 5) in the item's tooltip."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Equanimity",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/equanimity.png",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mages of the Council of Ancient Wizards gain "
+          },
+          {
+            "text": "Equanimity",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when drinking from the Chalice.\n\nUnder Equanimity a mage's "
+          },
+          {
+            "text": "health is restored",
+            "color": "dark_purple"
+          },
+          {
+            "text": " as they spend mana. The greater the cost of the spell, the more intense the healing effect.\n\nAn affected mage will also "
+          },
+          {
+            "text": "regain a large amount of mana",
+            "color": "dark_purple"
+          },
+          {
+            "text": " whenever they are injured."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Evanescence",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/evanescence.png",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mages of the Fey Courts gain "
+          },
+          {
+            "text": "Evanescence",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when drinking from the Chalice.\n\nUnder Evanescence a mage will occasionally "
+          },
+          {
+            "text": "evade incoming sources of damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAn affected mage will also experience "
+          },
+          {
+            "text": "constant health regeneration",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". This health regeneration stacks with other sources of healing over time, such as Potions of Regeneration or a Bind Wounds spell."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Brutality",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/brutality.png",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mages of the Demons of the Nether gain "
+          },
+          {
+            "text": "Brutality",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when drinking from the Chalice.\n\nUnder Brutality a mage will "
+          },
+          {
+            "text": "deal significantly more damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with weapons or with their fists. Base damage and total damage are enhanced independently and will stack with other sources of increased weapon damage, such as a Potion of Strength.\n\nAn affected mage will also "
+          },
+          {
+            "text": "take significantly less damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from all sources. This mitigation stacks with other sources of damage resistance, such as a Potion of the Turtle Master."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Malice",
+        "newPage": true
+      },
+      {
+        "type": "image",
+        "location": "magichem:textures/mob_effect/malice.png",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mages of the Undead Legions gain "
+          },
+          {
+            "text": "Malice",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when drinking from the Chalice.\n\nUnder Malice a mage will "
+          },
+          {
+            "text": "inflict everything nearby with a Withering curse",
+            "color": "dark_purple"
+          },
+          {
+            "text": " whenever they spend souls. The mage's own constructs and summoned creatures are protected from this foul magic.\n\nWhen striking a "
+          },
+          {
+            "text": "Withering foe",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with a weapon or their fists, a mage under Malice will "
+          },
+          {
+            "text": "consume the Withering curse",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from the target to deal a spike of additional magic damage."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/chalice_of_tears"
+      }
+    ]
+  },
+  "Immortal Heart": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Immortal Heart"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Immortal Heart",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a self-sustaining magical life force. It is flesh beating with the unrelenting thrum of an unending stormcloud, refusing to stop even after the body is deceased. It can be implanted by performing the "
+          },
+          {
+            "text": "Ritual of Surgical Cultivation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhen implanted, the Immortal Heart increases the duration of beneficial effects "
+          },
+          {
+            "text": "threefold",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and reduces the duration of harmful effects to "
+          },
+          {
+            "text": "one third",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe bearer of an Immortal Heart also receives "
+          },
+          {
+            "text": "absorption hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": " once per minute from its unyielding vitality.\n\nCouncil and Fey mages receive "
+          },
+          {
+            "text": "six hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nUndead mages' bodies are no longer used to heartbeats, reducing this effectiveness to "
+          },
+          {
+            "text": "four hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nDemonic magic receive "
+          },
+          {
+            "text": "ten hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and receive them every "
+          },
+          {
+            "text": "thirty seconds",
+            "color": "dark_purple"
+          },
+          {
+            "text": " instead of every minute."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Creating the Heart",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Creating an Immortal Heart is an involved process with several steps.\n\nFirst, six "
+          },
+          {
+            "text": "Thewsums",
+            "color": "dark_purple"
+          },
+          {
+            "text": " must be exalted from the flesh of hundreds of animals each. These horrid agglomerations of flesh are composed of only the most exceptional parts of each slice of meat that went into their creation. Each one is formed from one type of animal and is associated with one of the six magical elements.\n\nNext, the six Thewsums must be combined into a "
+          },
+          {
+            "text": "Revolting Mass of Meat",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Revolting Mass of Meat is then submerged in an Acid Basin using a very strong acid (at least "
+          },
+          {
+            "text": "Oil of Vitriol",
+            "color": "dark_purple"
+          },
+          {
+            "text": "). This process destroys all of the parts of the Mass that aren't immortal, leaving only an "
+          },
+          {
+            "text": "Unbeating Heart",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nFinally, the Unbeating Heart must be sublimated into an "
+          },
+          {
+            "text": "Immortal Heart",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the Alchemical Nexus."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/surgical_cultivation"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/immortal_heart"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/unbeating_heart"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/revolting_mass_of_meat"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/thewsum_porcine"
+      }
+    ]
+  },
+  "Symbols of Triumph": {
+    "index": "10000",
+    "category": "basics",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Symbols of Triumph"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The lords of the "
+          },
+          {
+            "text": "four factions",
+            "color": "dark_purple"
+          },
+          {
+            "text": " each hold a powerful magical artifact. Defeating a faction lord in a "
+          },
+          {
+            "text": "magical duel",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will reward you with one of these artifacts, a large amount of faction marks, and one of the "
+          },
+          {
+            "text": "greater spells",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of the lord's faction.\n\nAppropriate arenas for such a duel can be difficult to find, but "
+          },
+          {
+            "text": "the broker",
+            "color": "dark_purple"
+          },
+          {
+            "text": " may be able to provide you with a thaumaturgic link to these sites.\n\nWhen placed within the area affected by a "
+          },
+          {
+            "text": "Sanctum",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a Symbol of Triumph confers a very powerful benefit to those of the same faction."
+          },
+          {
+            "text": "\n\nDeveloper's Note: There is currently no direct benefit for collecting Symbols of Triumph for other factions (other than needing them to create the Crown of Glory and, by extension, the Flushed Wisdom Stone). A separate benefit for off-faction Symbols of Triumph is coming in 0.5.3.",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Shard of the Library Supernal",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_council",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The council keeps an extradimensional library of all of the knowledge they have ever hoarded. This strange magical slate and the crystalline artifact it's bound to act as a remote link to that repository of near-unlimited knowledge.\n\nWhen activated by a Council mage, the Shard confers "
+          },
+          {
+            "text": "Chainspell",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with an indefinite duration.\n\nWhile active, Chainspell "
+          },
+          {
+            "text": "reduces mana costs",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by 33% and universally "
+          },
+          {
+            "text": "reduces spell cooldowns",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to 0.2 seconds (or 0.6 seconds if a damaging component is present). "
+          },
+          {
+            "text": "Experience points",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are consumed on every Chainspell-modified cast. Spells with a larger cooldown require more experience points.\n\nOnce you no longer have experience points to spend, Chainspell ends.\n\nThe Shard of the Library Supernal can be activated once every "
+          },
+          {
+            "text": "30 minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Dial of Days and Nights",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_fey",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This is the great wheel upon which inevitability is written. The laws that govern days, nights, and the seasonal cycle itself are written in its form, if one knows how to look.\n\nWhen activated by a Fey mage, the Dial confers "
+          },
+          {
+            "text": "Regal Twilight",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for 30 minutes. While active, "
+          },
+          {
+            "text": "your Court will automatically shift",
+            "color": "dark_purple"
+          },
+          {
+            "text": " based on the time of day. Shifting Courts in this manner will also create "
+          },
+          {
+            "text": "tiny, evasive, and powerful Pixies",
+            "color": "dark_purple"
+          },
+          {
+            "text": " under your command.\n\nRegal Twilight also marks you as the arbiter of the hour of prophecy. Activating a "
+          },
+          {
+            "text": "Gnostic Orb",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will instantly charge its Prophecy.\n\nThe Dial of Days and Nights can be activated once every "
+          },
+          {
+            "text": "30 minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Brand of the Hellfire Emperor",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_demons",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This blackstone slate bears the sigil of the ruler of the Nether and the decree that binds all of demonkind into servitude. The hellfire-wrought imperial decree cannot be denied.\n\nWhen activated by a Demon mage, the Brand summons "
+          },
+          {
+            "text": "a loyal contingent of powerful imps",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that are under your command. One of these imps, the "
+          },
+          {
+            "text": "Legion Commander",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", is larger, faster, tougher, and more brutal than others of its kind.\n\nThere is no cooldown on activating the Brand of the Hellfire Emperor; each time you read the imperial decree the ranks of your "
+          },
+          {
+            "text": "Imp squadron",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are replenished."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Pool of Stygian Waters",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:boss_trophy_undead",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A dark pool containing the waters of Death's oblivion, taken from some far shore beyond mortal reach.\n\nWhen placed within a Sanctum, the Pool will "
+          },
+          {
+            "text": "save an Undead mage from death",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Instead of facing their demise, the mage will awaken on top of the Pool, desperate for a gasp of breath that will never come. No items are dropped, negative effects are cleansed, and the mage is restored up to 5 hearts.\n\nActivating the Pool will "
+          },
+          {
+            "text": "transport the mage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to the location that they should have last died at, or will re-bind the mage's recovery location if it does not match.\n\nThe Pool can only save an undead mage from death once every "
+          },
+          {
+            "text": "ten minutes",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", but there is no cooldown on using the Pool's dark road to teleport to the location of your would-be demise."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "mna:rituals/broker"
+      },
+      {
+        "type": "ritual",
+        "location": "mna:rituals/circle_of_power"
+      }
+    ]
+  },
+  "Hefty Hopper": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Hefty Hopper"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Hefty Hopper",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an alchemically enhanced improvement on the vanilla hopper. It boasts dramatically improved throughput: Up to "
+          },
+          {
+            "text": "a stack of 64 items",
+            "color": "dark_purple"
+          },
+          {
+            "text": " every "
+          },
+          {
+            "text": "half second",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nHefty Hoppers can be "
+          },
+          {
+            "text": "oriented in any direction",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", though they cannot be "
+          },
+          {
+            "text": "bent",
+            "color": "dark_purple"
+          },
+          {
+            "text": " like a vanilla hopper. Item transfer can only occur in a straight line.\n\nUnlike a vanilla hopper, a Hefty Hopper "
+          },
+          {
+            "text": "does not have an internal inventory",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Items are directly transferred from one side to the other.\n\nHefty hoppers will always be pointed with their output side facing the block you activate during placement."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/hefty_hopper"
+      }
+    ]
+  },
+  "Sentinel's Plackart": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Sentinel's Plackart"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "While worn in a Body slot, the "
+          },
+          {
+            "text": "Sentinel's Plackart",
+            "color": "dark_purple"
+          },
+          {
+            "text": " weaves protective magic around "
+          },
+          {
+            "text": "pieces of sorcerous armor",
+            "color": "dark_purple"
+          },
+          {
+            "text": " granting a chance that the piece "
+          },
+          {
+            "text": "takes no durability damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe magic of the Sentinel's Plackart is only effective on armor that is "
+          },
+          {
+            "text": "fundamentally associated with wizardry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": mage's robes and the powerful armors commanded by the higher echelons of the "
+          },
+          {
+            "text": "four factions",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nBy default the chance to avoid durability loss is "
+          },
+          {
+            "text": "50%",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". This chance increases with a "
+          },
+          {
+            "text": "Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " equipped in your Wisdom curio slot.\n\n"
+          },
+          {
+            "text": "Base",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 50.0%\n"
+          },
+          {
+            "text": "Ashen",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 66.7%\n"
+          },
+          {
+            "text": "Bleached",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 75.0%\n"
+          },
+          {
+            "text": "Yellowed",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 80.0%\n"
+          },
+          {
+            "text": "Flushed",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 83.3%\n"
+          },
+          {
+            "text": "Philosopher's",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 85.7%"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/sentinels_plackart"
+      }
+    ]
+  },
+  "Crown of Glory": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Crown of Glory"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Crown of Glory",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a statement of superiority and grandeur. It allows its wearer to equip one additional "
+          },
+          {
+            "text": "Head",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curio, one additional "
+          },
+          {
+            "text": "Neck",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curio, one additional "
+          },
+          {
+            "text": "Bracelet",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curio, one additional "
+          },
+          {
+            "text": "Belt",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curio, two additional "
+          },
+          {
+            "text": "Ring",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curio, and two additional "
+          },
+          {
+            "text": "Charm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curios.\n\nHistory does not record many Crowns of Glory. The last known creation of a Crown was during a time of especial crisis where the rulers of the Council of Wizards, the Demons of the Nether, the Fey Courts, and the Undead all cooperated to fell a threat greater than their individual squabbles.\n\nGiven how the faction war has escalated, that sort of cooperation is likely impossible.\n\nIn order to obtain the four required Symbols of Triumph, "
+          },
+          {
+            "text": "violence will be necessary",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/crown_of_glory"
+      }
+    ]
+  },
+  "Distillable Exemplars": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Distillable Exemplars"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": ""
+          },
+          {
+            "text": "Distillable Exemplars",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are small projects created through "
+          },
+          {
+            "text": "Exaltation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". As their name implies, Exemplars provide an exceptional amount of materia when distilled.\n\nAn Exemplar "
+          },
+          {
+            "text": "roughly triples",
+            "color": "dark_purple"
+          },
+          {
+            "text": " one of the available types of materia from its component items at the cost of "
+          },
+          {
+            "text": "heavily reducing",
+            "color": "dark_purple"
+          },
+          {
+            "text": " the other types.\n\nSome Exemplars, like Terrariums, have their own entries in the Codex. This entry is a catch-all for Exemplars with no major effects other than being a good distillation source."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Confounding Widget",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:confounding_widget",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An excellent source of "
+          },
+          {
+            "text": "Admixture of Industry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nYou can confirm that its myriad bits and bobs are always doing "
+          },
+          {
+            "text": "something",
+            "italic": true
+          },
+          {
+            "text": ". A triumph of overstimulation!"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Oculotoxin",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:oculotoxin",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An excellent source of "
+          },
+          {
+            "text": "Admixture of Poison",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nConsuming Oculotoxin is not advised, as it will wrack the consumer with "
+          },
+          {
+            "text": "extremely potent poison",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and will most likely cause "
+          },
+          {
+            "text": "blindness",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/confounding_widget"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/oculotoxin"
       }
     ]
   },

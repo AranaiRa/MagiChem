@@ -20,16 +20,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.spongepowered.asm.mixin.Mutable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationRecipe> {
@@ -69,11 +65,11 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
     public void setRecipe(IRecipeLayoutBuilder builder, VitriolationRecipe recipe, IFocusGroup group) {
         builder.addSlot(RecipeIngredientRole.INPUT, 40, 4).addItemStack(recipe.getInputItem());
         if(recipe.hasInputFluidOverride()) {
-            builder.addSlot(RecipeIngredientRole.INPUT, 73, 4).addFluidStack(recipe.getInputFluidOverride(), recipe.getBaseFluidConsumed());
+            builder.addSlot(RecipeIngredientRole.INPUT, 73, 4).addFluidStack(recipe.getInputFluidOverride(), recipe.getBaseFluidConsumed()).addRichTooltipCallback(FluidSlotAmountTooltipHandler.getInstance());
             builder.addSlot(RecipeIngredientRole.INPUT, 73, 4096).addItemStack(recipe.getInputFluidOverride().getBucket().getDefaultInstance()); // hidden bucket item for reference
         } else {
             int baseSize = recipe.getBaseFluidConsumed();
-            IRecipeSlotBuilder fluidSlot = builder.addSlot(RecipeIngredientRole.INPUT, 73, 4);
+            IRecipeSlotBuilder fluidSlot = builder.addSlot(RecipeIngredientRole.INPUT, 73, 4).addRichTooltipCallback(FluidSlotAmountTooltipHandler.getInstance());
             IRecipeSlotBuilder hiddenItemSlot = builder.addSlot(RecipeIngredientRole.INPUT, 73, 4096);
             int baseStrength = recipe.getMinimumAcidStrength();
             for (Fluid fluid : VitriolationRecipe.getAllFluidsOfAcidStrength(baseStrength)) {
@@ -100,7 +96,7 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 74, 88).addItemStack(recipe.getResultItem());
         if(recipe.hasResultFluid()) {
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 6, 88).addFluidStack(recipe.getResultFluid().getFluid(), recipe.getResultFluid().getAmount());
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 6, 88).addFluidStack(recipe.getResultFluid().getFluid(), recipe.getResultFluid().getAmount()).addRichTooltipCallback(FluidSlotAmountTooltipHandler.getInstance());
             builder.addSlot(RecipeIngredientRole.OUTPUT, 6, 4096).addItemStack(new ItemStack(recipe.getResultFluid().getFluid().getBucket()));
         }
     }

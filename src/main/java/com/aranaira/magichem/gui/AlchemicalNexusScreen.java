@@ -16,6 +16,7 @@ import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.AdvancementUtil;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
+import com.mna.tools.math.MathUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -28,6 +29,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -59,6 +61,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 192,
             PANEL_STATS_X = 176, PANEL_STATS_Y = 37, PANEL_STATS_W = 80, PANEL_STATS_H = 66, PANEL_STATS_U = 176, PANEL_STATS_V = 126,
             PANEL_RECIPE_X = -84, PANEL_RECIPE_Y = -7, PANEL_RECIPE_U = 176, PANEL_RECIPE_W = 80, PANEL_RECIPE_H = 126,
+            PANEL_STONE_X = 180, PANEL_STONE_Y = 108,
             SLURRY_X = 8, SLURRY_Y = 23, SLURRY_W = 8, SLURRY_H = 73,
             STAGE_INDICATOR_U = 108, STAGE_INDICATOR_V = 238, STAGE_INDICATOR_W = 12, STAGE_INDICATOR_W_END = 6, STAGE_INDICATOR_H = 9,
             PROGRESS_BAR_WIDTH = 28,
@@ -78,7 +81,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
-    private boolean recipesChanged = false;
+    private String lastUsedFilter = null;
 
     public AlchemicalNexusScreen(AlchemicalNexusMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -99,6 +102,9 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     private List<ItemStack> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
+        if (!menu.blockEntity.forceDisplayedRecipeUpdate && Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         List<SublimationRecipe> sublimationRecipeOutputs = getAllRecipes();
         filteredRecipes.clear();
 
@@ -123,8 +129,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
+        recipeFilterRow = MathUtils.clamp(recipeFilterRow, 0, recipeFilterRowTotal - 5);
 
-        recipesChanged = false;
         menu.blockEntity.forceDisplayedRecipeUpdate = false;
     }
 
@@ -147,8 +153,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        if(recipesChanged || menu.blockEntity.forceDisplayedRecipeUpdate)
-            updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
+        updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(pGuiGraphics);
         updateFilterBoxContents();
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
@@ -251,6 +256,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             if(menu.getCurrentRecipe() == null) {
                 pGuiGraphics.blit(TEXTURE, x + 79, y + 79, 28, 238, 18, 18);
             } else {
+                final InfusionStage stage = menu.getStage(menu.blockEntity.getCraftingStage());
                 if(menu.getCurrentRecipe().getAlchemyObject().getItem() instanceof BlockItem) {
                     pGuiGraphics.renderItem(menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
                     pGuiGraphics.renderItemDecorations(Minecraft.getInstance().font, menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
@@ -263,30 +269,32 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     pGuiGraphics.setColor(1, 1, 1, 1);
                 }
 
-                //ingredients
-                {
-                    int i=0;
-                    for (ItemStack is : menu.getStage(menu.blockEntity.getCraftingStage()).componentItems) {
-                        pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 0.25f);
-                        pGuiGraphics.renderItem(is, x + 22, y + 8 + (i * 18));
-                        pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+                if(stage != null) {
+                    //ingredients
+                    {
+                        int i = 0;
+                        for (ItemStack is : stage.componentItems) {
+                            pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 0.25f);
+                            pGuiGraphics.renderItem(is, x + 22, y + 8 + (i * 18));
+                            pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-                        //correction for blockitems
-                        if(is.getItem() instanceof BlockItem) {
-                            pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 22, y + 8 + (i * 18), x + 40, y + 26 + (i * 18), 0x40ffffff);
+                            //correction for blockitems
+                            if (is.getItem() instanceof BlockItem) {
+                                pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 22, y + 8 + (i * 18), x + 40, y + 26 + (i * 18), 0x40ffffff);
+                            }
+
+                            i++;
                         }
-
-                        i++;
                     }
-                }
 
-                //materia
-                {
-                    int i=0;
-                    for (ItemStack is : menu.getStage(menu.blockEntity.getCraftingStage()).componentMateria) {
-                        pGuiGraphics.renderItem(is, x + 44, y + 8 + (i * 18));
-                        pGuiGraphics.renderItemDecorations(font, is, x + 44, y + 8 + (i * 18));
-                        i++;
+                    //materia
+                    {
+                        int i = 0;
+                        for (ItemStack is : stage.componentMateria) {
+                            pGuiGraphics.renderItem(is, x + 44, y + 8 + (i * 18));
+                            pGuiGraphics.renderItemDecorations(font, is, x + 44, y + 8 + (i * 18));
+                            i++;
+                        }
                     }
                 }
             }
@@ -314,7 +322,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         }
 
         //Philosopher's Stone hole
-        pGuiGraphics.blit(TEXTURE, x + 180, y + 108, 224, 192, 32, 32);
+        pGuiGraphics.blit(TEXTURE, x + PANEL_STONE_X, y + PANEL_STONE_Y, 224, 192, 32, 32);
         if(menu.blockEntity.getStoneItem().isEmpty())
             pGuiGraphics.blit(TEXTURE, x + 187, y + 115, 238, 224, 18, 18);
     }
@@ -364,45 +372,19 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;
-        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
-            return true;
-        } else {
-            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
+        if (Minecraft.getInstance().options.keyInventory.matches(pKeyCode, pScanCode)) {
+            if (recipeFilterBox.canConsumeInput()) return recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     private void initializeRecipeFilterBox() {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                return super.charTyped(pCodePoint, pModifiers);
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                updateDisplayedRecipes(recipeFilterBox.getValue());
-                super.deleteChars(pNum);
-            }
-
-            @Override
-            public void deleteWords(int pNum) {
-                recipesChanged = true;
-                recipeFilterRow = 0;
-                updateDisplayedRecipes(recipeFilterBox.getValue());
-                super.deleteChars(pNum);
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
@@ -849,5 +831,15 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         PacketRegistry.sendToServer(new DeviceRecipeClearC2SPacket(
                 menu.blockEntity.getBlockPos()
         ));
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(AlchemicalNexusScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_STATS_X, yOrigin + PANEL_STATS_Y, PANEL_STATS_W, PANEL_STATS_H),
+                new Rect2i(xOrigin + PANEL_RECIPE_X, yOrigin + PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H),
+                new Rect2i(xOrigin + PANEL_STONE_X, yOrigin + PANEL_STONE_Y, 32, 32)
+        );
     }
 }

@@ -3,7 +3,7 @@
   "wisdom": 2,
   "categories": 48,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 8,
   "object": { "item": "minecraft:nautilus_shell" },
   "components": [
     { "item": "magichem:admixture_bone", "count": 2 },

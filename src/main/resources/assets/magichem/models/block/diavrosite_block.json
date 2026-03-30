@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:block/cube_all",
+    "textures": {
+        "all":  "magichem:block/diavrosite_block",
+        "particle": "magichem:block/diavrosite_block"
+    }
+}

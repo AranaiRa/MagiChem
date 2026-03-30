@@ -32,7 +32,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -42,9 +41,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuProvider, IMateriaProvisionRequester, IShlorpReceiver, IKeepsInventoryOnBreak {
@@ -65,7 +62,7 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
 
         @Override
         public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if(slot == SLOT_MATERIA && InventoryHelper.isMateriaUnbottled(getStackInSlot(SLOT_MATERIA))) return ItemStack.EMPTY;
+            if(slot == SLOT_MATERIA && InventoryHelper.hasCustomModelData(getStackInSlot(SLOT_MATERIA))) return ItemStack.EMPTY;
 
             return super.extractItem(slot, amount, simulate);
         }
@@ -222,7 +219,7 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
 
                     if (bottleSlot.isEmpty() || bottleSlot.getCount() <= pEntity.itemHandler.getSlotLimit(SLOT_BOTTLES) - actualDeduction) {
                         materiaSlot.shrink(actualDeduction);
-                        if (!InventoryHelper.isMateriaUnbottled(materiaSlot)) {
+                        if (!InventoryHelper.hasCustomModelData(materiaSlot)) {
                             if (bottleSlot.isEmpty()) {
                                 pEntity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, actualDeduction));
                             } else {
@@ -261,7 +258,7 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
         if(activeProvisionRequests.size() > 0)
             return false;
         ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA);
-        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+        if(InventoryHelper.hasCustomModelData(insertionStack)) {
             return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA) / 2;
         }
         return insertionStack.isEmpty();

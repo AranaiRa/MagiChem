@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:sentinels_plackart"
+    },
+    "title": {
+      "translate": "advancements.magichem.sentinels_plackart.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.sentinels_plackart.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:alchemical_nexus",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:sentinels_plackart"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

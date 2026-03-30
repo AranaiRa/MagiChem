@@ -198,7 +198,7 @@ public class CircleFabricationBlock extends BaseEntityBlock {
             else if(be instanceof CircleFabricationRouterBlockEntity router)
                 capabilityQuery = router.getCapability(ForgeCapabilities.FLUID_HANDLER);
 
-            if(itemCapabilityQuery.isPresent() && capabilityQuery != null) {
+            if(!itemInHand.isEmpty() && itemCapabilityQuery.isPresent() && capabilityQuery != null) {
                 final IFluidHandler fluidHandler = capabilityQuery.resolve().get();
                 final IFluidHandlerItem iCap = itemCapabilityQuery.resolve().get();
                 final FluidStack fluidInItem = iCap.getFluidInTank(0);

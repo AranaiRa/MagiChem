@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 5,
+  "result": { "item": "magichem:dormant_orichalkos", "count": 1 },
+  "items": { "type": "minecraft:gold_ingot", "required": 120 },
+  "eldrin": { "type": 56, "required": 1100 },
+  "materia": { "type": "magichem:admixture_metal", "required": 480 },
+  "slurry": 15000
+}

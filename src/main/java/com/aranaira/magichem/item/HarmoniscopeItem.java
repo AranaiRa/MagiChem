@@ -54,13 +54,17 @@ public class HarmoniscopeItem extends Item {
                 pContext.getLevel().playSound((Player) null, pContext.getPlayer().blockPosition(), SoundEvents.AMETHYST_BLOCK_STEP, SoundSource.BLOCKS, 0.75F, f * 0.5f);
 
                 ItemEntity ie = new ItemEntity(pContext.getLevel(), pContext.getClickedPos().getX(), pContext.getClickedPos().getY(), pContext.getClickedPos().getZ(), new ItemStack(stateQuery.getBlock().asItem()));
-                pContext.getLevel().destroyBlock(pContext.getClickedPos(), false);
+                if (!pContext.getLevel().isClientSide) {
+                    pContext.getLevel().captureBlockSnapshots = false; // we're NOT placing a block, we're destroying
+                    pContext.getLevel().destroyBlock(pContext.getClickedPos(), false);
+                }
                 pContext.getLevel().addFreshEntity(ie);
 
                 pContext.getPlayer().getCooldowns().addCooldown(ItemRegistry.HARMONISCOPE.get().asItem(), 6);
             }
         } else {
             DestructiveHarmonicsEntity dhe = new DestructiveHarmonicsEntity(EntitiesRegistry.DESTRUCTIVE_HARMONICS_ENTITY.get(), pContext.getLevel());
+            dhe.setInitiatingPlayer(pContext.getPlayer());
             dhe.setTargetPos(pContext.getClickedPos());
             dhe.setPos(pContext.getPlayer().getX(), pContext.getPlayer().getY(), pContext.getPlayer().getZ());
             pContext.getLevel().addFreshEntity(dhe);

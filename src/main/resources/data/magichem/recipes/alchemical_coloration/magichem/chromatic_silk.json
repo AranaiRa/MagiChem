@@ -1,0 +1,60 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 270,
+  "crafting_time_multiplier": 4.0,
+  "valid_on_cauldron": false,
+  "valid_on_variegator": true,
+  "colorless_default": {
+    "item": "magichem:chromatic_silk"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "magichem:chromatic_silk_red"
+    },
+    {
+      "color": "orange",
+      "item": "magichem:chromatic_silk_orange"
+    },
+    {
+      "color": "yellow",
+      "item": "magichem:chromatic_silk_yellow"
+    },
+    {
+      "color": "lime",
+      "item": "magichem:chromatic_silk_lime"
+    },
+    {
+      "color": "green",
+      "item": "magichem:chromatic_silk_green"
+    },
+    {
+      "color": "cyan",
+      "item": "magichem:chromatic_silk_cyan"
+    },
+    {
+      "color": "light_blue",
+      "item": "magichem:chromatic_silk_light_blue"
+    },
+    {
+      "color": "blue",
+      "item": "magichem:chromatic_silk_blue"
+    },
+    {
+      "color": "purple",
+      "item": "magichem:chromatic_silk_purple"
+    },
+    {
+      "color": "magenta",
+      "item": "magichem:chromatic_silk_magenta"
+    },
+    {
+      "color": "pink",
+      "item": "magichem:chromatic_silk_pink"
+    },
+    {
+      "color": "brown",
+      "item": "magichem:chromatic_silk_brown"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 0,
+  "inputFluidOverride": "magichem:aqua_regia",
+  "acidConsumed": 1000,
+  "duration": 1,
+  "inputItem": { "item": "magichem:red_vitriol", "count": 1 },
+  "resultFluid": { "fluid": "magichem:oil_of_vitriol", "amount": 500 },
+  "outputForCodex": "magichem:oil_of_vitriol_bucket"
+}

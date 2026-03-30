@@ -1,0 +1,26 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:sentinels_plackart"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:rune_defense" },
+        { "item": "minecraft:iron_chestplate" },
+        { "item": "minecraft:leather_chestplate" },
+        { "item": "minecraft:iron_chestplate" },
+        { "item": "mna:rune_defense" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_protection", "count": 36 },
+        { "item": "magichem:admixture_permanence", "count": 18 },
+        { "item": "magichem:admixture_healing", "count": 5 },
+        { "item": "magichem:essentia_nigredo", "count": 5 }
+      ]
+    }
+  ]
+}

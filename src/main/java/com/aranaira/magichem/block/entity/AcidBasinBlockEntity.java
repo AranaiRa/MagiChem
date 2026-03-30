@@ -71,11 +71,11 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         @Override
         protected void onContentsChanged(int slot) {
             if(slot == SLOT_INPUT) {
-                if(level != null && !level.isClientSide()) {
-                    getRecipe();
-                } else {
+//                if(level != null && !level.isClientSide()) {
+//                    getRecipe();
+//                } else {
                     reCheckRecipe = true;
-                }
+//                }
             }
 
             syncAndSave();
@@ -290,7 +290,18 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, E e) {
         if(e instanceof AcidBasinBlockEntity entity) {
             if(pLevel != null && entity.reCheckRecipe) {
-                entity.getRecipe();
+                if(entity.recipe != null) {
+                    ItemStack inputStack = entity.itemHandler.getStackInSlot(SLOT_INPUT);
+                    boolean itemMatches = inputStack.getItem() == entity.recipe.getInputItem().getItem();
+                    boolean hasEnoughToCraft = inputStack.getCount() >= entity.recipe.getInputItem().getCount();
+                    if(inputStack.isEmpty() || !(itemMatches && hasEnoughToCraft)) {
+                        entity.getRecipe();
+                        entity.syncAndSave();
+                    }
+                } else {
+                    entity.getRecipe();
+                    entity.syncAndSave();
+                }
                 entity.reCheckRecipe = false;
             }
 
@@ -420,6 +431,12 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     }
 
     private void getRecipe() {
+        if(itemHandler.getStackInSlot(SLOT_INPUT).isEmpty()) {
+            recipe = null;
+            progress = -1;
+            return;
+        }
+
         ArrayList<VitriolationRecipe> validRecipes = new ArrayList<>();
         for(VitriolationRecipe vr : VitriolationRecipe.getAllVitriolationRecipes(level)) {
             if(vr.getInputItem().getItem() == itemHandler.getStackInSlot(SLOT_INPUT).getItem()) {
@@ -446,6 +463,11 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
                 }
             }
             if (foundRecipe) break;
+        }
+
+        if(!foundRecipe) {
+            recipe = null;
+            progress = -1;
         }
     }
 

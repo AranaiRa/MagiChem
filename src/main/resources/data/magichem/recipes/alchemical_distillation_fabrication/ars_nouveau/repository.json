@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "ars_nouveau:repository"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_arcane",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 16
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

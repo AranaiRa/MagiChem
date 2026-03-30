@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 0.5,
+        "batch_size": 16,
+        "object": {
+          "item": "ars_nouveau:sourceberry_bush"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_mana",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

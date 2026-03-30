@@ -53,13 +53,6 @@ import static com.aranaira.magichem.block.entity.MirrorLabyrinthBlockEntity.TRAI
 public class RitualEffectRebornRose extends RitualEffect {
 
     public static final int RITUAL_LIFESPAN = 20;
-    private static final Vec3i
-            OFFSET_N = new Vec3i(0, 0, -2),
-            OFFSET_E = new Vec3i(2, 0, 0),
-            OFFSET_S = new Vec3i(0, 0, 2),
-            OFFSET_W = new Vec3i(-2, 0, 0);
-    public static final float
-            RITUAL_VFX_HEIGHT = 2.25f;
     private static final Random r = new Random();
 
     public RitualEffectRebornRose(ResourceLocation ritualName) {

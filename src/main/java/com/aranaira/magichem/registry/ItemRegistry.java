@@ -2,15 +2,14 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.*;
-import com.aranaira.magichem.registry.compat.CreateFluidRegistry;
-import com.aranaira.magichem.registry.compat.CreateItemRegistry;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -24,8 +23,6 @@ public class ItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ESSENTIA = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
-
-    public static Item NIGREGO, ALBEDO, CITRINITAS, RUBEDO;
 
     ///////////////
     // MAGICHEM ITEMS
@@ -60,6 +57,14 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<Item> PHILOSOPHERS_STONE_DUMMY = ITEMS.register("philosophers_stone_dummy",
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> PHILOSOPHERS_CONCOCTION_DUMMY = ITEMS.register("philosophers_concoction_dummy",
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY = ITEMS.register("philosophers_concoction_unbottled_dummy",
             () -> new Item(new Item.Properties().stacksTo(1))
     );
 
@@ -116,6 +121,10 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> VINTEUM_CRYSTAL_SHARD = ITEMS.register("vinteum_crystal_shard",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> DIAVROSITE_SHARD = ITEMS.register("diavrosite_shard",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
@@ -359,6 +368,199 @@ public class ItemRegistry {
             () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffects.BAD_OMEN, -1, 30, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false, true, 5)
     );
 
+    public static final RegistryObject<TooltipLoreItem> SUNBURN = ITEMS.register("sunburn",
+            () -> new TooltipLoreItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> MOONSHINE = ITEMS.register("moonshine",
+            () -> new TooltipLoreItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> STARDUST = ITEMS.register("stardust",
+            () -> new TooltipLoreItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> DORMANT_ORICHALKOS = ITEMS.register("dormant_orichalkos",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> ORICHALKOS = ITEMS.register("orichalkos",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> DORMANT_SELARGYROS = ITEMS.register("dormant_selargyros",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SELARGYROS = ITEMS.register("selargyros",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> INFUSED_BOLT = ITEMS.register("infused_bolt",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK = ITEMS.register("chromatic_silk",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_RED = ITEMS.register("chromatic_silk_red",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_ORANGE = ITEMS.register("chromatic_silk_orange",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_YELLOW = ITEMS.register("chromatic_silk_yellow",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_LIME = ITEMS.register("chromatic_silk_lime",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_GREEN = ITEMS.register("chromatic_silk_green",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_CYAN = ITEMS.register("chromatic_silk_cyan",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_LIGHT_BLUE = ITEMS.register("chromatic_silk_light_blue",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_BLUE = ITEMS.register("chromatic_silk_blue",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_PURPLE = ITEMS.register("chromatic_silk_purple",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_MAGENTA = ITEMS.register("chromatic_silk_magenta",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_PINK = ITEMS.register("chromatic_silk_pink",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHROMATIC_SILK_BROWN = ITEMS.register("chromatic_silk_brown",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> AURORAL_SILK = ITEMS.register("auroral_silk",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CONFOUNDING_WIDGET = ITEMS.register("confounding_widget",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> OCULOTOXIN = ITEMS.register("oculotoxin",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(1).saturationMod(1.0F).alwaysEat()
+                    .effect(new MobEffectInstance(MobEffects.POISON, 480, 3), 1.0f)
+                    .effect(new MobEffectInstance(MobEffects.BLINDNESS, 240, 0), 0.667f).build()
+            ))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> FLATBREAD = ITEMS.register("flatbread",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(8).saturationMod(0.6F).build()))
+    );
+
+    public static final RegistryObject<Item> GIBLETS = ITEMS.register("giblets",
+            () -> new Item(new Item.Properties().food((new FoodProperties.Builder()).nutrition(1).saturationMod(1.0f).build()))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BOVINE_THEWSUM = ITEMS.register("thewsum_bovine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> GALLINE_THEWSUM = ITEMS.register("thewsum_galline",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LEPORINE_THEWSUM = ITEMS.register("thewsum_leporine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> OVINE_THEWSUM = ITEMS.register("thewsum_ovine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> PORCINE_THEWSUM = ITEMS.register("thewsum_porcine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> PISCINE_THEWSUM = ITEMS.register("thewsum_piscine",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> REVOLTING_MASS_OF_MEAT = ITEMS.register("revolting_mass_of_meat",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> MORSEL_OF_PERFECT_SAVOR = ITEMS.register("morsel_savor",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> MORSEL_OF_PERFECT_SPICE = ITEMS.register("morsel_spice",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> MORSEL_OF_PERFECT_SWEETNESS = ITEMS.register("morsel_sweetness",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> MORSEL_OF_PERFECT_UMAMI = ITEMS.register("morsel_umami",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> AMBROSIA = ITEMS.register("ambrosia",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(20).saturationMod(1.0F)
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 3, false, false), 1.0f).build()
+            ))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> NECTAR = ITEMS.register("nectar",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(20).saturationMod(1.0F)
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 3, false, false), 1.0f).build()
+            ))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> FEAST_OF_THE_GODS = ITEMS.register("feast_of_the_gods",
+            () -> new TooltipLoreItem(new Item.Properties().food((new FoodProperties.Builder()).nutrition(40).saturationMod(1.0F)
+                    .effect(new MobEffectInstance(MobEffectsRegistry.MEMORIES_OF_DECADENCE.get(), -1, 14, false, false), 1.0f).build()
+            ))
+    );
+
+    public static final RegistryObject<ForkOfTheGulaporrigoItem> FORK_OF_THE_GULAPORRIGO = ITEMS.register("fork_of_the_gulaporrigo",
+            () -> new ForkOfTheGulaporrigoItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<ChaliceOfTearsItem> CHALICE_OF_TEARS = ITEMS.register("chalice_of_tears",
+            () -> new ChaliceOfTearsItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> UNBEATING_HEART = ITEMS.register("unbeating_heart",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> IMMORTAL_HEART = ITEMS.register("immortal_heart",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SENTINELS_PLACKART = ITEMS.register("sentinels_plackart",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CROWN_OF_GLORY = ITEMS.register("crown_of_glory",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
             () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
     );
@@ -516,6 +718,10 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> REGULUS_OF_GOLD = ITEMS.register("regulus_of_gold",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> RED_VITRIOL = ITEMS.register("red_vitriol",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
@@ -783,29 +989,32 @@ public class ItemRegistry {
             () -> new EssentiaDropletsItem("arcane", "\u0556", "elements", 5, "b870ef")
     );
 
+    public static final RegistryObject<Item> PROBLEMITE = ITEMS.register("problemite",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> ADMIXTURE_PROBLEMS = ITEMS.register("admixture_problems",
+            () -> new MateriaItem("problems", "ff00ff", new Item.Properties())
+    );
+
     ///////////////
     // TECHNICAL HELPERS
     ///////////////
 
     public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
-            PHILOSOPHERS_STONE_DUMMY, SUBLIMATION_IN_PROGRESS, EXALTATION_IN_PROGRESS,
+            PHILOSOPHERS_STONE_DUMMY, PHILOSOPHERS_CONCOCTION_DUMMY, PHILOSOPHERS_CONCOCTION_UNBOTTLED_DUMMY, SUBLIMATION_IN_PROGRESS, EXALTATION_IN_PROGRESS,
             DUMMY_CONSTRUCT_STUDY_MATERIAL,
             DUMMY_ANOINTING,DUMMY_INFO_PANEL,DUMMY_VITRIOLATION,DUMMY_ILLUMINATION,
             DUMMY_PROCESS_FULMINATION, DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL, DUMMY_PROCESS_COLORATION, DUMMY_PROCESS_CONJURATION,
             DUMMY_PROCESS_FLUID_DISTILLATION, DUMMY_PROCESS_FLUID_FABRICATION, DUMMY_PROCESS_EXALTATION,
-            ESSENTIA_DROPLETS_ENDER, ESSENTIA_DROPLETS_EARTH, ESSENTIA_DROPLETS_WATER, ESSENTIA_DROPLETS_AIR, ESSENTIA_DROPLETS_FIRE, ESSENTIA_DROPLETS_ARCANE
+            ESSENTIA_DROPLETS_ENDER, ESSENTIA_DROPLETS_EARTH, ESSENTIA_DROPLETS_WATER, ESSENTIA_DROPLETS_AIR, ESSENTIA_DROPLETS_FIRE, ESSENTIA_DROPLETS_ARCANE,
+            PROBLEMITE, ADMIXTURE_PROBLEMS
     );
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         ESSENTIA.register(eventBus);
         ADMIXTURES.register(eventBus);
-
-        HashMap<String, MateriaItem> materiaMap = getMateriaMap(false, false);
-        NIGREGO = materiaMap.get("nigredo");
-        ALBEDO = materiaMap.get("albedo");
-        CITRINITAS = materiaMap.get("citrinitas");
-        RUBEDO = materiaMap.get("rubedo");
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

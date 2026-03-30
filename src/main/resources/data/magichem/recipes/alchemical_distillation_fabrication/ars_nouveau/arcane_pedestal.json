@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "object": {
+          "item": "ars_nouveau:arcane_pedestal"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_mana",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

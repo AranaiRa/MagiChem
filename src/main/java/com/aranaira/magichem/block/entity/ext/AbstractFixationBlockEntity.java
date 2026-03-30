@@ -23,7 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -37,7 +36,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins, IFluidHandler, IMateriaProvisionRequester {
 
@@ -197,7 +194,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                                 final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
                                 for (int i = 0; i < inputs.getContainerSize(); i++) {
                                     final ItemStack inputQuery = inputs.getItem(i);
-                                    if(!inputQuery.isEmpty() && InventoryHelper.isMateriaUnbottled(inputQuery)) {
+                                    if(!inputQuery.isEmpty() && InventoryHelper.hasCustomModelData(inputQuery)) {
                                         pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractFixationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
                                         ender.createShlorpToTarget(inputQuery, instant);
                                     }
@@ -254,7 +251,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         pEntity.remainingAnimus = Math.max(-pVarFunc.apply(IDs.CONFIG_NO_TORQUE_GRACE_PERIOD), pEntity.remainingAnimus - 1);
 
         //skip all of this if grime is full
-        if(GrimeProvider.getCapability(pEntity).getGrime() >= ServerConfig.centrifugeMaximumGrime)
+        if(GrimeProvider.getCapability(pEntity).getGrime() >= pVarFunc.apply(IDs.CONFIG_MAX_GRIME))
             return;
 
         updateActuatorValues(pEntity);
@@ -318,7 +315,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         SimpleContainer input = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
 
         for(int i = pVarFunc.apply(IDs.SLOT_INPUT_START); i<pVarFunc.apply(IDs.SLOT_INPUT_START)+pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
-            input.setItem(i-pVarFunc.apply(IDs.SLOT_INPUT_START), itemHandler.getStackInSlot(i).copy());
+            input.setItem(i-pVarFunc.apply(IDs.SLOT_INPUT_START), itemHandler.getStackInSlot(i));
         }
 
         return input;
@@ -353,8 +350,11 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         if(pEntity.currentRecipe == null)
             return false;
 
+        final int slurryCost = Math.round(pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f));
+        final int containedSlurry = pEntity.containedSlurry.getAmount();
+
         //Can't craft if there's not enough Academic Slurry
-        if(pEntity.currentRecipe.getSlurryCost() > pEntity.containedSlurry.getAmount() * ((100f - pEntity.reductionRate) / 100f))
+        if(slurryCost > containedSlurry)
             return false;
 
         //Can't craft if the bottle output is full

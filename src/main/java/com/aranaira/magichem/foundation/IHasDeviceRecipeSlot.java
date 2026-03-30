@@ -1,7 +1,9 @@
 package com.aranaira.magichem.foundation;
 
+import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.apache.commons.lang3.NotImplementedException;
 
 public interface IHasDeviceRecipeSlot {
     byte
@@ -19,4 +21,12 @@ public interface IHasDeviceRecipeSlot {
     ItemStack getRecipeItem();
 
     ItemStack getRecipeItem(boolean pMakeCopy);
+
+    default void clearRecipe() {
+        if (this instanceof IRouterBlockEntity router) {
+            IHasDeviceRecipeSlot master = (IHasDeviceRecipeSlot) router.getMaster();
+            master.clearRecipe();
+        }
+        throw new NotImplementedException();
+    }
 }

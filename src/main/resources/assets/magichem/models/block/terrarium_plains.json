@@ -12,7 +12,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/terrarium_forests.obj"
+      "model": "magichem:models/obj/terrarium_plains.obj"
     }
   },
   "display": {

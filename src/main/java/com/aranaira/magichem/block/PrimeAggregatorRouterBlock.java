@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -55,6 +56,11 @@ public class PrimeAggregatorRouterBlock extends BaseEntityBlock implements INoCr
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_PRIME_AGGREGATOR, BlockStateProperties.HORIZONTAL_FACING);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+        return new ItemStack(BlockRegistry.PRIME_AGGREGATOR.get());
     }
 
     @Override
@@ -270,14 +276,14 @@ public class PrimeAggregatorRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_TOP_NORTH),1)
         );
         VOXEL_SHAPE_AGGREGATE_REAR_LEFT_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_BASE_NORTH),1),
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_MID_NORTH),1),
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_TOP_NORTH),1)
-        );
-        VOXEL_SHAPE_AGGREGATE_REAR_LEFT_WEST = Shapes.or(
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_BASE_NORTH),2),
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_MID_NORTH),2),
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_TOP_NORTH),2)
+        );
+        VOXEL_SHAPE_AGGREGATE_REAR_LEFT_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_BASE_NORTH),3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_MID_NORTH),3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeZ(VOXEL_SHAPE_FRONT_LEFT_TOP_NORTH),3)
         );
 
         VOXEL_SHAPE_AGGREGATE_REAR_RIGHT_NORTH = Shapes.or(

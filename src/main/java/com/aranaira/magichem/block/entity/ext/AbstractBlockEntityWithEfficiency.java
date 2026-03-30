@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.registry.MateriaRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -12,10 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static com.aranaira.magichem.registry.ItemRegistry.NIGREGO;
-import static com.aranaira.magichem.registry.ItemRegistry.ALBEDO;
-import static com.aranaira.magichem.registry.ItemRegistry.CITRINITAS;
-import static com.aranaira.magichem.registry.ItemRegistry.RUBEDO;
+import static com.aranaira.magichem.registry.MateriaRegistry.NIGREDO;
+import static com.aranaira.magichem.registry.MateriaRegistry.ALBEDO;
+import static com.aranaira.magichem.registry.MateriaRegistry.CITRINITAS;
+import static com.aranaira.magichem.registry.MateriaRegistry.RUBEDO;
 
 public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
     protected int efficiencyMod;
@@ -41,7 +42,7 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
                 for (int i = 0; i < count; i++) {
                     boolean doShrink = false;
                     int adjustedEfficiency = efficiency;
-                    if(stack.getItem() == NIGREGO || stack.getItem() == ALBEDO || stack.getItem() == CITRINITAS || stack.getItem() == RUBEDO)
+                    if(stack.getItem() == NIGREDO.get() || stack.getItem() == ALBEDO.get() || stack.getItem() == CITRINITAS.get() || stack.getItem() == RUBEDO.get())
                         adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float) ServerConfig.houseOfAlchemyDistillationEfficiencyBonus / 100f));
 
                     if(adjustedEfficiency < 100 || outputRate < 1.0f) {

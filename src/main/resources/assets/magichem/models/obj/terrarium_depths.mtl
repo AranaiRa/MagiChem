@@ -1,0 +1,11 @@
+# Blender MTL File: 'terrariums.blend'
+# Material Count: 3
+
+newmtl ARCANE_STONE
+map_Kd mna:block/artifice/decoration/arcane_stone
+
+newmtl TERRARIUM_BASE
+map_Kd magichem:block/terrarium_base
+
+newmtl TERRARIUM_OCEAN
+map_Kd magichem:block/terrarium_depths

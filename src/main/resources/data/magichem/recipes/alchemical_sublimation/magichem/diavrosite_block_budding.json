@@ -1,0 +1,25 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:diavrosite_block_budding"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:aqua_fortis_bucket" },
+        { "item": "minecraft:budding_amethyst" },
+        { "item": "magichem:aqua_fortis_bucket" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_crystal", "count": 72 },
+        { "item": "magichem:admixture_acid", "count": 43 },
+        { "item": "magichem:admixture_destruction", "count": 37 },
+        { "item": "magichem:admixture_change", "count": 37 },
+        { "item": "magichem:admixture_darkness", "count": 9 }
+      ]
+    }
+  ]
+}

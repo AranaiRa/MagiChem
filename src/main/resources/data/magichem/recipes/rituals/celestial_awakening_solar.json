@@ -1,0 +1,106 @@
+{
+	"type": "mna:ritual",
+	"tier": 5,
+	"pattern":
+	[
+		[ 0, 0, 0, 0, 0, 2,-1, 3, 0 ],
+		[ 0,17, 0, 0, 9, 0, 0, 0, 4 ],
+		[ 0,19,21, 0,-1, 0, 1, 0,-1 ],
+		[ 0, 0, 0, 0, 8, 0, 0, 0, 5 ],
+		[24,15, 0, 0,-1, 7,-1, 6, 0 ],
+		[13, 0, 0,10, 0, 0, 0, 0, 0 ],
+		[ 0, 0,11, 0, 0, 0,22, 0, 0 ],
+		[ 0,12, 0, 0,16, 0,20,18, 0 ],
+		[23, 0, 0,14,25, 0, 0, 0, 0 ]
+	],
+	"displayPattern":
+	[
+		[ 0, 0, 0, 0, 0, 5,-1, 6, 0 ],
+		[ 0,25, 0, 0, 4, 0, 0, 0, 7 ],
+		[ 0,24,23, 0,-1, 0, 1, 0,-1 ],
+		[ 0, 0, 0, 0, 3, 0, 0, 0, 8 ],
+		[16,17, 0, 0,13,10,-1, 9, 0 ],
+		[15, 0, 0,-1, 0, 0, 0, 0, 0 ],
+		[ 0, 0,-1, 0, 0, 0,27, 0, 0 ],
+		[ 0,-1, 0, 0,21, 0,28,29, 0 ],
+		[12, 0, 0,19,20, 0, 0, 0, 0 ]
+	],
+	"reagents":
+	[
+		"     C C ",
+		" B  C   C",
+		"  A   D  ",
+		"    C   C",
+		"LG   C C ",
+		"G  O     ",
+		"  K   A  ",
+		" X  G  B ",
+		"L  GL    "
+	],
+	"keys":
+	{
+		"A":
+		{
+			"item": "magichem:sunburn",
+			"optional": false,
+			"consume": true
+		},
+		"B":
+		{
+			"item": "magichem:stardust",
+			"optional": false,
+			"consume": true
+		},
+		"C":
+		{
+			"item": "minecraft:yellow_candle",
+			"optional": false,
+			"consume": true
+		},
+		"D":
+		{
+			"item": "magichem:dormant_orichalkos",
+			"optional": false,
+			"consume": true
+		},
+		"G":
+		{
+			"item": "minecraft:glowstone_dust",
+			"optional": false,
+			"consume": true
+		},
+		"K":
+		{
+			"item": "magichem:black_diamond",
+			"optional": false,
+			"consume": true
+		},
+		"L":
+		{
+			"item": "magichem:salt_of_bone",
+			"optional": false,
+			"consume": true
+		},
+		"O":
+		{
+			"item": "magichem:solar_orb",
+			"optional": false,
+			"consume": false
+		},
+		"X":
+		{
+			"item": "magichem:lunar_orb",
+			"optional": false,
+			"consume": false
+		}
+	},
+	"parameters":
+	{
+		"innerColor": "0xffce49",
+		"outerColor": "0xffce49",
+		"displayIndexes": false,
+		"connectBeam": false,
+		"beamColor": "0xffffff"
+	},
+	"createsItem": "magichem:orichalkos"
+}

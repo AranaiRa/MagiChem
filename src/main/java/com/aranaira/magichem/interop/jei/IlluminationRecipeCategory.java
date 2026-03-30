@@ -75,6 +75,21 @@ public class IlluminationRecipeCategory implements IRecipeCategory<IlluminationR
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, IlluminationRecipe recipe, IFocusGroup group) {
+        builder.addSlot(RecipeIngredientRole.INPUT, -40000, -40000).addItemStack(LENS_GLASS);
+
+        if(recipe.getLuminType() == LuminType.SOLAR) {
+            builder.addSlot(RecipeIngredientRole.INPUT, -40000, -40000).addItemStack(LENS_CLOISTER_SOLAR);
+            builder.addSlot(RecipeIngredientRole.INPUT, -40000, -40000).addItemStack(LENS_FARSIGHT_SOLAR);
+        }
+        else if(recipe.getLuminType() == LuminType.LUNAR) {
+            builder.addSlot(RecipeIngredientRole.INPUT, -40000, -40000).addItemStack(LENS_CLOISTER_LUNAR);
+            builder.addSlot(RecipeIngredientRole.INPUT, -40000, -40000).addItemStack(LENS_FARSIGHT_LUNAR);
+        }
+        else if(recipe.getLuminType() == LuminType.SIDEREAL) {
+            builder.addSlot(RecipeIngredientRole.INPUT, -40000, -40000).addItemStack(LENS_CLOISTER_SIDEREAL);
+            builder.addSlot(RecipeIngredientRole.INPUT, -40000, -40000).addItemStack(LENS_FARSIGHT_SIDEREAL);
+        }
+
         builder.addSlot(RecipeIngredientRole.INPUT, 40, 4).addItemStack(recipe.getInputItem());
         builder.addSlot(RecipeIngredientRole.OUTPUT,40,88).addItemStack(recipe.getResultItem());
     }

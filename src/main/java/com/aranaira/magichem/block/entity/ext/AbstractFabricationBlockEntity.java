@@ -138,7 +138,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
                         final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
                         for (int i = 0; i < inputs.getContainerSize(); i++) {
                             final ItemStack inputQuery = inputs.getItem(i);
-                            if(!inputQuery.isEmpty() && InventoryHelper.isMateriaUnbottled(inputQuery)) {
+                            if(!inputQuery.isEmpty() && InventoryHelper.hasCustomModelData(inputQuery)) {
                                 pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractFabricationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
                                 ender.createShlorpToTarget(inputQuery, instant);
                             }
@@ -270,6 +270,14 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     // RECIPE HANDLING
     ////////////////////
 
+    public ItemStack getRecipeItem() {
+        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : currentItemRecipe.getResultItem().copy();
+    }
+
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentItemRecipe.getResultItem().copy() : currentItemRecipe.getResultItem();
+    }
+
     public void clearRecipe() {
         if(!clearRecipeAfterNextProcess) {
             clearRecipeAfterNextProcess = true;
@@ -380,7 +388,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             for (int i=0; i<inputSlots.getContainerSize(); i++) {
                 ItemStack stackInSlot = inputSlots.getItem(i);
                 if(stackInSlot.getItem() == item.getItem()) {
-                    if(!InventoryHelper.isMateriaUnbottled(stackInSlot)) {
+                    if(!InventoryHelper.hasCustomModelData(stackInSlot)) {
                         int limit = Math.min(totalThisIngredient, stackInSlot.getCount());
                         bottlesGenerated += limit;
                         totalThisIngredient -= limit;
@@ -451,7 +459,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             for (int i=0; i<inputSlots.getContainerSize(); i++) {
                 ItemStack stackInSlot = inputSlots.getItem(i);
                 if(stackInSlot.getItem() == item.getItem()) {
-                    if(!InventoryHelper.isMateriaUnbottled(stackInSlot)) {
+                    if(!InventoryHelper.hasCustomModelData(stackInSlot)) {
                         int limit = Math.min(totalThisIngredient, stackInSlot.getCount());
                         bottlesGenerated += limit;
                         totalThisIngredient -= limit;

@@ -16,6 +16,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -165,12 +166,53 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer>, IMAReci
         @Override
         public SublimationRitualRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
 
-            ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
-            if(recipeObject.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
-                recipeObject = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:barrier")));
+            JsonObject outputObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "object");
+            ItemStack outputStack = new ItemStack(ItemRegistry.PROBLEMITE.get());
+            if(outputObject != null) {
+                String key = outputObject.get("item").getAsString();
+                int count = 1;
+                if(outputObject.has("count"))
+                    count = outputObject.get("count").getAsInt();
 
-            ItemStack compOne = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "materia_type_one"));
-            ItemStack compTwo = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "materia_type_two"));
+                Item outputQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
+                if(outputQuery != null && outputQuery != Items.AIR) {
+                    outputStack = new ItemStack(outputQuery, count);
+                } else {
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for sublimation ritual recipe \""+pRecipeId);
+                }
+            }
+
+            JsonObject materia1Object = GsonHelper.getAsJsonObject(pSerializedRecipe, "materia_type_one");
+            ItemStack materia1Stack = new ItemStack(ItemRegistry.ADMIXTURE_PROBLEMS.get());
+            if(materia1Object != null) {
+                String key = materia1Object.get("item").getAsString();
+                int count = 1;
+                if(materia1Object.has("count"))
+                    count = materia1Object.get("count").getAsInt();
+
+                Item materia1Query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
+                if(materia1Query != null && materia1Query != Items.AIR) {
+                    materia1Stack = new ItemStack(materia1Query, count);
+                } else {
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for sublimation recipe \""+pRecipeId);
+                }
+            }
+
+            JsonObject materia2Object = GsonHelper.getAsJsonObject(pSerializedRecipe, "materia_type_two");
+            ItemStack materia2Stack = new ItemStack(ItemRegistry.ADMIXTURE_PROBLEMS.get());
+            if(materia2Object != null) {
+                String key = materia2Object.get("item").getAsString();
+                int count = 1;
+                if(materia2Object.has("count"))
+                    count = materia2Object.get("count").getAsInt();
+
+                Item materia2Query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
+                if(materia2Query != null && materia2Query != Items.AIR) {
+                    materia2Stack = new ItemStack(materia2Query, count);
+                } else {
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for sublimation recipe \""+pRecipeId);
+                }
+            }
 
             JsonArray components = GsonHelper.getAsJsonArray(pSerializedRecipe, "components");
             NonNullList<ItemStack> extractedIngredients = NonNullList.create();
@@ -183,13 +225,14 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer>, IMAReci
                 if(itemQuery != null) {
                     ing = new ItemStack(itemQuery);
                 } else {
+                    ing = new ItemStack(ItemRegistry.PROBLEMITE.get());
                     MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for sublimation_ritual recipe \""+pRecipeId);
                 }
 
                 extractedIngredients.add(ing);
             });
 
-            return new SublimationRitualRecipe(pRecipeId, recipeObject, compOne, compTwo, extractedIngredients);
+            return new SublimationRitualRecipe(pRecipeId, outputStack, materia1Stack, materia2Stack, extractedIngredients);
         }
 
         @Override

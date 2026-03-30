@@ -9,11 +9,11 @@
         }
       ],
       "recipe": {
-  "type": "magichem:fulmination",
-  "input": "crossroads:zinc_ore",
-  "input_count": 1,
-  "result": "crossroads:deepslate_zinc_ore",
-  "result_count": 1
+      "type": "magichem:fulmination",
+      "input": "create:zinc_ore",
+      "input_count": 1,
+      "result": "create:deepslate_zinc_ore",
+      "result_count": 1
 }
     }
   ]

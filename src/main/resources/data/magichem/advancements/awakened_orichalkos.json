@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:orichalkos"
+    },
+    "title": {
+      "translate": "advancements.magichem.awakened_orichalkos.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.awakened_orichalkos.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:prime_aggregator",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:orichalkos"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -7,6 +7,10 @@
     "magichem:tier_2_cache",
     "magichem:tier_3_cache",
     "magichem:tier_4_cache",
-    "magichem:tier_5_cache"
+    "magichem:tier_5_cache",
+    "magichem:boss_trophy_council",
+    "magichem:boss_trophy_fey",
+    "magichem:boss_trophy_demons",
+    "magichem:boss_trophy_undead"
   ]
 }

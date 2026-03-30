@@ -1,0 +1,62 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:immortal_heart",
+    "count": 1
+  },
+  "stages": [
+    {
+      "experience": 150,
+      "components": [
+        { "item": "mna:animus_dust" },
+        { "item": "magichem:thunderstone" },
+        { "item": "mna:greater_mote_earth" },
+        { "item": "magichem:thunderstone" },
+        { "item": "mna:animus_dust" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_protection", "count": 208 },
+        { "item": "magichem:admixture_permanence", "count": 155 },
+        { "item": "magichem:admixture_signals", "count": 61 },
+        { "item": "magichem:admixture_memory", "count": 34 },
+        { "item": "magichem:admixture_motion", "count": 34 }
+      ]
+    },
+    {
+      "experience": 300,
+      "components": [
+        { "item": "mna:animus_dust" },
+        { "item": "magichem:sunburn" },
+        { "item": "mna:greater_mote_fire" },
+        { "item": "magichem:sunburn" },
+        { "item": "mna:animus_dust" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_healing", "count": 99 },
+        { "item": "magichem:admixture_alien", "count": 41 },
+        { "item": "magichem:admixture_creature", "count": 41 },
+        { "item": "magichem:admixture_death", "count": 41 },
+        { "item": "magichem:essentia_citrinitas", "count": 36 }
+      ]
+    },
+    {
+      "experience": 450,
+      "components": [
+        { "item": "mna:animus_dust" },
+        { "item": "magichem:thunderstone" },
+        { "item": "magichem:unbeating_heart" },
+        { "item": "magichem:thunderstone" },
+        { "item": "mna:animus_dust" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_blood", "count": 244 },
+        { "item": "magichem:admixture_storm", "count": 244 },
+        { "item": "magichem:admixture_breath", "count": 86 },
+        { "item": "magichem:admixture_bone", "count": 44 },
+        { "item": "magichem:essentia_rubedo", "count": 18 }
+      ]
+    }
+  ]
+}

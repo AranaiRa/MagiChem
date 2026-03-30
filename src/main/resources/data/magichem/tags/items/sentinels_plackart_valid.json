@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "mna:mage_hood",
+    "mna:mage_robes",
+    "mna:mage_leggings",
+    "mna:mage_boots",
+    "mna:bone_armor_head",
+    "mna:bone_armor_chest",
+    "mna:bone_armor_leggings",
+    "mna:bone_armor_boots",
+    "mna:fey_armor_head",
+    "mna:fey_armor_chest",
+    "mna:fey_armor_leggings",
+    "mna:fey_armor_boots",
+    "mna:demon_armor_head",
+    "mna:demon_armor_chest",
+    "mna:demon_armor_leggings",
+    "mna:demon_armor_boots",
+    "mna:council_armor_head",
+    "mna:council_armor_chest",
+    "mna:council_armor_leggings",
+    "mna:council_armor_boots"
+  ]
+}

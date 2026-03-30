@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "ars_nouveau:scryers_crystal"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_alien",
+            "count": 48
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_sight",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 10
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

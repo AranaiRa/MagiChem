@@ -9,6 +9,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.tools.math.MathUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -43,7 +44,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     private static final HashMap<String, ItemStack> materiaMap = new HashMap<>();
     private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
     private static List<FluidDistillationFabricationRecipe> allFluidDistillationRecipes = new ArrayList<>();
-    private boolean materiaFilterChanged = false;
+    private String lastUsedFilter = null;
 
     public static final int
         PANEL_MAIN_W = 256, PANEL_MAIN_H = 178;
@@ -190,32 +191,8 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 106, 16, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                materiaFilterChanged = true;
-                materiaFilterRow = 0;
-                return super.charTyped(pCodePoint, pModifiers);
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                materiaFilterChanged = true;
-                materiaFilterRow = 0;
-                super.deleteChars(pNum);
-            }
-
-            @Override
-            public void deleteWords(int pNum) {
-                materiaFilterChanged = true;
-                materiaFilterRow = 0;
-                super.deleteWords(pNum);
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 106, 16, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
@@ -346,6 +323,9 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     private final List<ItemStack> filteredMateria = new ArrayList<>();
     private int materiaFilterRow, materiaFilterRowTotal;
     private void updateDisplayedMateria(String filter) {
+        if (Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         filteredMateria.clear();
 
         for(int i=0; i<getSortedMateriaKeys().size(); i++) {
@@ -356,8 +336,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         }
 
         materiaFilterRowTotal = (int)Math.ceil(filteredMateria.size() / 6d);
-
-//        recipesChanged = false;
+        materiaFilterRow = MathUtils.clamp(materiaFilterRow, 0, materiaFilterRowTotal - 4);
     }
 
     private final List<DistillationFabricationOption> filteredRecipes = new ArrayList<>();
@@ -593,8 +572,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     public void render(GuiGraphics gui, int mouseX, int mouseY, float delta) {
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        if(materiaFilterChanged)
-            updateDisplayedMateria(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
+        updateDisplayedMateria(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         updateFilterBoxContents();
     }
 
@@ -768,10 +746,10 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;
-        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
-            return true;
-        } else {
-            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
+        if (Minecraft.getInstance().options.keyInventory.matches(pKeyCode, pScanCode)) {
+            if (recipeFilterBox.canConsumeInput()) return recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 }

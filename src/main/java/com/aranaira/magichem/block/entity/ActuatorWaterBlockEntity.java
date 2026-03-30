@@ -134,7 +134,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
+                    if(InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
                         return ItemStack.EMPTY;
                 }
 
@@ -264,8 +264,10 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        int newTotal = Math.min(ServerConfig.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess() * pCyclesCompleted);
-        containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Math.min(newTotal, ServerConfig.delugePurifierTankCapacity));
+        if(!getPaused() && containedWater.getAmount() > WATER_PER_OPERATION[powerLevel] && getIsSatisfied()) {
+            int newTotal = Math.min(ServerConfig.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess() * pCyclesCompleted);
+            containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Math.min(newTotal, ServerConfig.delugePurifierTankCapacity));
+        }
     }
 
     public int getStoredMateria() {
@@ -565,7 +567,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public void dropContents() {
-        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
+        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
             ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION));
             getLevel().addFreshEntity(ie);
         }
@@ -591,7 +593,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
         if(activeProvisionRequests.size() > 0)
             return false;
         ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
-        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+        if(InventoryHelper.hasCustomModelData(insertionStack)) {
             return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2;
         }
         return insertionStack.isEmpty();

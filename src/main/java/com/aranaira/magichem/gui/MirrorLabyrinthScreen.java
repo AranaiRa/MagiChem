@@ -18,6 +18,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,6 +37,10 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_mirror_labyrinth_ext.png");
     private static final int
             PANEL_MAIN_W = 222, PANEL_MAIN_H = 121,
+            PANEL_POWER_X = -84, PANEL_POWER_Y = -24, PANEL_POWER_W = 80, PANEL_POWER_H = 66,
+            PANEL_SEARCH_X = -84, PANEL_SEARCH_Y = -60, PANEL_SEARCH_W = 80, PANEL_SEARCH_H = 32,
+            PANEL_BUTTON_X = 226, PANEL_BUTTON_Y = -60, PANEL_BUTTON_W = 32, PANEL_BUTTON_H = 32,
+            PANEL_INSERTION_X = 172, PANEL_INSERTION_Y = 64, PANEL_INSERTION_W = 57, PANEL_INSERTION_H = 90,
             PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 64, PANEL_GRIME_H = 59, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
             TOOLTIP_EFFICIENCY_X = 178, TOOLTIP_EFFICIENCY_Y = 18, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
             TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 37, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
@@ -52,6 +57,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
     private EditBox recipeFilterBox;
     int pageIndex = 0;
     int pageCount = 1;
+    private String lastUsedFilter = null;
 
     public MirrorLabyrinthScreen(MirrorLabyrinthMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -191,42 +197,8 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         int x = 0;//(width - 222) / 2;
         int y = 5;//(height - 213) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
-            @Override
-            public boolean charTyped(char pCodePoint, int pModifiers) {
-                final boolean b = super.charTyped(pCodePoint, pModifiers);
-                updateMateriaOptionsByTextFilter();
-                if(getValue().isEmpty())
-                    setSuggestion("Filter...");
-                else
-                    setSuggestion("");
-                return b;
-            }
-
-            @Override
-            public void deleteChars(int pNum) {
-                super.deleteChars(pNum);
-                updateMateriaOptionsByTextFilter();
-                if(getValue().isEmpty())
-                    setSuggestion("Filter...");
-                else
-                    setSuggestion("");
-            }
-
-            @Override
-            public void deleteWords(int pNum) {
-                super.deleteWords(pNum);
-                updateMateriaOptionsByTextFilter();
-                if(getValue().isEmpty())
-                    setSuggestion("Filter...");
-                else
-                    setSuggestion("");
-            }
-        };
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocused(false);
-        this.recipeFilterBox.setCanLoseFocus(false);
-        this.setFocused(this.recipeFilterBox);
 
         renderFilterBox();
     }
@@ -234,6 +206,9 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
     private void updateMateriaOptionsByTextFilter() {
         String filter = "";
         if(recipeFilterBox != null) filter = recipeFilterBox.getValue().toLowerCase(Locale.ROOT);
+        if (Objects.equals(filter, lastUsedFilter)) return;
+        lastUsedFilter = filter;
+
         orderedMateriaStorageFiltered.clear();
         for (Pair<MateriaItem, Integer> pair : orderedMateriaStorage) {
             MateriaItem mi = pair.getFirst();
@@ -243,6 +218,11 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                 orderedMateriaStorageFiltered.add(pair);
             }
         }
+
+        pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 16f);
+        if(pageCount <= 0)
+            pageCount = 1;
+        pageIndex = Math.min(pageIndex, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
     }
 
     private MateriaItem getMateriaTypeFromButtonID(int pButtonID) {
@@ -269,16 +249,23 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         addRenderableWidget(recipeFilterBox);
     }
 
+    private void updateFilterBoxContents() {
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
+    }
+
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;
-        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
-            return true;
-        } else {
-            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
+        if (Minecraft.getInstance().options.keyInventory.matches(pKeyCode, pScanCode)) {
+            if (recipeFilterBox.canConsumeInput()) return recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     @Override
@@ -301,13 +288,10 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             orderedMateriaStorage.add(new Pair<>(mi, menu.blockEntity.getCurrentStock(mi)));
         }
 
-        updateMateriaOptionsByTextFilter();
-
-        pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 16f);
-        if(pageCount <= 0)
-            pageCount = 1;
-
         menu.blockEntity.needsGuiStorageUpdate = false;
+
+        // force filtered content to update
+        lastUsedFilter = null;
     }
 
     @Override
@@ -326,20 +310,20 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         gui.blit(TEXTURE_COMPACT, x - 7, y + 64, 0, 121, 176, 90);
 
         //insertion panel
-        gui.blit(TEXTURE_COMPACT, x + 172, y + 64, 176, 121, 57, 90);
+        gui.blit(TEXTURE_COMPACT, x + PANEL_INSERTION_X, y + PANEL_INSERTION_Y, 176, 121, PANEL_INSERTION_W, PANEL_INSERTION_H);
 
         //power panel
-        gui.blit(TEXTURE_EXPANDED, x - 84, y - 24, 0, 121, 80, 66);
+        gui.blit(TEXTURE_EXPANDED, x + PANEL_POWER_X, y + PANEL_POWER_Y, 0, 121, PANEL_POWER_W, PANEL_POWER_H);
 
         //power bar
         int pH = (menu.blockEntity.getPowerUsageSetting() + 1) * 5;
         gui.blit(TEXTURE_EXPANDED, x - 75, y + 24 - pH, 0, 226 + (30 - pH), 8, pH);
 
         //search bar
-        gui.blit(TEXTURE_COMPACT, x - 84, y - 60, 116, 224, 80, 32);
+        gui.blit(TEXTURE_COMPACT, x + PANEL_SEARCH_X, y + PANEL_SEARCH_Y, 116, 224, PANEL_SEARCH_W, PANEL_SEARCH_H);
 
         //button house
-        gui.blit(TEXTURE_COMPACT, x + 226, y - 60, 196, 224, 32, 32);
+        gui.blit(TEXTURE_COMPACT, x + PANEL_BUTTON_X, y + PANEL_BUTTON_Y, 196, 224, PANEL_BUTTON_W, PANEL_BUTTON_H);
 
         //bottle ghosts for empty slots
         if(!menu.blockEntity.hasItemInInsertResultSlot())
@@ -413,9 +397,11 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
 
     @Override
     public void render(GuiGraphics gui, int mouseX, int mouseY, float delta) {
+        updateMateriaOptionsByTextFilter();
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
+        updateFilterBoxContents();
     }
 
     @Override
@@ -605,5 +591,16 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
 //        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
 //        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
 //        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 9, 0xff000000, false);
+    }
+
+    public static List<Rect2i> getGuiExtraAreas(MirrorLabyrinthScreen screen) {
+        int xOrigin = (screen.width - PANEL_MAIN_W) / 2;
+        int yOrigin = (screen.height - PANEL_MAIN_H) / 2;
+        return List.of(
+                new Rect2i(xOrigin + PANEL_SEARCH_X, yOrigin + PANEL_SEARCH_Y, PANEL_SEARCH_W, PANEL_SEARCH_H),
+                new Rect2i(xOrigin + PANEL_BUTTON_X, yOrigin + PANEL_BUTTON_Y, PANEL_BUTTON_W, PANEL_BUTTON_H),
+                new Rect2i(xOrigin + PANEL_INSERTION_X, yOrigin + PANEL_INSERTION_Y, PANEL_INSERTION_W, PANEL_INSERTION_H),
+                new Rect2i(xOrigin + PANEL_POWER_X, yOrigin + PANEL_POWER_Y, PANEL_POWER_W, PANEL_POWER_H)
+        );
     }
 }

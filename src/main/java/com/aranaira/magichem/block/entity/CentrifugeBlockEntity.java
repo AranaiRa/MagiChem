@@ -69,6 +69,8 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
 
     public float
             wheelAngle, wheelSpeed, cogAngle, cogSpeed;
+    private int
+            analogSignalLastTick = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -81,7 +83,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(slot)))
+                    if(InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(slot)))
                         return ItemStack.EMPTY;
                 }
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
@@ -376,6 +378,16 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
 
         if(pLevel.isClientSide()) {
             pEntity.handleAnimationDrivers();
+        } else {
+            int analogSignalThisTick = pState.getBlock().getAnalogOutputSignal(pState, pLevel, pPos);
+            if(analogSignalThisTick != pEntity.analogSignalLastTick) {
+                pEntity.setChanged();
+                for (Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> offset : CentrifugeBlock.getRouterOffsets(pState.getValue(MagiChemBlockStateProperties.FACING))) {
+                    BlockEntity be = pLevel.getBlockEntity(pPos.offset(offset.getFirst()));
+                    if(be != null) be.setChanged();
+                }
+            }
+            pEntity.analogSignalLastTick = analogSignalThisTick;
         }
 
         AbstractSeparationBlockEntity.tick(pLevel, pPos, pState, pEntity, CentrifugeBlockEntity::getVar, pEntity::getPoweredOperationTime);
@@ -390,7 +402,16 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                 break;
             }
         }
-        return materiaInOutput;
+        boolean materiaInInput = false;
+        if(!materiaInOutput){
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                    materiaInInput = true;
+                    break;
+                }
+            }
+        }
+        return materiaInOutput || materiaInInput;
     }
 
     public static int getVar(IDs pID) {
@@ -452,6 +473,11 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                 }
             }
         }
+    }
+
+    @Override
+    public List<AbstractDirectionalPluginBlockEntity> getPlugins() {
+        return pluginDevices;
     }
 
     ////////////////////
@@ -516,7 +542,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                     if(componentMateria[i/2] != null) {
                         if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                             ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
 //                                    materiaToVent = materiaToVent | (1 << i);
                                 itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                                 continue;
@@ -524,7 +550,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
 //                                materiaToVent = materiaToVent | (1 << i);
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                             continue;
@@ -580,6 +606,9 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
 
     @Override
     public boolean needsProvisioning() {
+        if(currentRecipe == null)
+            return false;
+
         //make sure there's space to PUT the provision
         int openSlots = 0;
         for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
@@ -641,7 +670,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                 inputSlots.setItem(i-SLOT_INPUT_START, pStack);
                 break;
             } else if(itemHandler.getStackInSlot(i).getItem() == pStack.getItem()) {
-                if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(i))) {
+                if(InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(i))) {
                     inputSlots.getItem(i-SLOT_INPUT_START).grow(pStack.getCount());
                     break;
                 }

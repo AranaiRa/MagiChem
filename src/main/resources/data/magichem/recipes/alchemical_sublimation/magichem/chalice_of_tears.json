@@ -1,0 +1,58 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:chalice_of_tears"
+  },
+  "stages": [
+    {
+      "experience": 80,
+      "components": [
+        { "item": "magichem:vinteum_crystal_block" },
+        { "item": "minecraft:gold_ingot" },
+        { "item": "magichem:orichalkos" },
+        { "item": "minecraft:gold_ingot" },
+        { "item": "magichem:vinteum_crystal_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_instrument", "count": 78 },
+        { "item": "magichem:admixture_memory", "count": 55 },
+        { "item": "magichem:admixture_vessel", "count": 36 },
+        { "item": "magichem:essentia_citrinitas", "count": 28 }
+      ]
+    },
+    {
+      "experience": 110,
+      "components": [
+        { "item": "magichem:profound_manuscript" },
+        { "item": "mna:rune_water" },
+        { "item": "minecraft:sculk_shrieker" },
+        { "item": "mna:rune_water" },
+        { "item": "magichem:profound_manuscript" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_blood", "count": 86 },
+        { "item": "magichem:admixture_healing", "count": 86 },
+        { "item": "magichem:admixture_protection", "count": 86 },
+        { "item": "magichem:admixture_violence", "count": 86 }
+      ]
+    },
+    {
+      "experience": 140,
+      "components": [
+        { "item": "mna:greater_mote_water" },
+        { "item": "minecraft:gold_ingot" },
+        { "item": "minecraft:totem_of_undying" },
+        { "item": "minecraft:gold_ingot" },
+        { "item": "mna:greater_mote_water" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_sorcery", "count": 46 },
+        { "item": "magichem:admixture_curse", "count": 19 },
+        { "item": "magichem:admixture_legend", "count": 4 },
+        { "item": "magichem:essentia_rubedo", "count": 14 }
+      ]
+    }
+  ]
+}

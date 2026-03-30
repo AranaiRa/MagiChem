@@ -31,6 +31,8 @@
     "magichem:actuator_ender_router",
     "magichem:actuator_neutral",
     "magichem:acid_basin",
-    "magichem:acid_basin_router"
+    "magichem:acid_basin_router",
+    "magichem:prime_aggregator",
+    "magichem:prime_aggregator_router"
   ]
 }
