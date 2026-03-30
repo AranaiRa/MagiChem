@@ -693,6 +693,10 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return insert;
     }
 
+    public boolean isRedstonePaused() {
+        return redstonePaused;
+    }
+
     public void checkPaused() {
         boolean shouldPause = false;
         BlockPos myPos = getBlockPos();
