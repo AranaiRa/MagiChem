@@ -13,7 +13,7 @@
         "wisdom": 0,
         "categories": 10,
         "output_rate": 1.0,
-        "batch_size": 1,
+        "batch_size": 8,
         "fluid": "the_bumblezone:honey_fluid_still",
         "components": [
           { "item": "magichem:admixture_nectar", "count": 36},

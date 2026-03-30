@@ -13,7 +13,7 @@
         "wisdom": 1,
         "categories": 2,
         "output_rate": 1.0,
-        "batch_size": 1,
+        "batch_size": 8,
         "required_advancement": "alexscaves:alexscaves/discover_candy_cavity",
         "fluid": "alexscaves:purple_soda",
         "components": [

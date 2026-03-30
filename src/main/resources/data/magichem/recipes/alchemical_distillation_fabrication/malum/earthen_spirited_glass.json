@@ -13,26 +13,26 @@
         "wisdom": 2,
         "categories": 1,
         "output_rate": 0.125,
-        "batch_size": 1,
+        "batch_size": 4,
         "object": {
           "item": "malum:earthen_spirited_glass"
         },
         "components": [
           {
-            "item": "magichem:essentia_earth",
+            "item": "magichem:admixture_crystal",
             "count": 4
           },
           {
             "item": "magichem:admixture_metal",
-            "count": 3
-          },
-          {
-            "item": "magichem:admixture_crystal",
             "count": 2
           },
           {
             "item": "magichem:admixture_color",
             "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
           }
         ]
       }
