@@ -99,10 +99,10 @@ public class EnhancementProvider implements ICapabilitySerializable<Tag> {
 
     public static Optional<IEnhancementCapability> getCapability(Player entity) {
         Optional<IEnhancementCapability> enhancementCapability = entity.getCapability(EnhancementProvider.ENHANCEMENT).resolve();
-        if(enhancementCapability.isEmpty()) {
-            String errorMessage = "Player \""+entity.getDisplayName()+"\" had no Enhancement capability!";
-            MagiChemMod.LOGGER.error(errorMessage);
-        }
+//        if(enhancementCapability.isEmpty()) {
+//            String errorMessage = "Player \""+entity.getDisplayName()+"\" had no Enhancement capability!";
+//            MagiChemMod.LOGGER.error(errorMessage);
+//        }
         return enhancementCapability;
     }
 }
