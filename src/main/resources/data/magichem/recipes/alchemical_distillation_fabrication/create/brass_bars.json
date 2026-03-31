@@ -27,6 +27,7 @@
             "item": "magichem:admixture_permanence",
             "count": 2
           },
+          { "item": "magichem:admixture_instrument", "count": 1 },
           {
             "item": "magichem:essentia_wrought",
             "count": 2

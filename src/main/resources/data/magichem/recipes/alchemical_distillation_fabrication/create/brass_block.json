@@ -25,7 +25,8 @@
           {
             "item": "magichem:admixture_permanence",
             "count": 18
-          }
+          },
+          { "item": "magichem:admixture_instrument", "count": 9 }
         ]
       }
     }

@@ -20,7 +20,8 @@
         },
         "components": [
           { "item": "magichem:admixture_metal", "count": 4 },
-          { "item": "magichem:admixture_permanence", "count": 2 }
+          { "item": "magichem:admixture_permanence", "count": 2 },
+          { "item": "magichem:admixture_instrument", "count": 1 }
         ]
       }
     }

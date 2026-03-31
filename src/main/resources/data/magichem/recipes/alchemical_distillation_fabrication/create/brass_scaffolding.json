@@ -24,12 +24,12 @@
             "count": 4
           },
           {
-            "item": "magichem:admixture_permanence",
+            "item": "magichem:admixture_instrument",
             "count": 2
           },
           {
-            "item": "magichem:admixture_instrument",
-            "count": 1
+            "item": "magichem:admixture_permanence",
+            "count": 2
           },
           {
             "item": "magichem:admixture_travel",
