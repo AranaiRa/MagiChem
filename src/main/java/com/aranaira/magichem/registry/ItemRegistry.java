@@ -128,6 +128,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> DIAVROSITE_DUST = ITEMS.register("diavrosite_dust",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> VERDIGRIS = ITEMS.register("verdigris",
             () -> new TooltipLoreItem(new Item.Properties())
     );

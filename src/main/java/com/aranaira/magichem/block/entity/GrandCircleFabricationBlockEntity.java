@@ -693,6 +693,10 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return insert;
     }
 
+    public boolean isRedstonePaused() {
+        return redstonePaused;
+    }
+
     public void checkPaused() {
         boolean shouldPause = false;
         BlockPos myPos = getBlockPos();
@@ -887,6 +891,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             out[i-SLOT_INPUT_START] = itemHandler.getStackInSlot(i);
         }
         return out;
+    }
+
+    @Override
+    public SimpleContainer getContentsOfInputSlots() {
+        return super.getContentsOfInputSlots(GrandCircleFabricationBlockEntity::getVar);
     }
 
     public ItemStack getOutputInLastSlot() {

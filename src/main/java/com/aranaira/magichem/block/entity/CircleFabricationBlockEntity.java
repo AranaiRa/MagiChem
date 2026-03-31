@@ -602,6 +602,11 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         return out;
     }
 
+    @Override
+    public SimpleContainer getContentsOfInputSlots() {
+        return super.getContentsOfInputSlots(CircleFabricationBlockEntity::getVar);
+    }
+
     public ItemStack getOutputInLastSlot() {
         ItemStack out = null;
         for(int i=SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT-1; i>=SLOT_OUTPUT_START; i--) {

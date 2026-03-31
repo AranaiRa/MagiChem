@@ -108,39 +108,41 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     public static boolean tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractFabricationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
         boolean changed = false;
 
-        for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
-                ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, false);
-            }
-            if (dpbe instanceof ActuatorEnderBlockEntity ender) {
-                ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
-                if (ender.getIsSatisfied() && !ender.getPaused()) {
-                    boolean instant = ender.getPowerLevel() == 2;
-                    //importing
-                    final Map<MateriaItem, Integer> provisioningNeeds = pEntity.getProvisioningNeeds();
-                    if (provisioningNeeds != null && provisioningNeeds.size() > 0) {
-                        if (ender.getMirrorTarget() instanceof AbstractMateriaStorageMultiTypeDynamicBlockEntity multi) {
-                            for (MateriaItem mi : provisioningNeeds.keySet()) {
-                                int requested = provisioningNeeds.get(mi);
-                                int inStorage = multi.getCurrentStock(mi);
+        if(pEntity instanceof GrandCircleFabricationBlockEntity grand && grand.isFESatisfied && !grand.isRedstonePaused()) {
+            for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+                if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
+                    ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, false);
+                }
+                if (dpbe instanceof ActuatorEnderBlockEntity ender) {
+                    ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
+                    if (ender.getIsSatisfied() && !ender.getPaused()) {
+                        boolean instant = ender.getPowerLevel() == 2;
+                        //importing
+                        final Map<MateriaItem, Integer> provisioningNeeds = pEntity.getProvisioningNeeds();
+                        if (provisioningNeeds != null && provisioningNeeds.size() > 0) {
+                            if (ender.getMirrorTarget() instanceof AbstractMateriaStorageMultiTypeDynamicBlockEntity multi) {
+                                for (MateriaItem mi : provisioningNeeds.keySet()) {
+                                    int requested = provisioningNeeds.get(mi);
+                                    int inStorage = multi.getCurrentStock(mi);
 
-                                int actualDrain = Math.min(requested, inStorage);
-                                if (actualDrain > 0) {
-                                    multi.drain(mi, actualDrain, false);
-                                    ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
+                                    int actualDrain = Math.min(requested, inStorage);
+                                    if (actualDrain > 0) {
+                                        multi.drain(mi, actualDrain, false);
+                                        ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
 
-                                    pEntity.setProvisioningInProgress(mi);
+                                        pEntity.setProvisioningInProgress(mi);
+                                    }
                                 }
                             }
                         }
-                    }
-                    if(pEntity.currentItemRecipe == null && pEntity.currentFluidRecipe == null && pLevel.getGameTime() % 40 == 0) {
-                        final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
-                        for (int i = 0; i < inputs.getContainerSize(); i++) {
-                            final ItemStack inputQuery = inputs.getItem(i);
-                            if(!inputQuery.isEmpty() && InventoryHelper.hasCustomModelData(inputQuery)) {
-                                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractFabricationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
-                                ender.createShlorpToTarget(inputQuery, instant);
+                        if (pEntity.currentItemRecipe == null && pEntity.currentFluidRecipe == null && pLevel.getGameTime() % 40 == 0) {
+                            final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
+                            for (int i = 0; i < inputs.getContainerSize(); i++) {
+                                final ItemStack inputQuery = inputs.getItem(i);
+                                if (!inputQuery.isEmpty() && InventoryHelper.hasCustomModelData(inputQuery)) {
+                                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractFabricationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
+                                    ender.createShlorpToTarget(inputQuery, instant);
+                                }
                             }
                         }
                     }
@@ -472,6 +474,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
         if(pEntity.outputTank.isEmpty()) {
             pEntity.outputTank = pRecipe.getAlchemyFluid().copy();
+            pEntity.outputTank.setAmount(pEntity.batchSize * 1000);
         } else {
             pEntity.outputTank.setAmount(Math.min(pEntity.getTankCapacity(0), pEntity.outputTank.getAmount() + 1000 * pEntity.batchSize));
         }

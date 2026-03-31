@@ -43,9 +43,13 @@ public class WisdomMenu extends AbstractContainerMenu {
 
         this.data = data;
         playerInventory = inv;
+        tryGetCapability();
+        addDataSlots(data);
+    }
+
+    public void tryGetCapability() {
         Optional<IWisdomCapability> capQuery = WisdomProvider.getCapability(playerInventory.player);
         capability = capQuery.orElse(null);
-        addDataSlots(data);
     }
 
     public int getWisdom() {

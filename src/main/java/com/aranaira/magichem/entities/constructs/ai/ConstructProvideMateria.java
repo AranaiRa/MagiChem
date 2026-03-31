@@ -283,7 +283,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
         String prefix = "";
         if(pItem instanceof EssentiaItem) prefix = "essentia_";
         else if(pItem instanceof AdmixtureItem) prefix = "admixture_";
-        return Component.translatable("item.magichem." + prefix + filter.getMateriaName()).getString();
+        return filter != null ? Component.translatable("item.magichem." + prefix + filter.getMateriaName()).getString() : Component.literal("(Not Found)").getString();
     }
 
     private HashMap<MateriaItem, List<BlockEntity>> getMateriaStorageInRegion() {

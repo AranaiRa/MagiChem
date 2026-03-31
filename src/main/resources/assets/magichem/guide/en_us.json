@@ -8990,7 +8990,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " or collected by bringing the Budding Amethyst to life with "
+            "text": ", with a "
+          },
+          {
+            "text": "Harmoniscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or "
+          },
+          {
+            "text": "Sonic Bomb",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", or collected by bringing the Budding Amethyst to life with "
           },
           {
             "text": "Animus Dust",
@@ -9045,7 +9059,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " or collected by bringing the Budding Amethyst to life with "
+            "text": ", with a "
+          },
+          {
+            "text": "Harmoniscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or "
+          },
+          {
+            "text": "Sonic Bomb",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", or collected by bringing the Budding Amethyst to life with "
           },
           {
             "text": "Animus Dust",
@@ -9061,6 +9089,84 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/signalite_block_budding"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/signalite_block"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/signalite_to_redstone"
+      }
+    ]
+  },
+  "Budding Diavrosite": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Budding Diavrosite"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Amethyst crystals can be eternally harvested from Budding Amethyst, a strange mineral formation. Through some alchemical modification, the formation can be made to generate "
+          },
+          {
+            "text": "Diavrosite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " instead.\n\nLike Budding Amethyst, crystal clusters will grow on exposed surfaces of the Budding Diavrosite block that can be harvested.\n\nThe Budding Amethyst can either be "
+          },
+          {
+            "text": "Alchemically Fabricated",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", with a "
+          },
+          {
+            "text": "Harmoniscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or "
+          },
+          {
+            "text": "Sonic Bomb",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", or collected by bringing the Budding Amethyst to life with "
+          },
+          {
+            "text": "Animus Dust",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", riding it on top of a torch, and then dismounting after a few seconds."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/diavrosite_block_budding"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/diavrosite_block"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/diavrosite_shard_to_diavrosite_dust"
       }
     ]
   },

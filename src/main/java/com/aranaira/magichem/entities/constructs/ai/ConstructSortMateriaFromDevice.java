@@ -285,7 +285,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         String prefix = "";
         if(pItem instanceof EssentiaItem) prefix = "essentia_";
         else if(pItem instanceof AdmixtureItem) prefix = "admixture_";
-        return Component.translatable("item.magichem." + prefix + filter.getMateriaName()).getString();
+        return filter != null ? Component.translatable("item.magichem." + prefix + filter.getMateriaName()).getString() : Component.literal("(Not Found)").getString();
     }
 
     private int doMateriaTransfer() {

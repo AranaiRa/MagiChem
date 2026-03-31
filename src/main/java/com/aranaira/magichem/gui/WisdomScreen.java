@@ -390,8 +390,10 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
         if(menu.getWisdom() >= 3) pGuiGraphics.blit(getTexture(), x+127, y+108, 240, 176, 16, 16); //Magnitude
         pGuiGraphics.blit(getTexture(), x+97, y+120, 240, 64, 16, 16); //Damage
 
+        if(menu.capability == null) menu.tryGetCapability();
+
         //Upgrade chevrons
-        {
+        if(menu.capability != null){
             //Radius
             {
                 int boost = menu.capability.getValue(Attribute.RADIUS);

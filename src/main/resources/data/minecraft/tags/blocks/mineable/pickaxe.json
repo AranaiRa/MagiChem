@@ -7,6 +7,18 @@
     "magichem:cluster_vinteum_medium",
     "magichem:cluster_vinteum_small",
     "magichem:vinteum_crystal_block",
-    "magichem:vinteum_crystal_block_budding"
+    "magichem:vinteum_crystal_block_budding",
+    "magichem:cluster_diavrosite",
+    "magichem:cluster_diavrosite_large",
+    "magichem:cluster_diavrosite_medium",
+    "magichem:cluster_diavrosite_small",
+    "magichem:diavrosite_block",
+    "magichem:diavrosite_block_budding",
+    "magichem:cluster_signalite",
+    "magichem:cluster_signalite_large",
+    "magichem:cluster_signalite_medium",
+    "magichem:cluster_signalite_small",
+    "magichem:signalite_block",
+    "magichem:signalite_block_budding"
   ]
 }

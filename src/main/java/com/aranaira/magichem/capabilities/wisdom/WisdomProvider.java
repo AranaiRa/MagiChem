@@ -17,7 +17,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 
 public class WisdomProvider implements ICapabilitySerializable<Tag> {
     public static final Capability<IWisdomCapability> WISDOM = CapabilityManager.get(new CapabilityToken<>() {} );
@@ -119,10 +121,10 @@ public class WisdomProvider implements ICapabilitySerializable<Tag> {
 
     public static Optional<IWisdomCapability> getCapability(Player entity) {
         Optional<IWisdomCapability> wisdomCapability = entity.getCapability(WisdomProvider.WISDOM).resolve();
-        if(wisdomCapability.isEmpty()) {
-            String errorMessage = "Player \""+entity.getDisplayName()+"\" had no Wisdom capability!";
-            MagiChemMod.LOGGER.error(errorMessage);
-        }
+//        if(wisdomCapability.isEmpty()) {
+//            String errorMessage = "Player \""+entity.getDisplayName()+"\" had no Wisdom capability!";
+//            MagiChemMod.LOGGER.error(errorMessage);
+//        }
         return wisdomCapability;
     }
 }
