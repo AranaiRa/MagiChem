@@ -20,12 +20,13 @@
         "components": [
           {
             "item": "magichem:admixture_metal",
-            "count": 18
+            "count": 36
           },
           {
-            "item": "magichem:admixture_industry",
-            "count": 9
-          }
+            "item": "magichem:admixture_permanence",
+            "count": 18
+          },
+          { "item": "magichem:admixture_instrument", "count": 9 }
         ]
       }
     }

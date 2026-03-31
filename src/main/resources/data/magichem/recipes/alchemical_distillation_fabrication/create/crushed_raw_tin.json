@@ -29,6 +29,10 @@
           {
             "item": "magichem:admixture_dust",
             "count": 1
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 1
           }
         ]
       }
