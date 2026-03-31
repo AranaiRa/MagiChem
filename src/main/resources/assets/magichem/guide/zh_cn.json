@@ -8853,8 +8853,22 @@
             "color": "dark_purple"
           },
           {
-            "text": "工序制作，或是通过用"
+            "text": "工序制作，使用"
           },
+          {
+            "text": "谐振仪",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或"
+          },
+          {
+            "text": "声波炸弹",
+            "color": "dark_purple"
+          },
+          {
+            "text": "采集，或是通过用"
+		  },
           {
             "text": "赋灵粉",
             "color": "dark_purple"
@@ -8908,8 +8922,22 @@
             "color": "dark_purple"
           },
           {
-            "text": "工序制作，或是通过用"
+            "text": "工序制作，使用"
           },
+          {
+            "text": "谐振仪",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或"
+          },
+          {
+            "text": "声波炸弹",
+            "color": "dark_purple"
+          },
+          {
+            "text": "采集，或是通过用"
+		  },
           {
             "text": "赋灵粉",
             "color": "dark_purple"
@@ -8924,6 +8952,84 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/signalite_block_budding"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/signalite_block"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/signalite_to_redstone"
+      }
+    ]
+  },
+  "Budding Diavrosite": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "腐蚀石母岩"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "紫水晶晶体可以在紫水晶母岩（一种奇特的矿物结构）上永续采收。透过炼金术的修改，这种结构可以用来产生"
+          },
+          {
+            "text": "腐蚀石",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n如同紫水晶母岩，腐蚀石母岩露出的表面也会长出可采收的水晶簇。\n\n紫水晶母岩可以用"
+          },
+          {
+            "text": "炼金造物",
+            "color": "dark_purple"
+          },
+          {
+            "text": "工序制作，使用"
+          },
+          {
+            "text": "谐振仪",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或"
+          },
+          {
+            "text": "声波炸弹",
+            "color": "dark_purple"
+          },
+          {
+            "text": "采集，或是通过用"
+          },
+          {
+            "text": "赋灵粉",
+            "color": "dark_purple"
+          },
+          {
+            "text": "赋予紫水晶母岩生命，骑著它到火把上，几秒后解除骑乘来取得。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/diavrosite_block_budding"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/diavrosite_block"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/diavrosite_shard_to_diavrosite_dust"
       }
     ]
   },
