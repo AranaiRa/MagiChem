@@ -893,6 +893,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return out;
     }
 
+    @Override
+    public SimpleContainer getContentsOfInputSlots() {
+        return super.getContentsOfInputSlots(GrandCircleFabricationBlockEntity::getVar);
+    }
+
     public ItemStack getOutputInLastSlot() {
         ItemStack out = null;
         for(int i=SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT-1; i>=SLOT_OUTPUT_START; i--) {
