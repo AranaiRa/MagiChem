@@ -8853,8 +8853,22 @@
             "color": "dark_purple"
           },
           {
-            "text": "工序製作，或是透過用"
+            "text": "工序製作，使用"
           },
+          {
+            "text": "諧振儀",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或"
+          },
+          {
+            "text": "聲波炸彈",
+            "color": "dark_purple"
+          },
+          {
+            "text": "採集，或是透過用"
+		  },
           {
             "text": "賦靈粉",
             "color": "dark_purple"
@@ -8908,8 +8922,22 @@
             "color": "dark_purple"
           },
           {
-            "text": "工序製作，或是透過用"
+            "text": "工序製作，使用"
           },
+          {
+            "text": "諧振儀",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或"
+          },
+          {
+            "text": "聲波炸彈",
+            "color": "dark_purple"
+          },
+          {
+            "text": "採集，或是透過用"
+		  },
           {
             "text": "賦靈粉",
             "color": "dark_purple"
@@ -8924,6 +8952,84 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/signalite_block_budding"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/signalite_block"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/signalite_to_redstone"
+      }
+	]
+  },
+  "Budding Diavrosite": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "required_advancement": "magichem:__wisdom_3",
+    "sections": [
+      {
+        "type": "title",
+        "value": "腐蝕石芽床"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "紫水晶晶體可以在紫水晶芽床（一種奇特的礦物結構）上永續採收。透過煉金術的修改，這種結構可以用來產生"
+          },
+          {
+            "text": "腐蝕石",
+            "color": "dark_purple"
+          },
+          {
+            "text": "。\n\n如同紫水晶芽床，腐蝕石芽床露出的表面也會長出可採收的水晶簇。\n\n紫水晶芽床可以用"
+          },
+          {
+            "text": "煉金造物",
+            "color": "dark_purple"
+          },
+          {
+            "text": "工序製作，使用"
+          },
+          {
+            "text": "諧振儀",
+            "color": "dark_purple"
+          },
+          {
+            "text": "或"
+          },
+          {
+            "text": "聲波炸彈",
+            "color": "dark_purple"
+          },
+          {
+            "text": "採集，或是透過用"
+          },
+          {
+            "text": "賦靈粉",
+            "color": "dark_purple"
+          },
+          {
+            "text": "賦予紫水晶芽床生命，騎著它到火把上，幾秒後解除騎乘來取得。"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/diavrosite_block_budding"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/diavrosite_block"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/diavrosite_shard_to_diavrosite_dust"
       }
     ]
   },
