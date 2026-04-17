@@ -83,6 +83,9 @@
 		"magichem:admixture_violence",
 		"magichem:admixture_whimsy",
 		"magichem:admixture_witchcraft",
-		"magichem:admixture_wizard"
+		"magichem:admixture_wizard",
+		"magichem:sweetberry_wine_bottle",
+		"magichem:shimmering_wine_bottle",
+		"magichem:shimmering_vintage_wine_bottle"
 	]
 }
