@@ -13,7 +13,7 @@
         "wisdom": 0,
         "categories": 10,
         "output_rate": 0.25,
-        "batch_size": 32,
+        "batch_size": 16,
         "object": { "item": "farmersdelight:straw" },
         "components": [
           { "item": "magichem:admixture_death", "count": 1 },
