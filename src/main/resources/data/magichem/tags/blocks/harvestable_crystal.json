@@ -5,6 +5,9 @@
     "magichem:cluster_vinteum",
     "magichem:cluster_signalite",
     { "id": "hexerei:selenite_cluster", "required": false },
-    { "id": "ae2:certus_quartz_cluster", "required": false }
+    { "id": "ae2:certus_quartz_cluster", "required": false },
+	{ "id": "opalescence:opal_crystal_cluster", "required": false },
+	{ "id": "opalescence:moonlit_opal_crystal_cluster", "required": false },
+	{ "id": "opalescence:unpleasant_opal_crystal_cluster", "required": false }
   ]
 }
