@@ -7,6 +7,8 @@
     "magichem:vinteum_crystal_block_budding",
     "magichem:signalite_block",
     "magichem:signalite_block_budding",
+    "magichem:diavrosite_block",
+    "magichem:diavrosite_block_budding",
     "minecraft:obsidian",
     "minecraft:calcite",
     "minecraft:glowstone",
@@ -27,9 +29,10 @@
     "#forge:glass_panes",
     { "id": "hexerei:selenite_block", "required": false },
     { "id": "hexerei:budding_selenite", "required": false },
-	{ "id": "opalescence:opal", "required": false },
-	{ "id": "opalescence:budding_opal", "required": false }
-
-
+    { "id": "ae2:quartz_block", "required": false },
+    { "id": "ae2:flawless_budding_quartz", "required": false },
+    { "id": "ae2:flawed_budding_quartz", "required": false },
+    { "id": "ae2:chipped_budding_quartz", "required": false },
+    { "id": "ae2:damaged_budding_quartz", "required": false }
   ]
 }
