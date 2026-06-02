@@ -72,7 +72,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         if(admixturesForRandomSelection.stream().count() == 0) {
             for(AdmixtureItem ai : admixturesMap.values()) {
                 if(ai.getMateriaName().equals("legend")) continue;
-                
+
                 for(int i=0; i < Math.pow(5 - ai.getDepth(), 2); i++) {
                     admixturesForRandomSelection.add(ai);
                 }

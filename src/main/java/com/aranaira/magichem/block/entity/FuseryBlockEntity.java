@@ -605,7 +605,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     public void setRecipeByOutput(ItemStack pRecipeOutput) {
         FixationSeparationRecipe fsr = FixationSeparationRecipe.getSeparatingRecipe(level, pRecipeOutput);
 
-        if(fsr != null) {
+        if(fsr != null && (fsr.getResultAdmixture().getItem() instanceof AdmixtureItem ai && ai.getDepth() < 5)) {
             this.currentRecipe = fsr;
             this.recalculateBatchSize();
             this.syncAndSave();
@@ -808,7 +808,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
 
     @Override
     public byte setRecipe(ItemStack pStack, Player player) {
-        if(pStack.getItem() instanceof AdmixtureItem ai) {
+        if(pStack.getItem() instanceof AdmixtureItem ai && ai.getDepth() < 5) {
             currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(player.level(), ai);
             recalculateBatchSize();
             syncAndSave();

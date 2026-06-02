@@ -7,6 +7,7 @@ import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
 import com.aranaira.magichem.gui.element.GrandFuseryButtonRecipeSelector;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -177,7 +178,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
 
         for(FixationSeparationRecipe fsr : fixationRecipeOutputs) {
             String display = fsr.getResultAdmixture().getDisplayName().getString();
-            if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
+            if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase())) && (fsr.getResultAdmixture().getItem() instanceof AdmixtureItem ai && ai.getDepth() < 5)) {
                 filteredRecipes.add(fsr.getResultAdmixture());
             }
         }
