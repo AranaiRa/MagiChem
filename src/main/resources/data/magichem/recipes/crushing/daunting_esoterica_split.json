@@ -1,0 +1,19 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "magichem:daunting_esoterica",
+  "output": "magichem:scorched_profundity",
+  "output_quantity": 4,
+  "byproducts": [
+    {
+      "item": "magichem:scorched_theorem",
+      "chance": 1,
+      "count": 24
+    },
+    {
+      "item": "magichem:leather",
+      "chance": 1,
+      "count": 12
+    }
+  ]
+}

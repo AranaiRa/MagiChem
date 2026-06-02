@@ -1,0 +1,19 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "magichem:profound_manuscript",
+  "output": "magichem:scorched_profundity",
+  "output_quantity": 1,
+  "byproducts": [
+    {
+      "item": "magichem:scorched_theorem",
+      "chance": 1,
+      "count": 12
+    },
+    {
+      "item": "magichem:leather",
+      "chance": 1,
+      "count": 6
+    }
+  ]
+}
