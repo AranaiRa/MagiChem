@@ -33,6 +33,8 @@
     { "id": "ae2:flawless_budding_quartz", "required": false },
     { "id": "ae2:flawed_budding_quartz", "required": false },
     { "id": "ae2:chipped_budding_quartz", "required": false },
-    { "id": "ae2:damaged_budding_quartz", "required": false }
+    { "id": "ae2:damaged_budding_quartz", "required": false },
+	{ "id": "opalescence:opal", "required": false },
+	{ "id": "opalescence:budding_opal", "required": false }
   ]
 }
