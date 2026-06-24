@@ -199,7 +199,21 @@ public class CommonEventHandler {
                 event.setCanceled(true);
             }
         }
-        if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
+        if(target instanceof ICanHaveUnbottledMateriaInInputTray clogQuery) {
+            if(!stack.isEmpty() && stack.getItem() == Items.GLASS_BOTTLE && clogQuery.isClogged()) {
+                if(!event.getLevel().isClientSide()) {
+                    ItemStack extracted = clogQuery.tryExtractUnbottled(stack);
+                    if (!extracted.isEmpty()) {
+                        ItemEntity ie = new ItemEntity(event.getLevel(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), extracted);
+                        event.getLevel().addFreshEntity(ie);
+
+                        event.setCancellationResult(InteractionResult.CONSUME);
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
+        else if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
             if(stack.getItem() == Items.GLASS_BOTTLE) {
                 if(amsbe.getMateriaType() != null) {
                     ItemStack extracted = amsbe.extractMateria(stack.getCount(), false);

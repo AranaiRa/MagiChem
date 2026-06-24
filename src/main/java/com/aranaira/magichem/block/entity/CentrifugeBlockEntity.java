@@ -697,4 +697,39 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
 
         return 0;
     }
+
+    @Override
+    public ItemStack tryExtractUnbottled(ItemStack pBottlesInHand) {
+        int limit = pBottlesInHand.getCount();
+        ItemStack extractQuery = null;
+
+        for(int i=SLOT_INPUT_START;i<SLOT_INPUT_START+SLOT_INPUT_COUNT;i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty() && InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(i))) {
+                extractQuery = itemHandler.getStackInSlot(i);
+                break;
+            }
+        }
+
+        if(extractQuery != null) {
+            int extracted = Math.min(limit, extractQuery.getCount());
+            pBottlesInHand.shrink(extracted);
+            ItemStack output = new ItemStack(extractQuery.getItem(), extracted);
+            extractQuery.shrink(extracted);
+            return output;
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean isClogged() {
+        if (currentRecipe == null) {
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (!itemHandler.getStackInSlot(i).isEmpty() && InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(i))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

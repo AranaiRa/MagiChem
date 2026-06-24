@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.block.entity.*;
+import com.aranaira.magichem.foundation.ICanHaveUnbottledMateriaInInputTray;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.item.MateriaItem;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public abstract class AbstractFabricationBlockEntity extends BlockEntity implements ICanTakePlugins, IMateriaProvisionRequester, IFluidHandler {
+public abstract class AbstractFabricationBlockEntity extends BlockEntity implements ICanTakePlugins, IMateriaProvisionRequester, IFluidHandler, ICanHaveUnbottledMateriaInInputTray {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;

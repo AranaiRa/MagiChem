@@ -4,10 +4,7 @@ import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
-import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.IHasDeviceRecipeSlot;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IMateriaSortingRequester;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -37,7 +34,7 @@ import java.util.Map;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_FABRICATION;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_POWER;
 
-public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction, IHasDeviceRecipeSlot, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction, IHasDeviceRecipeSlot, IMateriaProvisionRequester, IMateriaSortingRequester, ICanHaveUnbottledMateriaInInputTray {
     private BlockPos masterPos;
     private CircleFabricationBlockEntity master;
 
@@ -183,5 +180,21 @@ public class CircleFabricationRouterBlockEntity extends BlockEntity implements M
     @Override
     public boolean needsSorting() {
         return false;
+    }
+
+    @Override
+    public ItemStack tryExtractUnbottled(ItemStack pBottlesInHand) {
+        if(masterPos == null)
+            return ItemStack.EMPTY;
+
+        return getMaster().tryExtractUnbottled(pBottlesInHand);
+    }
+
+    @Override
+    public boolean isClogged() {
+        if(masterPos == null)
+            return false;
+
+        return getMaster().isClogged();
     }
 }

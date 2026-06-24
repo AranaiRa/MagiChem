@@ -40,7 +40,7 @@ import java.util.Map;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester, IShlorpReceiver, IHasDeviceRecipeSlot {
+public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester, IShlorpReceiver, IHasDeviceRecipeSlot, ICanHaveUnbottledMateriaInInputTray {
     private BlockPos masterPos;
     private GrandCentrifugeBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -316,5 +316,21 @@ public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEff
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
         return getMaster().getRecipeItem(pMakeCopy);
+    }
+
+    @Override
+    public ItemStack tryExtractUnbottled(ItemStack pBottlesInHand) {
+        if(masterPos == null)
+            return ItemStack.EMPTY;
+
+        return getMaster().tryExtractUnbottled(pBottlesInHand);
+    }
+
+    @Override
+    public boolean isClogged() {
+        if(masterPos == null)
+            return false;
+
+        return getMaster().isClogged();
     }
 }

@@ -38,7 +38,7 @@ import java.util.Map;
 import static com.aranaira.magichem.block.FuseryRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot {
+public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot, ICanHaveUnbottledMateriaInInputTray {
     private BlockPos masterPos;
     private FuseryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -359,5 +359,21 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
         if(master == null) return null;
 
         return getMaster().getRecipeItem(pMakeCopy);
+    }
+
+    @Override
+    public ItemStack tryExtractUnbottled(ItemStack pBottlesInHand) {
+        if(masterPos == null)
+            return ItemStack.EMPTY;
+
+        return getMaster().tryExtractUnbottled(pBottlesInHand);
+    }
+
+    @Override
+    public boolean isClogged() {
+        if(masterPos == null)
+            return false;
+
+        return getMaster().isClogged();
     }
 }

@@ -4,6 +4,7 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.ICanHaveUnbottledMateriaInInputTray;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.item.AdmixtureItem;
@@ -44,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins, IFluidHandler, IMateriaProvisionRequester {
+public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins, IFluidHandler, IMateriaProvisionRequester, ICanHaveUnbottledMateriaInInputTray {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected LazyOptional<IFluidHandler> lazyFluidHandler;
