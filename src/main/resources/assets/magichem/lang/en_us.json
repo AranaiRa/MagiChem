@@ -1907,7 +1907,7 @@
   "magichem:astral_observer.description" : "[MagiChem] Sublimate an Astral Observer to start instilling items with magic from the skies",
   "magichem:centrifuge.description" : "[MagiChem] Create a Centrifuge to begin splitting materia into its components",
   "magichem:circle_fabrication.description" : "[MagiChem] Create a Circle of Fabrication to create items from materia",
-  "magichem:circle_power.description" : "[MagiChem] Upgrade your Circle of Toil to a Circle of Power",
+  "magichem:circle_power.description" : "[MagiChem] Replace your Circle of Toil with a Circle of Power",
   "magichem:circle_toil.description" : "[MagiChem] Create a Circle of Toil to power alchemical fabrication",
   "magichem:codex_materia.description" : "[MagiChem] Use a Codex Arcana on the Wandering Wizard to exchange it for a Codex Materia",
   "magichem:coloring_cauldron.description" : "[MagiChem] Create a Coloring Cauldron to improve the efficiencies of dye",
