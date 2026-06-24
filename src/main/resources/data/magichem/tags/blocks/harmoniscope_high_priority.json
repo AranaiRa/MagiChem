@@ -24,6 +24,12 @@
     { "id": "ae2:small_quartz_bud", "required": false },
     { "id": "ae2:medium_quartz_bud", "required": false },
     { "id": "ae2:large_quartz_bud", "required": false },
-    { "id": "ae2:quartz_cluster", "required": false }
+    { "id": "ae2:quartz_cluster", "required": false },
+	{ "id": "opalescence:small_opal_crystal_bud", "required": false },
+	{ "id": "opalescence:medium_opal_crystal_bud", "required": false },
+	{ "id": "opalescence:large_opal_crystal_bud", "required": false },
+	{ "id": "opalescence:opal_crystal_cluster", "required": false },
+	{ "id": "opalescence:moonlit_opal_crystal_cluster", "required": false },
+	{ "id": "opalescence:unpleasant_opal_crystal_cluster", "required": false }
   ]
 }
