@@ -114,8 +114,18 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
 
     public CentrifugeBlockEntity getMaster(){
         if(master == null) {
-            if(masterPos != null)
+            if(masterPos != null) {
                 master = (CentrifugeBlockEntity) getLevel().getBlockEntity(masterPos);
+            } else {
+                for (Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : CentrifugeBlock.getRouterOffsets(getFacing())) {
+                    if (getRouterType() == posAndType.getSecond()) {
+                        BlockEntity query = getLevel().getBlockEntity(getBlockPos().offset(posAndType.getFirst().multiply(-1)));
+                        if (query instanceof CentrifugeBlockEntity resolved) {
+                            master = resolved;
+                        }
+                    }
+                }
+            }
 
             //if master is still null we've got a problem and the router needs to be deleted
             if(master == null) {

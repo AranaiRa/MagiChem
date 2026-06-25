@@ -1591,7 +1591,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " in a straight line in the direction the alchemical circle is pointing (through the standing stone with a hole in it)."
+            "text": " in a straight line in the direction the alchemical circle is pointing (through the standing stone with a hole in it).\n\nUnbottled materia in the device's input tray can be extracted when the device has "
+          },
+          {
+            "text": "no recipe set",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by right clicking the device with "
+          },
+          {
+            "text": "empty bottles",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or by a construct using the "
+          },
+          {
+            "text": "Sort Materia from Device",
+            "color": "dark_purple"
+          },
+          {
+            "text": "task."
           }
         ]
       },
@@ -1699,7 +1720,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " is present."
+            "text": " is present.\n\nUnbottled materia in the device's input tray can be extracted when the device has "
+          },
+          {
+            "text": "no recipe set",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by right clicking the device with "
+          },
+          {
+            "text": "empty bottles",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or by a construct using the "
+          },
+          {
+            "text": "Sort Materia from Device",
+            "color": "dark_purple"
+          },
+          {
+            "text": "task."
           }
         ]
       },
@@ -2834,7 +2876,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " as many items per operation as other alchemical devices."
+            "text": " as many items per operation as other alchemical devices.\n\nUnbottled materia in the device's input tray can be extracted when the device has "
+          },
+          {
+            "text": "no recipe set",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by right clicking the device with "
+          },
+          {
+            "text": "empty bottles",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or by a construct using the "
+          },
+          {
+            "text": "Sort Materia from Device",
+            "color": "dark_purple"
+          },
+          {
+            "text": "task."
           }
         ]
       },
@@ -3236,7 +3299,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " ports if you wish to enhance the device using Eldrin power."
+            "text": " ports if you wish to enhance the device using Eldrin power.\n\nUnbottled materia in the device's input tray can be extracted when the device has "
+          },
+          {
+            "text": "no recipe set",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by right clicking the device with "
+          },
+          {
+            "text": "empty bottles",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or by a construct using the "
+          },
+          {
+            "text": "Sort Materia from Device",
+            "color": "dark_purple"
+          },
+          {
+            "text": "task."
           }
         ]
       },
@@ -8163,7 +8247,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " or more should be sufficient."
+            "text": " or more should be sufficient.\n\nUnbottled materia in the device's input tray can be extracted when the device has "
+          },
+          {
+            "text": "no recipe set",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by right clicking the device with "
+          },
+          {
+            "text": "empty bottles",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or by a construct using the "
+          },
+          {
+            "text": "Sort Materia from Device",
+            "color": "dark_purple"
+          },
+          {
+            "text": "task."
           }
         ]
       },
@@ -8371,7 +8476,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " or more should be sufficient."
+            "text": " or more should be sufficient.\n\nUnbottled materia in the device's input tray can be extracted when the device has "
+          },
+          {
+            "text": "no recipe set",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by right clicking the device with "
+          },
+          {
+            "text": "empty bottles",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or by a construct using the "
+          },
+          {
+            "text": "Sort Materia from Device",
+            "color": "dark_purple"
+          },
+          {
+            "text": "task."
           }
         ]
       },

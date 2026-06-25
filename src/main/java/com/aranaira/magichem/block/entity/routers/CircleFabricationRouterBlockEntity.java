@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
@@ -9,6 +10,7 @@ import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
@@ -49,8 +52,19 @@ public class CircleFabricationRouterBlockEntity extends BlockEntity implements M
 
     public CircleFabricationBlockEntity getMaster(){
         if(master == null) {
-            if(masterPos != null)
+            if(masterPos != null) {
                 master = (CircleFabricationBlockEntity) getLevel().getBlockEntity(masterPos);
+            } else {
+                final int routerType = getBlockState().getValue(ROUTER_TYPE_CIRCLE_FABRICATION);
+                for (Pair<BlockPos, Integer> posAndType : CircleFabricationBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+                    if (routerType == posAndType.getSecond()) {
+                        BlockEntity query = getLevel().getBlockEntity(getBlockPos().offset(posAndType.getFirst().multiply(-1)));
+                        if (query instanceof CircleFabricationBlockEntity resolved) {
+                            master = resolved;
+                        }
+                    }
+                }
+            }
 
             //if master is still null we've got a problem and the router needs to be deleted
             if(master == null) {

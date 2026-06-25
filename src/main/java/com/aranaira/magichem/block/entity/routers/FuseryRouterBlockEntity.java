@@ -118,8 +118,18 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
 
     public FuseryBlockEntity getMaster(){
         if(master == null) {
-            if(masterPos != null)
+            if(masterPos != null) {
                 master = (FuseryBlockEntity) getLevel().getBlockEntity(masterPos);
+            } else {
+                for (Triplet<BlockPos, FuseryRouterType, DevicePlugDirection> posAndType : FuseryBlock.getRouterOffsets(getFacing())) {
+                    if (getRouterType() == posAndType.getSecond()) {
+                        BlockEntity query = getLevel().getBlockEntity(getBlockPos().offset(posAndType.getFirst().multiply(-1)));
+                        if (query instanceof FuseryBlockEntity resolved) {
+                            master = resolved;
+                        }
+                    }
+                }
+            }
 
             //if master is still null we've got a problem and the router needs to be deleted
             if(master == null) {
