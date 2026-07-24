@@ -3160,6 +3160,13 @@
             "color": "dark_purple"
           },
           {
+            "text": ".\n\nWhen a Fixation cycle fails the input materia "
+          },
+          {
+            "text": "are not consumed",
+            "color": "dark_purple"
+          },
+          {
             "text": "."
           }
         ]
@@ -3169,6 +3176,10 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/fusery"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/grand_fusery"
       }
     ]
   },
@@ -3334,7 +3345,7 @@
         "value": "",
         "json": [
           {
-            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world."
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world.\n\nFailed crafting cycles will consume a reduced amount of Slurry but will not consume input materia."
           }
         ]
       },
@@ -8511,7 +8522,7 @@
         "value": "",
         "json": [
           {
-            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world.\n\nFailed crafting cycles will consume a reduced amount of Slurry but will not consume input materia.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
             "italic": false
           }
         ]
