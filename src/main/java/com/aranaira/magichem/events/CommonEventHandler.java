@@ -199,18 +199,24 @@ public class CommonEventHandler {
                 event.setCanceled(true);
             }
         }
-        if(target instanceof ICanHaveUnbottledMateriaInInputTray clogQuery) {
-            if(!stack.isEmpty() && stack.getItem() == Items.GLASS_BOTTLE && clogQuery.isClogged()) {
-                if(!event.getLevel().isClientSide()) {
-                    ItemStack extracted = clogQuery.tryExtractUnbottled(stack);
-                    if (!extracted.isEmpty()) {
-                        ItemEntity ie = new ItemEntity(event.getLevel(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), extracted);
-                        event.getLevel().addFreshEntity(ie);
+        if(target instanceof ICanHaveUnbottledMateriaInInputTray clogQuery && !stack.isEmpty() && stack.getItem() == Items.GLASS_BOTTLE && clogQuery.isClogged()) {
+            if(!event.getLevel().isClientSide()) {
+                ItemStack extracted = clogQuery.tryExtractUnbottled(stack);
+                if (!extracted.isEmpty()) {
+                    ItemEntity ie = new ItemEntity(event.getLevel(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), extracted);
+                    event.getLevel().addFreshEntity(ie);
 
-                        event.setCancellationResult(InteractionResult.CONSUME);
-                        event.setCanceled(true);
-                    }
+                    event.setCancellationResult(InteractionResult.CONSUME);
+                    event.setCanceled(true);
                 }
+            }
+        }
+        else if(target instanceof ICanAcceptLaboratoryCharm icalc) {
+            if(target.getBlockState().hasProperty(HAS_LABORATORY_UPGRADE) && !target.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+                icalc.applyLaboratoryCharm();
+                stack.shrink(1);
+                event.setCancellationResult(InteractionResult.CONSUME);
+                event.setCanceled(true);
             }
         }
         else if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
@@ -234,67 +240,19 @@ public class CommonEventHandler {
                 event.getLevel().addFreshEntity(ie);
             }
         }
-        else if(target instanceof AbstractBlockEntityWithEfficiency bewe) {
-            if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
-                if(bewe instanceof CentrifugeBlockEntity cbe) {
+        else if(target instanceof ICanAcceptAnimusDust icaad) {
+            if (stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
+                if (icaad.canAcceptDust(target.getBlockState())) {
                     event.getEntity().swing(event.getHand());
                     stack.shrink(1);
-                    cbe.dustCog();
-                } else if(bewe instanceof CentrifugeRouterBlockEntity crbe) {
-                    event.getEntity().swing(event.getHand());
-                    stack.shrink(1);
-                    crbe.getMaster().dustCog();
-                } else if(bewe instanceof FuseryBlockEntity fbe) {
-                    event.getEntity().swing(event.getHand());
-                    stack.shrink(1);
-                    fbe.dustCog();
-                } else if(bewe instanceof FuseryRouterBlockEntity frbe) {
-                    event.getEntity().swing(event.getHand());
-                    stack.shrink(1);
-                    frbe.getMaster().dustCog();
+                    icaad.applyAnimusDust();
                 }
             }
-            else if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
+        }
+        else if(target instanceof AbstractBlockEntityWithEfficiency bewe) {
+            if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
                 if (GrimeProvider.getCapability(bewe).getGrime() > 0) {
                     CommonEventHelper.generateWasteFromCleanedApparatus(event.getEntity(), event.getLevel(), bewe, stack);
-                }
-            } else if(stack.getItem() == ItemRegistry.LABORATORY_CHARM.get()) {
-                if(target instanceof GrandDistilleryBlockEntity gdbe) {
-                    if(!gdbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gdbe.applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandDistilleryRouterBlockEntity gdrbe) {
-                    if(!gdrbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gdrbe.getMaster().applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandCentrifugeBlockEntity gcbe) {
-                    if(!gcbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gcbe.applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandCentrifugeRouterBlockEntity gcrbe) {
-                    if(!gcrbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gcrbe.getMaster().applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandFuseryBlockEntity gfbe) {
-                    if(!gfbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gfbe.applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandFuseryRouterBlockEntity gfrbe) {
-                    if(!gfrbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gfrbe.getMaster().applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
                 }
             }
             else if(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {

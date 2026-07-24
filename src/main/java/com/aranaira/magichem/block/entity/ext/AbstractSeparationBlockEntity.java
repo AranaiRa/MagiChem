@@ -6,6 +6,7 @@ import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.ICanHaveUnbottledMateriaInInputTray;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -411,9 +412,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             if (!canCraftItem(pEntity, pVarFunc)) {
                 break;
             }
-            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pEntity.currentRecipe.getComponentMateria(), AbstractSeparationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-            int grimeToAdd = Math.round(pair.getFirst());
-            NonNullList<ItemStack> componentMateria = pair.getSecond();
+            Triplet<Integer, NonNullList<ItemStack>, Integer> triplet = applyEfficiencyToCraftingResult(pEntity.currentRecipe.getComponentMateria(), AbstractSeparationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            int grimeToAdd = Math.round(triplet.getFirst());
+            NonNullList<ItemStack> componentMateria = triplet.getSecond();
 
             for (ItemStack item : componentMateria) {
 

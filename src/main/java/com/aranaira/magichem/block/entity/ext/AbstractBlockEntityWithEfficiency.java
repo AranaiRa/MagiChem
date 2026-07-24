@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.registry.MateriaRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -28,8 +29,9 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
 
-    public static Pair<Integer, NonNullList<ItemStack>> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate, int grimeSuccess, int grimeFail) {
+    public static Triplet<Integer, NonNullList<ItemStack>, Integer> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate, int grimeSuccess, int grimeFail) {
         int grime = 0;
+        int crafted = 0;
         if(efficiency < 100 || outputRate < 1.0f) {
             ArrayList<ItemStack> modifiableQuery = new ArrayList<>();
             for (ItemStack stack : query) {
@@ -58,6 +60,7 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
                         stack.shrink(1);
                         grime += grimeFail;
                     } else {
+                        crafted++;
                         grime += grimeSuccess;
                     }
                 }
@@ -67,14 +70,14 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
                 if(stack.getCount() > 0)
                     output.add(stack);
             }
-            return new Pair<>(grime, output);
+            return new Triplet<>(grime, output, crafted);
         }
         else {
             int count = 0;
             for(ItemStack stack : query) {
                 count += stack.getCount();
             }
-            return new Pair<>(count*grimeSuccess, query);
+            return new Triplet<>(count*grimeSuccess, query, count);
         }
     }
 

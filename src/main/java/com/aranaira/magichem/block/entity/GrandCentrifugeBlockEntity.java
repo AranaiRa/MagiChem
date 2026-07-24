@@ -70,7 +70,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
+public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak, ICanAcceptLaboratoryCharm {
     public static final int
         SLOT_COUNT = 23,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1,

@@ -40,7 +40,7 @@ import java.util.Map;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester, IShlorpReceiver, ICanHaveUnbottledMateriaInInputTray {
+public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester, IShlorpReceiver, ICanHaveUnbottledMateriaInInputTray, ICanAcceptLaboratoryCharm {
     private BlockPos masterPos;
     private GrandFuseryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -323,6 +323,12 @@ public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficie
             return false;
 
         return getMaster().isClogged();
+    }
+
+    @Override
+    public void applyLaboratoryCharm() {
+        if(masterPos != null)
+            getMaster().applyLaboratoryCharm();
     }
 }
 

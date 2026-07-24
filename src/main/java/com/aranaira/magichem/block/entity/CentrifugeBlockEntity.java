@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.CentrifugeRouterBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
@@ -53,7 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
+public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak, ICanAcceptAnimusDust {
 
     public static final int
         SLOT_COUNT = 14,
@@ -510,9 +511,14 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         }
     }
 
-    public void dustCog() {
+    public boolean canAcceptDust(BlockState be) {
+        if(be.getValue(MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE) != CentrifugeRouterBlock.ROUTER_TYPE_COG) return false;
+        return remainingAnimus > 0;
+    }
+
+    public void applyAnimusDust() {
         remainingAnimus += ANIMUS_GAIN_ON_DUSTING;
-        setChanged();
+        syncAndSave();
     }
 
     @Override

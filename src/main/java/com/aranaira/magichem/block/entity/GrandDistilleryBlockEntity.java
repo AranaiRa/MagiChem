@@ -65,7 +65,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IMateriaSortingRequester, IKeepsInventoryOnBreak {
+public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IMateriaSortingRequester, IKeepsInventoryOnBreak, ICanAcceptLaboratoryCharm {
     public static final int
         SLOT_COUNT = 25,
         SLOT_BOTTLES = 0,

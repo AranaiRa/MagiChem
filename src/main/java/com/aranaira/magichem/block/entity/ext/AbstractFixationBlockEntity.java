@@ -7,6 +7,7 @@ import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.ICanHaveUnbottledMateriaInInputTray;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -387,7 +388,6 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
 
     protected static void craftItem(AbstractFixationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
         int bottlesToInsert = 0;
-        SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
 
         //TODO: Handle case where both bottled and unbottled items are present at the same time
         for(ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
@@ -404,8 +404,9 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             //Apply Efficiency
             NonNullList<ItemStack> preEfficiencyOutput = NonNullList.create();
             preEfficiencyOutput.add(pEntity.currentRecipe.getResultAdmixture());
-            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(preEfficiencyOutput, AbstractFixationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-            NonNullList<ItemStack> postEfficiencyOutput = pair.getSecond();
+            Triplet<Integer, NonNullList<ItemStack>, Integer> triplet = applyEfficiencyToCraftingResult(preEfficiencyOutput, AbstractFixationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            NonNullList<ItemStack> postEfficiencyOutput = triplet.getSecond();
+            boolean crafted = triplet.getThird() > 0;
 
             //Generate grime amount; Fixation uses the inputs to determine Grime rather than the output
             int grimeToAdd = 0;
@@ -425,29 +426,31 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             }
 
             //Remove component items from inputs
-            for (ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
-                ItemStack itemsToRemove = is.copy();
-                int remaining = itemsToRemove.getCount();
+            if(crafted){
+                for (ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
+                    ItemStack itemsToRemove = is.copy();
+                    int remaining = itemsToRemove.getCount();
 
-                for(int i=pVarFunc.apply(IDs.SLOT_INPUT_START) + pVarFunc.apply(IDs.SLOT_INPUT_COUNT) - 1; i>=pVarFunc.apply(IDs.SLOT_INPUT_START); i--) {
-                    ItemStack stackInSlot = pEntity.itemHandler.getStackInSlot(i);
-                    if(stackInSlot.isEmpty())
-                        continue;
+                    for (int i = pVarFunc.apply(IDs.SLOT_INPUT_START) + pVarFunc.apply(IDs.SLOT_INPUT_COUNT) - 1; i >= pVarFunc.apply(IDs.SLOT_INPUT_START); i--) {
+                        ItemStack stackInSlot = pEntity.itemHandler.getStackInSlot(i);
+                        if (stackInSlot.isEmpty())
+                            continue;
 
-                    if(stackInSlot.getItem() == itemsToRemove.getItem()) {
-                        int removed = Math.min(remaining, stackInSlot.getCount());
-                        if (stackInSlot.hasTag()) {
-                            CompoundTag nbt = stackInSlot.getTag();
-                            if (nbt.contains("CustomModelData")) {
-                                bottlesToInsert -= removed;
+                        if (stackInSlot.getItem() == itemsToRemove.getItem()) {
+                            int removed = Math.min(remaining, stackInSlot.getCount());
+                            if (stackInSlot.hasTag()) {
+                                CompoundTag nbt = stackInSlot.getTag();
+                                if (nbt.contains("CustomModelData")) {
+                                    bottlesToInsert -= removed;
+                                }
                             }
-                        }
-                        stackInSlot.shrink(removed);
+                            stackInSlot.shrink(removed);
 //                        pEntity.itemHandler.setStackInSlot(i, stackInSlot);
-                        remaining -= removed;
+                            remaining -= removed;
 
-                        if (remaining == 0)
-                            break;
+                            if (remaining == 0)
+                                break;
+                        }
                     }
                 }
             }

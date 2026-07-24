@@ -265,7 +265,7 @@ public class FuseryBlock extends BaseEntityBlock implements ISpellInteractibleBl
             else if(isp.getPart().equals(Components.ANIMUS) || isp.getPart().equals(Components.GREATER_ANIMUS)) {
                 BlockEntity be = level.getBlockEntity(blockPos);
                 if(be instanceof FuseryBlockEntity fbe) {
-                    fbe.dustCog();
+                    fbe.applyAnimusDust();
                     return true;
                 }
             }

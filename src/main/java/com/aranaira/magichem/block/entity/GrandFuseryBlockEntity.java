@@ -75,7 +75,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
+public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak, ICanAcceptLaboratoryCharm {
     public static final int
             SLOT_COUNT = 21,
             SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0,
