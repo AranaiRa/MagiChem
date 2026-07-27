@@ -2,6 +2,7 @@ package com.aranaira.magichem.recipe;
 
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -103,6 +104,10 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer>, IMARec
     @Override
     public RecipeType<?> getType() {
         return Type.INSTANCE;
+    }
+
+    public static List<FixationSeparationRecipe> getAllSeparatingRecipes(Level level) {
+        return level.getRecipeManager().getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE);
     }
 
     public static FixationSeparationRecipe getSeparatingRecipe(Level level, ItemStack query) {

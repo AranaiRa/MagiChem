@@ -727,7 +727,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " with a Codex Arcana she'll gladly exchange it for a Codex Materia, or vice-versa."
+            "text": " with a Codex Arcana she'll gladly exchange it for a Codex Materia, or vice-versa.\n\nBy default the Codex Materia will display "
+          },
+          {
+            "text": "Distillation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " recipes, but bookmarks in the lower right will allow you to switch between viewing these or "
+          },
+          {
+            "text": "Separation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " recipes."
           }
         ]
       }
