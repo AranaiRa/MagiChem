@@ -10,28 +10,32 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
+        "wisdom": 3,
         "categories": 1,
-        "output_rate": 0.125,
-        "batch_size": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
         "object": {
-          "item": "malum:arcane_charcoal_fragment"
+          "item": "malum:malignant_pewter_ingot"
         },
         "components": [
           {
-            "item": "magichem:essentia_arcane",
+            "item": "magichem:essentia_ender",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_metal",
             "count": 6
           },
           {
-            "item": "magichem:essentia_fire",
-            "count": 6
-          },
-          {
-            "item": "magichem:admixture_energy",
+            "item": "magichem:admixture_mana",
             "count": 4
           },
           {
-            "item": "magichem:essentia_wrought",
+            "item": "magichem:essentia_albedo",
             "count": 2
           }
         ]

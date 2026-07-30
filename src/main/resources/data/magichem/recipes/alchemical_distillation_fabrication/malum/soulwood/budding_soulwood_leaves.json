@@ -10,29 +10,29 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
+        "wisdom": 0,
         "categories": 1,
-        "output_rate": 0.125,
-        "batch_size": 1,
+        "output_rate": 0.25,
+        "batch_size": 16,
         "object": {
-          "item": "malum:arcane_charcoal_fragment"
+          "item": "malum:budding_soulwood_leaves"
         },
         "components": [
           {
-            "item": "magichem:essentia_arcane",
-            "count": 6
-          },
-          {
-            "item": "magichem:essentia_fire",
-            "count": 6
-          },
-          {
-            "item": "magichem:admixture_energy",
-            "count": 4
-          },
-          {
-            "item": "magichem:essentia_wrought",
+            "item": "magichem:admixture_plant",
             "count": 2
+          },
+          {
+            "item": "magichem:admixture_plains",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_odors",
+            "count": 1
           }
         ]
       }
