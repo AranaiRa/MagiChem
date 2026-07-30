@@ -1,0 +1,9 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 0,
+  "acidConsumed": 0,
+  "inputFluidOverride": "minecraft:water",
+  "duration": 1,
+  "inputItem": { "item": "minecraft:light_blue_concrete_powder", "count": 1 },
+  "resultItem": { "item": "minecraft:light_blue_concrete", "count": 1 }
+}
