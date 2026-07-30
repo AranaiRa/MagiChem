@@ -211,7 +211,7 @@ public class CommonEventHandler {
                 }
             }
         }
-        else if(target instanceof ICanAcceptLaboratoryCharm icalc) {
+        else if(stack.getItem() == ItemRegistry.LABORATORY_CHARM.get() && !stack.isEmpty() && target instanceof ICanAcceptLaboratoryCharm icalc) {
             if(target.getBlockState().hasProperty(HAS_LABORATORY_UPGRADE) && !target.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
                 icalc.applyLaboratoryCharm();
                 stack.shrink(1);
