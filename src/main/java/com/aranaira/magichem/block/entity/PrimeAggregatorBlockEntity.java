@@ -86,6 +86,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     private boolean doDeferredRecipeCheck = false, itemProvisionInProgress = false;
     private ExaltationRecipe currentRecipe = null;
     private ResourceLocation deferredRecipeQuery = null;
+    private boolean deferredRecipeQueryIsOutputItem = false;
     private FluidStack containedSlurry = FluidStack.EMPTY.copy();
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
 
@@ -201,7 +202,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
         if(currentRecipe != null) {
             if(existingAnimStage <= animStage){
-                nbt.putString("result", ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem()).toString());
+                nbt.putString("recipeId", currentRecipe.getId().toString());
                 nbt.putInt("animStage", animStage);
                 nbt.putInt("itemsDelivered", itemsDelivered);
                 nbt.putInt("materiaDelivered", materiaDelivered);
@@ -218,10 +219,15 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public void unpackCraftDataFromTag(CompoundTag nbt) {
-        if(nbt.contains("result")) {
-            Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("result")));
-            if(itemQuery != null && level != null) {
-                ExaltationRecipe er = ExaltationRecipe.getExaltationRecipe(level, itemQuery);
+        if(nbt.contains("recipeId") || nbt.contains("result")) {
+            if(level != null) {
+                ExaltationRecipe er;
+                if(nbt.contains("recipeId")) {
+                    er = ExaltationRecipe.getExaltationRecipeById(level, new ResourceLocation(nbt.getString("recipeId")));
+                } else {
+                    Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("result")));
+                    er = itemQuery == null ? null : ExaltationRecipe.getExaltationRecipe(level, itemQuery);
+                }
                 if(er != null) {
                     currentRecipe = er;
                     doDeferredRecipeCheck = false;
@@ -301,12 +307,15 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public void setRecipeByOutput(ItemStack pRecipeOutput) {
-        if(currentRecipe != null && pRecipeOutput.getItem() == currentRecipe.getResultItem().getItem())
+        if(currentRecipe != null && ItemStack.isSameItemSameTags(pRecipeOutput, currentRecipe.getResultItem())) {
+            doDeferredRecipeCheck = false;
             return;
+        }
 
-        ExaltationRecipe er = ExaltationRecipe.getExaltationRecipe(level, pRecipeOutput.getItem());
+        ExaltationRecipe er = ExaltationRecipe.getExaltationRecipe(level, pRecipeOutput);
 
         if(er != null) {
+            this.doDeferredRecipeCheck = false;
             this.currentRecipe = er;
             this.clearDeliveries();
             this.animStage = ANIM_STAGE_IDLE;
@@ -365,9 +374,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             nbt.putUUID("owner", ownerUUID);
 
         if(currentRecipe != null) {
-            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
-            if(keyQuery != null)
-                nbt.putString("recipe", keyQuery.toString());
+            nbt.putString("recipeId", currentRecipe.getId().toString());
         }
 
         CompoundTag deliveryTag = new CompoundTag();
@@ -414,10 +421,18 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         else
             containedSlurry = FluidStack.EMPTY;
 
-        if(nbt.contains("recipe"))
+        if(nbt.contains("recipeId")) {
+            deferredRecipeQuery = new ResourceLocation(nbt.getString("recipeId"));
+            deferredRecipeQueryIsOutputItem = false;
+        }
+        else if(nbt.contains("recipe")) {
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
-        else
+            deferredRecipeQueryIsOutputItem = true;
+        }
+        else {
             deferredRecipeQuery = null;
+            deferredRecipeQueryIsOutputItem = false;
+        }
         doDeferredRecipeCheck = true;
 
         CompoundTag deliveryTag = nbt.getCompound("deliveries");
@@ -461,9 +476,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             nbt.putUUID("owner", ownerUUID);
 
         if(currentRecipe != null) {
-            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
-            if(keyQuery != null)
-                nbt.putString("recipe", keyQuery.toString());
+            nbt.putString("recipeId", currentRecipe.getId().toString());
         }
 
         CompoundTag deliveryTag = new CompoundTag();
@@ -677,8 +690,13 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
         if(pEntity.doDeferredRecipeCheck) {
             boolean changed;
-            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
-            ExaltationRecipe recipeQuery = ExaltationRecipe.getExaltationRecipe(pLevel, itemQuery);
+            ExaltationRecipe recipeQuery;
+            if(pEntity.deferredRecipeQueryIsOutputItem) {
+                Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
+                recipeQuery = itemQuery == null ? null : ExaltationRecipe.getExaltationRecipe(pLevel, itemQuery);
+            } else {
+                recipeQuery = ExaltationRecipe.getExaltationRecipeById(pLevel, pEntity.deferredRecipeQuery);
+            }
 
             if(recipeQuery != null) {
                 changed = pEntity.currentRecipe != recipeQuery;
@@ -1186,7 +1204,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         for(int i=0; i<output.getContainerSize(); i++) {
             ItemStack query = output.getItem(i);
             if(query.isEmpty()) valid = true;
-            else if(query.getItem() == currentRecipe.getResultItem().getItem()) {
+            else if(ItemStack.isSameItemSameTags(query, currentRecipe.getResultItem())) {
                 int space = currentRecipe.getResultItem().getMaxStackSize() - query.getCount();
                 valid = space >= currentRecipe.getResultItem().getCount();
             }
@@ -1418,13 +1436,15 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     public byte setRecipe(ItemStack pStack, Player player) {
         if(pStack.isEmpty()) clearRecipe();
         ExaltationRecipe recipePre = currentRecipe;
-        ExaltationRecipe recipeQuery = ExaltationRecipe.getExaltationRecipe(level, pStack.getItem());
+        ExaltationRecipe recipeQuery = ExaltationRecipe.getExaltationRecipe(level, pStack);
 
         if(recipeQuery == null) {
             return ERROR_CODE_NO_SUCH_RECIPE;
         } else if(recipePre == recipeQuery) {
+            doDeferredRecipeCheck = false;
             return ERROR_CODE_SUCCESS;
         } else {
+            this.doDeferredRecipeCheck = false;
             this.currentRecipe = recipeQuery;
             this.clearDeliveries();
             this.animStage = ANIM_STAGE_IDLE;

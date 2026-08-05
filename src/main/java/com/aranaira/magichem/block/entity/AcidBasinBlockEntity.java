@@ -385,7 +385,8 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         boolean hasSpaceForOutputItem = true;
         if(recipe.hasResultItem()) {
             int itemCapacity = recipe.getResultItem().getMaxStackSize() - getOutputItem().getCount();
-            boolean itemMatches = getOutputItem().isEmpty() || (getOutputItem().getItem() == recipe.getResultItem().getItem());
+            boolean itemMatches = getOutputItem().isEmpty()
+                    || ItemStack.isSameItemSameTags(getOutputItem(), recipe.getResultItem());
 
             hasSpaceForOutputItem = (itemMatches && itemCapacity >= recipe.getResultItem().getCount());
         }

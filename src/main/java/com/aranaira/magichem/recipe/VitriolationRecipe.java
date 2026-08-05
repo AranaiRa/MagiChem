@@ -353,9 +353,13 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 }
             }
 
+            ItemStack resultItem = resultItemAsItem == null
+                    ? ItemStack.EMPTY
+                    : RecipeOutputHelper.applyNbt(new ItemStack(resultItemAsItem, resultItemCount), resultItemObject, pRecipeId);
+
             return new VitriolationRecipe(pRecipeId,
                     new ItemStack(inputItemAsItem, inputItemCount),
-                    resultItemAsItem == null ? ItemStack.EMPTY : new ItemStack(resultItemAsItem, resultItemCount),
+                    resultItem,
                     resultFluidAsFluid == null ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
                     craftTicks, minimumAcidStrength, mBConsumed,
                     inputFluidOverrideAsFluid,
@@ -376,13 +380,6 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             int inputCount = inputItemTag.getInt("count");
 
             boolean hasResultItem = nbt.contains("resultItem");
-            Item resultItemAsItem = null;
-            int resultItemCount = 0;
-            if(hasResultItem) {
-                CompoundTag resultItemTag = nbt.getCompound("resultItem");
-                resultItemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(resultItemTag.getString("item")));
-                resultItemCount = resultItemTag.getInt("count");
-            }
 
             boolean hasResultFluid = nbt.contains("resultFluid");
             Fluid resultFluidAsFluid = null;
@@ -406,9 +403,11 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 outputForCodexAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("outputForCodex")));
             }
 
+            ItemStack resultItem = !hasResultItem ? ItemStack.EMPTY : ItemStack.of(nbt.getCompound("resultItem"));
+
             return new VitriolationRecipe(pRecipeId,
                     inputAsItem == null ? ItemStack.EMPTY : new ItemStack(inputAsItem, inputCount),
-                    !hasResultItem ? ItemStack.EMPTY : new ItemStack(resultItemAsItem, resultItemCount),
+                    resultItem,
                     !hasResultFluid ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
                     craftTicks, minimumAcidStrength, mBConsumed,
                     inputFluidOverrideAsFluid,
@@ -426,10 +425,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             nbt.put("inputItem", inputItemTag);
 
             if(pRecipe.hasResultItem()) {
-                CompoundTag resultItemTag = new CompoundTag();
-                resultItemTag.putString("item", ForgeRegistries.ITEMS.getKey(pRecipe.resultItem.getItem()).toString());
-                resultItemTag.putInt("count", pRecipe.resultItem.getCount());
-                nbt.put("resultItem", resultItemTag);
+                nbt.put("resultItem", pRecipe.resultItem.serializeNBT());
             }
 
             if(pRecipe.hasResultFluid()) {

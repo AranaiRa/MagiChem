@@ -179,6 +179,28 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         return recipeResult;
     }
 
+    public static ExaltationRecipe getExaltationRecipe(Level level, ItemStack query) {
+        if(query == null || query.isEmpty()) return null;
+
+        for(ExaltationRecipe recipe : level.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
+            if(ItemStack.isSameItemSameTags(recipe.result, query))
+                return recipe;
+        }
+
+        return null;
+    }
+
+    public static ExaltationRecipe getExaltationRecipeById(Level level, ResourceLocation id) {
+        if(id == null) return null;
+
+        for(ExaltationRecipe recipe : level.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
+            if(recipe.getId().equals(id))
+                return recipe;
+        }
+
+        return null;
+    }
+
     public static List<ExaltationRecipe> getAllExaltationRecipes(Level level) {
         return level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
     }
@@ -252,6 +274,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 }
                 else {
                     result = new ItemStack(item, count);
+                    RecipeOutputHelper.applyNbt(result, resultObject, pRecipeId);
                 }
             }
 

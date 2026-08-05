@@ -13,24 +13,25 @@ import java.util.function.Supplier;
 
 public class DeviceRecipeSyncDataC2SPacket {
     private final BlockPos blockPos;
-    private final Item recipeItem;
+    private final ItemStack recipeOutput;
 
     public DeviceRecipeSyncDataC2SPacket(BlockPos pBlockPos, Item pRecipeItem) {
+        this(pBlockPos, pRecipeItem == null ? ItemStack.EMPTY : new ItemStack(pRecipeItem));
+    }
+
+    public DeviceRecipeSyncDataC2SPacket(BlockPos pBlockPos, ItemStack pRecipeOutput) {
         this.blockPos = pBlockPos;
-        this.recipeItem = pRecipeItem;
+        this.recipeOutput = pRecipeOutput.copy();
     }
 
     public DeviceRecipeSyncDataC2SPacket(FriendlyByteBuf buf) {
         this.blockPos = buf.readBlockPos();
-        this.recipeItem = buf.readItem().getItem();
+        this.recipeOutput = buf.readItem();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
-        if(recipeItem == null)
-            buf.writeItem(ItemStack.EMPTY);
-        else
-            buf.writeItem(new ItemStack(recipeItem, 1));
+        buf.writeItemStack(recipeOutput, true);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -41,19 +42,19 @@ public class DeviceRecipeSyncDataC2SPacket {
 
         context.enqueueWork(() -> {
             if(entity instanceof FuseryBlockEntity fusery) {
-                fusery.setRecipeByOutput(new ItemStack(recipeItem));
+                fusery.setRecipeByOutput(recipeOutput.copy());
             }
             else if(entity instanceof GrandFuseryBlockEntity fusery) {
-                fusery.setRecipeByOutput(new ItemStack(recipeItem));
+                fusery.setRecipeByOutput(recipeOutput.copy());
             }
             else if(entity instanceof CentrifugeBlockEntity centrifuge) {
-                centrifuge.setRecipeByOutput(new ItemStack(recipeItem));
+                centrifuge.setRecipeByOutput(recipeOutput.copy());
             }
             else if(entity instanceof GrandCentrifugeBlockEntity centrifuge) {
-                centrifuge.setRecipeByOutput(new ItemStack(recipeItem));
+                centrifuge.setRecipeByOutput(recipeOutput.copy());
             }
             else if(entity instanceof PrimeAggregatorBlockEntity aggregator) {
-                aggregator.setRecipeByOutput(new ItemStack(recipeItem));
+                aggregator.setRecipeByOutput(recipeOutput.copy());
             }
         });
 

@@ -171,9 +171,12 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                     resultItemAsItem = ItemRegistry.PROBLEMITE.get();
             }
 
+            ItemStack resultItem = RecipeOutputHelper.applyNbt(
+                    new ItemStack(resultItemAsItem, resultItemCount), resultItemObject, pRecipeId);
+
             return new IlluminationRecipe(pRecipeId,
                     new ItemStack(inputItemAsItem),
-                    new ItemStack(resultItemAsItem, resultItemCount),
+                    resultItem,
                     luminTypeAsType, craftTime
             );
         }
@@ -192,13 +195,11 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             int craftTime = nbt.getInt("minutes");
 
-            CompoundTag resultItemTag = nbt.getCompound("resultItem");
-            Item resultItemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(resultItemTag.getString("item")));
-            int resultItemCount = resultItemTag.getInt("count");
+            ItemStack resultItem = ItemStack.of(nbt.getCompound("resultItem"));
 
             return new IlluminationRecipe(pRecipeId,
                     inputAsItem == null ? ItemStack.EMPTY : new ItemStack(inputAsItem),
-                    resultItemAsItem == null ? ItemStack.EMPTY : new ItemStack(resultItemAsItem, resultItemCount),
+                    resultItem,
                     luminTypeAsType, craftTime
             );
         }
@@ -211,10 +212,7 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             nbt.putInt("luminType",pRecipe.luminType.ordinal());
             nbt.putInt("minutes",pRecipe.craftTime);
 
-            CompoundTag resultItemTag = new CompoundTag();
-            resultItemTag.putString("item", ForgeRegistries.ITEMS.getKey(pRecipe.resultItem.getItem()).toString());
-            resultItemTag.putInt("count", pRecipe.resultItem.getCount());
-            nbt.put("resultItem", resultItemTag);
+            nbt.put("resultItem", pRecipe.resultItem.serializeNBT());
 
             pBuffer.writeNbt(nbt);
         }

@@ -164,7 +164,14 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     }
 
     public static SublimationRecipe getSublimationRecipe(Level level, ItemStack query) {
-        return getSublimationRecipe(level, query.getItem());
+        if(query == null || query.isEmpty()) return null;
+
+        for(SublimationRecipe recipe : level.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
+            if(ItemStack.isSameItemSameTags(recipe.alchemyObject, query))
+                return recipe;
+        }
+
+        return null;
     }
 
     public static SublimationRecipe getSublimationRecipe(Level level, Item query) {
@@ -179,6 +186,17 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         }
 
         return result;
+    }
+
+    public static SublimationRecipe getSublimationRecipeById(Level level, ResourceLocation id) {
+        if(id == null) return null;
+
+        for(SublimationRecipe recipe : level.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
+            if(recipe.getId().equals(id))
+                return recipe;
+        }
+
+        return null;
     }
 
     public static NonNullList<ItemStack> getAllOutputs(Level pLevel) {
@@ -219,6 +237,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 Item outputQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
                 if(outputQuery != null && outputQuery != Items.AIR) {
                     recipeStack = new ItemStack(outputQuery, count);
+                    RecipeOutputHelper.applyNbt(recipeStack, recipeObject, pRecipeId);
                 } else {
                     MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for sublimation recipe \""+pRecipeId);
                 }
@@ -297,15 +316,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             int wisdom = nbt.getInt("wisdom");
 
             //alchemy object
-            ResourceLocation alchemyObjectRL = new ResourceLocation(nbtAlchemyObject.getString("item"));
-            Item alchemyObjectItem = ForgeRegistries.ITEMS.getValue(alchemyObjectRL);
-            ItemStack alchemyObject = ItemStack.EMPTY;
-            if(alchemyObjectItem != null) {
-                if(nbtAlchemyObject.contains("count"))
-                    alchemyObject = new ItemStack(alchemyObjectItem, nbtAlchemyObject.getInt("count"));
-                else
-                    alchemyObject = new ItemStack(alchemyObjectItem, 1);
-            }
+            ItemStack alchemyObject = ItemStack.of(nbtAlchemyObject);
 
             int stagesCount = nbtStages.getInt("count");
             NonNullList<InfusionStage> infusionStages = NonNullList.create();
@@ -374,10 +385,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             nbt.putInt("tier", recipe.getTier());
             nbt.putInt("wisdom", recipe.getWisdom());
 
-            CompoundTag nbtAlchemyObject = new CompoundTag();
-            nbtAlchemyObject.putString("item", ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem()).toString());
-            nbtAlchemyObject.putInt("count", recipe.getAlchemyObject().getCount());
-            nbt.put("alchemyObject", nbtAlchemyObject);
+            nbt.put("alchemyObject", recipe.getAlchemyObject().serializeNBT());
 
             CompoundTag nbtStages = new CompoundTag();
             nbtStages.putInt("count", recipe.getStages(false).size());

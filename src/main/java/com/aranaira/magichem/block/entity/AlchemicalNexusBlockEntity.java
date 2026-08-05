@@ -90,6 +90,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected UUID initiatingPlayer = null;
     protected ResourceLocation deferredRecipeQuery = null;
+    protected boolean deferredRecipeQueryIsOutputItem = false;
 
     public static final int
             FLUID_BAR_HEIGHT = 88,
@@ -217,14 +218,20 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                     if(stack.getItem() == ItemRegistry.SUBLIMATION_IN_PROGRESS.get()) {
                         if(stack.hasTag() && level != null && !level.isClientSide()) {
                             CompoundTag nbt = stack.getTag();
-                            if(nbt.contains("alchemyObject")) {
-                                Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("alchemyObject")));
-                                SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(level, itemQuery);
+                            if(nbt.contains("recipeId") || nbt.contains("alchemyObject")) {
+                                SublimationRecipe recipeQuery;
+                                if(nbt.contains("recipeId")) {
+                                    recipeQuery = SublimationRecipe.getSublimationRecipeById(
+                                            level, new ResourceLocation(nbt.getString("recipeId")));
+                                } else {
+                                    Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("alchemyObject")));
+                                    recipeQuery = itemQuery == null ? null : SublimationRecipe.getSublimationRecipe(level, itemQuery);
+                                }
                                 UUID uuidQuery = initiatingPlayer;
                                 if(nbt.contains("initiatingPlayer"))
                                     uuidQuery = UUID.fromString(nbt.getString("initiatingPlayer"));
 
-                                if(recipeQuery.isForbiddenByAdvancement() && uuidQuery != null) {
+                                if(recipeQuery != null && recipeQuery.isForbiddenByAdvancement() && uuidQuery != null) {
                                     Player playerQuery = level.getPlayerByUUID(uuidQuery);
                                     if(playerQuery instanceof ServerPlayer sp) {
                                         return !AdvancementUtil.serverPlayerHasAdvancement(level, sp, recipeQuery.getForbiddenAdvancement());
@@ -323,9 +330,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         nbt.putBoolean("itemsInTransit", this.itemsInTransit);
 
         if(currentRecipe != null) {
-            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
-            if(keyQuery != null)
-                nbt.putString("recipe", keyQuery.toString());
+            nbt.putString("recipeId", currentRecipe.getId().toString());
         } else {
             nbt.putBoolean("forceRecipeClear", true);
         }
@@ -361,10 +366,18 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         else
             containedSlurry = FluidStack.EMPTY;
 
-        if(nbt.contains("recipe"))
+        if(nbt.contains("recipeId")) {
+            deferredRecipeQuery = new ResourceLocation(nbt.getString("recipeId"));
+            deferredRecipeQueryIsOutputItem = false;
+        }
+        else if(nbt.contains("recipe")) {
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
-        else
+            deferredRecipeQueryIsOutputItem = true;
+        }
+        else {
             deferredRecipeQuery = null;
+            deferredRecipeQueryIsOutputItem = false;
+        }
 
         if(nbt.contains("initiatingPlayer"))
             initiatingPlayer = UUID.fromString(nbt.getString("initiatingPlayer"));
@@ -406,9 +419,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         else
             nbt.putInt("fluidContents", containedSlurry.getAmount());
         if(currentRecipe != null) {
-            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
-            if(keyQuery != null)
-                nbt.putString("recipe", keyQuery.toString());
+            nbt.putString("recipeId", currentRecipe.getId().toString());
         } else {
             nbt.putBoolean("forceRecipeClear", true);
         }
@@ -438,7 +449,7 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
         CompoundTag nbt = new CompoundTag();
 
         if(currentRecipe != null) {
-            nbt.putString("alchemyObject", ForgeRegistries.ITEMS.getKey(currentRecipe.getAlchemyObject().getItem()).toString());
+            nbt.putString("recipeId", currentRecipe.getId().toString());
             nbt.putInt("craftingStage", craftingStage);
             nbt.putInt("animStage", animStage);
             nbt.putInt("remainingFluidForSatisfaction", this.remainingFluidForSatisfaction);
@@ -458,10 +469,15 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
     }
 
     public void unpackCraftDataFromTag(CompoundTag nbt) {
-        if(nbt.contains("alchemyObject")) {
-            Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("alchemyObject")));
-            if(itemQuery != null && level != null) {
-                SublimationRecipe sr = SublimationRecipe.getSublimationRecipe(level, itemQuery);
+        if(nbt.contains("recipeId") || nbt.contains("alchemyObject")) {
+            if(level != null) {
+                SublimationRecipe sr;
+                if(nbt.contains("recipeId")) {
+                    sr = SublimationRecipe.getSublimationRecipeById(level, new ResourceLocation(nbt.getString("recipeId")));
+                } else {
+                    Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("alchemyObject")));
+                    sr = itemQuery == null ? null : SublimationRecipe.getSublimationRecipe(level, itemQuery);
+                }
                 if(sr != null) {
                     currentRecipe = sr;
                     cacheAnimSpec(!getLevel().isClientSide());
@@ -613,8 +629,13 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
                     anbe.forceRecipeClear = false;
                     anbe.currentRecipe = null;
                 } else {
-                    Item itemQuery = ForgeRegistries.ITEMS.getValue(anbe.deferredRecipeQuery);
-                    SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(pLevel, itemQuery);
+                    SublimationRecipe recipeQuery;
+                    if(anbe.deferredRecipeQueryIsOutputItem) {
+                        Item itemQuery = ForgeRegistries.ITEMS.getValue(anbe.deferredRecipeQuery);
+                        recipeQuery = itemQuery == null ? null : SublimationRecipe.getSublimationRecipe(pLevel, itemQuery);
+                    } else {
+                        recipeQuery = SublimationRecipe.getSublimationRecipeById(pLevel, anbe.deferredRecipeQuery);
+                    }
 
                     if (recipeQuery != null) {
                         changed = anbe.currentRecipe != recipeQuery;
@@ -1323,11 +1344,14 @@ public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEn
 
     public void setRecipeFromOutput(Level pLevel, ItemStack pQuery) {
         SublimationRecipe sr = SublimationRecipe.getSublimationRecipe(pLevel, pQuery);
-        if(sr != null && !sr.equals(this.currentRecipe)) {
-            this.currentRecipe = sr;
-            this.craftingStage = 0;
-            this.clearRecipeAfterNextProcess = false;
-            this.syncAndSave();
+        if(sr != null) {
+            this.doDeferredRecipeCheck = false;
+            if(!sr.equals(this.currentRecipe)) {
+                this.currentRecipe = sr;
+                this.craftingStage = 0;
+                this.clearRecipeAfterNextProcess = false;
+                this.syncAndSave();
+            }
         }
     }
 

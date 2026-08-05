@@ -152,7 +152,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         if(trueIndex < filteredRecipes.size()) {
             PacketRegistry.sendToServer(new DeviceRecipeSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    filteredRecipes.get(trueIndex).getItem()
+                    filteredRecipes.get(trueIndex)
             ));
         }
     }
