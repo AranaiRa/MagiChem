@@ -11,6 +11,7 @@ import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.gui.AstralObserverMenu;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
+import com.aranaira.magichem.recipe.RecipeNbtHelper;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -321,9 +322,11 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
             if (recipe != null) {
                 if(pEntity.getLens().getItem() == ItemRegistry.DEBUG_ORB.get()) {
                     IlluminationRecipe recipeFallback = pEntity.getRecipeForPhase(pEntity.luminTypeInItem);
-                    pEntity.heldItem = (recipeFallback == null ? recipe : recipeFallback).getResultItem().copy();
-                    pEntity.luminTypeInItem = (recipeFallback == null ? recipe : recipeFallback).getLuminType();
-                    pEntity.currentLumins = (recipeFallback == null ? recipe : recipeFallback).getCraftTime() * 1200 * ServerConfig.astralObserverLuminGainStandard;
+                    IlluminationRecipe completedRecipe = recipeFallback == null ? recipe : recipeFallback;
+                    pEntity.heldItem = RecipeNbtHelper.createOutput(
+                            completedRecipe, completedRecipe.getResultItem(), pEntity.heldItem, "magichemLumins");
+                    pEntity.luminTypeInItem = completedRecipe.getLuminType();
+                    pEntity.currentLumins = completedRecipe.getCraftTime() * 1200 * ServerConfig.astralObserverLuminGainStandard;
                     pEntity.luminsNeeded = pEntity.currentLumins;
                     pEntity.holdingCompletedCraft = true;
                     pEntity.solarRecipe = null;
@@ -428,7 +431,8 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                             entity.syncAndSave();
                         }
                     } else if (recipeThisPhase != null && entity.currentLumins >= entity.luminsNeeded) {
-                        entity.heldItem = recipeThisPhase.getResultItem().copy();
+                        entity.heldItem = RecipeNbtHelper.createOutput(
+                                recipeThisPhase, recipeThisPhase.getResultItem(), entity.heldItem, "magichemLumins");
                         entity.holdingCompletedCraft = true;
                         entity.solarRecipe = null;
                         entity.lunarRecipe = null;

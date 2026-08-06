@@ -33,16 +33,23 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
+public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe, NbtPreservingRecipe {
     private final ResourceLocation id;
     private final ItemStack inputItem, resultItem, outputForCodex;
     private final FluidStack resultFluid;
     private final Fluid inputFluidOverride;
+    @Nullable
+    private final Item nbtSource;
     private final int craftTicks, minimumAcidStrength, mBConsumed;
     private static final HashMap<Integer, ArrayList<FluidType>> allAcids = new HashMap();
     private static final HashMap<Integer, ArrayList<Fluid>> allAcidsAsFluids = new HashMap();
 
     public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pCraftTicks, int pMinimumAcidStrength, int pMBConsumed, Fluid pInputFluidOverride, ItemStack pOutputForCodex) {
+        this(pID, pInputItem, pResultItem, pResultFluid, pCraftTicks, pMinimumAcidStrength,
+                pMBConsumed, pInputFluidOverride, pOutputForCodex, null);
+    }
+
+    public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pCraftTicks, int pMinimumAcidStrength, int pMBConsumed, Fluid pInputFluidOverride, ItemStack pOutputForCodex, @Nullable Item pNbtSource) {
         this.id = pID;
         this.inputItem = pInputItem;
         this.resultItem = pResultItem;
@@ -52,6 +59,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         this.mBConsumed = pMBConsumed;
         this.inputFluidOverride = pInputFluidOverride;
         this.outputForCodex = pOutputForCodex;
+        this.nbtSource = pNbtSource;
 
         ArrayList<FluidType>[] acidLists = new ArrayList[]{
                 new ArrayList<FluidType>(),
@@ -88,6 +96,11 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
     public ItemStack getInputItem() {
         return inputItem;
+    }
+
+    @Override
+    public @Nullable Item getNbtSource() {
+        return nbtSource;
     }
 
     @Override
@@ -357,13 +370,25 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                     ? ItemStack.EMPTY
                     : RecipeOutputHelper.applyNbt(new ItemStack(resultItemAsItem, resultItemCount), resultItemObject, pRecipeId);
 
+            Item nbtSource = null;
+            if(RecipeNbtHelper.readOptionalBoolean(pSerializedRecipe, pRecipeId)) {
+                if(resultItem.isEmpty())
+                    throw RecipeNbtHelper.error(pRecipeId,
+                            "preserve_nbt requires an item output, not a fluid-only output");
+                if(inputItemCount != 1 || resultItem.getCount() != 1)
+                    throw RecipeNbtHelper.error(pRecipeId,
+                            "vitriolation input and output counts must both be exactly one");
+                nbtSource = inputItemAsItem;
+            }
+
             return new VitriolationRecipe(pRecipeId,
                     new ItemStack(inputItemAsItem, inputItemCount),
                     resultItem,
                     resultFluidAsFluid == null ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
                     craftTicks, minimumAcidStrength, mBConsumed,
                     inputFluidOverrideAsFluid,
-                    new ItemStack((outputForCodexAsItem == null || outputForCodexAsItem == Items.AIR) ? ItemRegistry.PROBLEMITE.get() : outputForCodexAsItem)
+                    new ItemStack((outputForCodexAsItem == null || outputForCodexAsItem == Items.AIR) ? ItemRegistry.PROBLEMITE.get() : outputForCodexAsItem),
+                    nbtSource
             );
         }
 
@@ -404,6 +429,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             }
 
             ItemStack resultItem = !hasResultItem ? ItemStack.EMPTY : ItemStack.of(nbt.getCompound("resultItem"));
+            Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
 
             return new VitriolationRecipe(pRecipeId,
                     inputAsItem == null ? ItemStack.EMPTY : new ItemStack(inputAsItem, inputCount),
@@ -411,7 +437,8 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                     !hasResultFluid ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
                     craftTicks, minimumAcidStrength, mBConsumed,
                     inputFluidOverrideAsFluid,
-                    !hasOutputForCodex ? ItemStack.EMPTY : new ItemStack(outputForCodexAsItem)
+                    !hasOutputForCodex ? ItemStack.EMPTY : new ItemStack(outputForCodexAsItem),
+                    nbtSource
             );
         }
 
@@ -446,6 +473,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             if(pRecipe.outputForCodex != null && !pRecipe.outputForCodex.isEmpty()) {
                 nbt.putString("outputForCodex", ForgeRegistries.ITEMS.getKey(pRecipe.outputForCodex.getItem()).toString());
             }
+            RecipeNbtHelper.writeNetworkSource(nbt, pRecipe);
 
             pBuffer.writeNbt(nbt);
         }

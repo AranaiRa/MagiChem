@@ -11,6 +11,7 @@ import com.aranaira.magichem.foundation.enums.PrimeAggregatorRouterType;
 import com.aranaira.magichem.gui.PrimeAggregatorMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
+import com.aranaira.magichem.recipe.RecipeNbtHelper;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -65,6 +66,8 @@ import java.util.*;
 import static com.mna.api.affinity.Affinity.*;
 
 public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IHasDeviceRecipeSlot, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester, IItemProvisionRequester, IRequiresRouterCleanupOnDestruction, IKeepsInventoryOnBreak {
+    private static final String NBT_PRESERVED_INPUT = "preservedInput";
+
     public static final int
             SLOT_COUNT = 7, SLOT_INPUT_COUNT = 2,
             SLOT_ITEM_INPUT = 0, SLOT_MATERIA_INPUT = 1, SLOT_BOTTLES_OUTPUT = 2, SLOT_PROGRESS_HOLDER = 3,
@@ -85,6 +88,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     private final HashMap<Affinity, Float> partialEldrinDelivered = new HashMap<>();
     private boolean doDeferredRecipeCheck = false, itemProvisionInProgress = false;
     private ExaltationRecipe currentRecipe = null;
+    private ItemStack preservedInput = ItemStack.EMPTY;
     private ResourceLocation deferredRecipeQuery = null;
     private boolean deferredRecipeQueryIsOutputItem = false;
     private FluidStack containedSlurry = FluidStack.EMPTY.copy();
@@ -214,11 +218,16 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                 nbt.put("eldrinDelivered", eldrinDeliveryTag);
             }
         }
+        if(!preservedInput.isEmpty())
+            nbt.put(NBT_PRESERVED_INPUT, preservedInput.serializeNBT());
 
         return nbt;
     }
 
     public void unpackCraftDataFromTag(CompoundTag nbt) {
+        preservedInput = nbt.contains(NBT_PRESERVED_INPUT, CompoundTag.TAG_COMPOUND)
+                ? ItemStack.of(nbt.getCompound(NBT_PRESERVED_INPUT))
+                : ItemStack.EMPTY;
         if(nbt.contains("recipeId") || nbt.contains("result")) {
             if(level != null) {
                 ExaltationRecipe er;
@@ -317,6 +326,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         if(er != null) {
             this.doDeferredRecipeCheck = false;
             this.currentRecipe = er;
+            this.preservedInput = ItemStack.EMPTY;
             this.clearDeliveries();
             this.animStage = ANIM_STAGE_IDLE;
             this.syncAndSave();
@@ -330,6 +340,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         }
 
         this.currentRecipe = null;
+        this.preservedInput = ItemStack.EMPTY;
         this.clearDeliveries();
         this.animStage = ANIM_STAGE_IDLE;
         this.syncAndSave();
@@ -376,6 +387,8 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         if(currentRecipe != null) {
             nbt.putString("recipeId", currentRecipe.getId().toString());
         }
+        if(!preservedInput.isEmpty())
+            nbt.put(NBT_PRESERVED_INPUT, preservedInput.serializeNBT());
 
         CompoundTag deliveryTag = new CompoundTag();
         deliveryTag.putInt("items", itemsDelivered);
@@ -458,6 +471,9 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         }
 
         itemProvisionInProgress = nbt.getBoolean("itemProvisionInProgress");
+        preservedInput = nbt.contains(NBT_PRESERVED_INPUT, CompoundTag.TAG_COMPOUND)
+                ? ItemStack.of(nbt.getCompound(NBT_PRESERVED_INPUT))
+                : ItemStack.EMPTY;
 
 //        updateActuatorValues(this);
     }
@@ -478,6 +494,8 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         if(currentRecipe != null) {
             nbt.putString("recipeId", currentRecipe.getId().toString());
         }
+        if(!preservedInput.isEmpty())
+            nbt.put(NBT_PRESERVED_INPUT, preservedInput.serializeNBT());
 
         CompoundTag deliveryTag = new CompoundTag();
         deliveryTag.putInt("items", itemsDelivered);
@@ -704,6 +722,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             } else {
                 changed = pEntity.currentRecipe != null;
                 pEntity.currentRecipe = null;
+                pEntity.preservedInput = ItemStack.EMPTY;
             }
             pEntity.doDeferredRecipeCheck = false;
             if(changed)
@@ -1049,6 +1068,8 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
                             if (extraction > 0) {
                                 pEntity.itemsDelivered += extraction;
+                                if(pEntity.currentRecipe.getNbtSource() == itemQuery.getItem())
+                                    pEntity.preservedInput = RecipeNbtHelper.copyOne(itemQuery);
                                 itemQuery.shrink(extraction);
                                 changed = true;
 
@@ -1199,14 +1220,15 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
     private boolean canCraftItem() {
         SimpleContainer output = getContentsOfOutputSlots();
+        ItemStack result = RecipeNbtHelper.createOutput(currentRecipe, currentRecipe.getResultItem(), preservedInput);
         boolean valid = false;
 
         for(int i=0; i<output.getContainerSize(); i++) {
             ItemStack query = output.getItem(i);
             if(query.isEmpty()) valid = true;
-            else if(ItemStack.isSameItemSameTags(query, currentRecipe.getResultItem())) {
-                int space = currentRecipe.getResultItem().getMaxStackSize() - query.getCount();
-                valid = space >= currentRecipe.getResultItem().getCount();
+            else if(ItemStack.isSameItemSameTags(query, result)) {
+                int space = result.getMaxStackSize() - query.getCount();
+                valid = space >= result.getCount();
             }
 
             if(valid) break;
@@ -1217,11 +1239,12 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
     private void craftItem() {
         SimpleContainer output = getContentsOfOutputSlots();
-        output.addItem(currentRecipe.getResultItem().copy());
+        output.addItem(RecipeNbtHelper.createOutput(currentRecipe, currentRecipe.getResultItem(), preservedInput));
 
         for(int i=0; i<SLOT_OUTPUT_COUNT; i++) {
             itemHandler.setStackInSlot(SLOT_OUTPUT_START+i, output.getItem(i));
         }
+        preservedInput = ItemStack.EMPTY;
     }
 
     ////////////////////
@@ -1446,6 +1469,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         } else {
             this.doDeferredRecipeCheck = false;
             this.currentRecipe = recipeQuery;
+            this.preservedInput = ItemStack.EMPTY;
             this.clearDeliveries();
             this.animStage = ANIM_STAGE_IDLE;
             this.syncAndSave();

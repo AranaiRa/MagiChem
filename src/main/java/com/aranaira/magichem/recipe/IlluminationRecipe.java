@@ -23,18 +23,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
+public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe, NbtPreservingRecipe {
     private final ResourceLocation id;
     private final ItemStack inputItem, resultItem;
     private final LuminType luminType;
+    @Nullable
+    private final Item nbtSource;
     private final int craftTime;
 
     public IlluminationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, LuminType pLuminType, int pCraftTime) {
+        this(pID, pInputItem, pResultItem, pLuminType, pCraftTime, null);
+    }
+
+    public IlluminationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, LuminType pLuminType, int pCraftTime, @Nullable Item pNbtSource) {
         this.id = pID;
         this.inputItem = pInputItem;
         this.resultItem = pResultItem;
         this.luminType = pLuminType;
         this.craftTime = pCraftTime;
+        this.nbtSource = pNbtSource;
     }
 
     @Override
@@ -49,6 +56,11 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
     public ItemStack getInputItem() {
         return inputItem;
+    }
+
+    @Override
+    public @Nullable Item getNbtSource() {
+        return nbtSource;
     }
 
     @Override
@@ -174,10 +186,18 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             ItemStack resultItem = RecipeOutputHelper.applyNbt(
                     new ItemStack(resultItemAsItem, resultItemCount), resultItemObject, pRecipeId);
 
+            Item nbtSource = null;
+            if(RecipeNbtHelper.readOptionalBoolean(pSerializedRecipe, pRecipeId)) {
+                if(resultItem.getCount() != 1)
+                    throw RecipeNbtHelper.error(pRecipeId,
+                            "illumination input and output counts must both be exactly one");
+                nbtSource = inputItemAsItem;
+            }
+
             return new IlluminationRecipe(pRecipeId,
                     new ItemStack(inputItemAsItem),
                     resultItem,
-                    luminTypeAsType, craftTime
+                    luminTypeAsType, craftTime, nbtSource
             );
         }
 
@@ -196,11 +216,12 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             int craftTime = nbt.getInt("minutes");
 
             ItemStack resultItem = ItemStack.of(nbt.getCompound("resultItem"));
+            Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
 
             return new IlluminationRecipe(pRecipeId,
                     inputAsItem == null ? ItemStack.EMPTY : new ItemStack(inputAsItem),
                     resultItem,
-                    luminTypeAsType, craftTime
+                    luminTypeAsType, craftTime, nbtSource
             );
         }
 
@@ -213,6 +234,7 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             nbt.putInt("minutes",pRecipe.craftTime);
 
             nbt.put("resultItem", pRecipe.resultItem.serializeNBT());
+            RecipeNbtHelper.writeNetworkSource(nbt, pRecipe);
 
             pBuffer.writeNbt(nbt);
         }

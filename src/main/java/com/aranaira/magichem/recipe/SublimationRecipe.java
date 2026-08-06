@@ -32,10 +32,12 @@ import java.util.List;
 /**
  * This recipe type is used by the Ritual of the Balanced Scales.
  */
-public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
+public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe, NbtPreservingRecipe {
     private final ResourceLocation id;
     private final int tier, wisdom;
     private final ItemStack alchemyObject;
+    @Nullable
+    private final Item nbtSource;
     private final NonNullList<InfusionStage> stages;
     private static final NonNullList<ItemStack> allPossibleOutputs = NonNullList.create();
     private final ResourceLocation requiredAdvancement, forbiddenAdvancement, grantedAdvancement;
@@ -43,6 +45,14 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     public SublimationRecipe(ResourceLocation pID, int pTier, int pWisdom, ItemStack pAlchemyObject,
                              NonNullList<InfusionStage> pStages,
                              ResourceLocation pRequiredAdvancement, ResourceLocation pForbiddenAdvancement, ResourceLocation pGrantedAdvancement) {
+        this(pID, pTier, pWisdom, pAlchemyObject, pStages, pRequiredAdvancement,
+                pForbiddenAdvancement, pGrantedAdvancement, null);
+    }
+
+    public SublimationRecipe(ResourceLocation pID, int pTier, int pWisdom, ItemStack pAlchemyObject,
+                             NonNullList<InfusionStage> pStages,
+                             ResourceLocation pRequiredAdvancement, ResourceLocation pForbiddenAdvancement,
+                             ResourceLocation pGrantedAdvancement, @Nullable Item pNbtSource) {
         this.id = pID;
         this.stages = pStages;
         this.tier = pTier;
@@ -51,6 +61,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         this.requiredAdvancement = pRequiredAdvancement;
         this.forbiddenAdvancement = pForbiddenAdvancement;
         this.grantedAdvancement = pGrantedAdvancement;
+        this.nbtSource = pNbtSource;
     }
 
     /**
@@ -107,6 +118,11 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
     public ItemStack getAlchemyObject() {
         return alchemyObject;
+    }
+
+    @Override
+    public @Nullable Item getNbtSource() {
+        return nbtSource;
     }
 
     public boolean isAdvancementRequired() {
@@ -303,7 +319,22 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             if(pSerializedRecipe.has("granted_advancement"))
                 grantedAdvancementRL = new ResourceLocation(GsonHelper.getAsString(pSerializedRecipe, "granted_advancement"));
 
-            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeStack, extractedStages, requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL);
+            Item nbtSource = RecipeNbtHelper.readOptionalSource(pSerializedRecipe, pRecipeId);
+            if(nbtSource != null) {
+                int occurrences = extractedStages.stream()
+                        .flatMap(stage -> stage.componentItems.stream())
+                        .mapToInt(stack -> stack.getItem() == nbtSource ? stack.getCount() : 0)
+                        .sum();
+                if(occurrences != 1)
+                    throw RecipeNbtHelper.error(pRecipeId,
+                            "preserve_nbt.item must occur exactly once among all stage components");
+                if(recipeStack.getCount() != 1)
+                    throw RecipeNbtHelper.error(pRecipeId,
+                            "the output count must be exactly one when preserve_nbt is used");
+            }
+
+            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeStack, extractedStages,
+                    requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL, nbtSource);
         }
 
         @Override
@@ -375,7 +406,9 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             if(nbt.contains("granted_advancement"))
                 grantedAdvancementRL = new ResourceLocation(nbt.getString("granted_advancement"));
 
-            return new SublimationRecipe(id, tier, wisdom, alchemyObject, infusionStages, requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL);
+            Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
+            return new SublimationRecipe(id, tier, wisdom, alchemyObject, infusionStages,
+                    requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL, nbtSource);
         }
 
         @Override
@@ -384,6 +417,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             nbt.putInt("tier", recipe.getTier());
             nbt.putInt("wisdom", recipe.getWisdom());
+            RecipeNbtHelper.writeNetworkSource(nbt, recipe);
 
             nbt.put("alchemyObject", recipe.getAlchemyObject().serializeNBT());
 

@@ -27,19 +27,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
+public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe, NbtPreservingRecipe {
     public static final int
         ENDER = 1, EARTH = 2, WATER = 4, AIR = 8, FIRE = 16, ARCANE = 32;
 
     private final ResourceLocation id;
     private final ItemStack result;
     private final Item itemType;
+    @Nullable
+    private final Item nbtSource;
     private final MateriaItem materiaType;
     private final int itemsRequired, materiaRequired, slurryRequired, eldrinRequired;
     private final byte tier, wisdom, eldrinType;
     private ItemStack itemAsStack = ItemStack.EMPTY, materiaAsStack = ItemStack.EMPTY;
 
     public ExaltationRecipe(ResourceLocation pID, ItemStack pResult, byte pTier, byte pWisdom, Item pItemType, int pItemsRequired, MateriaItem pMateriaType, int pMateriaRequired, byte pEldrinType, int pEldrinRequired, int pSlurryRequired) {
+        this(pID, pResult, pTier, pWisdom, pItemType, pItemsRequired, pMateriaType, pMateriaRequired,
+                pEldrinType, pEldrinRequired, pSlurryRequired, null);
+    }
+
+    public ExaltationRecipe(ResourceLocation pID, ItemStack pResult, byte pTier, byte pWisdom, Item pItemType, int pItemsRequired, MateriaItem pMateriaType, int pMateriaRequired, byte pEldrinType, int pEldrinRequired, int pSlurryRequired, @Nullable Item pNbtSource) {
         this.id = pID;
         this.result = pResult;
         this.tier = pTier;
@@ -51,6 +58,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         this.eldrinType = pEldrinType;
         this.eldrinRequired = pEldrinRequired;
         this.slurryRequired = pSlurryRequired;
+        this.nbtSource = pNbtSource;
 
         this.itemAsStack = new ItemStack(pItemType);
         this.materiaAsStack = new ItemStack(pMateriaType);
@@ -76,6 +84,11 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
     public Item getItemType() {
         return itemType;
+    }
+
+    @Override
+    public @Nullable Item getNbtSource() {
+        return nbtSource;
     }
 
     public int getItemsRequired() {
@@ -310,7 +323,17 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 eldrinRequired = GsonHelper.getAsInt(eldrinObject, "required");
             }
 
-            return new ExaltationRecipe(pRecipeId, result, tier, wisdom, itemType, itemsRequired, materiaType, materiaRequired, eldrinType, eldrinRequired, slurryRequired);
+            Item nbtSource = null;
+            if(RecipeNbtHelper.readOptionalBoolean(pSerializedRecipe, pRecipeId)) {
+                if(itemsRequired != 1)
+                    throw RecipeNbtHelper.error(pRecipeId, "the exaltation item input count must be exactly one");
+                if(result.getCount() != 1)
+                    throw RecipeNbtHelper.error(pRecipeId, "the output count must be exactly one");
+                nbtSource = itemType;
+            }
+
+            return new ExaltationRecipe(pRecipeId, result, tier, wisdom, itemType, itemsRequired, materiaType,
+                    materiaRequired, eldrinType, eldrinRequired, slurryRequired, nbtSource);
         }
 
         @Override
@@ -336,8 +359,10 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             int eldrinRequired = eldrinTag.getInt("required");
 
             int slurryRequired = nbt.getInt("slurry");
+            Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
 
-            return new ExaltationRecipe(pRecipeId, result, tier, wisdom, itemType, itemsRequired, materiaType, materiaRequired, eldrinType, eldrinRequired, slurryRequired);
+            return new ExaltationRecipe(pRecipeId, result, tier, wisdom, itemType, itemsRequired, materiaType,
+                    materiaRequired, eldrinType, eldrinRequired, slurryRequired, nbtSource);
         }
 
         @Override
@@ -364,6 +389,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             nbt.put("eldrin", eldrinTag);
 
             nbt.putInt("slurry", pRecipe.slurryRequired);
+            RecipeNbtHelper.writeNetworkSource(nbt, pRecipe);
 
             pBuffer.writeNbt(nbt);
         }
