@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.recipe.ColorationRecipe;
+import com.aranaira.magichem.recipe.ColorationNbtHelper;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
@@ -377,7 +378,10 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
 
                     final HashMap<DyeColor, ItemStack> resultsAsMap = pBlockEntity.recipe.getResultsAsMap(false);
                     DyeColor color = pBlockEntity.pickRandomColorFromInverseBitpack(resultsAsMap.keySet());
-                    pBlockEntity.containedItem = resultsAsMap.get(color).copy();
+                    ItemStack target = resultsAsMap.get(color);
+                    ItemStack result = ColorationNbtHelper.createResult(
+                            pBlockEntity.recipe, pBlockEntity.containedItem, color);
+                    pBlockEntity.containedItem = result == null ? target.copy() : result;
                     pBlockEntity.lastSuccessfulCraft = color;
 
                     pBlockEntity.recipe = null;

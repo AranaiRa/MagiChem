@@ -13,10 +13,15 @@ final class RecipeOutputHelper {
     }
 
     static ItemStack applyNbt(ItemStack output, JsonObject outputJson, ResourceLocation recipeId) {
-        if(output.isEmpty() || outputJson == null || !outputJson.has("nbt"))
+        return applyNbt(output, outputJson, recipeId, "nbt");
+    }
+
+    static ItemStack applyNbt(ItemStack output, JsonObject outputJson, ResourceLocation recipeId,
+                              String key) {
+        if(output.isEmpty() || outputJson == null || !outputJson.has(key))
             return output;
 
-        String serializedNbt = GsonHelper.getAsString(outputJson, "nbt");
+        String serializedNbt = GsonHelper.getAsString(outputJson, key);
         try {
             output.setTag(TagParser.parseTag(serializedNbt));
         } catch(CommandSyntaxException exception) {

@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -25,14 +26,22 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
+public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe, NbtPreservingRecipe {
     private final ResourceLocation id;
     private final ItemStack input, result;
+    @Nullable
+    private final Item nbtSource;
 
     public FulminationRecipe(ResourceLocation pID, ItemStack pInput, ItemStack pResult) {
+        this(pID, pInput, pResult, null);
+    }
+
+    public FulminationRecipe(ResourceLocation pID, ItemStack pInput, ItemStack pResult,
+                             @Nullable Item pNbtSource) {
         this.id = pID;
         this.input = pInput;
         this.result = pResult;
+        this.nbtSource = pNbtSource;
     }
 
     @Override
@@ -51,6 +60,11 @@ public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
     public ItemStack getResult() {
         return result;
+    }
+
+    @Override
+    public @Nullable Item getNbtSource() {
+        return nbtSource;
     }
 
     @Override
@@ -142,13 +156,27 @@ public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             Item inputAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(inputRL));
             if(inputAsItem == null || inputAsItem == Items.AIR)
                 inputAsItem = ItemRegistry.PROBLEMITE.get();
+            if(inputAsItem == Items.ENCHANTED_BOOK)
+                throw new JsonSyntaxException("Invalid fulmination recipe '" + pRecipeId
+                        + "': minecraft:enchanted_book is reserved for the Skywrath Altar's "
+                        + "hard-coded scorched theorem conversion");
             Item resultAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(resultRL));
             if(resultAsItem == null || resultAsItem == Items.AIR)
                 resultAsItem = ItemRegistry.PROBLEMITE.get();
 
+            ItemStack result = RecipeOutputHelper.applyNbt(
+                    new ItemStack(resultAsItem, resultCount), pSerializedRecipe,
+                    pRecipeId, "result_nbt");
+            Item nbtSource = null;
+            if(RecipeNbtHelper.readOptionalBoolean(pSerializedRecipe, pRecipeId)) {
+                if(inputCount != 1 || resultCount != 1)
+                    throw RecipeNbtHelper.error(pRecipeId,
+                            "fulmination input and output counts must both be exactly one");
+                nbtSource = inputAsItem;
+            }
+
             return new FulminationRecipe(pRecipeId,
-                    new ItemStack(inputAsItem, inputCount),
-                    new ItemStack(resultAsItem, resultCount));
+                    new ItemStack(inputAsItem, inputCount), result, nbtSource);
         }
 
         @Override
@@ -157,12 +185,12 @@ public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             Item inputAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("input")));
             int inputCount = nbt.getInt("input_count");
-            Item resultAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("result")));
-            int resultCount = nbt.getInt("result_count");
+            ItemStack result = ItemStack.of(nbt.getCompound("result"));
+            Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
 
             return new FulminationRecipe(pRecipeId,
                     inputAsItem == null ? ItemStack.EMPTY : new ItemStack(inputAsItem, inputCount),
-                    resultAsItem == null ? ItemStack.EMPTY : new ItemStack(resultAsItem, resultCount));
+                    result, nbtSource);
         }
 
         @Override
@@ -171,8 +199,8 @@ public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             nbt.putString("input", ForgeRegistries.ITEMS.getKey(pRecipe.input.getItem()).toString());
             nbt.putInt("input_count", pRecipe.input.getCount());
-            nbt.putString("result", ForgeRegistries.ITEMS.getKey(pRecipe.result.getItem()).toString());
-            nbt.putInt("result_count", pRecipe.result.getCount());
+            nbt.put("result", pRecipe.result.save(new CompoundTag()));
+            RecipeNbtHelper.writeNetworkSource(nbt, pRecipe);
 
             pBuffer.writeNbt(nbt);
         }

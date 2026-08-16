@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.recipe.FulminationRecipe;
+import com.aranaira.magichem.recipe.RecipeNbtHelper;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.Registries;
@@ -140,13 +141,15 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
                 if(remainder > 0) {
                     ItemEntity ie = new ItemEntity(level,
                             getBlockPos().getX() + 0.5, getBlockPos().getY() + 1, getBlockPos().getZ() + 0.5,
-                            new ItemStack(recipe.getInput().getItem(), remainder),
+                            recipe.getNbtSource() == null
+                                    ? new ItemStack(recipe.getInput().getItem(), remainder)
+                                    : heldItem.copyWithCount(remainder),
                             (r.nextDouble() - 0.5) * 0.6, 0.2, (r.nextDouble() - 0.5) * 0.6);
 
                     level.addFreshEntity(ie);
                 }
 
-                heldItem = recipe.getResult().copy();
+                heldItem = RecipeNbtHelper.createOutput(recipe, recipe.getResult(), heldItem);
                 return true;
             }
         }
