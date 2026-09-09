@@ -45,7 +45,6 @@ public abstract class AbstractMateriaStorageSingleTypeBlockEntity extends BlockE
     }
 
     public int fill(int amount, boolean voidExcess) {
-        syncAndSave();
         int test = currentStock + amount;
         int actual = amount;
         if(test > getStorageLimit()) {
@@ -56,12 +55,11 @@ public abstract class AbstractMateriaStorageSingleTypeBlockEntity extends BlockE
         } else {
             currentStock = test;
         }
-        return actual;
+        syncAndSave();
+        return amount - actual;
     }
 
     public int drain(int amount) {
-        syncAndSave();
-
         int test = currentStock - amount;
         int actual = amount;
         if(test <= 0) {
@@ -71,6 +69,7 @@ public abstract class AbstractMateriaStorageSingleTypeBlockEntity extends BlockE
         } else {
             currentStock = test;
         }
+        syncAndSave();
         return actual;
     }
 
