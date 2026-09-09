@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.NonNullList;
@@ -37,10 +38,25 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final boolean validOnCauldron, validOnVariegator;
     private final ItemStack colorlessDefault;
     private final HashMap<DyeColor, ItemStack> potentialOutputs;
+    private final boolean nbtAware, preserveNbtDefault;
+    private final EnumMap<DyeColor, Boolean> preserveNbtByColor;
     private static final ArrayList<ColorationRecipe> ALL_COLORATION_RECIPES = new ArrayList<>();
     private static final ArrayList<Item> ALL_INPUT_ITEMS = new ArrayList<>();
 
-    public ColorationRecipe(ResourceLocation id, int pChargeUsage, float pCraftingTimeMultiplier, boolean pValidOnCauldron, boolean pValidOnVariegator, ItemStack pColorlessDefault, HashMap<DyeColor, ItemStack> pPotentialOutputs) {
+    public ColorationRecipe(ResourceLocation id, int pChargeUsage, float pCraftingTimeMultiplier,
+                            boolean pValidOnCauldron, boolean pValidOnVariegator,
+                            ItemStack pColorlessDefault,
+                            HashMap<DyeColor, ItemStack> pPotentialOutputs) {
+        this(id, pChargeUsage, pCraftingTimeMultiplier, pValidOnCauldron,
+                pValidOnVariegator, pColorlessDefault, pPotentialOutputs,
+                false, false, new EnumMap<>(DyeColor.class));
+    }
+
+    public ColorationRecipe(ResourceLocation id, int pChargeUsage, float pCraftingTimeMultiplier,
+                            boolean pValidOnCauldron, boolean pValidOnVariegator,
+                            ItemStack pColorlessDefault, HashMap<DyeColor, ItemStack> pPotentialOutputs,
+                            boolean pNbtAware, boolean pPreserveNbtDefault,
+                            EnumMap<DyeColor, Boolean> pPreserveNbtByColor) {
         this.id = id;
         this.chargeUsage = pChargeUsage;
         this.craftingTimeMultiplier = pCraftingTimeMultiplier;
@@ -48,6 +64,9 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         this.validOnVariegator = pValidOnVariegator;
         this.colorlessDefault = pColorlessDefault;
         this.potentialOutputs = pPotentialOutputs;
+        this.nbtAware = pNbtAware;
+        this.preserveNbtDefault = pPreserveNbtDefault;
+        this.preserveNbtByColor = pPreserveNbtByColor;
     }
 
     /**
@@ -111,6 +130,18 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         return validOnVariegator;
     }
 
+    public boolean isNbtAware() {
+        return nbtAware;
+    }
+
+    public boolean isPreserveNbtDefault() {
+        return preserveNbtDefault;
+    }
+
+    public boolean isPreserveNbt(DyeColor color) {
+        return preserveNbtByColor.getOrDefault(color, preserveNbtDefault);
+    }
+
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
@@ -137,6 +168,10 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     }
 
     public static ColorationRecipe getColorationRecipe(Level level, ItemStack query) {
+        if(level.getRecipeManager().getAllRecipesFor(ColorationRecipe.Type.INSTANCE)
+                .stream().anyMatch(ColorationRecipe::isNbtAware))
+            return ColorationNbtHelper.findRecipe(level, query, null);
+
         ColorationRecipe result = null;
         List<ColorationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(ColorationRecipe.Type.INSTANCE);
 
@@ -159,6 +194,10 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     }
 
     public static ColorationRecipe getFilteredColorationRecipe(Level level, ItemStack query, boolean filterForVariegator) {
+        if(level.getRecipeManager().getAllRecipesFor(ColorationRecipe.Type.INSTANCE)
+                .stream().anyMatch(ColorationRecipe::isNbtAware))
+            return ColorationNbtHelper.findRecipe(level, query, filterForVariegator);
+
         ColorationRecipe result = null;
         List<ColorationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(ColorationRecipe.Type.INSTANCE);
 
@@ -249,15 +288,29 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             boolean validOnCauldron = GsonHelper.getAsBoolean(pSerializedRecipe, "valid_on_cauldron", true);
             boolean validOnVariegator = GsonHelper.getAsBoolean(pSerializedRecipe, "valid_on_variegator", true);
 
-            ItemStack colorlessDefault = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "colorless_default"));
+            JsonObject colorlessObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "colorless_default");
+            if(colorlessObject.has("preserve_nbt"))
+                throw RecipeNbtHelper.error(pRecipeId, "colorless_default cannot define preserve_nbt");
+
+            boolean preserveNbtDefault = RecipeNbtHelper.readOptionalBoolean(pSerializedRecipe, pRecipeId);
+            boolean nbtAware = pSerializedRecipe.has("preserve_nbt") || colorlessObject.has("nbt");
+            ItemStack colorlessDefault = ShapedRecipe.itemStackFromJson(colorlessObject);
             if(colorlessDefault.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
                 colorlessDefault = new ItemStack(ItemRegistry.PROBLEMITE.get());
+            RecipeOutputHelper.applyNbt(colorlessDefault, colorlessObject, pRecipeId);
 
             JsonArray components = GsonHelper.getAsJsonArray(pSerializedRecipe, "outputs");
             HashMap<DyeColor, ItemStack> extractedOutputs = new HashMap<>();
+            EnumMap<DyeColor, Boolean> preserveNbtByColor = new EnumMap<>(DyeColor.class);
             components.forEach(element -> {
-                String color = element.getAsJsonObject().get("color").getAsString();
-                String item = element.getAsJsonObject().get("item").getAsString();
+                JsonObject outputObject = element.getAsJsonObject();
+                String color = outputObject.get("color").getAsString();
+                String item = outputObject.get("item").getAsString();
+                DyeColor dyeColor = DyeColor.byName(color, null);
+                if(dyeColor == null)
+                    throw RecipeNbtHelper.error(pRecipeId, "unknown color '" + color + "'");
+                if(extractedOutputs.containsKey(dyeColor))
+                    throw RecipeNbtHelper.error(pRecipeId, "color '" + color + "' is declared more than once");
 
                 ItemStack ing;
 
@@ -269,12 +322,27 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                     MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+item+"\" for color \""+color+"\" in coloration recipe \""+pRecipeId+"\"");
                 }
 
-                if(element.getAsJsonObject().has("count"))
-                    ing.setCount(element.getAsJsonObject().get("count").getAsInt());
-                extractedOutputs.put(DyeColor.byName(color, DyeColor.WHITE), ing);
+                if(outputObject.has("count"))
+                    ing.setCount(outputObject.get("count").getAsInt());
+                RecipeOutputHelper.applyNbt(ing, outputObject, pRecipeId);
+                boolean preserve = outputObject.has("preserve_nbt")
+                        ? RecipeNbtHelper.readOptionalBoolean(outputObject, pRecipeId)
+                        : preserveNbtDefault;
+                preserveNbtByColor.put(dyeColor, preserve);
+                extractedOutputs.put(dyeColor, ing);
             });
 
-            return new ColorationRecipe(pRecipeId, chargeUsage, craftingTimeMultiplier, validOnCauldron, validOnVariegator, colorlessDefault, extractedOutputs);
+            for(JsonElement element : components) {
+                JsonObject outputObject = element.getAsJsonObject();
+                nbtAware |= outputObject.has("nbt") || outputObject.has("preserve_nbt");
+            }
+
+            ColorationRecipe recipe = new ColorationRecipe(pRecipeId, chargeUsage,
+                    craftingTimeMultiplier, validOnCauldron, validOnVariegator,
+                    colorlessDefault, extractedOutputs, nbtAware, preserveNbtDefault,
+                    preserveNbtByColor);
+            ColorationNbtHelper.validate(recipe);
+            return recipe;
         }
 
         @Override
@@ -290,15 +358,11 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             ItemStack colorlessDefault = ItemStack.EMPTY;
             if(nbt.contains("colorlessDefault")) {
-                CompoundTag colorlessDefaultTag = nbt.getCompound("colorlessDefault");
-                String query = colorlessDefaultTag.getString("item");
-                Item queriedItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(query));
-                int queriedCount = colorlessDefaultTag.getInt("count");
-
-                if(queriedItem != null) colorlessDefault = new ItemStack(queriedItem, queriedCount);
+                colorlessDefault = ItemStack.of(nbt.getCompound("colorlessDefault"));
             }
 
             HashMap<DyeColor, ItemStack> outputs = new HashMap<>();
+            EnumMap<DyeColor, Boolean> preserveNbtByColor = new EnumMap<>(DyeColor.class);
             if(nbt.contains("outputs")) {
                 CompoundTag outputsTag = nbt.getCompound("outputs");
 
@@ -306,16 +370,16 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                     if(outputsTag.contains(color.getName())) {
                         CompoundTag thisColorTag = outputsTag.getCompound(color.getName());
 
-                        String query = thisColorTag.getString("item");
-                        Item queriedItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(query));
-                        int queriedCount = thisColorTag.getInt("count");
-
-                        if(queriedItem != null) outputs.put(color, new ItemStack(queriedItem, queriedCount));
+                        outputs.put(color, ItemStack.of(thisColorTag.getCompound("stack")));
+                        preserveNbtByColor.put(color, thisColorTag.getBoolean("preserveNbt"));
                     }
                 }
             }
 
-            return new ColorationRecipe(id, chargeUsage, craftingTimeMultiplier, validOnCauldron, validOnVariegator, colorlessDefault, outputs);
+            return new ColorationRecipe(id, chargeUsage, craftingTimeMultiplier,
+                    validOnCauldron, validOnVariegator, colorlessDefault, outputs,
+                    nbt.getBoolean("nbtAware"), nbt.getBoolean("preserveNbtDefault"),
+                    preserveNbtByColor);
         }
 
         @Override
@@ -326,18 +390,17 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             nbt.putBoolean("validOnCauldron", recipe.validOnCauldron);
             nbt.putBoolean("validOnVariegator", recipe.validOnVariegator);
 
-            CompoundTag colorlessDefault = new CompoundTag();
-            colorlessDefault.putString("item", ForgeRegistries.ITEMS.getKey(recipe.getColorlessDefault().getItem()).toString());
-            colorlessDefault.putInt("count", recipe.getColorlessDefault().getCount());
-            nbt.put("colorlessDefault", colorlessDefault);
+            nbt.putBoolean("nbtAware", recipe.nbtAware);
+            nbt.putBoolean("preserveNbtDefault", recipe.preserveNbtDefault);
+            nbt.put("colorlessDefault", recipe.getColorlessDefault().save(new CompoundTag()));
 
             CompoundTag outputs = new CompoundTag();
             for(DyeColor color : recipe.potentialOutputs.keySet()) {
                 ItemStack stack = recipe.potentialOutputs.get(color);
 
                 CompoundTag thisOutput = new CompoundTag();
-                thisOutput.putString("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
-                thisOutput.putInt("count", stack.getCount());
+                thisOutput.put("stack", stack.save(new CompoundTag()));
+                thisOutput.putBoolean("preserveNbt", recipe.isPreserveNbt(color));
 
                 outputs.put(color.getName(), thisOutput);
             }

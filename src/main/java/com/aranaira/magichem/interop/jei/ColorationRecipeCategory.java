@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.ColorationRecipe;
+import com.aranaira.magichem.recipe.ColorationNbtHelper;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
@@ -91,7 +92,8 @@ public class ColorationRecipeCategory implements IRecipeCategory<ColorationRecip
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ColorationRecipe recipe, IFocusGroup group) {
         HashMap<DyeColor, ItemStack> resultsMap = recipe.getResultsAsMap(false);
-        boolean defaultMatchesOtherOutput = false;
+        boolean defaultMatchesOtherOutput = recipe.isNbtAware()
+                && ColorationNbtHelper.findColorlessAlias(recipe) != null;
 
         for(DyeColor color : DyeColor.values()) {
             Vector2i slotPos = colorAndPosData.get(color).getThird();
@@ -103,7 +105,9 @@ public class ColorationRecipeCategory implements IRecipeCategory<ColorationRecip
                     builder.addSlot(RecipeIngredientRole.OUTPUT, slotPos.x, slotPos.y - 360000).addItemStack(stack);
                 }
 
-                if (stack.getItem() == recipe.getColorlessDefault().getItem() && stack.getItem() != ItemRegistry.REFRACTIVE_CRYSTAL_GRIT.get()) {
+                if (!recipe.isNbtAware()
+                        && stack.getItem() == recipe.getColorlessDefault().getItem()
+                        && stack.getItem() != ItemRegistry.REFRACTIVE_CRYSTAL_GRIT.get()) {
                     defaultMatchesOtherOutput = true;
                 }
             }

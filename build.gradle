@@ -168,7 +168,7 @@ dependencies {
 //    implementation fg.deobf("curse.maven:ars-nouveau-401955:6688854")
     implementation fg.deobf("curse.maven:appleskin-248787:4770828")
 
-    implementation fg.deobf("hexerei:hexerei:0.4.2.3")
+    implementation fg.deobf("curse.maven:hexerei-548599:6314111")
 //    implementation fg.deobf("mekanism:Mekanism-1.20.1:10.4.15.75")
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings

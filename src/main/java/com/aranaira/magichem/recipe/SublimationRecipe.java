@@ -32,10 +32,12 @@ import java.util.List;
 /**
  * This recipe type is used by the Ritual of the Balanced Scales.
  */
-public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
+public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe, NbtPreservingRecipe {
     private final ResourceLocation id;
     private final int tier, wisdom;
     private final ItemStack alchemyObject;
+    @Nullable
+    private final Item nbtSource;
     private final NonNullList<InfusionStage> stages;
     private static final NonNullList<ItemStack> allPossibleOutputs = NonNullList.create();
     private final ResourceLocation requiredAdvancement, forbiddenAdvancement, grantedAdvancement;
@@ -43,6 +45,14 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     public SublimationRecipe(ResourceLocation pID, int pTier, int pWisdom, ItemStack pAlchemyObject,
                              NonNullList<InfusionStage> pStages,
                              ResourceLocation pRequiredAdvancement, ResourceLocation pForbiddenAdvancement, ResourceLocation pGrantedAdvancement) {
+        this(pID, pTier, pWisdom, pAlchemyObject, pStages, pRequiredAdvancement,
+                pForbiddenAdvancement, pGrantedAdvancement, null);
+    }
+
+    public SublimationRecipe(ResourceLocation pID, int pTier, int pWisdom, ItemStack pAlchemyObject,
+                             NonNullList<InfusionStage> pStages,
+                             ResourceLocation pRequiredAdvancement, ResourceLocation pForbiddenAdvancement,
+                             ResourceLocation pGrantedAdvancement, @Nullable Item pNbtSource) {
         this.id = pID;
         this.stages = pStages;
         this.tier = pTier;
@@ -51,6 +61,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         this.requiredAdvancement = pRequiredAdvancement;
         this.forbiddenAdvancement = pForbiddenAdvancement;
         this.grantedAdvancement = pGrantedAdvancement;
+        this.nbtSource = pNbtSource;
     }
 
     /**
@@ -109,6 +120,11 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         return alchemyObject;
     }
 
+    @Override
+    public @Nullable Item getNbtSource() {
+        return nbtSource;
+    }
+
     public boolean isAdvancementRequired() {
         return requiredAdvancement != null;
     }
@@ -164,7 +180,14 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     }
 
     public static SublimationRecipe getSublimationRecipe(Level level, ItemStack query) {
-        return getSublimationRecipe(level, query.getItem());
+        if(query == null || query.isEmpty()) return null;
+
+        for(SublimationRecipe recipe : level.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
+            if(ItemStack.isSameItemSameTags(recipe.alchemyObject, query))
+                return recipe;
+        }
+
+        return null;
     }
 
     public static SublimationRecipe getSublimationRecipe(Level level, Item query) {
@@ -179,6 +202,17 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         }
 
         return result;
+    }
+
+    public static SublimationRecipe getSublimationRecipeById(Level level, ResourceLocation id) {
+        if(id == null) return null;
+
+        for(SublimationRecipe recipe : level.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
+            if(recipe.getId().equals(id))
+                return recipe;
+        }
+
+        return null;
     }
 
     public static NonNullList<ItemStack> getAllOutputs(Level pLevel) {
@@ -219,6 +253,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 Item outputQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
                 if(outputQuery != null && outputQuery != Items.AIR) {
                     recipeStack = new ItemStack(outputQuery, count);
+                    RecipeOutputHelper.applyNbt(recipeStack, recipeObject, pRecipeId);
                 } else {
                     MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for sublimation recipe \""+pRecipeId);
                 }
@@ -284,7 +319,22 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             if(pSerializedRecipe.has("granted_advancement"))
                 grantedAdvancementRL = new ResourceLocation(GsonHelper.getAsString(pSerializedRecipe, "granted_advancement"));
 
-            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeStack, extractedStages, requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL);
+            Item nbtSource = RecipeNbtHelper.readOptionalSource(pSerializedRecipe, pRecipeId);
+            if(nbtSource != null) {
+                int occurrences = extractedStages.stream()
+                        .flatMap(stage -> stage.componentItems.stream())
+                        .mapToInt(stack -> stack.getItem() == nbtSource ? stack.getCount() : 0)
+                        .sum();
+                if(occurrences != 1)
+                    throw RecipeNbtHelper.error(pRecipeId,
+                            "preserve_nbt.item must occur exactly once among all stage components");
+                if(recipeStack.getCount() != 1)
+                    throw RecipeNbtHelper.error(pRecipeId,
+                            "the output count must be exactly one when preserve_nbt is used");
+            }
+
+            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeStack, extractedStages,
+                    requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL, nbtSource);
         }
 
         @Override
@@ -297,15 +347,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             int wisdom = nbt.getInt("wisdom");
 
             //alchemy object
-            ResourceLocation alchemyObjectRL = new ResourceLocation(nbtAlchemyObject.getString("item"));
-            Item alchemyObjectItem = ForgeRegistries.ITEMS.getValue(alchemyObjectRL);
-            ItemStack alchemyObject = ItemStack.EMPTY;
-            if(alchemyObjectItem != null) {
-                if(nbtAlchemyObject.contains("count"))
-                    alchemyObject = new ItemStack(alchemyObjectItem, nbtAlchemyObject.getInt("count"));
-                else
-                    alchemyObject = new ItemStack(alchemyObjectItem, 1);
-            }
+            ItemStack alchemyObject = ItemStack.of(nbtAlchemyObject);
 
             int stagesCount = nbtStages.getInt("count");
             NonNullList<InfusionStage> infusionStages = NonNullList.create();
@@ -364,7 +406,9 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             if(nbt.contains("granted_advancement"))
                 grantedAdvancementRL = new ResourceLocation(nbt.getString("granted_advancement"));
 
-            return new SublimationRecipe(id, tier, wisdom, alchemyObject, infusionStages, requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL);
+            Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
+            return new SublimationRecipe(id, tier, wisdom, alchemyObject, infusionStages,
+                    requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL, nbtSource);
         }
 
         @Override
@@ -373,11 +417,9 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             nbt.putInt("tier", recipe.getTier());
             nbt.putInt("wisdom", recipe.getWisdom());
+            RecipeNbtHelper.writeNetworkSource(nbt, recipe);
 
-            CompoundTag nbtAlchemyObject = new CompoundTag();
-            nbtAlchemyObject.putString("item", ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem()).toString());
-            nbtAlchemyObject.putInt("count", recipe.getAlchemyObject().getCount());
-            nbt.put("alchemyObject", nbtAlchemyObject);
+            nbt.put("alchemyObject", recipe.getAlchemyObject().serializeNBT());
 
             CompoundTag nbtStages = new CompoundTag();
             nbtStages.putInt("count", recipe.getStages(false).size());
