@@ -526,7 +526,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if (InventoryHelper.hasCustomModelData(query)) {
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                         }
                     }
