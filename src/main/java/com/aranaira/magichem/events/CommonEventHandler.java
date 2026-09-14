@@ -1078,6 +1078,7 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || event.player.level().isClientSide()) return;
         //Immortal Heart absorption
         if(event.player.level().getGameTime() % 600 == 0) {
             final LazyOptional<IPlayerProgression> lazyProg = event.player.getCapability(PlayerProgressionProvider.PROGRESSION);
