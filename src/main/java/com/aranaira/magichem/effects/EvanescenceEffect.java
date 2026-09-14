@@ -1,6 +1,7 @@
 package com.aranaira.magichem.effects;
 
 import com.aranaira.magichem.registry.MobEffectsRegistry;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,7 +18,8 @@ public class EvanescenceEffect extends MobEffect {
 
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return pDuration % EVANESCENCE_REGEN_TICK_RATE[Math.min(pAmplifier, EVANESCENCE_REGEN_TICK_RATE.length)] == 0;
+        int index = Mth.clamp(pAmplifier, 0, EVANESCENCE_REGEN_TICK_RATE.length - 1);
+        return pDuration % EVANESCENCE_REGEN_TICK_RATE[index] == 0;
     }
 
     @Override
