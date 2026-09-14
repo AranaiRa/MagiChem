@@ -798,7 +798,7 @@ public class CommonEventHandler {
         }
     }
 
-    private static final HashMap<Player, HashSet<MobEffect>> pendingHeartEffects = new HashMap<>();
+    private static final Map<UUID, Set<MobEffect>> pendingHeartEffects = new HashMap<>();
     @SubscribeEvent
     public static void checkCanApplyMobEffect(MobEffectEvent.Applicable event) {
         final LivingEntity entity = event.getEntity();
@@ -886,27 +886,23 @@ public class CommonEventHandler {
     }
 
     private static void addToPendingEffects(Player player, MobEffect effect) {
-        if(pendingHeartEffects.containsKey(player)) {
-            pendingHeartEffects.get(player).add(effect);
-        } else {
-            HashSet<MobEffect> effectsOnPlayer = new HashSet<>();
-            effectsOnPlayer.add(effect);
-            pendingHeartEffects.put(player, effectsOnPlayer);
-        }
+        pendingHeartEffects.computeIfAbsent(player.getUUID(), ignored -> new HashSet<>()).add(effect);
     }
 
     private static void removeFromPendingEffects(Player player, MobEffect effect) {
-        if(pendingHeartEffects.containsKey(player)) {
-            pendingHeartEffects.get(player).remove(effect);
+        UUID playerId = player.getUUID();
+        Set<MobEffect> effects = pendingHeartEffects.get(playerId);
+        if (effect == null) return;
+
+        effects.remove(effect);
+        if (effects.isEmpty()) {
+            pendingHeartEffects.remove(playerId);
         }
     }
 
     private static boolean isPendingEffect(Player player, MobEffect effect) {
-        if(pendingHeartEffects.containsKey(player)) {
-            final HashSet<MobEffect> effectsOnPlayer = pendingHeartEffects.get(player);
-            return effectsOnPlayer.contains(effect);
-        }
-        return false;
+        Set<MobEffect> effects = pendingHeartEffects.get(player.getUUID());
+        return effects != null && effects.contains(effect);
     }
 
     @SubscribeEvent
@@ -1126,6 +1122,11 @@ public class CommonEventHandler {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        pendingHeartEffects.remove(event.getEntity().getUUID());
     }
 
     private static int effectIndex(MobEffectInstance effect, int arrayLength) {
