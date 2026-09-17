@@ -183,7 +183,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe, Nb
         if(query == null || query.isEmpty()) return null;
 
         for(SublimationRecipe recipe : level.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
-            if(ItemStack.isSameItemSameTags(recipe.alchemyObject, query))
+            if(RecipeOutputHelper.matches(recipe.alchemyObject, query))
                 return recipe;
         }
 

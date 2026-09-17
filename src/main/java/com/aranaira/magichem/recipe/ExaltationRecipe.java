@@ -196,7 +196,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe, Nbt
         if(query == null || query.isEmpty()) return null;
 
         for(ExaltationRecipe recipe : level.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
-            if(ItemStack.isSameItemSameTags(recipe.result, query))
+            if(RecipeOutputHelper.matches(recipe.result, query))
                 return recipe;
         }
 

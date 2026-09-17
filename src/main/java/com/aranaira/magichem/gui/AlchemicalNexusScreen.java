@@ -99,7 +99,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         initializeRecipeFilterBox();
     }
 
-    private List<ItemStack> filteredRecipes = new ArrayList<>();
+    private List<SublimationRecipe> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
         if (!menu.blockEntity.forceDisplayedRecipeUpdate && Objects.equals(filter, lastUsedFilter)) return;
@@ -124,7 +124,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
                 if(sr.getTier() <= recipeTierCap)
-                    filteredRecipes.add(sr.getAlchemyObject().copy());
+                    filteredRecipes.add(sr);
             }
         }
 
@@ -163,11 +163,11 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 31, 12, 7, 232, 242, TEXTURE, button -> {
             if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
                 menu.blockEntity.incrementPowerUsageSetting();
-                ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
+                ResourceLocation recipeId = menu.blockEntity.getCurrentRecipe() == null ? null : menu.blockEntity.getCurrentRecipe().getId();
                 PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                         menu.blockEntity.getBlockPos(),
                         menu.blockEntity.getPowerLevel(),
-                        output,
+                        recipeId,
                         menu.blockEntity.preventDrawingLastMateria
                 ));
             }
@@ -175,11 +175,11 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 76, 12, 7, 244, 242, TEXTURE, button -> {
             if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
                 menu.blockEntity.decrementPowerUsageSetting();
-                ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
+                ResourceLocation recipeId = menu.blockEntity.getCurrentRecipe() == null ? null : menu.blockEntity.getCurrentRecipe().getId();
                 PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                         menu.blockEntity.getBlockPos(),
                         menu.blockEntity.getPowerLevel(),
-                        output,
+                        recipeId,
                         menu.blockEntity.preventDrawingLastMateria
                 ));
             }
@@ -189,11 +189,11 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     private void initializeToggleButtons(){
         b_materiaProtectionToggle = this.addRenderableWidget(new ImageButton(this.leftPos + 196, this.topPos + 68, 11, 11, 0, 192, TEXTURE, button -> {
             if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
-                ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
+                ResourceLocation recipeId = menu.blockEntity.getCurrentRecipe() == null ? null : menu.blockEntity.getCurrentRecipe().getId();
                 PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                         menu.blockEntity.getBlockPos(),
                         menu.blockEntity.getPowerLevel(),
-                        output,
+                        recipeId,
                         !menu.blockEntity.preventDrawingLastMateria
                 ));
             }
@@ -357,13 +357,14 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     public void setActiveRecipe(int index) {
         int trueIndex = recipeFilterRow*3 + index;
         if(trueIndex < filteredRecipes.size()) {
+            SublimationRecipe recipe = filteredRecipes.get(trueIndex);
             PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     menu.blockEntity.getPowerLevel(),
-                    filteredRecipes.get(trueIndex),
+                    recipe.getId(),
                     menu.blockEntity.preventDrawingLastMateria
             ));
-            menu.blockEntity.setRecipeFromOutput(menu.blockEntity.getLevel(), filteredRecipes.get(trueIndex));
+            menu.blockEntity.setRecipeFromId(menu.blockEntity.getLevel(), recipe.getId());
         }
     }
 
@@ -462,7 +463,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     }
                     totalCost = Math.round((float)totalCost * (1f - menu.getReductionRate()));
 
-                    tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                    tooltipContents.addAll(recipeItem.copy().getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                     tooltipContents.add(Component.empty());
                     tooltipContents.add(Component.empty()
                             .append(Component.translatable("tooltip.magichem.gui.sublimation_cost.part1").withStyle(ChatFormatting.DARK_GRAY))
@@ -485,7 +486,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
                 if (id >= 0 && id < 16) {
                     if (id + recipeFilterRow * 3 < filteredRecipes.size()) {
-                        ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3);
+                        ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3).getAlchemyObject().copy();
                         tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                     }
                 }
@@ -716,7 +717,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
         List<ItemStack> snipped = new ArrayList<>();
         for(int i = recipeFilterRow*3; i<Math.min(filteredRecipes.size(), recipeFilterRow*3 + 15); i++) {
-            snipped.add(filteredRecipes.get(i));
+            snipped.add(filteredRecipes.get(i).getAlchemyObject().copy());
         }
 
         int c = 0;

@@ -3,37 +3,40 @@ package com.aranaira.magichem.networking;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
 public class NexusSyncDataC2SPacket {
     private final BlockPos blockPos;
     private final byte powerUsageSetting;
-    private final ItemStack recipeOutput;
+    private final @Nullable ResourceLocation recipeId;
     private final boolean preventDrawingLastMateria;
 
-    public NexusSyncDataC2SPacket(BlockPos pBlockPos, int pPowerLevel, ItemStack pStack, boolean pPreventDrawingLastMateria) {
+    public NexusSyncDataC2SPacket(BlockPos pBlockPos, int pPowerLevel, @Nullable ResourceLocation pRecipeId, boolean pPreventDrawingLastMateria) {
         this.blockPos = pBlockPos;
         this.powerUsageSetting = (byte)pPowerLevel;
-        this.recipeOutput = pStack.copy();
+        this.recipeId = pRecipeId;
         this.preventDrawingLastMateria = pPreventDrawingLastMateria;
     }
 
     public NexusSyncDataC2SPacket(FriendlyByteBuf buf) {
         this.blockPos = buf.readBlockPos();
         this.powerUsageSetting = buf.readByte();
-        this.recipeOutput = buf.readItem();
+        this.recipeId = buf.readBoolean() ? buf.readResourceLocation() : null;
         this.preventDrawingLastMateria = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
         buf.writeByte(powerUsageSetting);
-        buf.writeItemStack(recipeOutput, true);
+        buf.writeBoolean(recipeId != null);
+        if(recipeId != null)
+            buf.writeResourceLocation(recipeId);
         buf.writeBoolean(preventDrawingLastMateria);
     }
 
@@ -46,7 +49,8 @@ public class NexusSyncDataC2SPacket {
         context.enqueueWork(() -> {
             if(entity instanceof AlchemicalNexusBlockEntity anbe) {
                 anbe.setPowerUsageSetting(powerUsageSetting);
-                anbe.setRecipeFromOutput(anbe.getLevel(), recipeOutput);
+                if(recipeId != null)
+                    anbe.setRecipeFromId(anbe.getLevel(), recipeId);
                 anbe.preventDrawingLastMateria = preventDrawingLastMateria;
                 anbe.setInitiatingPlayer(player.getUUID());
                 anbe.syncAndSave();
