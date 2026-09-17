@@ -340,14 +340,13 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe, Nb
         @Override
         public @Nullable SublimationRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             CompoundTag nbt = buf.readNbt();
-            CompoundTag nbtAlchemyObject = nbt.getCompound("alchemyObject");
             CompoundTag nbtStages = nbt.getCompound("stages");
 
             int tier = nbt.getInt("tier");
             int wisdom = nbt.getInt("wisdom");
 
             //alchemy object
-            ItemStack alchemyObject = ItemStack.of(nbtAlchemyObject);
+            ItemStack alchemyObject = RecipeOutputHelper.readNetworkStack(nbt, "alchemyObject");
 
             int stagesCount = nbtStages.getInt("count");
             NonNullList<InfusionStage> infusionStages = NonNullList.create();
@@ -419,7 +418,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe, Nb
             nbt.putInt("wisdom", recipe.getWisdom());
             RecipeNbtHelper.writeNetworkSource(nbt, recipe);
 
-            nbt.put("alchemyObject", recipe.getAlchemyObject().serializeNBT());
+            RecipeOutputHelper.writeNetworkStack(nbt, "alchemyObject", recipe.getAlchemyObject());
 
             CompoundTag nbtStages = new CompoundTag();
             nbtStages.putInt("count", recipe.getStages(false).size());

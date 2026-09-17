@@ -215,7 +215,7 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe, N
 
             int craftTime = nbt.getInt("minutes");
 
-            ItemStack resultItem = ItemStack.of(nbt.getCompound("resultItem"));
+            ItemStack resultItem = RecipeOutputHelper.readNetworkStack(nbt, "resultItem");
             Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
 
             return new IlluminationRecipe(pRecipeId,
@@ -233,7 +233,7 @@ public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe, N
             nbt.putInt("luminType",pRecipe.luminType.ordinal());
             nbt.putInt("minutes",pRecipe.craftTime);
 
-            nbt.put("resultItem", pRecipe.resultItem.serializeNBT());
+            RecipeOutputHelper.writeNetworkStack(nbt, "resultItem", pRecipe.resultItem);
             RecipeNbtHelper.writeNetworkSource(nbt, pRecipe);
 
             pBuffer.writeNbt(nbt);

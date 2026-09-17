@@ -343,7 +343,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe, Nbt
             CompoundTag materiaTag = nbt.getCompound("materia");
             CompoundTag eldrinTag = nbt.getCompound("eldrin");
 
-            ItemStack result = ItemStack.of(nbt.getCompound("result"));
+            ItemStack result = RecipeOutputHelper.readNetworkStack(nbt, "result");
             byte tier = nbt.getByte("tier");
             byte wisdom = nbt.getByte("wisdom");
 
@@ -369,7 +369,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe, Nbt
         public void toNetwork(FriendlyByteBuf pBuffer, ExaltationRecipe pRecipe) {
             CompoundTag nbt = new CompoundTag();
 
-            nbt.put("result", pRecipe.result.serializeNBT());
+            RecipeOutputHelper.writeNetworkStack(nbt, "result", pRecipe.result);
             nbt.putByte("tier", pRecipe.tier);
             nbt.putByte("wisdom", pRecipe.wisdom);
 
