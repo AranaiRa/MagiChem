@@ -428,7 +428,9 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe, N
                 outputForCodexAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("outputForCodex")));
             }
 
-            ItemStack resultItem = !hasResultItem ? ItemStack.EMPTY : ItemStack.of(nbt.getCompound("resultItem"));
+            ItemStack resultItem = !hasResultItem
+                    ? ItemStack.EMPTY
+                    : RecipeOutputHelper.readNetworkStack(nbt, "resultItem");
             Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
 
             return new VitriolationRecipe(pRecipeId,
@@ -452,7 +454,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe, N
             nbt.put("inputItem", inputItemTag);
 
             if(pRecipe.hasResultItem()) {
-                nbt.put("resultItem", pRecipe.resultItem.serializeNBT());
+                RecipeOutputHelper.writeNetworkStack(nbt, "resultItem", pRecipe.resultItem);
             }
 
             if(pRecipe.hasResultFluid()) {

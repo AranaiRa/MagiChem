@@ -358,7 +358,7 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             ItemStack colorlessDefault = ItemStack.EMPTY;
             if(nbt.contains("colorlessDefault")) {
-                colorlessDefault = ItemStack.of(nbt.getCompound("colorlessDefault"));
+                colorlessDefault = RecipeOutputHelper.readNetworkStack(nbt, "colorlessDefault");
             }
 
             HashMap<DyeColor, ItemStack> outputs = new HashMap<>();
@@ -370,7 +370,7 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                     if(outputsTag.contains(color.getName())) {
                         CompoundTag thisColorTag = outputsTag.getCompound(color.getName());
 
-                        outputs.put(color, ItemStack.of(thisColorTag.getCompound("stack")));
+                        outputs.put(color, RecipeOutputHelper.readNetworkStack(thisColorTag, "stack"));
                         preserveNbtByColor.put(color, thisColorTag.getBoolean("preserveNbt"));
                     }
                 }
@@ -392,14 +392,14 @@ public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
             nbt.putBoolean("nbtAware", recipe.nbtAware);
             nbt.putBoolean("preserveNbtDefault", recipe.preserveNbtDefault);
-            nbt.put("colorlessDefault", recipe.getColorlessDefault().save(new CompoundTag()));
+            RecipeOutputHelper.writeNetworkStack(nbt, "colorlessDefault", recipe.getColorlessDefault());
 
             CompoundTag outputs = new CompoundTag();
             for(DyeColor color : recipe.potentialOutputs.keySet()) {
                 ItemStack stack = recipe.potentialOutputs.get(color);
 
                 CompoundTag thisOutput = new CompoundTag();
-                thisOutput.put("stack", stack.save(new CompoundTag()));
+                RecipeOutputHelper.writeNetworkStack(thisOutput, "stack", stack);
                 thisOutput.putBoolean("preserveNbt", recipe.isPreserveNbt(color));
 
                 outputs.put(color.getName(), thisOutput);
