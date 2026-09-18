@@ -1,0 +1,28 @@
+{
+  "type": "magichem:research",
+  "tier": 1,
+  "wisdom": 0,
+  "xp": 50,
+  "vellum": 5,
+  "ink": 500,
+  "usesIlluminink": false,
+  "researchRequirements": [
+    { "key": "brewing", "strength": 4 }
+  ],
+  "components": [
+    { "item": "magichem:glowberry_mash", "count": 10 }
+  ],
+  "materia": [
+    { "item": "magichem:admixture_healing", "count": 45 }
+  ],
+  "decorationByproduct": {
+    "item": "minecraft:egg", "count": 4
+  },
+  "itemResult": {
+    "item": "minecraft:cake", "count": 10
+  },
+  "silverResult": {
+    "part": "mna:components/magic_damage", "thesis": true
+  },
+  "advancementResult": "magichem:40_cakes"
+}
