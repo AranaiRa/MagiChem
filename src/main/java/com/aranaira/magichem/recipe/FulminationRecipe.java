@@ -185,7 +185,7 @@ public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe, Nb
 
             Item inputAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("input")));
             int inputCount = nbt.getInt("input_count");
-            ItemStack result = ItemStack.of(nbt.getCompound("result"));
+            ItemStack result = RecipeOutputHelper.readNetworkStack(nbt, "result");
             Item nbtSource = RecipeNbtHelper.readNetworkSource(nbt);
 
             return new FulminationRecipe(pRecipeId,
@@ -199,7 +199,7 @@ public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe, Nb
 
             nbt.putString("input", ForgeRegistries.ITEMS.getKey(pRecipe.input.getItem()).toString());
             nbt.putInt("input_count", pRecipe.input.getCount());
-            nbt.put("result", pRecipe.result.save(new CompoundTag()));
+            RecipeOutputHelper.writeNetworkStack(nbt, "result", pRecipe.result);
             RecipeNbtHelper.writeNetworkSource(nbt, pRecipe);
 
             pBuffer.writeNbt(nbt);
