@@ -3,6 +3,7 @@ package com.aranaira.magichem.events;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.WastePollutionUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,6 +28,7 @@ public class CommonEventHelper {
                     }
                 }
             }
+            WastePollutionUtils.GenOnManualClean(level, bewe.getBlockPos(), wasteCount);
         }
 
         int slots = (wasteCount / 64) + 1;
