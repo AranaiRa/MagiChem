@@ -41,28 +41,26 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
             NonNullList<ItemStack> output = NonNullList.create();
             for (ItemStack stack : modifiableQuery) {
                 int count = stack.getCount();
-                for (int i = 0; i < count; i++) {
-                    boolean doShrink = false;
-                    int adjustedEfficiency = efficiency;
-                    if(stack.getItem() == NIGREDO.get() || stack.getItem() == ALBEDO.get() || stack.getItem() == CITRINITAS.get() || stack.getItem() == RUBEDO.get())
-                        adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float) ServerConfig.houseOfAlchemyDistillationEfficiencyBonus / 100f));
 
-                    if(adjustedEfficiency < 100 || outputRate < 1.0f) {
-                        if (r.nextInt(100) > adjustedEfficiency)
-                            doShrink = true;
-                        else if (outputRate < 1.0) {
-                            if (r.nextFloat() > outputRate)
-                                doShrink = true;
-                        }
-                    }
+                int adjustedEfficiency = efficiency;
+                if(stack.getItem() == NIGREDO.get() || stack.getItem() == ALBEDO.get() || stack.getItem() == CITRINITAS.get() || stack.getItem() == RUBEDO.get())
+                    adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float) ServerConfig.houseOfAlchemyDistillationEfficiencyBonus / 100f));
+                float actualEfficiency = ((float)adjustedEfficiency / 100f) * outputRate;
 
-                    if(doShrink) {
-                        stack.shrink(1);
-                        grime += grimeFail;
-                    } else {
-                        crafted++;
-                        grime += grimeSuccess;
-                    }
+                if(adjustedEfficiency < 100 || outputRate < 1.0f) {
+                    float outRaw = (float)count * actualEfficiency;
+                    int whole = Math.max(0,(int)outRaw);
+                    float remainder = outRaw % 1f;
+                    int resolvedRemainder = 0;
+                    if(remainder > 0)
+                        resolvedRemainder = r.nextFloat() <= remainder ? 1 : 0;
+
+                    stack.setCount(whole + resolvedRemainder);
+
+                    int success = count - (whole + resolvedRemainder);
+                    grime += (grimeSuccess * success);
+                    grime += (grimeFail * (count - success));
+                    crafted += success;
                 }
             }
 
