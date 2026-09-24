@@ -41,6 +41,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> NOURISHING_CENSER = registerBlock("nourishing_censer",
+            () -> new NourishingCenserBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> MAGICHEMICAL_MECHANISM = registerBlock("magichemical_mechanism",
             () -> new SimpleRotationalBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f))

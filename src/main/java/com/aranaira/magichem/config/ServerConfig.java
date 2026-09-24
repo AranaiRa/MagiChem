@@ -480,6 +480,12 @@ public class ServerConfig
             .comment("Reminder, one unit is one point of durability damage to inserted items.")
             .defineInRange("disintegrationPyreMateriaUnitsPerDram", 500, 1, Integer.MAX_VALUE);
 
+    //----------------NOURISHING CENSER
+
+    private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MATERIA_UNITS_PER_DRAM = BUILDER
+            .comment("How many units does a single dram of Nourishing Essentia supplies to the Nourishing Censer?")
+            .defineInRange("nourishingCenserMateriaUnitsPerDram", 500, 1, Integer.MAX_VALUE);
+
     //----------------COVETOUS COFFER
 
     private static final ForgeConfigSpec.IntValue COVETOUS_COFFER_CAPACITY = BUILDER
@@ -679,6 +685,7 @@ public class ServerConfig
         astralObserverLuminLoss,
         acidBasinTankCapacity,
         disintegrationPyreMateriaUnitsPerDram,
+        nourishingCenserMateriaUnitsPerDram,
         covetousCofferCapacity,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
@@ -831,6 +838,7 @@ public class ServerConfig
         astralObserverLuminLoss = ASTRAL_OBSERVER_LUMIN_LOSS.get();
         acidBasinTankCapacity = ACID_BASIN_TANK_CAPACITY.get();
         disintegrationPyreMateriaUnitsPerDram = DISINTEGRATION_PYRE_MATERIA_UNITS_PER_DRAM.get();
+        nourishingCenserMateriaUnitsPerDram = NOURISHING_CENSER_MATERIA_UNITS_PER_DRAM.get();
         covetousCofferCapacity = COVETOUS_COFFER_CAPACITY.get();
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
