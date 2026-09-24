@@ -527,6 +527,7 @@ public class ServerConfig
     private static final List<String> WISDOM_BLACKLIST_SPEED_DEFAULTS = new ArrayList<>();
     static {
         WISDOM_BLACKLIST_LESSER_MAGNITUDE_DEFAULTS.add("mna:components/telekinesis");
+        WISDOM_BLACKLIST_LESSER_MAGNITUDE_DEFAULTS.add("mna:components/camouflage");
         WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS.add("mna:shapes/sigil");
         WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS.add("mna:components/shield");
         WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS.add("mna:components/simulacrum");
