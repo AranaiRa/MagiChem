@@ -11,6 +11,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
+import com.aranaira.magichem.util.WastePollutionUtils;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
@@ -291,6 +292,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                         }
                         entity.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
                         entity.currentGrime -= actualWasteToAdd * ServerConfig.grimePerWaste;
+                        WastePollutionUtils.GenOnActuatorNormal(level, entity.getBlockPos(), actualWasteToAdd);
                         entity.syncAndSave();
                     }
                 }
@@ -310,6 +312,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                         }
                         entity.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
                         entity.currentRarefiedGrime -= actualWasteToAdd * ServerConfig.grimePerWaste;
+                        WastePollutionUtils.GenOnActuatorRare(level, entity.getBlockPos(), actualWasteToAdd);
                         entity.syncAndSave();
                     }
                 }
