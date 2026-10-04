@@ -184,7 +184,7 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
             double torsoRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 260, 0, -3, 3);
 
             pPoseStack.pushPose();
-            {
+            if(currentPiece != null) {
                 pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                 pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) torsoRot), 0, -currentPiece.getSecond().y * 2 - 0.25f, 0);
                 pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
@@ -212,7 +212,7 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
                 double nonCasterArmRotZ = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 54, 0, -3, 3);
 
                 pPoseStack.pushPose();
-                {
+                if(currentPiece != null) {
                     pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                     if(isCasterArm) {
                         pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)casterArmRotX), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
@@ -242,7 +242,7 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
                 isCasterArm = ConstructRenderHelper.isCasterArm(currentPiece.getFirst());
 
                 pPoseStack.pushPose();
-                {
+                if(currentPiece != null) {
                     pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                     if(isCasterArm) {
                         pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)casterArmRotX), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
@@ -276,7 +276,7 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
             double legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 350, 360);
 
             pPoseStack.pushPose();
-            {
+            if(currentPiece != null) {
                 pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                 pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
 
@@ -289,7 +289,7 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
             legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 360, 370);
 
             pPoseStack.pushPose();
-            {
+            if(currentPiece != null) {
                 pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                 pPoseStack.rotateAround(Axis.XN.rotationDegrees((float) legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
 

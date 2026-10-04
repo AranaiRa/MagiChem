@@ -85,11 +85,12 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                     double headRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 13, 350, 360);
 
                     pPoseStack.pushPose();
-                    {
+                    if(currentPiece != null){
                         pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                         pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) headRot), 0, -currentPiece.getSecond().y * 2 - 0.25f, 0);
 
                         pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+
                         ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
                         ModelUtils.renderModel(pBuffer, world, pos, state, pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.EYES).getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
                         pPoseStack.popPose();
@@ -99,7 +100,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                     double armRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 80, 70);
 
                     pPoseStack.pushPose();
-                    {
+                    if(currentPiece != null) {
                         pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                         pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) armRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
 
@@ -111,7 +112,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                     currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.ARM_RIGHT);
 
                     pPoseStack.pushPose();
-                    {
+                    if(currentPiece != null) {
                         pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                         pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) armRot), -currentPiece.getSecond().x * 2, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
 
@@ -128,7 +129,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                 double legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 370, 330);
 
                 pPoseStack.pushPose();
-                {
+                if(currentPiece != null) {
                     pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                     pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
 
@@ -141,7 +142,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                 legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 390, 350);
 
                 pPoseStack.pushPose();
-                {
+                if(currentPiece != null) {
                     pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
                     pPoseStack.rotateAround(Axis.XN.rotationDegrees((float) legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
 
