@@ -1,6 +1,5 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.DisintegrationPyreBlockEntity;
 import com.aranaira.magichem.block.entity.NourishingCenserBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -19,7 +18,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
-import static com.aranaira.magichem.block.entity.DisintegrationPyreBlockEntity.*;
+import static com.aranaira.magichem.block.entity.NourishingCenserBlockEntity.*;
 
 public class NourishingCenserMenu extends AbstractContainerMenu {
     public final NourishingCenserBlockEntity blockEntity;
@@ -38,9 +37,9 @@ public class NourishingCenserMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, SLOT_ITEM, 80, 17));
-            this.addSlot(new SlotItemHandler(handler, SLOT_MATERIA, 173, 11));
-            this.addSlot(new SlotItemHandler(handler, SLOT_BOTTLES, 173, 37));
+            this.addSlot(new SlotItemHandler(handler, SLOT_MARK_PAIR, 80, 18));
+            this.addSlot(new SlotItemHandler(handler, SLOT_MATERIA_INPUT, 152, -21));
+            this.addSlot(new SlotItemHandler(handler, SLOT_MATERIA_OUTPUT, 152, 5));
         });
     }
 

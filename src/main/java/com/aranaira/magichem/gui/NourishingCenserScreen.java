@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.networking.DisintegrationPyreSyncDataC2SPacket;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -13,19 +14,23 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.aranaira.magichem.block.entity.NourishingCenserBlockEntity.SLOT_MARK_PAIR;
+
 public class NourishingCenserScreen extends AbstractContainerScreen<NourishingCenserMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_nourishing_censer.png");
     private static final int
-            PANEL_MAIN_W = 176, PANEL_MAIN_H = 148;
+            PANEL_MAIN_W = 176, PANEL_MAIN_H = 147;
     private EditBox percentSelectorBox;
     private String lastUsedFilter = null;
 
@@ -46,9 +51,17 @@ public class NourishingCenserScreen extends AbstractContainerScreen<NourishingCe
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
         //Materia panel
-        pGuiGraphics.blit(TEXTURE, x + 167, y - 6, 216, 0, 40, 58);
+        pGuiGraphics.blit(TEXTURE, x + 136, y - 39, 216, 0, 40, 58);
         int sM = Math.min(42, Math.round(menu.blockEntity.getDropletsPercent() * 42f));
-        pGuiGraphics.blit(TEXTURE, x + 165, y + 2 + (42 - sM), 214, 0, 2, sM);
+        pGuiGraphics.blit(TEXTURE, x + 144, y - 31 + (42 - sM), 214, 0, 2, sM);
+
+        menu.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            if(handler.getStackInSlot(SLOT_MARK_PAIR).isEmpty()) {
+                pGuiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
+                pGuiGraphics.blit(TEXTURE, (x + 80) * 2, (y + 8) * 2, 224, 224, 32, 32);
+                pGuiGraphics.pose().scale(2.0f, 2.0f, 2.0f);
+            }
+        });
     }
 
     @Override
@@ -99,6 +112,12 @@ public class NourishingCenserScreen extends AbstractContainerScreen<NourishingCe
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
+
+        MutableComponent mc = Component.literal(menu.blockEntity.getMateriaCost()+" droplets / "+menu.blockEntity.getTickModulus()+"t ("+menu.blockEntity.getOperatingAreaSize()+" blocks)");
+//        MutableComponent mc = Component.translatable("gui.magichem.nourishingcenser.overlapping");
+//        MutableComponent mc = Component.translatable("gui.magichem.nourishingcenser.toosmall");
+        int halfWidth = font.width(mc.toString()) / 2;
+        pGuiGraphics.drawString(font, mc, 181 - halfWidth, 44, 0x000000, false);
     }
 
     @Override

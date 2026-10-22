@@ -1445,6 +1445,10 @@
   "feedback.magichem.gui.mirrorlabyrinth.noconstruct.line2a": "Materia cannot be inserted or extracted",
   "feedback.magichem.gui.mirrorlabyrinth.noconstruct.line2b": "until a Construct is bound to this device.",
 
+  "gui.magichem.nourishingcenser.toobig": "Operating area is too large!",
+  "gui.magichem.nourishingcenser.toosmall": "Operating area is too small!",
+  "gui.magichem.nourishingcenser.overlapping": "Area overlaps another Censer!",
+
   "tooltip.magichem.jei.coloration.cauldron.part1": "This recipe ",
   "tooltip.magichem.jei.coloration.cauldron.part2": " be crafted in a Coloring Cauldron",
   "tooltip.magichem.jei.coloration.variegator.part1": "This recipe ",

@@ -484,7 +484,23 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MATERIA_UNITS_PER_DRAM = BUILDER
             .comment("How many units does a single dram of Nourishing Essentia supplies to the Nourishing Censer?")
-            .defineInRange("nourishingCenserMateriaUnitsPerDram", 500, 1, Integer.MAX_VALUE);
+            .defineInRange("nourishingCenserMateriaUnitsPerDram", 20, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MINIMUM_MATERIA_COST = BUILDER
+            .comment("How many units does the Nourishing Censer consume per operation at the smallest possible operating area?")
+            .defineInRange("nourishingCenserMinimumMateriaCost", 4, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MAXIMUM_MATERIA_COST = BUILDER
+            .comment("How many units does the Nourishing Censer consume per operation at the largest possible operating area?")
+            .defineInRange("nourishingCenserMaximumMateriaCost", 36, 10, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MINIMUM_TICK_DELAY = BUILDER
+            .comment("How many ticks does the Nourishing Essentia need to wait between operations at the largest possible operating area?")
+            .defineInRange("nourishingCenserMinimumTickDelay", 5, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MAXIMUM_TICK_DELAY = BUILDER
+            .comment("How many ticks does the Nourishing Essentia need to wait between operations at the smallest possible operating area?")
+            .defineInRange("nourishingCenserMaximumTickDelay", 100, 10, Integer.MAX_VALUE);
 
     //----------------COVETOUS COFFER
 
@@ -686,6 +702,10 @@ public class ServerConfig
         acidBasinTankCapacity,
         disintegrationPyreMateriaUnitsPerDram,
         nourishingCenserMateriaUnitsPerDram,
+        nourishingCenserMinimumMateriaCost,
+        nourishingCenserMaximumMateriaCost,
+        nourishingCenserMinimumTickDelay,
+        nourishingCenserMaximumTickDelay,
         covetousCofferCapacity,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
@@ -839,6 +859,10 @@ public class ServerConfig
         acidBasinTankCapacity = ACID_BASIN_TANK_CAPACITY.get();
         disintegrationPyreMateriaUnitsPerDram = DISINTEGRATION_PYRE_MATERIA_UNITS_PER_DRAM.get();
         nourishingCenserMateriaUnitsPerDram = NOURISHING_CENSER_MATERIA_UNITS_PER_DRAM.get();
+        nourishingCenserMinimumMateriaCost = NOURISHING_CENSER_MINIMUM_MATERIA_COST.get();
+        nourishingCenserMaximumMateriaCost = NOURISHING_CENSER_MAXIMUM_MATERIA_COST.get();
+        nourishingCenserMinimumTickDelay = NOURISHING_CENSER_MINIMUM_TICK_DELAY.get();
+        nourishingCenserMaximumTickDelay = NOURISHING_CENSER_MAXIMUM_TICK_DELAY.get();
         covetousCofferCapacity = COVETOUS_COFFER_CAPACITY.get();
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
