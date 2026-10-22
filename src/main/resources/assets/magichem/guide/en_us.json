@@ -14587,5 +14587,77 @@
       }
     ]
   },
+  "Grim Guide": {
+    "index": "0",
+    "category": "artifice",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Grim Guide"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Grim Guide",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a modified "
+          },
+          {
+            "text": "Rune of Marking",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that points to its holder's last "
+          },
+          {
+            "text": "point of death",
+            "color": "dark_purple"
+          },
+          {
+            "text": " instead of a location chosen by the user.\n\nIt can be used alongside a "
+          },
+          {
+            "text": "Dowsing Rod",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to find the spot that you last died. It can also be used for other magic that requires a Rune of Marking, such as a "
+          },
+          {
+            "text": "Recall",
+            "color": "dark_purple"
+          },
+          {
+            "text": " spell or as the target for the "
+          },
+          {
+            "text": "Ritual of Visiting",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/grim_guide"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "mna:manaweaving/wellspring_dowsing_rod"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

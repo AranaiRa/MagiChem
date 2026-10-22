@@ -236,6 +236,10 @@ public class ItemRegistry {
             () -> new TravellersCompassItem()
     );
 
+    public static final RegistryObject<GrimGuideItem> GRIM_GUIDE_ITEM = ITEMS.register("grim_guide",
+            () -> new GrimGuideItem(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<TooltipLoreItem> CATALYTIC_CARBON = ITEMS.register("catalytic_carbon",
             () -> new TooltipLoreItem(new Item.Properties())
     );

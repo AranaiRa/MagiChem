@@ -445,9 +445,9 @@ public class CommonEventHandler {
             final LazyOptional<IPlayerProgression> progressCapability = player.getCapability(PlayerProgressionProvider.PROGRESSION);
             progressCapability.ifPresent(pCap -> {
                 final IFaction faction = pCap.getAlliedFaction();
-                if(pCap.getTier() >= 5 && faction != null && faction.is(UNDEAD)) {
-                    final LazyOptional<IEnhancementCapability> enhancementCapability = player.getCapability(EnhancementProvider.ENHANCEMENT);
-                    enhancementCapability.ifPresent(eCap -> {
+                final LazyOptional<IEnhancementCapability> enhancementCapability = player.getCapability(EnhancementProvider.ENHANCEMENT);
+                enhancementCapability.ifPresent(eCap -> {
+                    if(pCap.getTier() >= 5 && faction != null && faction.is(UNDEAD)) {
                         if(eCap.hasDeathRecoveryLocation()) {
                             final Pair<BlockPos, ResourceLocation> recoveryData = eCap.getDeathRecoveryLocation();
                             final ServerLevel sourceLevel = event.getEntity().level().getServer().getLevel(event.getEntity().level().dimension());
@@ -490,8 +490,10 @@ public class CommonEventHandler {
                                 player.sendSystemMessage(Component.translatable("feedback.trophy.undead.death_interception"));
                             }
                         }
-                    });
-                }
+                    } else {
+                        eCap.setLastDeathTargetLocation(event.getEntity().blockPosition(), event.getEntity().level().dimension().location());
+                    }
+                });
             });
         }
     }
