@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class GrimGuideItem extends Item implements IPositionalItem<ItemRuneMarking> {
+public class GrimGuideItem extends TooltipLoreItem implements IPositionalItem<ItemRuneMarking> {
     public GrimGuideItem(Item.Properties pProperties) {
         super(pProperties);
     }
