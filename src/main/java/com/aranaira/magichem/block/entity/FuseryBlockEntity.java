@@ -585,7 +585,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
 
     public boolean canAcceptDust(BlockState be) {
         if(be.getValue(MagiChemBlockStateProperties.ROUTER_TYPE_FUSERY) != FuseryRouterBlock.ROUTER_TYPE_COG) return false;
-        return remainingAnimus > 0;
+        return remainingAnimus <= 0;
     }
 
     public void applyAnimusDust() {
