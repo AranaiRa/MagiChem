@@ -5,16 +5,21 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBl
 import com.aranaira.magichem.block.entity.routers.MateriaManifestRouterBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.MateriaJarItem;
+import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.ItemInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -40,6 +45,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACI
 public class MateriaManifestBlock extends BaseEntityBlock {
 
     public static final VoxelShape VOXEL_SHAPE = Block.box(4.5, 0, 4.5, 11.5, 16, 11.5);
+    public static HashMap<String, MateriaItem> materiaMap = null;
 
     public MateriaManifestBlock(Properties properties) {
         super(properties);
@@ -99,7 +105,7 @@ public class MateriaManifestBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         boolean holdingMarkPair = player.getInventory().getSelected().getItem() == ItemInit.RUNE_MARKING_PAIR.get();
-        boolean holdingMateria = player.getInventory().getSelected().getItem() instanceof MateriaItem;
+        boolean holdingMateria = player.getInventory().getSelected().getItem() instanceof MateriaItem || player.getInventory().getSelected().getItem() instanceof MateriaJarItem || player.getInventory().getSelected().getItem() instanceof MateriaVesselItem;
 
         if(player.isCrouching()) {
             BlockEntity entity = level.getBlockEntity(pos);
@@ -122,7 +128,19 @@ public class MateriaManifestBlock extends BaseEntityBlock {
             if(!holdingMarkPair && holdingMateria) {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof MateriaManifestBlockEntity mmbe) {
-                    if (player.getInventory().getSelected().getItem() instanceof MateriaItem mi) {
+                    MateriaItem mi = null;
+                    final ItemStack stackQuery = player.getInventory().getSelected();
+                    if (stackQuery.getItem() instanceof MateriaItem query) {
+                        mi = query;
+                    } else if(stackQuery.hasTag()) {
+                        final CompoundTag tag = stackQuery.getTag();
+                        if(tag != null && tag.contains("type")) {
+                            if(materiaMap == null) materiaMap = ItemRegistry.getMateriaMap(false, false);
+                            mi = materiaMap.get(tag.getString("type"));
+                        }
+                    }
+
+                    if(mi != null) {
                         mmbe.scanMateriaInZone();
 
                         final HashMap<MateriaItem, List<BlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
@@ -135,7 +153,7 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                                 mmbe.tetherType = mi;
                                 player.displayClientMessage(Component.empty()
                                                 .append(Component.translatable("feedback.block.materia_manifest.track_from_bottle").withStyle(ChatFormatting.DARK_GRAY))
-                                                .append(Component.translatable("item." + mi.getCreatorModId(player.getInventory().getSelected()) + "." + mi.toString())),
+                                                .append(Component.translatable("item." + mi.getCreatorModId(stackQuery) + "." + mi.toString())),
                                         true);
                             }
                         }
@@ -144,9 +162,13 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                             mmbe.tetherType = null;
                             player.displayClientMessage(Component.empty()
                                             .append(Component.translatable("feedback.block.materia_manifest.not_found").withStyle(ChatFormatting.DARK_GRAY))
-                                            .append(Component.translatable("item." + mi.getCreatorModId(player.getInventory().getSelected()) + "." + mi.toString())),
+                                            .append(Component.translatable("item." + mi.getCreatorModId(stackQuery) + "." + mi.toString())),
                                     true);
                         }
+                    }
+                    else {
+                        mmbe.tetherTargets.clear();
+                        mmbe.tetherType = null;
                     }
                 } else {
                     throw new IllegalStateException("MateriaManifestBlockEntity container provider is missing!");
