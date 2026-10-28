@@ -488,11 +488,11 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MINIMUM_MATERIA_COST = BUILDER
             .comment("How many units does the Nourishing Censer consume per operation at the smallest possible operating area?")
-            .defineInRange("nourishingCenserMinimumMateriaCost", 4, 1, Integer.MAX_VALUE);
+            .defineInRange("nourishingCenserMinimumMateriaCost", 6, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MAXIMUM_MATERIA_COST = BUILDER
             .comment("How many units does the Nourishing Censer consume per operation at the largest possible operating area?")
-            .defineInRange("nourishingCenserMaximumMateriaCost", 36, 10, Integer.MAX_VALUE);
+            .defineInRange("nourishingCenserMaximumMateriaCost", 35, 10, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MINIMUM_TICK_DELAY = BUILDER
             .comment("How many ticks does the Nourishing Essentia need to wait between operations at the largest possible operating area?")

@@ -45,7 +45,7 @@ import java.util.Collections;
 import java.util.Map;
 
 public class NourishingCenserBlockEntity extends BlockEntity implements MenuProvider, IKeepsInventoryOnBreak, IMateriaProvisionRequester {
-    private int droplets, index, tickModulus;
+    private int droplets, index;
     private BlockPos cornerOne, cornerTwo;
     private AABB operatingArea;
     private final NonNullList<BlockPos> remainingTargets = NonNullList.create();
@@ -62,14 +62,15 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
             if(slot == SLOT_MARK_PAIR) {
                 final ItemStack markStack = getStackInSlot(SLOT_MARK_PAIR);
                 if(markStack.isEmpty() || !markStack.hasTag()) {
-                    operatingArea = new AABB(getBlockPos().offset(-8, -1, -8), getBlockPos().offset(9, 2, 9));
+                    operatingArea = new AABB(getBlockPos().offset(-8, -1, -8), getBlockPos().offset(8, 1, 8));
                 } else {
                     CompoundTag nbt = markStack.getTag();
                     if(nbt.contains("mark")) {
-                        operatingArea = readAABB(nbt.getCompound("mark"));
+                        readAABB(nbt.getCompound("mark"));
                     } else {
                         operatingArea = null;
                     }
+                    index = -1;
                 }
             }
             setChanged();
@@ -106,9 +107,21 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
         super(BlockEntitiesRegistry.NOURISHING_CENSER_BE.get(), pPos, pBlockState);
     }
 
-    //Taken directly from RuneMarkingPair in MnA
-    private AABB readAABB(CompoundTag tag) {
-        return tag.contains("minx") && tag.contains("miny") && tag.contains("minz") && tag.contains("maxx") && tag.contains("maxy") && tag.contains("maxz") ? new AABB(tag.getDouble("minx"), tag.getDouble("miny"), tag.getDouble("minz"), tag.getDouble("maxx"), tag.getDouble("maxy"), tag.getDouble("maxz")) : null;
+    private boolean readAABB(CompoundTag tag) {
+        if(tag.contains("minx") && tag.contains("miny") && tag.contains("minz") && tag.contains("maxx") && tag.contains("maxy") && tag.contains("maxz")) {
+            double minX = tag.getDouble("minx");
+            double minY = tag.getDouble("miny");
+            double minZ = tag.getDouble("minz");
+            double maxX = tag.getDouble("maxx");
+            double maxY = tag.getDouble("maxy");
+            double maxZ = tag.getDouble("maxz");
+
+            cornerOne = new BlockPos((int)minX, (int)minY, (int)minZ);
+            cornerTwo = new BlockPos((int)maxX, (int)maxY, (int)maxZ);
+            operatingArea = new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -143,10 +156,8 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
 
         if(cornerOne != null && cornerTwo != null) {
             operatingArea = new AABB(cornerOne, cornerTwo);
-            tickModulus = getTickModulus();
         } else {
-            operatingArea = new AABB(getBlockPos().offset(-8, -1, -8), getBlockPos().offset(9, 2, 9));
-            tickModulus = getTickModulus();
+            operatingArea = new AABB(getBlockPos().offset(-8, -1, -8), getBlockPos().offset(8, 1, 8));
         }
 
         if(level != null && level.getServer() != null) {
@@ -192,9 +203,9 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
     }
 
     public int getOperatingAreaSize() {
-        int deltaX = (int) operatingArea.getXsize();
-        int deltaY = (int) operatingArea.getYsize();
-        int deltaZ = (int) operatingArea.getZsize();
+        int deltaX = (int) operatingArea.getXsize() + 1;
+        int deltaY = (int) operatingArea.getYsize() + 1;
+        int deltaZ = (int) operatingArea.getZsize() + 1;
 
         return deltaX * deltaY * deltaZ;
     }
@@ -221,15 +232,19 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
 
     public int getTickModulus() {
         float lerp = (getOperatingAreaSize() - MINIMUM_OPERATING_AREA) / (float)(MAXIMUM_OPERATING_AREA - MINIMUM_OPERATING_AREA);
+        lerp = Math.max(0, Math.min(1, lerp * 2));
+        float weightedLerp = 1f - ((1f - lerp) * (1f - lerp) * (1f - lerp));
 
-        final int rounded = Math.round(lerp * (ServerConfig.nourishingCenserMaximumTickDelay - ServerConfig.nourishingCenserMinimumTickDelay));
+        final int rounded = ServerConfig.nourishingCenserMinimumTickDelay + Math.round(weightedLerp * (ServerConfig.nourishingCenserMaximumTickDelay - ServerConfig.nourishingCenserMinimumTickDelay));
         return Math.max(1, rounded);
     }
 
     public int getMateriaCost() {
         float lerp = (getOperatingAreaSize() - MINIMUM_OPERATING_AREA) / (float)(MAXIMUM_OPERATING_AREA - MINIMUM_OPERATING_AREA);
+        lerp = Math.max(0, Math.min(1, lerp * 2));
+        float weightedLerp = 1f - ((1f - lerp) * (1f - lerp) * (1f - lerp));
 
-        final int rounded = Math.round(lerp * (ServerConfig.nourishingCenserMaximumMateriaCost - ServerConfig.nourishingCenserMinimumMateriaCost));
+        final int rounded = ServerConfig.nourishingCenserMinimumMateriaCost + Math.round(weightedLerp * (ServerConfig.nourishingCenserMaximumMateriaCost - ServerConfig.nourishingCenserMinimumMateriaCost));
         return Math.max(1, rounded);
     }
 
@@ -289,7 +304,7 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        if(t instanceof NourishingCenserBlockEntity entity && entity.operatingArea != null) {
+        if(t instanceof NourishingCenserBlockEntity entity) {
             if(!level.isClientSide()) {
                 boolean changed = false;
 
@@ -308,49 +323,69 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
                     }
                 }
 
-                if (level.getGameTime() % entity.tickModulus != 0) {
+                if(entity.operatingArea == null) {
+                    if(entity.cornerOne != null && entity.cornerTwo != null) {
+                        entity.operatingArea = new AABB(entity.cornerOne.getX(), entity.cornerOne.getY(), entity.cornerOne.getZ(), entity.cornerTwo.getX(), entity.cornerTwo.getY(), entity.cornerTwo.getZ());
+                        changed = true;
+                    }
+                    else {
+                        entity.operatingArea = new AABB(entity.getBlockPos().offset(-8, -1, -8), entity.getBlockPos().offset(8, 1, 8));
+                        changed = true;
+                    }
+                }
+
+                if (level.getGameTime() % entity.getTickModulus() != 0) {
                     if(changed) entity.syncAndSave();
                     return;
                 }
 
-                //Fill the block positions list if it's empty
-                if(entity.index < 0 || entity.index >= entity.remainingTargets.size()) {
-                    entity.remainingTargets.clear();
-                    for(int y=(int)entity.operatingArea.minY;y<(int)entity.operatingArea.maxY;y++) {
-                        for (int x = (int) entity.operatingArea.minX; x < (int) entity.operatingArea.maxX; x++) {
-                            for (int z = (int) entity.operatingArea.minZ; z < (int) entity.operatingArea.maxZ; z++) {
-                                entity.remainingTargets.add(new BlockPos(x, y, z));
-                            }
-                        }
-                    }
-                    Collections.shuffle(entity.remainingTargets);
-                    entity.index = entity.remainingTargets.size() - 1;
-                }
+                if(entity.operatingArea != null){
+                    //Fill the block positions list if it's empty
+                    reshuffleRemainingTargets(entity);
 
-                //Pick a position and force a growth tick if it's the right type of block
-                boolean stillSearching = true;
-                int checkTally = 0;
-                while(stillSearching) {
-                    final BlockPos posQuery = entity.remainingTargets.get(entity.index);
-                    final BlockState stateQuery = level.getBlockState(posQuery);
-                    if(stateQuery.getBlock() instanceof CropBlock crop) {
-                        if(crop.getAge(stateQuery) < crop.getMaxAge()) {
-                            crop.growCrops(level, posQuery, stateQuery);
-                            MagiChemMod.CHANNEL.send(
-                                    PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 12f, level.dimension())),
-                                    new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), ESSENTIA_NOURISHING.getMateriaColor(), true));
+                    //Pick a position and force a growth tick if it's the right type of block
+                    boolean stillSearching = true;
+                    int checkTally = 0;
+                    while (stillSearching) {
+                        if (entity.index < 0 || entity.index >= entity.remainingTargets.size()) {
+                            entity.index = -1;
                             break;
                         }
+
+                        final BlockPos posQuery = entity.remainingTargets.get(entity.index);
+                        final BlockState stateQuery = level.getBlockState(posQuery);
+                        if (stateQuery.getBlock() instanceof CropBlock crop) {
+                            if (crop.getAge(stateQuery) < crop.getMaxAge()) {
+                                crop.growCrops(level, posQuery, stateQuery);
+                                MagiChemMod.CHANNEL.send(
+                                        PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 12f, level.dimension())),
+                                        new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), ESSENTIA_NOURISHING.getMateriaColor(), true));
+                                break;
+                            }
+                        }
+
+                        entity.index--;
+                        if (entity.index < 0) break;
+
+                        checkTally++;
+                        if (checkTally > LIST_ITERATION_LIMIT) stillSearching = false;
                     }
-
-                    entity.index--;
-                    if(entity.index < 0) break;
-
-                    checkTally++;
-                    if(checkTally > LIST_ITERATION_LIMIT) stillSearching = false;
                 }
             }
         }
+    }
+
+    private static void reshuffleRemainingTargets(NourishingCenserBlockEntity entity) {
+        entity.remainingTargets.clear();
+        for (int y = (int) entity.operatingArea.minY; y <= (int) entity.operatingArea.maxY; y++) {
+            for (int x = (int) entity.operatingArea.minX; x <= (int) entity.operatingArea.maxX; x++) {
+                for (int z = (int) entity.operatingArea.minZ; z <= (int) entity.operatingArea.maxZ; z++) {
+                    entity.remainingTargets.add(new BlockPos(x, y, z));
+                }
+            }
+        }
+        Collections.shuffle(entity.remainingTargets);
+        entity.index = entity.remainingTargets.size() - 1;
     }
 
     private static boolean syncWithLevelData(Level pLevel, long pLongPos, NourishingCenserBlockEntity pEntity) {

@@ -117,7 +117,7 @@ public class NourishingCenserScreen extends AbstractContainerScreen<NourishingCe
 //        MutableComponent mc = Component.translatable("gui.magichem.nourishingcenser.overlapping");
 //        MutableComponent mc = Component.translatable("gui.magichem.nourishingcenser.toosmall");
         int halfWidth = font.width(mc.toString()) / 2;
-        pGuiGraphics.drawString(font, mc, 181 - halfWidth, 44, 0x000000, false);
+        pGuiGraphics.drawString(font, mc, 107 - halfWidth, 44, 0x000000, false);
     }
 
     @Override
