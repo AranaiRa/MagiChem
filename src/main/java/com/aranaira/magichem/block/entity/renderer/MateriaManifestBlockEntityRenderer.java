@@ -36,9 +36,9 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
 
     @Override
     public void render(MateriaManifestBlockEntity mmbe, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        if(mmbe.tetherTarget != null) {
-            if(mmbe.tetherTarget instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
-                if (single.getMateriaType() != null) {
+        for(BlockEntity target : mmbe.tetherTargets) {
+            if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                if (single.getMateriaType() == mmbe.tetherType ) {
                     final Direction facing = mmbe.getBlockState().getValue(FACING);
                     double x = 0, z = 0;
                     if (facing == Direction.NORTH) z = -0.3125;
@@ -47,7 +47,7 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
                     else if (facing == Direction.WEST) x = -0.3125;
 
                     Vector3 startPos = new Vector3(0.5 + x, 1.78125, 0.5 + z);
-                    Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, single.getBlockPos().getY() + 0.5, single.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
+                    Vector3 endPos = new Vector3(single.getBlockPos().getX() + 0.5, single.getBlockPos().getY() + 0.5, single.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
 
                     int colorInt, intR, intG, intB;
                     if(mmbe.tetherType.getMateriaName().equals("color")) {
@@ -66,7 +66,7 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
                     RenderUtils.generateLinearVolumetricBeam(startPos, endPos, 0.03125f, bodyTexture, new int[]{intR, intG, intB, 255}, 1, poseStack, bufferSource, packedLight, BEAM_TEX_U1, BEAM_TEX_V1, BEAM_TEX_U2, BEAM_TEX_V2);
                 }
             }
-            else if(mmbe.tetherTarget instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+            else if(target instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
                 for(MateriaItem type : multi.getMateriaTypes()) {
                     if (type != null && type == mmbe.tetherType) {
                         final Direction facing = mmbe.getBlockState().getValue(FACING);
@@ -82,7 +82,7 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
                             final Pair<Vector3, Vector3> oat = multi.getDefaultOriginAndTangent(mmbe.tetherType);
                             endPos = new Vector3(multi.getBlockPos().getX() + oat.getFirst().x, multi.getBlockPos().getY() + oat.getFirst().y, multi.getBlockPos().getZ() + oat.getFirst().z);
                         } else {
-                            endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, multi.getBlockPos().getY() + 0.5, multi.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
+                            endPos = new Vector3(multi.getBlockPos().getX() + 0.5, multi.getBlockPos().getY() + 0.5, multi.getBlockPos().getZ() + 0.5);
                         }
                         endPos = endPos.sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
 
