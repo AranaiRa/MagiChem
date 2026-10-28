@@ -31,6 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -103,7 +104,7 @@ public class MateriaManifestBlock extends BaseEntityBlock {
         if(player.isCrouching()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof MateriaManifestBlockEntity mmbe) {
-                mmbe.tetherTarget = null;
+                mmbe.tetherTargets.clear();
                 mmbe.tetherType = null;
             }
         }
@@ -130,7 +131,7 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                         for (MateriaItem type : materiaTypesSorted) {
                             if (type != null && type == mi) {
                                 foundTarget = true;
-                                mmbe.tetherTarget = materiaStorageInZone.get(mi).get(0);
+                                mmbe.tetherTargets = new ArrayList<>(materiaStorageInZone.get(mi));
                                 mmbe.tetherType = mi;
                                 player.displayClientMessage(Component.empty()
                                                 .append(Component.translatable("feedback.block.materia_manifest.track_from_bottle").withStyle(ChatFormatting.DARK_GRAY))
@@ -138,8 +139,8 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                                         true);
                             }
                         }
-                        if(!foundTarget) {
-                            mmbe.tetherTarget = null;
+                        if (!foundTarget) {
+                            mmbe.tetherTargets.clear();
                             mmbe.tetherType = null;
                             player.displayClientMessage(Component.empty()
                                             .append(Component.translatable("feedback.block.materia_manifest.not_found").withStyle(ChatFormatting.DARK_GRAY))
