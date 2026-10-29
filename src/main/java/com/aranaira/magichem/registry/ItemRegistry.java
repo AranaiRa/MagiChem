@@ -340,6 +340,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> SPELLDROSS = ITEMS.register("spelldross",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> INERT_IDOL = ITEMS.register("inert_idol",
             () -> new TooltipLoreItem(new Item.Properties())
     );

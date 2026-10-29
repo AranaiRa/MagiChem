@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "magichem:spelldross",
+  "tier": 1,
+  "info": "jei.magichem.info_panel.spelldross"
+}

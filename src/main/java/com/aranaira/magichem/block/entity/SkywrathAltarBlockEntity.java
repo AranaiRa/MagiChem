@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.recipe.FulminationRecipe;
 import com.aranaira.magichem.recipe.RecipeNbtHelper;
@@ -8,11 +9,14 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.Registries;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
+import com.mna.api.spells.base.ISpellDefinition;
 import com.mna.api.spells.collections.Components;
 import com.mna.api.spells.parts.Modifier;
 import com.mna.api.spells.parts.Shape;
 import com.mna.api.spells.parts.SpellEffect;
 import com.mna.items.ItemInit;
+import com.mna.items.sorcery.ItemSpell;
+import com.mna.items.sorcery.MagicStaff;
 import com.mna.spells.SpellsInit;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
@@ -23,6 +27,8 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -45,6 +51,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 
 public class SkywrathAltarBlockEntity extends BlockEntity {
+    private static final TagKey<Item> TAG_PREVENT_SPELLDROSS_CRAFT = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "prevent_spelldross_craft"));
     private ItemStack heldItem = ItemStack.EMPTY;
     private int craftCountdown = -1;
     private int craftDelay = -1;
@@ -110,9 +117,10 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         boolean hasValidRecipe = recipe != null && heldItem.getCount() >= recipe.getInput().getCount();
         boolean canStoreRF = heldItem.getCapability(ForgeCapabilities.ENERGY).isPresent();
         boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
+        boolean isSpellItem = heldItem.getItem() instanceof ItemSpell;
         boolean isJournalFragment = heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get();
 
-        if(hasValidRecipe || canStoreRF || isEnchantedBook || isJournalFragment) {
+        if(hasValidRecipe || canStoreRF || isEnchantedBook || isSpellItem || isJournalFragment) {
             craftCountdown = CRAFT_COUNTDOWN_LENGTH;
             syncAndSave();
         }
@@ -123,9 +131,10 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         boolean hasValidRecipe = recipe != null && heldItem.getCount() >= recipe.getInput().getCount();
         boolean canStoreRF = heldItem.getCapability(ForgeCapabilities.ENERGY).isPresent();
         boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
+        boolean isSpellItem = heldItem.getItem() instanceof ItemSpell && !heldItem.is(TAG_PREVENT_SPELLDROSS_CRAFT);
         boolean isJournalFragment = heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get();
 
-        if(hasValidRecipe || canStoreRF || isEnchantedBook || isJournalFragment) {
+        if(hasValidRecipe || canStoreRF || isEnchantedBook || isSpellItem || isJournalFragment) {
             craftCountdown = 1;
             syncAndSave();
         }
@@ -229,6 +238,36 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         return false;
     }
 
+    private boolean scrapSpellItem() {
+        if(heldItem.getItem() instanceof ItemSpell is && !heldItem.is(TAG_PREVENT_SPELLDROSS_CRAFT)) {
+            final ISpellDefinition spell = is.getSpell(heldItem, null);
+            final int componentCount = spell.getComponents().size();
+            final int modifierCount = spell.getModifiers().size();
+
+            int[] tiers = new int[1 + componentCount + modifierCount];
+            tiers[0] = spell.getShape().getPart().getTier(getLevel());
+            for(int i = 0; i< componentCount; i++) {
+                tiers[1+i] = spell.getComponent(i).getPart().getTier(getLevel());
+            }
+            for(int i = 0; i< modifierCount; i++) {
+                tiers[1+componentCount+i] = spell.getComponent(i).getPart().getTier(getLevel());
+            }
+
+            int count = 0;
+            final int[] countByTier = {1, 1, 3, 6, 10, 15};
+            for(int i : tiers) {
+                count += countByTier[i];
+            }
+
+            heldItem = new ItemStack(ItemRegistry.SPELLDROSS.get(), Math.max(1,Math.min(255,count)));
+
+            syncAndSave();
+            return true;
+        }
+
+        return false;
+    }
+
     public int getIdealInsertingAmount(ItemStack toCheck, int numExisted) {
         if(toCheck.getItem() == Items.ENCHANTED_BOOK) {
             return heldItem.getItem() == Items.ENCHANTED_BOOK ? 0 : 1;
@@ -323,6 +362,9 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
                         }
                         else if(entity.heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get()) {
                             entity.scrapJournalFragment();
+                        }
+                        else if(entity.heldItem.getItem() instanceof ItemSpell) {
+                            entity.scrapSpellItem();
                         }
                         else {
                             entity.craftItem();

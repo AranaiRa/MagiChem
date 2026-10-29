@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "mna:spell_book",
+    "mna:grimoire",
+    "mna:grimoire_council",
+    "mna:grimoire_fey",
+    "mna:grimoire_undead",
+    "mna:grimoire_demon",
+    "mna:book_of_rote",
+    "mna:hellfire_staff"
+  ]
+}
