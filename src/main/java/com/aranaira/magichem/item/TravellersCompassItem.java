@@ -1,12 +1,10 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.gui.TravellersCompassMenu;
-import com.aranaira.magichem.networking.TravellersCompassSyncC2SPacket;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
-import com.aranaira.magichem.registry.PacketRegistry;
-import com.aranaira.magichem.util.ClientUtil;
 import com.mna.KeybindInit;
+import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
 import com.mna.items.artifice.ThaumaturgicCompass;
 import com.mna.items.base.IRadialInventorySelect;
@@ -24,13 +22,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -38,14 +33,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class TravellersCompassItem extends ThaumaturgicCompass implements IRadialInventorySelect {
     @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-        pPlayer.getCapability(PlayerMagicProvider.MAGIC).ifPresent((m) -> {
+
             if(!pLevel.isClientSide()) {
-                if(m.isModifierPressed()) {
+                Optional<IPlayerMagic> magic = pPlayer.getCapability(PlayerMagicProvider.MAGIC).resolve();
+                if(magic.isPresent() && magic.get().isModifierPressed()) {
+                    final int slot = pHand == InteractionHand.MAIN_HAND ? pPlayer.getInventory().selected : Inventory.SLOT_OFFHAND;
+
                     NetworkHooks.openScreen((ServerPlayer)pPlayer, new SimpleMenuProvider(new MenuProvider() {
                         @Override
                         public Component getDisplayName() {
@@ -55,20 +54,30 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
                         @Nullable
                         @Override
                         public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pInternalPlayer) {
-                            ItemStack itemInHand = pInternalPlayer.getItemInHand(InteractionHand.MAIN_HAND);
-                            int slot = pPlayerInventory.findSlotMatchingItem(itemInHand);
-
-                            ContainerData data = new SimpleContainerData(1);
-                            data.set(0, slot);
-
-                            return new TravellersCompassMenu(pContainerId, pPlayerInventory, data);
+                            return new TravellersCompassMenu(pContainerId, pPlayerInventory, slot);
                         }
-                    }, Component.empty()));
+                    }, Component.empty()), buf -> buf.writeInt(slot));
+                    return InteractionResultHolder.sidedSuccess(pPlayer.getItemInHand(pHand), pLevel.isClientSide());
                 }
             }
-        });
 
-        return super.use(pLevel, pPlayer, pHand);
+        //Let's make sure it actually does what it's supposed to and not change modes magically.
+        ItemStack stack = pPlayer.getItemInHand(pHand);
+        boolean isResearch = !pLevel.isClientSide() && pPlayer.isCrouching();
+        boolean modeBefore = ThaumaturgicCompass.getTrackMode(stack);
+        ThaumaturgicCompass.TrackType typeBefore = ThaumaturgicCompass.getTrackType(stack);
+
+        InteractionResultHolder<ItemStack> result = super.use(pLevel, pPlayer, pHand);
+
+        if (isResearch && typeBefore != ThaumaturgicCompass.TrackType.Unset && stack.hasTag()) {
+            stack.getTag().putBoolean("tracking_mode", modeBefore);
+            stack.getTag().putInt("tracking_type", typeBefore.ordinal());
+        }
+
+        if(!pLevel.isClientSide())
+            updateSelectedRadialItemFromTag(stack);
+
+        return result;
     }
 
     @Override
@@ -87,21 +96,9 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
 
     @Override
     public void setIndex(ItemStack itemStack, int i) {
-        if(FMLEnvironment.dist.isClient()) {
-            Level level = ClientUtil.tryGetClientLevel();
+        itemStack.getOrCreateTag().putInt("index", i);
+        updateTagFromSelectedRadialItem(itemStack);
 
-            if(level != null) {
-                CompoundTag nbt = itemStack.getOrCreateTag();
-                nbt.putInt("index", i);
-                itemStack.setTag(nbt);
-
-                PacketRegistry.sendToServer(new TravellersCompassSyncC2SPacket(
-                        i
-                ));
-            }
-
-            updateTagFromSelectedRadialItem(itemStack);
-        }
     }
 
     @Override
@@ -144,6 +141,28 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
                 pStack.setTag(nbt);
             }
         }
+    }
+
+    public static void updateSelectedRadialItemFromTag(ItemStack pStack) {
+        if(!pStack.hasTag()) return;
+        CompoundTag nbt = pStack.getTag();
+
+        ItemStackHandler deserializedInventory = new ItemStackHandler(24);
+        deserializedInventory.deserializeNBT(nbt.getCompound("inventory"));
+        ItemStack compassToCopyTo = deserializedInventory.getStackInSlot(pStack.getTag().getInt("index"));
+
+        if(compassToCopyTo.hasTag()) {
+            CompoundTag nbtCompass = compassToCopyTo.getTag();
+            nbtCompass.putString("LodestoneDimension", nbt.getString("LodestoneDimension"));
+            nbtCompass.putInt("tracking_type",nbt.getInt("tracking_type"));
+            nbtCompass.put("LodestonePos", nbt.getCompound("LodestonePos"));
+            nbtCompass.putByte("tracking_mode", nbt.getByte("tracking_mode"));
+            nbtCompass.putByte("LodestoneTracked", nbt.getByte("LodestoneTracked"));
+            nbtCompass.putString("tracking_key", nbt.getString("tracking_key"));
+
+            nbt.put("inventory", deserializedInventory.serializeNBT());
+        }
+
     }
 
     @Override
