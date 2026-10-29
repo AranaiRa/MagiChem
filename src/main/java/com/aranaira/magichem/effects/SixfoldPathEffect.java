@@ -13,8 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Map;
-
 public class SixfoldPathEffect extends MobEffect {
     public SixfoldPathEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xff8174af);
@@ -29,11 +27,10 @@ public class SixfoldPathEffect extends MobEffect {
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         if(pLivingEntity instanceof Player player) {
             player.getCapability(PlayerMagicProvider.MAGIC).ifPresent((m) -> {
-                final Map<Affinity, Float> sortedAffinities = m.getSortedAffinityDepths();
                 Affinity highestKey = Affinity.EARTH;
-                float highestValue = -1;
-                for (Affinity affinity : sortedAffinities.keySet()) {
-                    float query = sortedAffinities.get(affinity);
+                float highestValue = 0;
+                for (Affinity affinity : Affinity.CoreSix()) {
+                    float query = m.getAffinityDepth(affinity);
                     if(query > highestValue) {
                         highestValue = query;
                         highestKey = affinity;
@@ -46,7 +43,7 @@ public class SixfoldPathEffect extends MobEffect {
                     final FoodData foodData = player.getFoodData();
                     foodData.setExhaustion(foodData.getExhaustionLevel() / 2);
                 } else if(highestKey == Affinity.ENDER) {
-                    player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 60, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 240, 0, false, false));
                 } else if(highestKey == Affinity.FIRE) {
                     player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 1, false, false));
                 } else if(highestKey == Affinity.WATER) {
