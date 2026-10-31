@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.FuseryBlock;
+import com.aranaira.magichem.block.FuseryRouterBlock;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -38,7 +39,7 @@ import java.util.Map;
 import static com.aranaira.magichem.block.FuseryRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot, ICanHaveUnbottledMateriaInInputTray {
+public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot, ICanHaveUnbottledMateriaInInputTray, ICanAcceptAnimusDust {
     private BlockPos masterPos;
     private FuseryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -385,5 +386,21 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
             return false;
 
         return getMaster().isClogged();
+    }
+
+    @Override
+    public boolean canAcceptDust(BlockState be) {
+        if(be.getValue(MagiChemBlockStateProperties.ROUTER_TYPE_FUSERY) != FuseryRouterBlock.ROUTER_TYPE_COG) return false;
+        return getMaster().getRemainingAnimus() <= 0;
+    }
+
+    @Override
+    public int getRemainingAnimus() {
+        return getMaster().getRemainingAnimus();
+    }
+
+    @Override
+    public void applyAnimusDust() {
+        getMaster().applyAnimusDust();
     }
 }

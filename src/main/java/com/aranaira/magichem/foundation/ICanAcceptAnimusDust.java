@@ -5,5 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public interface ICanAcceptAnimusDust {
     boolean canAcceptDust(BlockState be);
 
+    int getRemainingAnimus();
+
     void applyAnimusDust();
 }

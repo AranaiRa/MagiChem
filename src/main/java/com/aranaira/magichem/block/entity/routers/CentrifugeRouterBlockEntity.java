@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.CentrifugeBlock;
+import com.aranaira.magichem.block.CentrifugeRouterBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -38,7 +39,7 @@ import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
 
-public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, ICanHaveUnbottledMateriaInInputTray {
+public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, ICanHaveUnbottledMateriaInInputTray, ICanAcceptAnimusDust {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -355,5 +356,21 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
             return false;
 
         return getMaster().isClogged();
+    }
+
+    @Override
+    public boolean canAcceptDust(BlockState be) {
+        if(be.getValue(MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE) != CentrifugeRouterBlock.ROUTER_TYPE_COG) return false;
+        return getMaster().getRemainingAnimus() <= 0;
+    }
+
+    @Override
+    public int getRemainingAnimus() {
+        return getMaster().getRemainingAnimus();
+    }
+
+    @Override
+    public void applyAnimusDust() {
+        getMaster().applyAnimusDust();
     }
 }

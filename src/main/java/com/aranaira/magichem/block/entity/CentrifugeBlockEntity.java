@@ -512,8 +512,12 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     }
 
     public boolean canAcceptDust(BlockState be) {
-        if(be.getValue(MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE) != CentrifugeRouterBlock.ROUTER_TYPE_COG) return false;
-        return remainingAnimus <= 0;
+        return false;
+    }
+
+    @Override
+    public int getRemainingAnimus() {
+        return remainingAnimus;
     }
 
     public void applyAnimusDust() {
