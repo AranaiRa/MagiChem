@@ -496,11 +496,11 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MINIMUM_TICK_DELAY = BUILDER
             .comment("How many ticks does the Nourishing Essentia need to wait between operations at the largest possible operating area?")
-            .defineInRange("nourishingCenserMinimumTickDelay", 5, 1, Integer.MAX_VALUE);
+            .defineInRange("nourishingCenserMinimumTickDelay", 70, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue NOURISHING_CENSER_MAXIMUM_TICK_DELAY = BUILDER
             .comment("How many ticks does the Nourishing Essentia need to wait between operations at the smallest possible operating area?")
-            .defineInRange("nourishingCenserMaximumTickDelay", 100, 10, Integer.MAX_VALUE);
+            .defineInRange("nourishingCenserMaximumTickDelay", 145, 10, Integer.MAX_VALUE);
 
     //----------------COVETOUS COFFER
 
