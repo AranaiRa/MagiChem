@@ -14574,6 +14574,46 @@
             "text": "."
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "Spellwrought Ornament",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:spellwrought_ornament",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An excellent source of "
+          },
+          {
+            "text": "Admixture of Sorcery",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a placeable decoration.\n\n"
+          },
+          {
+            "text": "Spelldross",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is made by "
+          },
+          {
+            "text": "Fulminating",
+            "color": "dark_purple"
+          },
+          {
+            "text": " spells (including those found in treasure chests)."
+          }
+        ]
       }
     ],
     "related_recipes": [
@@ -14584,6 +14624,10 @@
       {
         "type": "exaltation",
         "location": "magichem:alchemical_exaltation/magichem/oculotoxin"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/spellwrought_ornament"
       }
     ]
   },

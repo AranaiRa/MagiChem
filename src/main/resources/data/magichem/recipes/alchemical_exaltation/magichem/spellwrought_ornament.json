@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 5,
+  "result": { "item": "magichem:spellwrought_ornament", "count": 1 },
+  "items": { "type": "magichem:spelldross", "required": 36 },
+  "eldrin": { "type": 33, "required": 10 },
+  "materia": { "type": "magichem:essentia_arcane", "required": 24 },
+  "slurry": 600
+}

@@ -7,6 +7,7 @@
   "object": { "item": "magichem:spelldross" },
   "components": [
     { "item": "magichem:admixture_sorcery", "count": 2 },
+    { "item": "magichem:admixture_luck", "count": 1 },
     { "item": "magichem:essentia_arcane", "count": 2 },
     { "item": "magichem:essentia_precious", "count": 2 }
   ]
