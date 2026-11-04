@@ -14614,6 +14614,46 @@
             "text": " spells (including those found in treasure chests)."
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "Pile of Riches",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:pile_of_riches",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An excellent source of "
+          },
+          {
+            "text": "Admixtures of Adornment and the Bargain",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a placeable decoration.\n\n"
+          },
+          {
+            "text": "Lucre",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is made by "
+          },
+          {
+            "text": "Crushing",
+            "color": "dark_purple"
+          },
+          {
+            "text": " gold nuggets."
+          }
+        ]
       }
     ],
     "related_recipes": [
@@ -14624,6 +14664,10 @@
       {
         "type": "exaltation",
         "location": "magichem:alchemical_exaltation/magichem/oculotoxin"
+      },
+      {
+        "type": "exaltation",
+        "location": "magichem:alchemical_exaltation/magichem/pile_of_riches"
       },
       {
         "type": "exaltation",

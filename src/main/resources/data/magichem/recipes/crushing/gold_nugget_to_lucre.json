@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "minecraft:gold_nugget",
+  "output": "magichem:lucre",
+  "output_quantity": 1
+}
