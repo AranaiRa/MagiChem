@@ -352,18 +352,26 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         //With no active recipe, check against the recipe for whatever is in the processing slot.
         //This stays local so canCraftItem never changes the device's *actual* recipe.
         FixationSeparationRecipe recipe = pEntity.currentRecipe;
+        boolean lookedUpRecipe = false;
         if (recipe == null) {
+            //Outputs were already full for this input.  No slot has changed since (onContentsChanged clears isStalled)
+            if (pEntity.isStalled) return false;
+
             ItemStack stackInProcessingSlot = getProcessingItem(pEntity, pVarFunc).getSecond();
             if (stackInProcessingSlot.isEmpty() || pEntity.getLevel() == null || !(stackInProcessingSlot.getItem() instanceof MateriaItem))
                 return false;
 
             recipe = FixationSeparationRecipe.getSeparatingRecipe(pEntity.getLevel(), stackInProcessingSlot);
             if (recipe == null) return false;
+            lookedUpRecipe = true;
         }
 
         for (ItemStack component : recipe.getComponentMateria()) {
             ItemStack result = output.addItem(component);
             if (!result.isEmpty()) {
+                //Outputs are full.  Skip recipe look up until I/O slot changes.
+                if (lookedUpRecipe && !pEntity.getLevel().isClientSide())
+                    pEntity.isStalled = true;
                 return false;
             }
         }
