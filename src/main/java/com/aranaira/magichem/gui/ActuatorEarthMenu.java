@@ -145,6 +145,6 @@ public class ActuatorEarthMenu extends AbstractContainerMenu {
 
         slots.get(pIndex).set(result);
 
-        return getSlot(pIndex).getItem();
+        return ItemStack.EMPTY;
     }
 }
