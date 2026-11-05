@@ -1,0 +1,5 @@
+# Blender MTL File: 'exemplars.blend'
+# Material Count: 1
+
+newmtl MAIN
+map_Kd magichem:block/pile_of_riches

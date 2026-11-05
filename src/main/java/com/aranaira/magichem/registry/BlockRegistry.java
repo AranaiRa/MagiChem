@@ -747,6 +747,11 @@ public class BlockRegistry {
                     .strength(0.125f).forceSolidOn())
     );
 
+    public static final RegistryObject<PileOfRichesBlock> PILE_OF_RICHES = registerBlock("pile_of_riches",
+            () -> new PileOfRichesBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
     public static final RegistryObject<SpellwroughtOrnamentBlock> SPELLWROUGHT_ORNAMENT = registerBlock("spellwrought_ornament",
             () -> new SpellwroughtOrnamentBlock(BlockBehaviour.Properties.of()
                     .strength(0.125f).forceSolidOn())
