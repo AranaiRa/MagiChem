@@ -19,11 +19,9 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -343,43 +341,38 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     protected static boolean canCraftItem(AbstractSeparationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
         //Can't craft if the bottle output is full
-        if(pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT)).getCount() == 64)
+        int bottleOutputSlot = pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT);
+        if (pEntity.itemHandler.getStackInSlot(bottleOutputSlot).getCount() >= pEntity.itemHandler.getSlotLimit(bottleOutputSlot))
             return false;
 
         //Check to see if the output area has space to add the item
         SimpleContainer output = pEntity.getContentsOfOutputSlots(pVarFunc);
-
         if(output.isEmpty()) return true;
-        else if(pEntity.currentRecipe == null) {
+
+        //With no active recipe, check against the recipe for whatever is in the processing slot.
+        //This stays local so canCraftItem never changes the device's *actual* recipe.
+        FixationSeparationRecipe recipe = pEntity.currentRecipe;
+        boolean lookedUpRecipe = false;
+        if (recipe == null) {
+            //Outputs were already full for this input.  No slot has changed since (onContentsChanged clears isStalled)
+            if (pEntity.isStalled) return false;
+
             ItemStack stackInProcessingSlot = getProcessingItem(pEntity, pVarFunc).getSecond();
+            if (stackInProcessingSlot.isEmpty() || pEntity.getLevel() == null || !(stackInProcessingSlot.getItem() instanceof MateriaItem))
+                return false;
 
-            if(stackInProcessingSlot.isEmpty()) return false;
+            recipe = FixationSeparationRecipe.getSeparatingRecipe(pEntity.getLevel(), stackInProcessingSlot);
+            if (recipe == null) return false;
+            lookedUpRecipe = true;
+        }
 
-            boolean usedTemporaryRecipe = false;
-            //set a temporary recipe if there's no active recipe but stuff in the input slots
-            if(!stackInProcessingSlot.isEmpty() && pEntity.getLevel() != null) {
-                if(stackInProcessingSlot.getItem() instanceof MateriaItem mi) {
-                    pEntity.currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(pEntity.getLevel(), stackInProcessingSlot);
-                    usedTemporaryRecipe = true;
-                }
-            }
-
-            if(pEntity.currentRecipe == null) return false;
-
-            for (ItemStack component : pEntity.currentRecipe.getComponentMateria()) {
-                ItemStack result = output.addItem(component);
-                if (!result.isEmpty()) {
-                    return false;
-                }
-            }
-
-            if(usedTemporaryRecipe) pEntity.currentRecipe = null;
-        } else {
-            for (ItemStack component : pEntity.currentRecipe.getComponentMateria()) {
-                ItemStack result = output.addItem(component);
-                if (!result.isEmpty()) {
-                    return false;
-                }
+        for (ItemStack component : recipe.getComponentMateria()) {
+            ItemStack result = output.addItem(component);
+            if (!result.isEmpty()) {
+                //Outputs are full.  Skip recipe look up until I/O slot changes.
+                if (lookedUpRecipe && !pEntity.getLevel().isClientSide())
+                    pEntity.isStalled = true;
+                return false;
             }
         }
 
@@ -399,50 +392,55 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
         int bottlesToInsert = 0;
 
+
+        //Work on copies: nothing reaches the real output slots until a *whole* cycle fits
         SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-            outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
+            outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i).copy());
         }
 
         int totalCycles = 0;
         int materiaCreated = 0;
         int craftLimit = Math.min(pEntity.batchSize, pEntity.itemHandler.getStackInSlot(pProcessingSlot).getCount());
         for(int batch=0; batch< craftLimit; batch++) {
-            totalCycles++;
             if (!canCraftItem(pEntity, pVarFunc)) {
                 break;
             }
+            pEntity.isStalled = false;
+
             Triplet<Integer, NonNullList<ItemStack>, Integer> triplet = applyEfficiencyToCraftingResult(pEntity.currentRecipe.getComponentMateria(), AbstractSeparationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
             int grimeToAdd = Math.round(triplet.getFirst());
             NonNullList<ItemStack> componentMateria = triplet.getSecond();
 
+            int createdThisCycle = 0;
             for (ItemStack item : componentMateria) {
+                CompoundTag nbt = item.getOrCreateTag();
+                nbt.putInt("CustomModelData", 1);
+                item.setTag(nbt);
 
-                if (outputSlots.canAddItem(item)) {
-                    materiaCreated += item.getCount();
-                    CompoundTag nbt = item.getOrCreateTag();
-                    nbt.putInt("CustomModelData", 1);
-                    item.setTag(nbt);
-
-                    outputSlots.addItem(item);
-                } else {
+                ItemStack leftover = outputSlots.addItem(item);
+                if (!leftover.isEmpty()) {
                     pEntity.isStalled = true;
                     break;
                 }
+                createdThisCycle += item.getCount();
             }
 
-            if (!pEntity.isStalled) {
-                for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
-                }
-                ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
-                if(!InventoryHelper.hasCustomModelData(processingSlotContents)) {
-                    bottlesToInsert++;
-                }
-                processingSlotContents.shrink(1);
-                if (processingSlotContents.getCount() == 0)
-                    pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
+            //Outputs did not fit.  Stop.  Nothing commited.  No input used.  No grime added.
+            if (pEntity.isStalled) break;
+
+            totalCycles++;
+            materiaCreated += createdThisCycle;
+            for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i).copy());
             }
+            ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
+            if (!InventoryHelper.hasCustomModelData(processingSlotContents)) {
+                bottlesToInsert++;
+            }
+            processingSlotContents.shrink(1);
+            if (processingSlotContents.getCount() == 0)
+                pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
 
             boolean hasProto = false;
             boolean hasQuake = false;
@@ -465,49 +463,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             }
         }
 
-        //TODO: Uncommment the original line once the bottle slot stack size has been expanded
-        //Fill Bottle Slot
-        //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
-        //TODO: Remove this once the bottle slot stack size has been expanded
-        int slotLimit = pEntity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT));
-        ItemStack contained = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT));
-        ItemStack bottles;
-
-        if(contained.isEmpty()) {
-            if(bottlesToInsert > 64) {
-                bottles = new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert - 64);
-                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, 64));
-            } else {
-                bottles = ItemStack.EMPTY;
-                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert));
-            }
-        } else {
-            int remainingSpace = slotLimit - contained.getCount();
-            if(bottlesToInsert <= remainingSpace) {
-                bottles = ItemStack.EMPTY;
-                contained.grow(bottlesToInsert);
-            } else {
-                bottles = new ItemStack(Items.GLASS_BOTTLE, remainingSpace - bottlesToInsert);
-                contained.setCount(slotLimit);
-            }
-        }
-
-        SimpleContainer bottleSpill = new SimpleContainer(5);
-        while(bottles.getCount() > 0) {
-            int count = bottles.getCount();
-            int thisPile;
-            if(count > 64) {
-                thisPile = 64;
-                count -= 64;
-            } else {
-                thisPile = count;
-                count = 0;
-            }
-            ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
-            bottleSpill.addItem(bottlesToDrop);
-            bottles.setCount(count);
-        }
-        Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
+        insertBottlesOrDrop(pEntity, pEntity.itemHandler, pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), bottlesToInsert);
 
         resolveActuators(pEntity, totalCycles, materiaCreated);
         if(totalCycles > 0 && pEntity.clearRecipeAfterNextProcess) {

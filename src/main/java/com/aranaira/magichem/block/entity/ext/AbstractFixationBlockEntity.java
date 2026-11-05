@@ -13,7 +13,6 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -22,11 +21,9 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -360,7 +357,8 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             return false;
 
         //Can't craft if the bottle output is full
-        if(pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT)).getCount() == 64)
+        int bottleOutputSlot = pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT);
+        if(pEntity.itemHandler.getStackInSlot(bottleOutputSlot).getCount() >= pEntity.itemHandler.getSlotLimit(bottleOutputSlot))
             return false;
 
         //Check to see if the output area has space to add the item
@@ -389,31 +387,28 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     protected static void craftItem(AbstractFixationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
         int bottlesToInsert = 0;
 
-        //TODO: Handle case where both bottled and unbottled items are present at the same time
+        //Fixation grime scales with the number of input materia
+        int inputCount = 0;
         for(ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
-            bottlesToInsert += is.getCount();
+            inputCount += is.getCount();
         }
 
         int totalCycles = 0;
         for(int batch=0; batch<pEntity.batchSize; batch++) {
-            totalCycles++;
             if(!canCraftItem(pEntity, pVarFunc)) {
                 break;
             }
+            totalCycles++;
 
             //Apply Efficiency
             NonNullList<ItemStack> preEfficiencyOutput = NonNullList.create();
             preEfficiencyOutput.add(pEntity.currentRecipe.getResultAdmixture());
-            Triplet<Integer, NonNullList<ItemStack>, Integer> triplet = applyEfficiencyToCraftingResult(preEfficiencyOutput, AbstractFixationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            Triplet<Integer, NonNullList<ItemStack>, Integer> triplet = applyEfficiencyToCraftingResult(preEfficiencyOutput, AbstractFixationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS) * inputCount, pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE) * inputCount);
             NonNullList<ItemStack> postEfficiencyOutput = triplet.getSecond();
             boolean crafted = triplet.getThird() > 0;
 
-            //Generate grime amount; Fixation uses the inputs to determine Grime rather than the output
-            int grimeToAdd = 0;
-            for (ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
-                grimeToAdd += is.getCount();
-            }
-            grimeToAdd *= postEfficiencyOutput.size() == 1 ? pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS) : pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE);
+            //Fixation grime is input-based; the grime values passed above were scaled by inputCount beforehand.
+            int grimeToAdd = triplet.getFirst();
 
             //Update output copy with the potentially-crafted item
             SimpleContainer output = pEntity.getContentsOfOutputSlots(pVarFunc);
@@ -438,11 +433,8 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
 
                         if (stackInSlot.getItem() == itemsToRemove.getItem()) {
                             int removed = Math.min(remaining, stackInSlot.getCount());
-                            if (stackInSlot.hasTag()) {
-                                CompoundTag nbt = stackInSlot.getTag();
-                                if (nbt.contains("CustomModelData")) {
-                                    bottlesToInsert -= removed;
-                                }
+                            if (!InventoryHelper.hasCustomModelData(stackInSlot)) {
+                                bottlesToInsert += removed;
                             }
                             stackInSlot.shrink(removed);
 //                        pEntity.itemHandler.setStackInSlot(i, stackInSlot);
@@ -478,60 +470,17 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                 if(!hasQuake && hasProto) grimeToAdd = Math.round((float)grimeToAdd * 0.8f);
 
                 IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
-                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), ServerConfig.centrifugeMaximumGrime));
+                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), pVarFunc.apply(IDs.CONFIG_MAX_GRIME)));
             }
 
             //Consume slurry
             int slurryCost = Math.round((float)pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f));
             float reducedSlurryCost = (1.0f - (ServerConfig.fixationFailureRefund / 100.0f)) * slurryCost;
-            pEntity.containedSlurry.shrink(postEfficiencyOutput.size() == 1 ? slurryCost : (int) reducedSlurryCost);
+            pEntity.containedSlurry.shrink(crafted ? slurryCost : (int) reducedSlurryCost);
             pEntity.syncAndSave();
         }
 
-        //TODO: Uncommment the original line once the bottle slot stack size has been expanded
-        //Fill Bottle Slot
-        //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
-        //TODO: Remove this once the bottle slot stack size has been expanded
-        int slotLimit = pEntity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT));
-        ItemStack contained = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT));
-        int inserted = bottlesToInsert * totalCycles;
-        ItemStack bottles;
-
-        if(contained.isEmpty()) {
-            if(inserted > 64) {
-                bottles = new ItemStack(Items.GLASS_BOTTLE, inserted - 64);
-                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, 64));
-            } else {
-                bottles = ItemStack.EMPTY;
-                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, inserted));
-            }
-        } else {
-            int remainingSpace = slotLimit - contained.getCount();
-            if(inserted <= remainingSpace) {
-                bottles = ItemStack.EMPTY;
-                contained.grow(inserted);
-            } else {
-                bottles = new ItemStack(Items.GLASS_BOTTLE, remainingSpace - inserted);
-                contained.setCount(slotLimit);
-            }
-        }
-
-        SimpleContainer bottleSpill = new SimpleContainer(10);
-        while (bottles.getCount() > 0) {
-            int count = bottles.getCount();
-            int thisPile;
-            if (count > 64) {
-                thisPile = 64;
-                count -= 64;
-            } else {
-                thisPile = count;
-                count = 0;
-            }
-            ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
-            bottleSpill.addItem(bottlesToDrop);
-            bottles.setCount(count);
-        }
-        Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
+        insertBottlesOrDrop(pEntity, pEntity.itemHandler, pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), bottlesToInsert);
 
         resolveActuators(pEntity, totalCycles);
         if(totalCycles > 0 && pEntity.clearRecipeAfterNextProcess) {

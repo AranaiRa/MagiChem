@@ -118,7 +118,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                     ItemStack item = super.extractItem(slot, Math.min(amount, bottleLimit), simulate);
                     item.removeTagKey("CustomModelData");
 
-                    if (!simulate && !isOrb) bottleStack.shrink(Math.min(amount, bottleLimit));
+                    if (!simulate && !isOrb) bottleStack.shrink(item.getCount());
 
                     return item;
                 }

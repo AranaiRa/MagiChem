@@ -2,10 +2,11 @@ package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.Triplet;
-import com.aranaira.magichem.registry.MateriaRegistry;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -55,12 +56,16 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
                     if(remainder > 0)
                         resolvedRemainder = r.nextFloat() <= remainder ? 1 : 0;
 
-                    stack.setCount(whole + resolvedRemainder);
+                    int produced = whole + resolvedRemainder;
+                    stack.setCount(produced);
 
-                    int success = count - (whole + resolvedRemainder);
-                    grime += (grimeSuccess * success);
-                    grime += (grimeFail * (count - success));
-                    crafted += success;
+                    int failed = Math.max(0, count - produced);
+                    grime += (grimeSuccess * produced);
+                    grime += (grimeFail * failed);
+                    crafted += produced;
+                } else {
+                    crafted += count;
+                    grime += (grimeSuccess * count);
                 }
             }
 
@@ -77,6 +82,26 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
             }
             return new Triplet<>(count*grimeSuccess, query, count);
         }
+    }
+    /**
+     *Adds glass bottles to a device's bottle output slot.  Anything that doesn't fit is dropped at the device.
+     */
+
+    protected static void insertBottlesOrDrop(BlockEntity pEntity, ItemStackHandler pHandler, int pSlot, int pCount) {
+        if (pCount <= 0) return;
+
+        ItemStack contained = pHandler.getStackInSlot(pSlot);
+        int space = Math.max(0, pHandler.getSlotLimit(pSlot) - contained.getCount());
+        int accepted = Math.min(pCount, space);
+        if (accepted > 0)
+            pHandler.setStackInSlot(pSlot, new ItemStack(Items.GLASS_BOTTLE, contained.getCount() + accepted));
+
+        int overflow = pCount - accepted;
+        if (overflow > 0 && pEntity.getLevel() != null) {
+            BlockPos pos = pEntity.getBlockPos();
+            Containers.dropItemStack(pEntity.getLevel(), pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.GLASS_BOTTLE, overflow));
+        }
+
     }
 
     public abstract int getMaximumGrime();
