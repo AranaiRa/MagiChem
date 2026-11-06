@@ -119,6 +119,9 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
             cornerOne = new BlockPos((int)minX, (int)minY, (int)minZ);
             cornerTwo = new BlockPos((int)maxX, (int)maxY, (int)maxZ);
             operatingArea = new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+
+            if(getLevel() != null && !getLevel().isClientSide())
+                syncWithLevelData(getLevel(), getBlockPos().asLong(), this);
             return true;
         }
         return false;
@@ -153,6 +156,7 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
             cornerOne = BlockPos.of(nbt.getLong("cornerOne"));
         if(nbt.contains("cornerTwo"))
             cornerTwo = BlockPos.of(nbt.getLong("cornerTwo"));
+        isOverlapping = nbt.getBoolean("isOverlapping");
 
         if(cornerOne != null && cornerTwo != null) {
             operatingArea = new AABB(cornerOne, cornerTwo);
@@ -160,7 +164,7 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
             operatingArea = new AABB(getBlockPos().offset(-8, -1, -8), getBlockPos().offset(8, 1, 8));
         }
 
-        if(level != null && level.getServer() != null) {
+        if(level != null && !level.isClientSide() && level.getServer() != null) {
             syncWithLevelData(level, getBlockPos().asLong(), this);
         }
     }

@@ -113,11 +113,15 @@ public class NourishingCenserScreen extends AbstractContainerScreen<NourishingCe
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
 
-        MutableComponent mc = Component.literal(menu.blockEntity.getMateriaCost()+" droplets / "+menu.blockEntity.getTickModulus()+"t ("+menu.blockEntity.getOperatingAreaSize()+" blocks)");
-//        MutableComponent mc = Component.translatable("gui.magichem.nourishingcenser.overlapping");
+        MutableComponent mc;
+        if(menu.blockEntity.isOverlapping())
+            mc = Component.translatable("gui.magichem.nourishingcenser.overlapping");
+        else {
+            mc = Component.literal(menu.blockEntity.getMateriaCost()+" droplets / "+menu.blockEntity.getTickModulus()+"t ("+menu.blockEntity.getOperatingAreaSize()+" blocks)");
+        }
 //        MutableComponent mc = Component.translatable("gui.magichem.nourishingcenser.toosmall");
-        int halfWidth = font.width(mc.toString()) / 2;
-        pGuiGraphics.drawString(font, mc, 107 - halfWidth, 44, 0x000000, false);
+        int width = font.width(mc.toString());
+        pGuiGraphics.drawString(font, mc, 107 - width / 2, 44, 0x000000, false);
     }
 
     @Override
