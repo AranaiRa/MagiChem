@@ -817,6 +817,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> MALFORMED_BOW = ITEMS.register("malformed_bow",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
     ///////////////
     // MAGICHEM FLUID BUCKETS
     ///////////////
