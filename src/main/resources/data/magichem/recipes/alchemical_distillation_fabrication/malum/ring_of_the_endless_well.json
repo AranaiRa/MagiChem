@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:ring_of_the_endless_well"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 15
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 8
+          }
+        ]
+      }
+    }
+  ]
+}

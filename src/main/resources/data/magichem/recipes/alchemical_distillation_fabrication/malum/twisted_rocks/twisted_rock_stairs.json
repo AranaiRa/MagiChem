@@ -15,7 +15,7 @@
         "output_rate": 0.063,
         "batch_size": 4,
         "object": {
-          "item": "malum:twisted_rock"
+          "item": "malum:twisted_rock_stairs"
         },
         "components": [
           {

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/spellwrought_ornament"
+    },
+    "facing=east": {
+      "model": "magichem:block/spellwrought_ornament",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/spellwrought_ornament",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/spellwrought_ornament",
+      "y": 270
+    }
+  }
+}

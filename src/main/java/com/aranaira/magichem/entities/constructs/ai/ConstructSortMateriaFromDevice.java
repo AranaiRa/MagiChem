@@ -304,14 +304,14 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 single.setContents(filter, transitMateria.getCount());
                 transferredAmount = transitMateria.getCount();
             } else {
-                transferredAmount = single.fill(transitMateria.getCount(), this.voidExcess);
+                transferredAmount = transitMateria.getCount() - single.fill(transitMateria.getCount(), this.voidExcess);
             }
         }
         else if(this.jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
             boolean didTransfer = false;
             for(MateriaItem materiaBlockQuery : multi.getMateriaTypes()) {
                 if (materiaBlockQuery == filter) {
-                    transferredAmount = multi.fill(materiaBlockQuery, transitMateria.getCount(), this.voidExcess);
+                    transferredAmount = transitMateria.getCount() - multi.fill(materiaBlockQuery, transitMateria.getCount(), this.voidExcess);
                     didTransfer = true;
                     break;
                 }

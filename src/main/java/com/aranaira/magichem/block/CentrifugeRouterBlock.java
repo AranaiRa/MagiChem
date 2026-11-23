@@ -136,7 +136,7 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
             else if(isp.getPart().equals(Components.ANIMUS) || isp.getPart().equals(Components.GREATER_ANIMUS)) {
                 BlockEntity be = level.getBlockEntity(blockPos);
                 if(be instanceof CentrifugeRouterBlockEntity crbe) {
-                    crbe.getMaster().dustCog();
+                    crbe.getMaster().applyAnimusDust();
                     return true;
                 }
             }

@@ -3,7 +3,7 @@
   "wisdom": 2,
   "categories": 7,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 4,
   "required_advancement": "minecraft:story/enter_the_nether",
   "object": { "item": "minecraft:nether_wart_block" },
   "components": [

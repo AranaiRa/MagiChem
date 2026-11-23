@@ -6,6 +6,8 @@ import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.affinity.Affinity;
+import com.mna.api.capabilities.IPlayerProgression;
+import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -22,6 +24,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class ExaltationRecipeCategory implements IRecipeCategory<ExaltationRecip
     private final IDrawable icon;
 
     public ExaltationRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 110, 96, 110);
+        this.background = helper.createDrawable(TEXTURE, 0, 110, 96, 121);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemRegistry.DUMMY_PROCESS_EXALTATION.get()));
     }
 
@@ -62,9 +65,9 @@ public class ExaltationRecipeCategory implements IRecipeCategory<ExaltationRecip
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ExaltationRecipe recipe, IFocusGroup group) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 4, 4).addItemStack(new ItemStack(recipe.getItemType()));
-        builder.addSlot(RecipeIngredientRole.INPUT, 76, 4).addItemStack(new ItemStack(recipe.getMateriaType()));
-        builder.addSlot(RecipeIngredientRole.OUTPUT,40,88).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.INPUT, 4, 15).addItemStack(new ItemStack(recipe.getItemType()));
+        builder.addSlot(RecipeIngredientRole.INPUT, 76, 15).addItemStack(new ItemStack(recipe.getMateriaType()));
+        builder.addSlot(RecipeIngredientRole.OUTPUT,40,99).addItemStack(recipe.getResultItem());
         builder.addSlot(RecipeIngredientRole.INPUT, 4096, 4096).addFluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), recipe.getSlurryRequired());
     }
 
@@ -73,38 +76,54 @@ public class ExaltationRecipeCategory implements IRecipeCategory<ExaltationRecip
 
         int shift = 0;
         if(recipe.usesEldrinType(Affinity.ENDER)) {
-            gui.blit(TEXTURE, 3, 24, 192, 56, 7, 7);
+            gui.blit(TEXTURE, 3, 35, 192, 56, 7, 7);
             shift += 8;
         }
         if(recipe.usesEldrinType(Affinity.EARTH)) {
-            gui.blit(TEXTURE, 3+shift, 24, 199, 56, 7, 7);
+            gui.blit(TEXTURE, 3+shift, 35, 199, 56, 7, 7);
             shift += 8;
         }
         if(recipe.usesEldrinType(Affinity.WATER)) {
-            gui.blit(TEXTURE, 3+shift, 24, 206, 56, 7, 7);
+            gui.blit(TEXTURE, 3+shift, 35, 206, 56, 7, 7);
             shift += 8;
         }
         if(recipe.usesEldrinType(Affinity.WIND)) {
-            gui.blit(TEXTURE, 3+shift, 24, 213, 56, 7, 7);
+            gui.blit(TEXTURE, 3+shift, 35, 213, 56, 7, 7);
             shift += 8;
         }
         if(recipe.usesEldrinType(Affinity.FIRE)) {
-            gui.blit(TEXTURE, 3+shift, 24, 220, 56, 7, 7);
+            gui.blit(TEXTURE, 3+shift, 35, 220, 56, 7, 7);
             shift += 8;
         }
         if(recipe.usesEldrinType(Affinity.ARCANE)) {
-            gui.blit(TEXTURE, 3+shift, 24, 227, 56, 7, 7);
+            gui.blit(TEXTURE, 3+shift, 35, 227, 56, 7, 7);
         }
         final Font font = Minecraft.getInstance().font;
 
-        gui.drawString(font, "x"+recipe.getItemsRequired(), 22, 4, 0xff000000, false);
+        gui.drawString(font, "x"+recipe.getItemsRequired(), 22, 15, 0xff000000, false);
         String materiaText = recipe.getMateriaRequired()+"x";
-        gui.drawString(font, materiaText, 75 - font.width(materiaText), 13, 0xff000000, false);
+        gui.drawString(font, materiaText, 75 - font.width(materiaText), 24, 0xff000000, false);
 
-        gui.drawString(font, recipe.getEldrinRequired()+"", 3, 33, 0xff000000, false);
+        gui.drawString(font, recipe.getEldrinRequired()+"", 3, 44, 0xff000000, false);
         String slurryText = recipe.getSlurryRequired()+"";
-        gui.drawString(font, slurryText, 94 - font.width(slurryText), 33, 0xff000000, false);
-        gui.drawString(font, "mB", 94 - font.width("mB"), 43, 0xff000000, false);
+        gui.drawString(font, slurryText, 94 - font.width(slurryText), 44, 0xff000000, false);
+        gui.drawString(font, "mB", 94 - font.width("mB"), 54, 0xff000000, false);
+
+        //Tier label; stolen from MnA code
+        {
+            Minecraft mc = Minecraft.getInstance();
+            int tier = recipe.getTier();
+            int playerTier = ((IPlayerProgression)mc.player.getCapability(PlayerProgressionProvider.PROGRESSION).resolve().get()).getTier();
+            int color = tier <= playerTier ? FastColor.ARGB32.color(255, 0, 128, 0) : FastColor.ARGB32.color(255, 255, 0, 0);
+
+            Component tierPrompt = Component.translatable("gui.mna.item-tier", new Object[]{tier});
+
+            int stringWidth = mc.font.width(tierPrompt);
+            int textX = this.getWidth() / 2 - stringWidth / 2;
+            int textY = 2;
+
+            gui.drawString(mc.font, tierPrompt, this.getWidth() / 2 - mc.font.width(tierPrompt) / 2, 2, color, false);
+        }
     }
 
     @Override

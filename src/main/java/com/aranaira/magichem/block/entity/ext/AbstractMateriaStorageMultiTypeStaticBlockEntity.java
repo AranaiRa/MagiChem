@@ -131,7 +131,7 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
                     storedMateria[i] = new Pair<>(pMateriaType, Math.min(getStorageLimit(pMateriaType), actual));
 
                     syncAndSave();
-                    return pAmount - remainder;
+                    return remainder;
                 }
             } else if(firstEmptyIndex == -1){
                 firstEmptyIndex = i;
@@ -144,7 +144,7 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
             storedMateria[firstEmptyIndex] = new Pair<>(pMateriaType, Math.min(getStorageLimit(pMateriaType), pAmount));
 
             syncAndSave();
-            return pAmount - remainder;
+            return remainder;
         }
 
         return pAmount;

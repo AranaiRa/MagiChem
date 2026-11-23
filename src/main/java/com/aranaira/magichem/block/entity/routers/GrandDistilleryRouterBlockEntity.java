@@ -37,7 +37,7 @@ import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaSortingRequester {
+public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaSortingRequester, ICanAcceptLaboratoryCharm {
     private BlockPos masterPos;
     private GrandDistilleryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -245,5 +245,11 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
         if(master == null) return false;
 
         return master.needsSorting();
+    }
+
+    @Override
+    public void applyLaboratoryCharm() {
+        if(masterPos != null)
+            getMaster().applyLaboratoryCharm();
     }
 }

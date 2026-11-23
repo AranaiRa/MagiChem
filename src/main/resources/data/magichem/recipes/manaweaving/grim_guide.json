@@ -1,0 +1,13 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:grim_guide",
+  "tier": 1,
+  "items": [
+    "minecraft:leather",
+    "minecraft:bone",
+    "mna:rune_marking"
+  ],
+  "patterns": [
+    "mna:slash"
+  ]
+}

@@ -236,6 +236,10 @@ public class ItemRegistry {
             () -> new TravellersCompassItem()
     );
 
+    public static final RegistryObject<GrimGuideItem> GRIM_GUIDE_ITEM = ITEMS.register("grim_guide",
+            () -> new GrimGuideItem(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<TooltipLoreItem> CATALYTIC_CARBON = ITEMS.register("catalytic_carbon",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -333,6 +337,14 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> WILDERGOB_WASTES = ITEMS.register("wildergob_wastes",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SPELLDROSS = ITEMS.register("spelldross",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LUCRE = ITEMS.register("lucre",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
@@ -803,6 +815,10 @@ public class ItemRegistry {
 
     public static final RegistryObject<TooltipLoreItem> SCARLET_CORAL = ITEMS.register("scarlet_coral",
             () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> MALFORMED_BOW = ITEMS.register("malformed_bow",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     ///////////////

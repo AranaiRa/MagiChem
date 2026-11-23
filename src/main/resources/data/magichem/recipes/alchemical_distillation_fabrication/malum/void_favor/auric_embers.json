@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
+          "item": "malum:auric_embers"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_ender",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_fire",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_light",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

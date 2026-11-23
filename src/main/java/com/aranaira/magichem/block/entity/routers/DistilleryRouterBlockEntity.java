@@ -8,6 +8,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEnti
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IMateriaSortingRequester;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -113,8 +114,18 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
 
     public DistilleryBlockEntity getMaster(){
         if(master == null) {
-            if(masterPos != null)
+            if(masterPos != null) {
                 master = (DistilleryBlockEntity) getLevel().getBlockEntity(masterPos);
+            } else {
+                for (Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : DistilleryBlock.getRouterOffsets(getFacing())) {
+                    if (getRouterType() == posAndType.getSecond()) {
+                        BlockEntity query = getLevel().getBlockEntity(getBlockPos().offset(posAndType.getFirst().multiply(-1)));
+                        if (query instanceof DistilleryBlockEntity resolved) {
+                            master = resolved;
+                        }
+                    }
+                }
+            }
 
             //if master is still null we've got a problem and the router needs to be deleted
             if(master == null) {

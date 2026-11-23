@@ -1,17 +1,16 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
-import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.IHasDeviceRecipeSlot;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IMateriaSortingRequester;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +37,7 @@ import java.util.Map;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_FABRICATION;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_POWER;
 
-public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction, IHasDeviceRecipeSlot, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction, IHasDeviceRecipeSlot, IMateriaProvisionRequester, IMateriaSortingRequester, ICanHaveUnbottledMateriaInInputTray {
     private BlockPos masterPos;
     private CircleFabricationBlockEntity master;
 
@@ -52,8 +52,19 @@ public class CircleFabricationRouterBlockEntity extends BlockEntity implements M
 
     public CircleFabricationBlockEntity getMaster(){
         if(master == null) {
-            if(masterPos != null)
+            if(masterPos != null) {
                 master = (CircleFabricationBlockEntity) getLevel().getBlockEntity(masterPos);
+            } else {
+                final int routerType = getBlockState().getValue(ROUTER_TYPE_CIRCLE_FABRICATION);
+                for (Pair<BlockPos, Integer> posAndType : CircleFabricationBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+                    if (routerType == posAndType.getSecond()) {
+                        BlockEntity query = getLevel().getBlockEntity(getBlockPos().offset(posAndType.getFirst().multiply(-1)));
+                        if (query instanceof CircleFabricationBlockEntity resolved) {
+                            master = resolved;
+                        }
+                    }
+                }
+            }
 
             //if master is still null we've got a problem and the router needs to be deleted
             if(master == null) {
@@ -183,5 +194,21 @@ public class CircleFabricationRouterBlockEntity extends BlockEntity implements M
     @Override
     public boolean needsSorting() {
         return false;
+    }
+
+    @Override
+    public ItemStack tryExtractUnbottled(ItemStack pBottlesInHand) {
+        if(masterPos == null)
+            return ItemStack.EMPTY;
+
+        return getMaster().tryExtractUnbottled(pBottlesInHand);
+    }
+
+    @Override
+    public boolean isClogged() {
+        if(masterPos == null)
+            return false;
+
+        return getMaster().isClogged();
     }
 }

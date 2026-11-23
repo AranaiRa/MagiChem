@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 2,
+  "result": { "item": "magichem:pile_of_riches", "count": 1 },
+  "items": { "type": "magichem:lucre", "required": 270 },
+  "eldrin": { "type": 50, "required": 10 },
+  "materia": { "type": "magichem:essentia_precious", "required": 16 },
+  "slurry": 400
+}

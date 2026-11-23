@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 16,
+        "object": {
+          "item": "malum:hanging_soulwood_leaves"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_plains",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

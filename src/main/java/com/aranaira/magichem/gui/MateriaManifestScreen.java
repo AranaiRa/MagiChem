@@ -53,7 +53,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 materiaMap.put(key, new ItemStack(baseMateriaMap.get(key)));
             }
         }
-        menu.blockEntity.tetherTarget = null;
+        menu.blockEntity.tetherTargets.clear();
         menu.blockEntity.tetherType = null;
     }
 
@@ -221,7 +221,8 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         int index = pButtonID + ((menu.blockEntity.isCompactMode ? 32 : 16) * pageIndex);
         if(index < orderedMateriaStorageFiltered.size()) {
             MateriaItem mi = orderedMateriaStorageFiltered.get(index).getFirst();
-            menu.blockEntity.tetherTarget = orderedMateriaStorageFiltered.get(index).getSecond();
+            menu.blockEntity.tetherTargets.clear();
+            menu.blockEntity.tetherTargets.add(orderedMateriaStorageFiltered.get(index).getSecond());
             menu.blockEntity.tetherType = orderedMateriaStorageFiltered.get(index).getFirst();
 
             Minecraft.getInstance().player.displayClientMessage(Component.empty()

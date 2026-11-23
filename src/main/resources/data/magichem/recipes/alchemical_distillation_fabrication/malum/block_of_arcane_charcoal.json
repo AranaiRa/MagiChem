@@ -15,24 +15,24 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "malum:block_of_arcane_charcoal"
+            "item": "malum:block_of_arcane_charcoal"
         },
         "components": [
           {
             "item": "magichem:essentia_arcane",
-            "count": 6
+            "count": 54
           },
           {
             "item": "magichem:essentia_fire",
-            "count": 6
+            "count": 54
           },
           {
             "item": "magichem:admixture_energy",
-            "count": 4
+            "count": 36
           },
           {
             "item": "magichem:essentia_wrought",
-            "count": 2
+            "count": 18
           }
         ]
       }

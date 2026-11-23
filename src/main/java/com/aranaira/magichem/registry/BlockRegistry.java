@@ -41,6 +41,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> NOURISHING_CENSER = registerBlock("nourishing_censer",
+            () -> new NourishingCenserBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> MAGICHEMICAL_MECHANISM = registerBlock("magichemical_mechanism",
             () -> new SimpleRotationalBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f))
@@ -739,6 +744,16 @@ public class BlockRegistry {
 
     public static final RegistryObject<TerrariumBlock> TERRARIUM_WASTES = registerBlock("terrarium_wastes",
             () -> new TerrariumBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<PileOfRichesBlock> PILE_OF_RICHES = registerBlock("pile_of_riches",
+            () -> new PileOfRichesBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<SpellwroughtOrnamentBlock> SPELLWROUGHT_ORNAMENT = registerBlock("spellwrought_ornament",
+            () -> new SpellwroughtOrnamentBlock(BlockBehaviour.Properties.of()
                     .strength(0.125f).forceSolidOn())
     );
 

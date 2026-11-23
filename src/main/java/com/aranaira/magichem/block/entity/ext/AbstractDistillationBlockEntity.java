@@ -6,6 +6,7 @@ import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
@@ -493,9 +494,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             //Fluids distill at boosted efficiency rate
             int efficiency = AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc);
             int adjustedEfficiency = Math.min(100, efficiency + 15);
-            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), adjustedEfficiency, pRecipe.getOutputRate() * outputRate, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-            int grimeToAdd = Math.round(pair.getFirst() * pRecipe.getOutputRate());
-            NonNullList<ItemStack> componentMateria = pair.getSecond();
+            Triplet<Integer, NonNullList<ItemStack>, Integer> triplet = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), adjustedEfficiency, pRecipe.getOutputRate() * outputRate, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            int grimeToAdd = Math.round(triplet.getFirst() * pRecipe.getOutputRate());
+            NonNullList<ItemStack> componentMateria = triplet.getSecond();
 
             for (ItemStack item : componentMateria) {
                 if (outputSlots.canAddItem(item)) {
@@ -565,9 +566,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 break;
             }
 
-            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), pRecipe.getOutputRate(), pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-            int grimeToAdd = Math.round(pair.getFirst() * pRecipe.getOutputRate());
-            NonNullList<ItemStack> componentMateria = pair.getSecond();
+            Triplet<Integer, NonNullList<ItemStack>, Integer> triplet = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), pRecipe.getOutputRate(), pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            int grimeToAdd = Math.round(triplet.getFirst() * pRecipe.getOutputRate());
+            NonNullList<ItemStack> componentMateria = triplet.getSecond();
 
             for (ItemStack item : componentMateria) {
                 if (outputSlots.canAddItem(item)) {
@@ -629,8 +630,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             AdmixtureItem ai = admixturesForRandomSelection.get(random.nextInt(admixturesForRandomSelection.size()));
             randomAdmixtureList.add(new ItemStack(ai, 1));
 
-            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(randomAdmixtureList, AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-            NonNullList<ItemStack> componentMateria = pair.getSecond();
+            Triplet<Integer, NonNullList<ItemStack>, Integer> triplet = applyEfficiencyToCraftingResult(randomAdmixtureList, AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            NonNullList<ItemStack> componentMateria = triplet.getSecond();
 
             boolean canCraft = true;
             for (ItemStack item : componentMateria) {

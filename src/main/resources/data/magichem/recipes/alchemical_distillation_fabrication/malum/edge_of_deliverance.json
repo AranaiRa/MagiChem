@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:edge_of_deliverance"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

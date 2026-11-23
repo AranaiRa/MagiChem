@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.FuseryBlock;
+import com.aranaira.magichem.block.FuseryRouterBlock;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -38,7 +39,7 @@ import java.util.Map;
 import static com.aranaira.magichem.block.FuseryRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot {
+public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot, ICanHaveUnbottledMateriaInInputTray, ICanAcceptAnimusDust {
     private BlockPos masterPos;
     private FuseryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -118,8 +119,18 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
 
     public FuseryBlockEntity getMaster(){
         if(master == null) {
-            if(masterPos != null)
+            if(masterPos != null) {
                 master = (FuseryBlockEntity) getLevel().getBlockEntity(masterPos);
+            } else {
+                for (Triplet<BlockPos, FuseryRouterType, DevicePlugDirection> posAndType : FuseryBlock.getRouterOffsets(getFacing())) {
+                    if (getRouterType() == posAndType.getSecond()) {
+                        BlockEntity query = getLevel().getBlockEntity(getBlockPos().offset(posAndType.getFirst().multiply(-1)));
+                        if (query instanceof FuseryBlockEntity resolved) {
+                            master = resolved;
+                        }
+                    }
+                }
+            }
 
             //if master is still null we've got a problem and the router needs to be deleted
             if(master == null) {
@@ -359,5 +370,37 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
         if(master == null) return null;
 
         return getMaster().getRecipeItem(pMakeCopy);
+    }
+
+    @Override
+    public ItemStack tryExtractUnbottled(ItemStack pBottlesInHand) {
+        if(masterPos == null)
+            return ItemStack.EMPTY;
+
+        return getMaster().tryExtractUnbottled(pBottlesInHand);
+    }
+
+    @Override
+    public boolean isClogged() {
+        if(masterPos == null)
+            return false;
+
+        return getMaster().isClogged();
+    }
+
+    @Override
+    public boolean canAcceptDust(BlockState be) {
+        if(be.getValue(MagiChemBlockStateProperties.ROUTER_TYPE_FUSERY) != FuseryRouterBlock.ROUTER_TYPE_COG) return false;
+        return getMaster().getRemainingAnimus() <= 0;
+    }
+
+    @Override
+    public int getRemainingAnimus() {
+        return getMaster().getRemainingAnimus();
+    }
+
+    @Override
+    public void applyAnimusDust() {
+        getMaster().applyAnimusDust();
     }
 }

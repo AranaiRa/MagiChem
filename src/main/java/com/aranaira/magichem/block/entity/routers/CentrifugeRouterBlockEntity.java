@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.CentrifugeBlock;
+import com.aranaira.magichem.block.CentrifugeRouterBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -38,7 +39,7 @@ import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
 
-public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot {
+public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, ICanHaveUnbottledMateriaInInputTray, ICanAcceptAnimusDust {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -114,8 +115,18 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
 
     public CentrifugeBlockEntity getMaster(){
         if(master == null) {
-            if(masterPos != null)
+            if(masterPos != null) {
                 master = (CentrifugeBlockEntity) getLevel().getBlockEntity(masterPos);
+            } else {
+                for (Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : CentrifugeBlock.getRouterOffsets(getFacing())) {
+                    if (getRouterType() == posAndType.getSecond()) {
+                        BlockEntity query = getLevel().getBlockEntity(getBlockPos().offset(posAndType.getFirst().multiply(-1)));
+                        if (query instanceof CentrifugeBlockEntity resolved) {
+                            master = resolved;
+                        }
+                    }
+                }
+            }
 
             //if master is still null we've got a problem and the router needs to be deleted
             if(master == null) {
@@ -329,5 +340,37 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
         return getMaster().getRecipeItem(pMakeCopy);
+    }
+
+    @Override
+    public ItemStack tryExtractUnbottled(ItemStack pBottlesInHand) {
+        if(masterPos == null)
+            return ItemStack.EMPTY;
+
+        return getMaster().tryExtractUnbottled(pBottlesInHand);
+    }
+
+    @Override
+    public boolean isClogged() {
+        if(masterPos == null)
+            return false;
+
+        return getMaster().isClogged();
+    }
+
+    @Override
+    public boolean canAcceptDust(BlockState be) {
+        if(be.getValue(MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE) != CentrifugeRouterBlock.ROUTER_TYPE_COG) return false;
+        return getMaster().getRemainingAnimus() <= 0;
+    }
+
+    @Override
+    public int getRemainingAnimus() {
+        return getMaster().getRemainingAnimus();
+    }
+
+    @Override
+    public void applyAnimusDust() {
+        getMaster().applyAnimusDust();
     }
 }

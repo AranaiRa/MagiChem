@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SK",
+    "S K",
+    " SK"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "K": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "magichem:malformed_bow"
+  }
+}

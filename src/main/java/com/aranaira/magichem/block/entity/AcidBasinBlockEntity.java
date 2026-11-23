@@ -5,6 +5,7 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.recipe.RecipeNbtHelper;
 import com.aranaira.magichem.recipe.VitriolationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -384,10 +385,12 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
 
         boolean hasSpaceForOutputItem = true;
         if(recipe.hasResultItem()) {
-            int itemCapacity = recipe.getResultItem().getMaxStackSize() - getOutputItem().getCount();
-            boolean itemMatches = getOutputItem().isEmpty() || (getOutputItem().getItem() == recipe.getResultItem().getItem());
+            ItemStack resultItem = RecipeNbtHelper.createOutput(recipe, recipe.getResultItem(), getInputItem());
+            int itemCapacity = resultItem.getMaxStackSize() - getOutputItem().getCount();
+            boolean itemMatches = getOutputItem().isEmpty()
+                    || ItemStack.isSameItemSameTags(getOutputItem(), resultItem);
 
-            hasSpaceForOutputItem = (itemMatches && itemCapacity >= recipe.getResultItem().getCount());
+            hasSpaceForOutputItem = (itemMatches && itemCapacity >= resultItem.getCount());
         }
 
         return hasInputFluid && hasSpaceForOutputFluid && hasSpaceForOutputItem;
@@ -403,10 +406,11 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         }
 
         if(recipe.hasResultItem()) {
+            ItemStack resultItem = RecipeNbtHelper.createOutput(recipe, recipe.getResultItem(), getInputItem());
             if(getOutputItem().isEmpty()) {
-                itemHandler.setStackInSlot(SLOT_OUTPUT, recipe.getResultItem().copy());
+                itemHandler.setStackInSlot(SLOT_OUTPUT, resultItem);
             } else {
-                getOutputItem().grow(recipe.getResultItem().getCount());
+                getOutputItem().grow(resultItem.getCount());
             }
         }
 

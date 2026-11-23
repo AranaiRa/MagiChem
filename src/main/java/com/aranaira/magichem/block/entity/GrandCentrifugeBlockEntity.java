@@ -70,7 +70,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
+public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak, ICanAcceptLaboratoryCharm {
     public static final int
         SLOT_COUNT = 23,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1,
@@ -127,7 +127,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                     ItemStack item = super.extractItem(slot, Math.min(amount, bottleLimit), simulate);
                     item.removeTagKey("CustomModelData");
 
-                    if(!simulate && !isOrb) bottleStack.shrink(Math.min(amount, bottleLimit));
+                    if(!simulate && !isOrb) bottleStack.shrink(item.getCount());
 
                     return item;
                 }
@@ -526,7 +526,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                         }
                     } else {
                         ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                        if(InventoryHelper.hasCustomModelData(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        if(InventoryHelper.hasCustomModelData(query)) {
                             itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
                         }
                     }
@@ -954,5 +954,40 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         provide(pStack);
 
         return 0;
+    }
+
+    @Override
+    public ItemStack tryExtractUnbottled(ItemStack pBottlesInHand) {
+        int limit = pBottlesInHand.getCount();
+        ItemStack extractQuery = null;
+
+        for(int i=SLOT_INPUT_START;i<SLOT_INPUT_START+SLOT_INPUT_COUNT;i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty() && InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(i))) {
+                extractQuery = itemHandler.getStackInSlot(i);
+                break;
+            }
+        }
+
+        if(extractQuery != null) {
+            int extracted = Math.min(limit, extractQuery.getCount());
+            pBottlesInHand.shrink(extracted);
+            ItemStack output = new ItemStack(extractQuery.getItem(), extracted);
+            extractQuery.shrink(extracted);
+            return output;
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean isClogged() {
+        if (currentRecipe == null) {
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (!itemHandler.getStackInSlot(i).isEmpty() && InventoryHelper.hasCustomModelData(itemHandler.getStackInSlot(i))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

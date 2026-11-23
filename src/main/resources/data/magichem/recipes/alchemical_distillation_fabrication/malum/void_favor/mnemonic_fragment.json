@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
+          "item": "malum:mnemonic_fragment"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_ender",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_memory",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

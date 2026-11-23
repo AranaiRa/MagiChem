@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IVI",
+    "VAV",
+    "VCV"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:copper_ingot"
+    },
+    "V": {
+      "item": "magichem:verdigris"
+    },
+    "A": {
+      "item": "magichem:alembic"
+    },
+    "C": {
+      "item": "minecraft:campfire"
+    }
+  },
+  "result": {
+    "item": "magichem:nourishing_censer"
+  }
+}

@@ -1,0 +1,7 @@
+{
+	"type": "mna:crushing",
+	"tier": 2,
+	"input": "magichem:bleached_amethyst_block",
+	"output": "magichem:bleached_amethyst_shard",
+	"output_quantity": 4
+}

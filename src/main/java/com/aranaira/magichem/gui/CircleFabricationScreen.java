@@ -2,30 +2,24 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
-import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
-import com.aranaira.magichem.foundation.options.DistillationFabricationOption;
+import com.aranaira.magichem.foundation.options.RecipeDisplayOption;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
-import com.aranaira.magichem.gui.element.GrandCentrifugeButtonRecipeSelector;
 import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.FabricationBatchSizeC2SPacket;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.AdvancementUtil;
 import com.mna.tools.math.MathUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
@@ -35,14 +29,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -60,7 +51,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             PANEL_BATCH_X = -85, PANEL_BATCH_Y = 142, PANEL_BATCH_W = 81, PANEL_BATCH_H = 45,
             PANEL_POWER_X = 186, PANEL_POWER_Y = 19,
             PANEL_POWER_U = 188, PANEL_POWER_V = 190, PANEL_POWER_W = 66, PANEL_POWER_H = 66;
-    private DistillationFabricationOption lastClickedRecipe = null;
+    private RecipeDisplayOption lastClickedRecipe = null;
     private String lastUsedFilter = null;
     private Player player;
     private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
@@ -141,7 +132,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     public void setActiveRecipe(int index) {
         int trueIndex = recipeFilterRow*3 + index;
         if(trueIndex < filteredRecipes.size()) {
-            final DistillationFabricationOption option = filteredRecipes.get(trueIndex);
+            final RecipeDisplayOption option = filteredRecipes.get(trueIndex);
 
             if(option.getRecipe() instanceof DistillationFabricationRecipe itemRecipe)
                 menu.blockEntity.setCurrentRecipe(itemRecipe.getAlchemyObject().getItem());
@@ -169,14 +160,14 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         ));
     }
 
-    private List<DistillationFabricationOption> filteredRecipes = new ArrayList<>();
+    private List<RecipeDisplayOption> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
         if (Objects.equals(filter, lastUsedFilter)) return;
         lastUsedFilter = filter;
 
         filteredRecipes.clear();
-        List<DistillationFabricationOption> dump = new ArrayList<>();
+        List<RecipeDisplayOption> dump = new ArrayList<>();
 
         for(DistillationFabricationRecipe acr : allDistillationRecipes) {
             String display = acr.getAlchemyObject().getDisplayName().getString();
@@ -193,15 +184,15 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
-                dump.add(new DistillationFabricationOption(acr));
+                dump.add(new RecipeDisplayOption(acr));
             }
         }
 
         //sort filtered item recipes
         Object[] sortable = dump.toArray();
-        Arrays.sort(sortable, Comparator.comparing(o -> ((DistillationFabricationOption)o).getSortingString()));
+        Arrays.sort(sortable, Comparator.comparing(o -> ((RecipeDisplayOption)o).getSortingString()));
         for(Object o : sortable) {
-            filteredRecipes.add((DistillationFabricationOption)o);
+            filteredRecipes.add((RecipeDisplayOption)o);
         }
         dump.clear();
 
@@ -220,15 +211,15 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
-                dump.add(new DistillationFabricationOption(facr));
+                dump.add(new RecipeDisplayOption(facr));
             }
         }
 
         //sort filtered item recipes
         sortable = dump.toArray();
-        Arrays.sort(sortable, Comparator.comparing(o -> ((DistillationFabricationOption)o).getSortingString()));
+        Arrays.sort(sortable, Comparator.comparing(o -> ((RecipeDisplayOption)o).getSortingString()));
         for(Object o : sortable) {
-            filteredRecipes.add((DistillationFabricationOption)o);
+            filteredRecipes.add((RecipeDisplayOption)o);
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
@@ -410,7 +401,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        List<DistillationFabricationOption> snipped = new ArrayList<>();
+        List<RecipeDisplayOption> snipped = new ArrayList<>();
         int max = Math.min(filteredRecipes.size(), recipeFilterRow*3 + 15);
         for(int i=recipeFilterRow*3; i<Math.min(filteredRecipes.size(), max); i++) {
             snipped.add(filteredRecipes.get(i));

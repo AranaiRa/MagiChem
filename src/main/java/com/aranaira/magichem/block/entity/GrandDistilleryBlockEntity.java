@@ -65,7 +65,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IMateriaSortingRequester, IKeepsInventoryOnBreak {
+public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IMateriaSortingRequester, IKeepsInventoryOnBreak, ICanAcceptLaboratoryCharm {
     public static final int
         SLOT_COUNT = 25,
         SLOT_BOTTLES = 0,
@@ -118,7 +118,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                     ItemStack item = super.extractItem(slot, Math.min(amount, bottleLimit), simulate);
                     item.removeTagKey("CustomModelData");
 
-                    if (!simulate && !isOrb) bottleStack.shrink(Math.min(amount, bottleLimit));
+                    if (!simulate && !isOrb) bottleStack.shrink(item.getCount());
 
                     return item;
                 }

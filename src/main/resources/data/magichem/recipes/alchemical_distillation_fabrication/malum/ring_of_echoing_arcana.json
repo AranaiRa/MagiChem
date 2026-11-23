@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:ring_of_echoing_arcana"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_sound",
+            "count": 28
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_adornment",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

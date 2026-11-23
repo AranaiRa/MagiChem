@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
+          "item": "malum:malignant_pewter_ingot"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_ender",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_albedo",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

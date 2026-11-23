@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "magichem:cluster_vinteum_medium",
+  "materia": "magichem:admixture_crystal",
+  "chance": 12.0,
+  "result": "magichem:cluster_vinteum_large"
+}

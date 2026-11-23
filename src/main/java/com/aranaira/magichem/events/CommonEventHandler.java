@@ -199,7 +199,27 @@ public class CommonEventHandler {
                 event.setCanceled(true);
             }
         }
-        if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
+        if(target instanceof ICanHaveUnbottledMateriaInInputTray clogQuery && !stack.isEmpty() && stack.getItem() == Items.GLASS_BOTTLE && clogQuery.isClogged()) {
+            if(!event.getLevel().isClientSide()) {
+                ItemStack extracted = clogQuery.tryExtractUnbottled(stack);
+                if (!extracted.isEmpty()) {
+                    ItemEntity ie = new ItemEntity(event.getLevel(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), extracted);
+                    event.getLevel().addFreshEntity(ie);
+
+                    event.setCancellationResult(InteractionResult.CONSUME);
+                    event.setCanceled(true);
+                }
+            }
+        }
+        else if(stack.getItem() == ItemRegistry.LABORATORY_CHARM.get() && !stack.isEmpty() && target instanceof ICanAcceptLaboratoryCharm icalc) {
+            if(target.getBlockState().hasProperty(HAS_LABORATORY_UPGRADE) && !target.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+                icalc.applyLaboratoryCharm();
+                stack.shrink(1);
+                event.setCancellationResult(InteractionResult.CONSUME);
+                event.setCanceled(true);
+            }
+        }
+        else if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
             if(stack.getItem() == Items.GLASS_BOTTLE) {
                 if(amsbe.getMateriaType() != null) {
                     ItemStack extracted = amsbe.extractMateria(stack.getCount(), false);
@@ -220,67 +240,19 @@ public class CommonEventHandler {
                 event.getLevel().addFreshEntity(ie);
             }
         }
-        else if(target instanceof AbstractBlockEntityWithEfficiency bewe) {
-            if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
-                if(bewe instanceof CentrifugeBlockEntity cbe) {
+        else if(target instanceof ICanAcceptAnimusDust icaad) {
+            if (stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
+                if (icaad.canAcceptDust(target.getBlockState())) {
                     event.getEntity().swing(event.getHand());
                     stack.shrink(1);
-                    cbe.dustCog();
-                } else if(bewe instanceof CentrifugeRouterBlockEntity crbe) {
-                    event.getEntity().swing(event.getHand());
-                    stack.shrink(1);
-                    crbe.getMaster().dustCog();
-                } else if(bewe instanceof FuseryBlockEntity fbe) {
-                    event.getEntity().swing(event.getHand());
-                    stack.shrink(1);
-                    fbe.dustCog();
-                } else if(bewe instanceof FuseryRouterBlockEntity frbe) {
-                    event.getEntity().swing(event.getHand());
-                    stack.shrink(1);
-                    frbe.getMaster().dustCog();
+                    icaad.applyAnimusDust();
                 }
             }
-            else if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
+        }
+        else if(target instanceof AbstractBlockEntityWithEfficiency bewe) {
+            if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
                 if (GrimeProvider.getCapability(bewe).getGrime() > 0) {
                     CommonEventHelper.generateWasteFromCleanedApparatus(event.getEntity(), event.getLevel(), bewe, stack);
-                }
-            } else if(stack.getItem() == ItemRegistry.LABORATORY_CHARM.get()) {
-                if(target instanceof GrandDistilleryBlockEntity gdbe) {
-                    if(!gdbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gdbe.applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandDistilleryRouterBlockEntity gdrbe) {
-                    if(!gdrbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gdrbe.getMaster().applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandCentrifugeBlockEntity gcbe) {
-                    if(!gcbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gcbe.applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandCentrifugeRouterBlockEntity gcrbe) {
-                    if(!gcrbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gcrbe.getMaster().applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandFuseryBlockEntity gfbe) {
-                    if(!gfbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gfbe.applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
-                } else if(target instanceof GrandFuseryRouterBlockEntity gfrbe) {
-                    if(!gfrbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-                        gfrbe.getMaster().applyLaboratoryCharm();
-                        stack.shrink(1);
-                        event.setCanceled(true);
-                    }
                 }
             }
             else if(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
@@ -473,9 +445,9 @@ public class CommonEventHandler {
             final LazyOptional<IPlayerProgression> progressCapability = player.getCapability(PlayerProgressionProvider.PROGRESSION);
             progressCapability.ifPresent(pCap -> {
                 final IFaction faction = pCap.getAlliedFaction();
-                if(pCap.getTier() >= 5 && faction != null && faction.is(UNDEAD)) {
-                    final LazyOptional<IEnhancementCapability> enhancementCapability = player.getCapability(EnhancementProvider.ENHANCEMENT);
-                    enhancementCapability.ifPresent(eCap -> {
+                final LazyOptional<IEnhancementCapability> enhancementCapability = player.getCapability(EnhancementProvider.ENHANCEMENT);
+                enhancementCapability.ifPresent(eCap -> {
+                    if(pCap.getTier() >= 5 && faction != null && faction.is(UNDEAD)) {
                         if(eCap.hasDeathRecoveryLocation()) {
                             final Pair<BlockPos, ResourceLocation> recoveryData = eCap.getDeathRecoveryLocation();
                             final ServerLevel sourceLevel = event.getEntity().level().getServer().getLevel(event.getEntity().level().dimension());
@@ -518,8 +490,10 @@ public class CommonEventHandler {
                                 player.sendSystemMessage(Component.translatable("feedback.trophy.undead.death_interception"));
                             }
                         }
-                    });
-                }
+                    } else {
+                        eCap.setLastDeathTargetLocation(event.getEntity().blockPosition(), event.getEntity().level().dimension().location());
+                    }
+                });
             });
         }
     }
@@ -620,19 +594,19 @@ public class CommonEventHandler {
             //Brutality damage reduction
             if (event.getEntity().hasEffect(MobEffectsRegistry.BRUTALITY.get())) {
                 final MobEffectInstance effect = event.getEntity().getEffect(MobEffectsRegistry.BRUTALITY.get());
-                event.setAmount(event.getAmount() * BRUTALITY_INCOMING_DAMAGE_REDUCTION[Math.min(effect.getAmplifier(), BRUTALITY_INCOMING_DAMAGE_REDUCTION.length)]);
+                event.setAmount(event.getAmount() * BRUTALITY_INCOMING_DAMAGE_REDUCTION[effectIndex(effect, BRUTALITY_INCOMING_DAMAGE_REDUCTION.length)]);
             }
             //Evanescence evasion
             if (event.getEntity().hasEffect(MobEffectsRegistry.EVANESCENCE.get())) {
                 final MobEffectInstance effect = event.getEntity().getEffect(EVANESCENCE.get());
-                if (r.nextInt(100) < EVANESCENCE_EVASION_RATE[Math.min(effect.getAmplifier(), EVANESCENCE_EVASION_RATE.length)]) {
+                if (r.nextInt(100) < EVANESCENCE_EVASION_RATE[effectIndex(effect, EVANESCENCE_EVASION_RATE.length)]) {
                     event.setCanceled(true);
                 }
             }
             //Equanimity mana recovery
             if (event.getEntity().hasEffect(EQUANIMITY.get())) {
                 final MobEffectInstance effect = event.getEntity().getEffect(EQUANIMITY.get());
-                float perHeart = EQUANIMITY_MANA_PER_HEART[Math.min(effect.getAmplifier(), EQUANIMITY_MANA_PER_HEART.length)];
+                float perHeart = EQUANIMITY_MANA_PER_HEART[effectIndex(effect, EQUANIMITY_MANA_PER_HEART.length)];
                 float manaRecovery = event.getAmount() * perHeart;
 
                 LazyOptional<IPlayerMagic> capLazy = event.getEntity().getCapability(PlayerMagicProvider.MAGIC);
@@ -646,14 +620,14 @@ public class CommonEventHandler {
                 //Brutality damage boost
                 if (living.hasEffect(MobEffectsRegistry.BRUTALITY.get()) && event.getSource().type().msgId().equals("player")) {
                     final MobEffectInstance effect = living.getEffect(MobEffectsRegistry.BRUTALITY.get());
-                    float boost = BRUTALITY_BASE_DAMAGE_INCREASE[Math.min(effect.getAmplifier(), BRUTALITY_BASE_DAMAGE_INCREASE.length)];
-                    float multiplier = BRUTALITY_DAMAGE_AMPLIFICATION[Math.min(effect.getAmplifier(), BRUTALITY_DAMAGE_AMPLIFICATION.length)];
+                    float boost = BRUTALITY_BASE_DAMAGE_INCREASE[effectIndex(effect, BRUTALITY_BASE_DAMAGE_INCREASE.length)];
+                    float multiplier = BRUTALITY_DAMAGE_AMPLIFICATION[effectIndex(effect, BRUTALITY_DAMAGE_AMPLIFICATION.length)];
                     event.setAmount((event.getAmount() + boost) * multiplier);
                 }
                 //Malice Wither discharge
                 if (living.hasEffect(MobEffectsRegistry.MALICE.get()) && event.getSource().type().msgId().equals("player")) {
                     final MobEffectInstance effect = living.getEffect(MobEffectsRegistry.MALICE.get());
-                    float damage = MALICE_DISCHARGE_DAMAGE[Math.min(effect.getAmplifier(), MALICE_DISCHARGE_DAMAGE.length)];
+                    float damage = MALICE_DISCHARGE_DAMAGE[effectIndex(effect, MALICE_DISCHARGE_DAMAGE.length)];
 
                     event.getEntity().removeEffect(MobEffects.WITHER);
                     event.getEntity().hurt(event.getEntity().damageSources().magic(), damage);
@@ -755,15 +729,15 @@ public class CommonEventHandler {
                 final MobEffectInstance effect = caster.getEffect(EQUANIMITY.get());
                 if(!spell.isChanneled()) {
                     float cost = spell.getManaCost();
-                    float heal = Math.max(1.0f, cost * EQUANIMITY_HEAL_PER_MANA[Math.min(effect.getAmplifier(), EQUANIMITY_HEAL_PER_MANA.length)]);
+                    float heal = Math.max(1.0f, cost * EQUANIMITY_HEAL_PER_MANA[effectIndex(effect, EQUANIMITY_HEAL_PER_MANA.length)]);
                     caster.heal(heal);
                 }
             }
             if (caster.hasEffect(MALICE.get())) {
                 final MobEffectInstance effect = caster.getEffect(MALICE.get());
 
-                float radius = MALICE_RADIUS[Math.min(effect.getAmplifier(), MALICE_RADIUS.length)];
-                int amplifier = MALICE_WITHER_LEVEL[Math.min(effect.getAmplifier(), MALICE_WITHER_LEVEL.length)];
+                float radius = MALICE_RADIUS[effectIndex(effect, MALICE_RADIUS.length)];
+                int amplifier = MALICE_WITHER_LEVEL[effectIndex(effect, MALICE_WITHER_LEVEL.length)];
 
                 AABB bounds = new AABB(caster.getX() - radius, caster.getY() - radius, caster.getZ() - radius, caster.getX() + radius, caster.getY() + radius, caster.getZ() + radius);
                 for(Entity e : caster.level().getEntities(null, bounds)) {
@@ -826,7 +800,7 @@ public class CommonEventHandler {
         }
     }
 
-    private static final HashMap<Player, HashSet<MobEffect>> pendingHeartEffects = new HashMap<>();
+    private static final Map<UUID, Set<MobEffect>> pendingHeartEffects = new HashMap<>();
     @SubscribeEvent
     public static void checkCanApplyMobEffect(MobEffectEvent.Applicable event) {
         final LivingEntity entity = event.getEntity();
@@ -841,17 +815,29 @@ public class CommonEventHandler {
                         MobEffectInstance effect = event.getEffectInstance();
 
                         if(cap.getHeart() == IEnhancementCapability.EnhancedHeartType.IMMORTAL) {
-                            if(isPendingEffect(player, effect.getEffect()) || effect.getDuration() == -1) {
-                                removeFromPendingEffects(player, effect.getEffect());
-                            } else {
-                                if (effect.getEffect().getCategory() == MobEffectCategory.BENEFICIAL) {
-                                    event.setResult(Event.Result.DENY);
-                                    addToPendingEffects(player, effect.getEffect());
-                                    player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration() * 3, effect.getAmplifier(), effect.isAmbient(), effect.isVisible(), effect.showIcon()));
-                                } else if (effect.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
-                                    event.setResult(Event.Result.DENY);
-                                    addToPendingEffects(player, effect.getEffect());
-                                    player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration() / 3, effect.getAmplifier(), effect.isAmbient(), effect.isVisible(), effect.showIcon()));
+                            boolean onBlacklist = false;
+                            for(int i=0; i<IEnhancementCapability.BLACKLIST.length; i++) {
+                                if(effect.getEffect().getCategory() == MobEffectCategory.HARMFUL) continue;
+
+                                String query = effect.getEffect().getDescriptionId();
+                                if(query.equals(IEnhancementCapability.BLACKLIST[i])) {
+                                    onBlacklist = true;
+                                    break;
+                                }
+                            }
+                            if(!onBlacklist){
+                                if (isPendingEffect(player, effect.getEffect()) || effect.getDuration() == -1) {
+                                    removeFromPendingEffects(player, effect.getEffect());
+                                } else {
+                                    if (effect.getEffect().getCategory() == MobEffectCategory.BENEFICIAL) {
+                                        event.setResult(Event.Result.DENY);
+                                        addToPendingEffects(player, effect.getEffect());
+                                        player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration() * 3, effect.getAmplifier(), effect.isAmbient(), effect.isVisible(), effect.showIcon()));
+                                    } else if (effect.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
+                                        event.setResult(Event.Result.DENY);
+                                        addToPendingEffects(player, effect.getEffect());
+                                        player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration() / 3, effect.getAmplifier(), effect.isAmbient(), effect.isVisible(), effect.showIcon()));
+                                    }
                                 }
                             }
                         }
@@ -902,27 +888,23 @@ public class CommonEventHandler {
     }
 
     private static void addToPendingEffects(Player player, MobEffect effect) {
-        if(pendingHeartEffects.containsKey(player)) {
-            pendingHeartEffects.get(player).add(effect);
-        } else {
-            HashSet<MobEffect> effectsOnPlayer = new HashSet<>();
-            effectsOnPlayer.add(effect);
-            pendingHeartEffects.put(player, effectsOnPlayer);
-        }
+        pendingHeartEffects.computeIfAbsent(player.getUUID(), ignored -> new HashSet<>()).add(effect);
     }
 
     private static void removeFromPendingEffects(Player player, MobEffect effect) {
-        if(pendingHeartEffects.containsKey(player)) {
-            pendingHeartEffects.get(player).remove(effect);
+        UUID playerId = player.getUUID();
+        Set<MobEffect> effects = pendingHeartEffects.get(playerId);
+        if (effect == null) return;
+
+        effects.remove(effect);
+        if (effects.isEmpty()) {
+            pendingHeartEffects.remove(playerId);
         }
     }
 
     private static boolean isPendingEffect(Player player, MobEffect effect) {
-        if(pendingHeartEffects.containsKey(player)) {
-            final HashSet<MobEffect> effectsOnPlayer = pendingHeartEffects.get(player);
-            return effectsOnPlayer.contains(effect);
-        }
-        return false;
+        Set<MobEffect> effects = pendingHeartEffects.get(player.getUUID());
+        return effects != null && effects.contains(effect);
     }
 
     @SubscribeEvent
@@ -1094,6 +1076,7 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || event.player.level().isClientSide()) return;
         //Immortal Heart absorption
         if(event.player.level().getGameTime() % 600 == 0) {
             final LazyOptional<IPlayerProgression> lazyProg = event.player.getCapability(PlayerProgressionProvider.PROGRESSION);
@@ -1135,11 +1118,20 @@ public class CommonEventHandler {
                     }
                     if (spell != null) {
                         float cost = spell.getManaCost() * 10;
-                        float heal = Math.max(1.0f, cost * EQUANIMITY_HEAL_PER_MANA[Math.min(effect.getAmplifier(), EQUANIMITY_HEAL_PER_MANA.length)]);
+                        float heal = Math.max(1.0f, cost * EQUANIMITY_HEAL_PER_MANA[effectIndex(effect, EQUANIMITY_HEAL_PER_MANA.length)]);
                         event.player.heal(heal);
                     }
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        pendingHeartEffects.remove(event.getEntity().getUUID());
+    }
+
+    private static int effectIndex(MobEffectInstance effect, int arrayLength) {
+        return Mth.clamp(effect.getAmplifier(), 0, arrayLength - 1);
     }
 }

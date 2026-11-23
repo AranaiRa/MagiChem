@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:necklace_of_the_hidden_blade"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_ender",
+            "count": 32
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 70
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 12
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 4,
+        "object": {
+          "item": "malum:runic_twisted_rock_bricks_wall"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_arcane",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,10 +1,12 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.registry.MateriaRegistry;
-import com.mojang.datafixers.util.Pair;
+import com.aranaira.magichem.foundation.Triplet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,8 +30,9 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
 
-    public static Pair<Integer, NonNullList<ItemStack>> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate, int grimeSuccess, int grimeFail) {
+    public static Triplet<Integer, NonNullList<ItemStack>, Integer> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate, int grimeSuccess, int grimeFail) {
         int grime = 0;
+        int crafted = 0;
         if(efficiency < 100 || outputRate < 1.0f) {
             ArrayList<ItemStack> modifiableQuery = new ArrayList<>();
             for (ItemStack stack : query) {
@@ -39,27 +42,30 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
             NonNullList<ItemStack> output = NonNullList.create();
             for (ItemStack stack : modifiableQuery) {
                 int count = stack.getCount();
-                for (int i = 0; i < count; i++) {
-                    boolean doShrink = false;
-                    int adjustedEfficiency = efficiency;
-                    if(stack.getItem() == NIGREDO.get() || stack.getItem() == ALBEDO.get() || stack.getItem() == CITRINITAS.get() || stack.getItem() == RUBEDO.get())
-                        adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float) ServerConfig.houseOfAlchemyDistillationEfficiencyBonus / 100f));
 
-                    if(adjustedEfficiency < 100 || outputRate < 1.0f) {
-                        if (r.nextInt(100) > adjustedEfficiency)
-                            doShrink = true;
-                        else if (outputRate < 1.0) {
-                            if (r.nextFloat() > outputRate)
-                                doShrink = true;
-                        }
-                    }
+                int adjustedEfficiency = efficiency;
+                if(stack.getItem() == NIGREDO.get() || stack.getItem() == ALBEDO.get() || stack.getItem() == CITRINITAS.get() || stack.getItem() == RUBEDO.get())
+                    adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float) ServerConfig.houseOfAlchemyDistillationEfficiencyBonus / 100f));
+                float actualEfficiency = ((float)adjustedEfficiency / 100f) * outputRate;
 
-                    if(doShrink) {
-                        stack.shrink(1);
-                        grime += grimeFail;
-                    } else {
-                        grime += grimeSuccess;
-                    }
+                if(adjustedEfficiency < 100 || outputRate < 1.0f) {
+                    float outRaw = (float)count * actualEfficiency;
+                    int whole = Math.max(0,(int)outRaw);
+                    float remainder = outRaw % 1f;
+                    int resolvedRemainder = 0;
+                    if(remainder > 0)
+                        resolvedRemainder = r.nextFloat() <= remainder ? 1 : 0;
+
+                    int produced = whole + resolvedRemainder;
+                    stack.setCount(produced);
+
+                    int failed = Math.max(0, count - produced);
+                    grime += (grimeSuccess * produced);
+                    grime += (grimeFail * failed);
+                    crafted += produced;
+                } else {
+                    crafted += count;
+                    grime += (grimeSuccess * count);
                 }
             }
 
@@ -67,15 +73,35 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
                 if(stack.getCount() > 0)
                     output.add(stack);
             }
-            return new Pair<>(grime, output);
+            return new Triplet<>(grime, output, crafted);
         }
         else {
             int count = 0;
             for(ItemStack stack : query) {
                 count += stack.getCount();
             }
-            return new Pair<>(count*grimeSuccess, query);
+            return new Triplet<>(count*grimeSuccess, query, count);
         }
+    }
+    /**
+     *Adds glass bottles to a device's bottle output slot.  Anything that doesn't fit is dropped at the device.
+     */
+
+    protected static void insertBottlesOrDrop(BlockEntity pEntity, ItemStackHandler pHandler, int pSlot, int pCount) {
+        if (pCount <= 0) return;
+
+        ItemStack contained = pHandler.getStackInSlot(pSlot);
+        int space = Math.max(0, pHandler.getSlotLimit(pSlot) - contained.getCount());
+        int accepted = Math.min(pCount, space);
+        if (accepted > 0)
+            pHandler.setStackInSlot(pSlot, new ItemStack(Items.GLASS_BOTTLE, contained.getCount() + accepted));
+
+        int overflow = pCount - accepted;
+        if (overflow > 0 && pEntity.getLevel() != null) {
+            BlockPos pos = pEntity.getBlockPos();
+            Containers.dropItemStack(pEntity.getLevel(), pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.GLASS_BOTTLE, overflow));
+        }
+
     }
 
     public abstract int getMaximumGrime();

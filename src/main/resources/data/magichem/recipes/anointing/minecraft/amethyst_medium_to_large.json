@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:medium_amethyst_bud",
+  "materia": "magichem:admixture_crystal",
+  "chance": 24.0,
+  "result": "minecraft:large_amethyst_bud"
+}

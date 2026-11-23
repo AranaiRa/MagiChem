@@ -6,6 +6,7 @@ import com.aranaira.magichem.gui.VariegatorMenu;
 import com.aranaira.magichem.gui.VariegatorScreen;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ColorationRecipe;
+import com.aranaira.magichem.recipe.ColorationNbtHelper;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -403,17 +404,16 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         DyeColor color = DyeColor.WHITE;
         if(pEntity.selectedColor != -1) color = COLOR_GUI_ORDER[pEntity.selectedColor];
 
-        ItemStack result;
-        if(pEntity.selectedColor == -1)
-            result = pRecipe.getColorlessDefault().copy();
-        else
-            result = pRecipe.getResultsAsMap(false).get(color).copy();
+        ItemStack source = getCurrentProcessingStack(pEntity);
+        ItemStack result = ColorationNbtHelper.createResult(
+                pRecipe, source, pEntity.selectedColor == -1 ? null : color);
+        if(result == null || ColorationNbtHelper.isNoOp(source, result)) return;
 
         SimpleContainer output = pEntity.getContentsOfOutputSlots();
         output.addItem(result);
         pEntity.setContentsOfOutputSlots(output);
 
-        getCurrentProcessingStack(pEntity).shrink(1);
+        source.shrink(1);
 
         if(pEntity.dyeAdmixture > 0)
             pEntity.dyeAdmixture = pEntity.dyeAdmixture - pRecipe.getChargeUsage();
@@ -490,6 +490,11 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
 
         ItemStack query = getCurrentProcessingStack(pEntity);
         if(!query.isEmpty()) {
+            if(ColorationNbtHelper.hasNbtAwareRecipes(level)) {
+                ColorationRecipe recipe = ColorationRecipe.getFilteredColorationRecipe(level, query, true);
+                pEntity.currentRecipe = recipe;
+                return recipe;
+            }
             if(pEntity.currentRecipe != null) {
                 HashMap<DyeColor, ItemStack> allResults = pEntity.currentRecipe.getResultsAsMap(false);
 
@@ -520,15 +525,13 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         DyeColor color = DyeColor.WHITE;
         if(pEntity.selectedColor != -1) color = COLOR_GUI_ORDER[pEntity.selectedColor];
 
-        ItemStack result;
-        if(pEntity.selectedColor == -1)
-            result = pRecipe.getColorlessDefault();
-        else
-            result = pRecipe.getResultsAsMap(false).get(color);
+        ItemStack source = getCurrentProcessingStack(pEntity);
+        ItemStack result = ColorationNbtHelper.createResult(
+                pRecipe, source, pEntity.selectedColor == -1 ? null : color);
 
         if(result == null)
             return false;
-        if(result.getItem() == getCurrentProcessingStack(pEntity).getItem()) {
+        if(ColorationNbtHelper.isNoOp(source, result)) {
             return false;
         }
 

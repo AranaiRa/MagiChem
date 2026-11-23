@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/pile_of_riches",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "magichem:block/pile_of_riches",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "magichem:block/pile_of_riches"
+    },
+    "facing=west": {
+      "model": "magichem:block/pile_of_riches",
+      "y": 90
+    }
+  }
+}

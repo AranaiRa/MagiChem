@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.item.TravellersCompassItem;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.items.ItemInit;
@@ -59,14 +60,14 @@ public class TravellersCompassMenu extends AbstractContainerMenu {
     };
 
     public TravellersCompassMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, new SimpleContainerData(SLOT_COUNT));
+        this(id, inv, extraData.readInt());
     }
 
-    public TravellersCompassMenu(int id, Inventory inv, ContainerData data) {
+    public TravellersCompassMenu(int id, Inventory inv, int pCompassHoldingSlot) {
         super(MenuRegistry.TRAVELLERS_COMPASS_MENU.get(), id);
 
         playerInventory = inv;
-        compassHoldingSlot = data.get(0);
+        compassHoldingSlot = pCompassHoldingSlot;
 
         CompoundTag nbt = playerInventory.getItem(compassHoldingSlot).getOrCreateTag();
         if(nbt.contains("inventory")) {
@@ -105,10 +106,17 @@ public class TravellersCompassMenu extends AbstractContainerMenu {
 
     @Override
     public void clicked(int pSlotId, int pButton, ClickType pClickType, Player pPlayer) {
-        int selectedSlot = pPlayer.getInventory().findSlotMatchingItem(pPlayer.getInventory().getSelected());
 
-        if(selectedSlot != pSlotId - 27)
-            super.clicked(pSlotId, pButton, pClickType, pPlayer);
+        if(pClickType == ClickType.SWAP && pButton == compassHoldingSlot)
+            return;
+
+        if(pSlotId >= 0 && pSlotId < slots.size()) {
+            Slot clickedSlot = slots.get(pSlotId);
+            if(clickedSlot.container == playerInventory && clickedSlot.getContainerSlot() == compassHoldingSlot)
+                return;
+        }
+
+        super.clicked(pSlotId, pButton, pClickType, pPlayer);
     }
 
     @Override
@@ -128,6 +136,7 @@ public class TravellersCompassMenu extends AbstractContainerMenu {
 
             CompoundTag nbt = playerInventory.getItem(compassHoldingSlot).getOrCreateTag();
             nbt.put("inventory", itemHandler.serializeNBT());
+            TravellersCompassItem.updateTagFromSelectedRadialItem(playerInventory.getItem(compassHoldingSlot));
         }
 
         super.removed(pPlayer);

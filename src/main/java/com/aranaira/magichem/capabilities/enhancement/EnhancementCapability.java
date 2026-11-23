@@ -75,5 +75,13 @@ public class EnhancementCapability implements IEnhancementCapability {
     @Override
     public void copyFrom(IEnhancementCapability pCapability) {
         enhancedHeartType = pCapability.getHeart();
+
+        final Pair<BlockPos, ResourceLocation> deathInfo = pCapability.getLastDeathTargetLocation();
+        lastDeathPos = deathInfo.getFirst();
+        lastDeathDim = deathInfo.getSecond();
+
+        final Pair<BlockPos, ResourceLocation> recoveryInfo = pCapability.getDeathRecoveryLocation();
+        deathRecoveryPos = recoveryInfo.getFirst();
+        deathRecoveryDim = recoveryInfo.getSecond();
     }
 }

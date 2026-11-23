@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:spirit_altar"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_arcane",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 6
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

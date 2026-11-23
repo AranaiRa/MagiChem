@@ -60,7 +60,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
 
     private HashMap<MateriaItem, List<BlockEntity>> materiaStorageInZone = new HashMap<>();
     private ArrayList<MateriaItem> materiaTypesSorted = new ArrayList<>();
-    public BlockEntity tetherTarget = null;
+    public List<BlockEntity> tetherTargets = new ArrayList<>();
     public MateriaItem tetherType = null;
     public AABB RENDER_BOUNDING_BOX;
     public boolean isCompactMode = false;
@@ -103,7 +103,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
             materiaTypesSorted.clear();
 
             HashMap<String, MateriaItem> sortingMap = new HashMap<>();
-            for(MateriaItem mi : keySet) {
+            for(MateriaItem mi : materiaStorageInZone.keySet()) {
                 sortingMap.put(mi.getMateriaSortingName(), mi);
             }
             sortingMap.keySet().stream().sorted().forEachOrdered(s -> {

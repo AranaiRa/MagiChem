@@ -1,0 +1,8 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 1,
+  "acidConsumed": 540,
+  "duration": 600,
+  "inputItem": { "item": "magichem:alchemical_waste_block", "count": 24 },
+  "resultItem": { "item": "magichem:resin_gray", "count": 9 }
+}

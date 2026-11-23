@@ -13,9 +13,11 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -57,7 +59,8 @@ public class ItemShlorpEntityRenderer extends EntityRenderer<ItemShlorpEntity> {
         int gt = (int)(pEntity.level().getGameTime() % (period * 2));
         float rot = ((float)((gt + pPartialTick) % period) / (float)period) * 360f;
 
-        for(int i=0; i<vertData.size()-1; i++) {
+        final NonNullList<ItemStack> stacksInTransit = pEntity.getNonEmptyStacksInTransit();
+        for(int i=0; i< stacksInTransit.size(); i++) {
             Vector3 current = vertData.get(i);
             float scale = 1f;
             float itemTrackPos = pEntity.currentPosOnTrack - pEntity.distanceBetweenClusters*i;
@@ -72,7 +75,7 @@ public class ItemShlorpEntityRenderer extends EntityRenderer<ItemShlorpEntity> {
             pPoseStack.translate(current.x, current.y, current.z);
             pPoseStack.mulPose(Axis.YP.rotationDegrees(rot));
             pPoseStack.scale(scale, scale, scale);
-            Minecraft.getInstance().getItemRenderer().renderStatic(pEntity.getNonEmptyStacksInTransit().get(i), ItemDisplayContext.FIXED, pPackedLight, NO_OVERLAY, pPoseStack, pBuffer, pEntity.level(), 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(stacksInTransit.get(i), ItemDisplayContext.FIXED, pPackedLight, NO_OVERLAY, pPoseStack, pBuffer, pEntity.level(), 0);
             pPoseStack.popPose();
         }
     }

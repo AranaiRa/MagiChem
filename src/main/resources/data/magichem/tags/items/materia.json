@@ -1,0 +1,8 @@
+{
+	"replace": false,
+	"values": [
+		"#magichem:admixture",
+		"#magichem:essentia",
+		"magichem:admixture_philosophers_concoction"
+	]
+}

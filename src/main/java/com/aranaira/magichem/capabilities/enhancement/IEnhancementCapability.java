@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.HashMap;
 
 public interface IEnhancementCapability {
+    public static final String[] BLACKLIST = new String[]{"effect.mna.mana_stunt"};
+
     ResourceLocation ENHANCEMENT = new ResourceLocation(MagiChemMod.MODID, "enhancement");
 
     long getBossTrophyUseTargetTime();

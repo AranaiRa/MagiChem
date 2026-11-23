@@ -3,10 +3,11 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
-import com.aranaira.magichem.foundation.options.DistillationFabricationOption;
+import com.aranaira.magichem.foundation.options.RecipeDisplayOption;
 import com.aranaira.magichem.gui.element.CodexMateriaButtonRecipeSelector;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.MathUtils;
@@ -36,15 +37,18 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     private final ButtonData[] materiaSelectButtons = new ButtonData[24];
     private final ButtonData[] recipeSelectButtons = new ButtonData[8];
     private final ImageButton[] categoryToggleButtons = new ImageButton[6];
+    private final ImageButton[] modeSwitchButtons = new ImageButton[2];
     private final ArrayList<DistillationSourceCategory> categories = new ArrayList<>();
     private MateriaItem selectedMateria;
-    private DistillationFabricationOption selectedRecipe;
+    private RecipeDisplayOption selectedRecipe;
     private EditBox recipeFilterBox;
     private static final ArrayList<String> sortedMateriaKeys = new ArrayList<>();
     private static final HashMap<String, ItemStack> materiaMap = new HashMap<>();
     private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
     private static List<FluidDistillationFabricationRecipe> allFluidDistillationRecipes = new ArrayList<>();
+    private static List<FixationSeparationRecipe> allFixationSeprationsRecipes = new ArrayList<>();
     private String lastUsedFilter = null;
+    private boolean isDistillationMode = true;
 
     public static final int
         PANEL_MAIN_W = 256, PANEL_MAIN_H = 178;
@@ -61,6 +65,8 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             allDistillationRecipes = DistillationFabricationRecipe.getAllDistillingRecipes(pPlayerInventory.player.level());
         if(allFluidDistillationRecipes.size() == 0)
             allFluidDistillationRecipes = FluidDistillationFabricationRecipe.getAllDistillingRecipes(pPlayerInventory.player.level());
+        if(allFixationSeprationsRecipes.size() == 0)
+            allFixationSeprationsRecipes = FixationSeparationRecipe.getAllSeparatingRecipes(pPlayerInventory.player.level());
         categories.addAll(Arrays.asList(DistillationSourceCategory.values()));
         updateDisplayedMateria("");
     }
@@ -155,6 +161,30 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             updateDisplayedRecipes(selectedMateria);
             recipeFilterPage = 0;
             }));
+
+        modeSwitchButtons[0] = this.addRenderableWidget(new ImageButton(x+146, y+153, 18, 28, 148, 178, TEXTURE, button -> {
+            isDistillationMode = true;
+            updateDisplayedRecipes(selectedMateria);
+            recipeFilterPage = 0;
+            modeSwitchButtons[0].visible = false;
+            modeSwitchButtons[1].visible = true;
+            for (ImageButton categoryToggleButton : categoryToggleButtons) {
+                categoryToggleButton.visible = true;
+            }
+
+        }));
+        modeSwitchButtons[1] = this.addRenderableWidget(new ImageButton(x+166, y+153, 18, 28, 166, 178, TEXTURE, button -> {
+            isDistillationMode = false;
+            updateDisplayedRecipes(selectedMateria);
+            recipeFilterPage = 0;
+            modeSwitchButtons[0].visible = true;
+            modeSwitchButtons[1].visible = false;
+            for (ImageButton categoryToggleButton : categoryToggleButtons) {
+                categoryToggleButton.visible = false;
+            }
+            }));
+        modeSwitchButtons[0].visible = false;
+        modeSwitchButtons[1].visible = true;
     }
 
     private void initializeRecipeSelectButtons() {
@@ -339,70 +369,107 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         materiaFilterRow = MathUtils.clamp(materiaFilterRow, 0, materiaFilterRowTotal - 4);
     }
 
-    private final List<DistillationFabricationOption> filteredRecipes = new ArrayList<>();
+    private final List<RecipeDisplayOption> filteredRecipes = new ArrayList<>();
+    private final List<FixationSeparationRecipe> filteredSeparationRecipes = new ArrayList<>();
     private int recipeFilterPage, recipeFilterPagesTotal;
     private void updateDisplayedRecipes(MateriaItem pFilter) {
         filteredRecipes.clear();
+        filteredSeparationRecipes.clear();
 
-        for(DistillationFabricationRecipe recipeQuery : allDistillationRecipes) {
-            for(ItemStack materiaQuery : recipeQuery.getComponentMateria()) {
-                if (materiaQuery.getItem() == pFilter) {
-                    boolean hasMatchingCategory = false;
-                    for(DistillationSourceCategory category : categories) {
-                        hasMatchingCategory = recipeQuery.hasSourceCategory(category);
-                        if(hasMatchingCategory) break;
-                    }
-                    if(hasMatchingCategory) filteredRecipes.add(new DistillationFabricationOption(recipeQuery));
-                    break;
-                }
-            }
-        }
-
-        for(FluidDistillationFabricationRecipe recipeQuery : allFluidDistillationRecipes) {
-            for(ItemStack materiaQuery : recipeQuery.getComponentMateria()) {
-                if (materiaQuery.getItem() == pFilter) {
-                    boolean hasMatchingCategory = false;
-                    for(DistillationSourceCategory category : categories) {
-                        hasMatchingCategory = recipeQuery.hasSourceCategory(category);
-                        if(hasMatchingCategory) break;
-                    }
-                    if(hasMatchingCategory) filteredRecipes.add(new DistillationFabricationOption(recipeQuery));
-                    break;
-                }
-            }
-        }
-
-        //sort recipes
-        DistillationFabricationOption[] sortingArray = new DistillationFabricationOption[filteredRecipes.size()];
-        filteredRecipes.toArray(sortingArray);
-        Arrays.sort(sortingArray, Comparator.comparing(o -> {
-            String sortingKey = "";
-
-            if(o.getRecipe() instanceof DistillationFabricationRecipe item) {
-                for (ItemStack materiaQuery : item.getComponentMateria()) {
+        if(isDistillationMode) {
+            for (DistillationFabricationRecipe recipeQuery : allDistillationRecipes) {
+                for (ItemStack materiaQuery : recipeQuery.getComponentMateria()) {
                     if (materiaQuery.getItem() == pFilter) {
-                        sortingKey = String.format("%06.2f", o.getSortingFloat(pFilter));
-                        sortingKey += o.getItemRecipe().getAlchemyObject().getDisplayName();
-                        break;
-                    }
-                }
-            } else if(o.getRecipe() instanceof FluidDistillationFabricationRecipe fluid){
-                for (ItemStack materiaQuery : fluid.getComponentMateria()) {
-                    if (materiaQuery.getItem() == pFilter) {
-                        sortingKey = String.format("%06.2f", o.getSortingFloat(pFilter));
-                        sortingKey += fluid.getAlchemyFluid().getDisplayName();
+                        boolean hasMatchingCategory = false;
+                        for (DistillationSourceCategory category : categories) {
+                            hasMatchingCategory = recipeQuery.hasSourceCategory(category);
+                            if (hasMatchingCategory) break;
+                        }
+                        if (hasMatchingCategory) filteredRecipes.add(new RecipeDisplayOption(recipeQuery));
                         break;
                     }
                 }
             }
 
-            return sortingKey;
-        }));
-        filteredRecipes.clear();
-        for(int i=sortingArray.length-1; i>=0; i--) {
-            filteredRecipes.add(sortingArray[i]);
-        }
+            for (FluidDistillationFabricationRecipe recipeQuery : allFluidDistillationRecipes) {
+                for (ItemStack materiaQuery : recipeQuery.getComponentMateria()) {
+                    if (materiaQuery.getItem() == pFilter) {
+                        boolean hasMatchingCategory = false;
+                        for (DistillationSourceCategory category : categories) {
+                            hasMatchingCategory = recipeQuery.hasSourceCategory(category);
+                            if (hasMatchingCategory) break;
+                        }
+                        if (hasMatchingCategory) filteredRecipes.add(new RecipeDisplayOption(recipeQuery));
+                        break;
+                    }
+                }
+            }
 
+            //sort recipes
+            RecipeDisplayOption[] sortingArray = new RecipeDisplayOption[filteredRecipes.size()];
+            filteredRecipes.toArray(sortingArray);
+            Arrays.sort(sortingArray, Comparator.comparing(o -> {
+                String sortingKey = "";
+
+                if (o.getRecipe() instanceof DistillationFabricationRecipe item) {
+                    for (ItemStack materiaQuery : item.getComponentMateria()) {
+                        if (materiaQuery.getItem() == pFilter) {
+                            sortingKey = String.format("%06.2f", o.getSortingFloat(pFilter));
+                            sortingKey += o.getItemRecipe().getAlchemyObject().getDisplayName();
+                            break;
+                        }
+                    }
+                } else if (o.getRecipe() instanceof FluidDistillationFabricationRecipe fluid) {
+                    for (ItemStack materiaQuery : fluid.getComponentMateria()) {
+                        if (materiaQuery.getItem() == pFilter) {
+                            sortingKey = String.format("%06.2f", o.getSortingFloat(pFilter));
+                            sortingKey += fluid.getAlchemyFluid().getDisplayName();
+                            break;
+                        }
+                    }
+                }
+
+                return sortingKey;
+            }));
+            filteredRecipes.clear();
+            for (int i = sortingArray.length - 1; i >= 0; i--) {
+                filteredRecipes.add(sortingArray[i]);
+            }
+
+        } else {
+            for (FixationSeparationRecipe recipeQuery : allFixationSeprationsRecipes) {
+                for (ItemStack materiaQuery : recipeQuery.getComponentMateria()) {
+                    if (materiaQuery.getItem() == pFilter) {
+                        filteredRecipes.add(new RecipeDisplayOption(recipeQuery));
+                        break;
+                    }
+                }
+            }
+
+            //sort recipes
+            RecipeDisplayOption[] sortingArray = new RecipeDisplayOption[filteredRecipes.size()];
+            filteredRecipes.toArray(sortingArray);
+            Arrays.sort(sortingArray, Comparator.comparing(o -> {
+                String sortingKey = "";
+
+                if (o.getRecipe() instanceof FixationSeparationRecipe separation) {
+                    for (ItemStack materiaQuery : separation.getComponentMateria()) {
+                        if (materiaQuery.getItem() == pFilter) {
+                            sortingKey = String.format("%06.2f", o.getSortingFloat(pFilter));
+                            sortingKey += o.getSeparationRecipe().getResultAdmixture().getDisplayName();
+                            break;
+                        }
+                    }
+                }
+
+                return sortingKey;
+            }));
+            filteredRecipes.clear();
+            for (int i = sortingArray.length - 1; i >= 0; i--) {
+                filteredRecipes.add(sortingArray[i]);
+            }
+
+        }
         recipeFilterPagesTotal = filteredRecipes.size() / 8;
     }
 
@@ -417,18 +484,20 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         renderMateriaSelections(pGuiGraphics);
         renderRecipeOptions(pGuiGraphics);
 
-        if(categories.contains(CRAFTABLE))
-            pGuiGraphics.blit(TEXTURE, x+174, y-10, 0, 246, 10, 10);
-        if(categories.contains(GATHERABLE))
-            pGuiGraphics.blit(TEXTURE, x+185, y-10, 10, 246, 10, 10);
-        if(categories.contains(FARMABLE))
-            pGuiGraphics.blit(TEXTURE, x+196, y-10, 20, 246, 10, 10);
-        if(categories.contains(RENEWABLE))
-            pGuiGraphics.blit(TEXTURE, x+207, y-10, 30, 246, 10, 10);
-        if(categories.contains(TROPHY))
-            pGuiGraphics.blit(TEXTURE, x+218, y-10, 40, 246, 10, 10);
-        if(categories.contains(RARE))
-            pGuiGraphics.blit(TEXTURE, x+229, y-10, 50, 246, 10, 10);
+        if(isDistillationMode) {
+            if (categories.contains(CRAFTABLE))
+                pGuiGraphics.blit(TEXTURE, x + 174, y - 10, 0, 246, 10, 10);
+            if (categories.contains(GATHERABLE))
+                pGuiGraphics.blit(TEXTURE, x + 185, y - 10, 10, 246, 10, 10);
+            if (categories.contains(FARMABLE))
+                pGuiGraphics.blit(TEXTURE, x + 196, y - 10, 20, 246, 10, 10);
+            if (categories.contains(RENEWABLE))
+                pGuiGraphics.blit(TEXTURE, x + 207, y - 10, 30, 246, 10, 10);
+            if (categories.contains(TROPHY))
+                pGuiGraphics.blit(TEXTURE, x + 218, y - 10, 40, 246, 10, 10);
+            if (categories.contains(RARE))
+                pGuiGraphics.blit(TEXTURE, x + 229, y - 10, 50, 246, 10, 10);
+        }
 
         if(selectedMateria != null)
             pGuiGraphics.renderFakeItem(materiaMap.get(selectedMateria.getMateriaName()), x+154, y-12);
@@ -455,6 +524,10 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             pGuiGraphics.blit(TEXTURE, x + 248, y + 3 + nubbinShift, u, v, 28, 18);
         }
 
+        //Distillation/Separation Mode
+        pGuiGraphics.blit(TEXTURE, x + 146, y + 153, 112, isDistillationMode ? 178 : 206, 18, 28);
+        pGuiGraphics.blit(TEXTURE, x + 166, y + 153, 130, isDistillationMode ? 206 : 178, 18, 28);
+
         if(selectedRecipe != null) {
             if(selectedRecipe.getOutputRate() < 1f){
                 pGuiGraphics.drawString(font, Component.translatable("gui.magichem.reducedoutputrate"), x + 54, y - 9, 0xff5c3b14, false);
@@ -477,18 +550,20 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                 pGuiGraphics.renderItemDecorations(font, selectedRecipe.getComponentMateria().get(i), x+33 + i*18 + componentShift, y+26);
             }
 
-            if(selectedRecipe.hasSourceCategory(CRAFTABLE))
-                pGuiGraphics.blit(TEXTURE, x+55, y+12, 0, 246, 10, 10);
-            if(selectedRecipe.hasSourceCategory(GATHERABLE))
-                pGuiGraphics.blit(TEXTURE, x+66, y+12, 10, 246, 10, 10);
-            if(selectedRecipe.hasSourceCategory(FARMABLE))
-                pGuiGraphics.blit(TEXTURE, x+77, y+12, 20, 246, 10, 10);
-            if(selectedRecipe.hasSourceCategory(RENEWABLE))
-                pGuiGraphics.blit(TEXTURE, x+88, y+12, 30, 246, 10, 10);
-            if(selectedRecipe.hasSourceCategory(TROPHY))
-                pGuiGraphics.blit(TEXTURE, x+99, y+12, 40, 246, 10, 10);
-            if(selectedRecipe.hasSourceCategory(RARE))
-                pGuiGraphics.blit(TEXTURE, x+110, y+12, 50, 246, 10, 10);
+            if(isDistillationMode){
+                if (selectedRecipe.hasSourceCategory(CRAFTABLE))
+                    pGuiGraphics.blit(TEXTURE, x + 55, y + 12, 0, 246, 10, 10);
+                if (selectedRecipe.hasSourceCategory(GATHERABLE))
+                    pGuiGraphics.blit(TEXTURE, x + 66, y + 12, 10, 246, 10, 10);
+                if (selectedRecipe.hasSourceCategory(FARMABLE))
+                    pGuiGraphics.blit(TEXTURE, x + 77, y + 12, 20, 246, 10, 10);
+                if (selectedRecipe.hasSourceCategory(RENEWABLE))
+                    pGuiGraphics.blit(TEXTURE, x + 88, y + 12, 30, 246, 10, 10);
+                if (selectedRecipe.hasSourceCategory(TROPHY))
+                    pGuiGraphics.blit(TEXTURE, x + 99, y + 12, 40, 246, 10, 10);
+                if (selectedRecipe.hasSourceCategory(RARE))
+                    pGuiGraphics.blit(TEXTURE, x + 110, y + 12, 50, 246, 10, 10);
+            }
         }
     }
 
@@ -520,7 +595,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        List<DistillationFabricationOption> snipped = new ArrayList<>();
+        List<RecipeDisplayOption> snipped = new ArrayList<>();
         for(int i = recipeFilterPage*8; i<Math.min(filteredRecipes.size(), recipeFilterPage*8 + 8); i++) {
             snipped.add(filteredRecipes.get(i));
         }
@@ -699,7 +774,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 
             if (id >= 0 && id < 8) {
                 if(id + recipeFilterPage * 8 < filteredRecipes.size()) {
-                    DistillationFabricationOption optionQuery = filteredRecipes.get(id + recipeFilterPage * 8);
+                    RecipeDisplayOption optionQuery = filteredRecipes.get(id + recipeFilterPage * 8);
                     tooltipContents.addAll(optionQuery.getTooltipLines());
                 }
             }
@@ -735,6 +810,20 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                 int index = ((pX-(x+33)) / 18) - (5 - selectedRecipe.getComponentMateria().size());
                 if(index >= 0 && index < selectedRecipe.getComponentMateria().size())
                     tooltipContents.addAll(selectedRecipe.getComponentMateria().get(index).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            }
+        }
+
+        //Mode banners
+        {
+            if (pX >= x + 146 && pX <= x + 164 && pY >= y + 153 && pY <= y + 181) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("jei.magichem.distillation.short").withStyle(ChatFormatting.GOLD))
+                );
+            }
+            if (pX >= x + 166 && pX <= x + 184 && pY >= y + 153 && pY <= y + 181) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("jei.magichem.separation.short").withStyle(ChatFormatting.GOLD))
+                );
             }
         }
 
