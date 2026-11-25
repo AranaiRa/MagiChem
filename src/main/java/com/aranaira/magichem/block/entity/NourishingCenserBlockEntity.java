@@ -62,7 +62,7 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
             if(slot == SLOT_MARK_PAIR) {
                 final ItemStack markStack = getStackInSlot(SLOT_MARK_PAIR);
                 if(markStack.isEmpty() || !markStack.hasTag()) {
-                    operatingArea = new AABB(getBlockPos().offset(-8, -1, -8), getBlockPos().offset(8, 1, 8));
+                    operatingArea = createDefaultAABB(getBlockPos());
                 } else {
                     CompoundTag nbt = markStack.getTag();
                     if(nbt.contains("mark")) {
@@ -101,6 +101,12 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
             return super.extractItem(slot, amount, simulate);
         }
     };
+
+    @NotNull
+    private static AABB createDefaultAABB(BlockPos blockPos) {
+        return new AABB(blockPos.offset(-8, -1, -8), blockPos.offset(8, 1, 8));
+    }
+
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     public NourishingCenserBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -161,7 +167,7 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
         if(cornerOne != null && cornerTwo != null) {
             operatingArea = new AABB(cornerOne, cornerTwo);
         } else {
-            operatingArea = new AABB(getBlockPos().offset(-8, -1, -8), getBlockPos().offset(8, 1, 8));
+            operatingArea = createDefaultAABB(getBlockPos());
         }
 
         if(level != null && !level.isClientSide() && level.getServer() != null) {
@@ -330,12 +336,11 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
                 if(entity.operatingArea == null) {
                     if(entity.cornerOne != null && entity.cornerTwo != null) {
                         entity.operatingArea = new AABB(entity.cornerOne.getX(), entity.cornerOne.getY(), entity.cornerOne.getZ(), entity.cornerTwo.getX(), entity.cornerTwo.getY(), entity.cornerTwo.getZ());
-                        changed = true;
                     }
                     else {
-                        entity.operatingArea = new AABB(entity.getBlockPos().offset(-8, -1, -8), entity.getBlockPos().offset(8, 1, 8));
-                        changed = true;
+                        entity.operatingArea = createDefaultAABB(entity.getBlockPos());
                     }
+                    changed = true;
                 }
 
                 if (level.getGameTime() % entity.getTickModulus() != 0) {
@@ -398,8 +403,16 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
         if(censerData.hasCenserAt(pLongPos)) {
             final AABB query = censerData.getAABBForCenser(pLongPos);
             if(!query.equals(pEntity.operatingArea)) {
+                if(pEntity.operatingArea == null) {
+                    pEntity.operatingArea = createDefaultAABB(pEntity.getBlockPos());
+                }
                 censerData.addOrUpdateCenser(pLongPos, pEntity.operatingArea);
-                pEntity.isOverlapping = censerData.checkOverlap(pLongPos);
+                changed = true;
+            }
+
+            boolean overlapQuery = censerData.checkOverlap(pLongPos);
+            if(overlapQuery != pEntity.isOverlapping) {
+                pEntity.isOverlapping = overlapQuery;
                 changed = true;
             }
         } else {

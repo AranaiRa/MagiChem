@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.NourishingCenserBlockEntity;
+import com.aranaira.magichem.foundation.saveddata.CenserWorkingAreasSD;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,6 +10,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -69,6 +71,17 @@ public class NourishingCenserBlock extends BaseEntityBlock {
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return VOXEL_SHAPE_AGGREGATE;
+    }
+
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if(!pLevel.isClientSide()) {
+            final CenserWorkingAreasSD censerData = CenserWorkingAreasSD.getCenserData(pLevel);
+            if(censerData != null)
+                censerData.removeCenser(pPos.asLong());
+        }
+
+        super.destroy(pLevel, pPos, pState);
     }
 
     static {
