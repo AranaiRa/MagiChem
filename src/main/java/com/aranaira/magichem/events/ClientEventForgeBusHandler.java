@@ -21,6 +21,7 @@ import com.aranaira.magichem.recipe.ConstructStudyMaterialRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.KeybindRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.aranaira.magichem.util.CompassTargetHelper;
 import com.mna.KeybindInit;
 import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.api.config.ClientConfigValues;
@@ -414,11 +415,14 @@ public class ClientEventForgeBusHandler {
 
             if(targetStack != null) {
                 if (targetStack.hasTag()) {
-                    if(targetStack.getTag().contains("LodestonePos")) {
-                        CompoundTag posTag = targetStack.getTag().getCompound("LodestonePos");
-                        BlockPos target = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
+                    CompassTargetHelper.CompassPoint point = CompassTargetHelper.getPoint(targetStack);
+                    if(point != null) {
+                        BlockPos feet = player.blockPosition();
+                        double dx = point.x() - feet.getX();
+                        double dy = point.hasHeight() ? point.y() - feet.getY() : 0;
+                        double dz = point.z() - feet.getZ();
 
-                        int distance = (int) Math.round(Math.sqrt(player.getOnPos().distSqr(target)));
+                        int distance = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
 
                         MutableComponent dist = Component.literal(distance + "m");
                         gui.drawString(font, dist, x + 4, y + 4, 0xffffff, true);
