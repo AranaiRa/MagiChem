@@ -424,7 +424,17 @@ public class ClientEventForgeBusHandler {
 
                         int distance = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
 
-                        MutableComponent dist = Component.literal(distance + "m");
+                        String text = distance + "m";
+                        if(point.hasHeight()) {
+                            int height = point.y() - feet.getY();
+                            String arrow;
+                            if(height > 0) arrow = "\u25B2";        // ▲ target above you
+                            else if(height < 0) arrow = "\u25BC";   // ▼ target below you
+                            else arrow = "\u00B1";                  // ± level with it
+                            text += " " + arrow + (point.approximate() ? "~" : "") + Math.abs(height);
+                        }
+
+                        MutableComponent dist = Component.literal(text);
                         gui.drawString(font, dist, x + 4, y + 4, 0xffffff, true);
 
                         float time = player.level().getTimeOfDay(0);

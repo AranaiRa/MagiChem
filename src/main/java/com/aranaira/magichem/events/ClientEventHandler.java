@@ -9,6 +9,8 @@ import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.recipe.ConstructStudyMaterialRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.KeybindRegistry;
+import com.aranaira.magichem.util.CompassTargetHelper;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -18,7 +20,6 @@ import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -121,11 +122,13 @@ public class ClientEventHandler {
 
                         double rotation = hasEntity ? (double) pEntity.getYRot() : getFrameRotation((ItemFrame)entity);
                         rotation = rotation % 360d;
-                        double adjusted = Math.PI - ((rotation - 90d) * 0.01745329238474369d - getAngle(pLevel, entity, pStack));
+                        double facing = Math.PI - (rotation - 90d) * 0.01745329238474369d;
 
-                        if(hasEntity) {
-                            adjusted = wobble(pLevel, adjusted);
+                        if(pEntity instanceof Player player && player.isLocalPlayer()) {
+                            facing = wobble(pLevel, facing);
                         }
+
+                        double adjusted = facing + getAngle(pLevel, entity, pStack);
 
                         final float f = (float)(adjusted / (Math.PI * 2d));
                         return Mth.positiveModulo(f, 1.0f);
@@ -157,11 +160,11 @@ public class ClientEventHandler {
                 @OnlyIn(Dist.CLIENT)
                 private double getAngle(ClientLevel pWorld, Entity pEntity, ItemStack pStack) {
                     if (pStack.getItem() == ItemRegistry.TRAVELLERS_COMPASS.get()) {
-                        CompoundTag nbt = pStack.getOrCreateTag();
+                        pStack.getOrCreateTag(); // kept: gives a tagless compass an empty tag; the HUD's hasTag() test relies on it
+                        CompassTargetHelper.CompassPoint point = CompassTargetHelper.getPoint(pStack);
                         BlockPos pos;
-                        if (nbt.contains("LodestonePos")) {
-                            CompoundTag posTag = nbt.getCompound("LodestonePos");
-                            pos = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
+                        if (point != null) {
+                            pos = new BlockPos(point.x(), point.y(), point.z());
                         } else {
                             pos = pWorld.getSharedSpawnPos();
                         }
