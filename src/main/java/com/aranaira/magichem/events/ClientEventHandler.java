@@ -128,11 +128,38 @@ public class ClientEventHandler {
                             facing = wobble(pLevel, facing);
                         }
 
+                        if(CompassTargetHelper.getPoint(pStack) != null && !CompassTargetHelper.inDimension(pStack, pLevel)) {
+                            return spin(pLevel, pSeed);
+                        }
+
                         double adjusted = facing + getAngle(pLevel, entity, pStack);
 
                         final float f = (float)(adjusted / (Math.PI * 2d));
                         return Mth.positiveModulo(f, 1.0f);
                     }
+                }
+
+                @OnlyIn(Dist.CLIENT)
+                private double spinRotation;
+                @OnlyIn(Dist.CLIENT)
+                private double spinAdjust;
+                @OnlyIn(Dist.CLIENT)
+                private long spinLastTick;
+
+                // Vanilla's compass in the wrong dimension (CompassItemPropertyFunction.getRandomlySpinningRotation):
+                // each tick the needle drifts toward a new random direction; the seed shifts each slot's phase.
+                @OnlyIn(Dist.CLIENT)
+                private float spin(ClientLevel pLevel, int pSeed) {
+                    if (pLevel.getGameTime() != spinLastTick) {
+                        spinLastTick = pLevel.getGameTime();
+                        double d0 = Math.random() - spinRotation;
+                        d0 = Mth.positiveModulo(d0 + 0.5D, 1.0D) - 0.5D;
+                        spinAdjust += d0 * 0.1D;
+                        spinAdjust *= 0.8D;
+                        spinRotation = Mth.positiveModulo(spinRotation + spinAdjust, 1.0D);
+                    }
+                    double phase = (float) (pSeed * 1327217883) / (float) Integer.MAX_VALUE;
+                    return Mth.positiveModulo((float) (spinRotation + phase), 1.0f);
                 }
 
                 @OnlyIn(Dist.CLIENT)

@@ -417,31 +417,39 @@ public class ClientEventForgeBusHandler {
                 if (targetStack.hasTag()) {
                     CompassTargetHelper.CompassPoint point = CompassTargetHelper.getPoint(targetStack);
                     if(point != null) {
-                        BlockPos feet = player.blockPosition();
-                        double dx = point.x() - feet.getX();
-                        double dy = point.hasHeight() ? point.y() - feet.getY() : 0;
-                        double dz = point.z() - feet.getZ();
+                        int nextLine;
+                        if(CompassTargetHelper.inDimension(targetStack, player.level())) {
+                            BlockPos feet = player.blockPosition();
+                            double dx = point.x() - feet.getX();
+                            double dy = point.hasHeight() ? point.y() - feet.getY() : 0;
+                            double dz = point.z() - feet.getZ();
 
-                        int distance = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
+                            int distance = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
 
-                        String text = distance + "m";
-                        if(point.hasHeight()) {
-                            int height = point.y() - feet.getY();
-                            String arrow;
-                            if(height > 0) arrow = "\u25B2";        // ▲ target above you
-                            else if(height < 0) arrow = "\u25BC";   // ▼ target below you
-                            else arrow = "\u00B1";                  // ± level with it
-                            text += " " + arrow + (point.approximate() ? "~" : "") + Math.abs(height);
+                            String text = distance + "m";
+                            if(point.hasHeight()) {
+                                int height = point.y() - feet.getY();
+                                String arrow;
+                                if(height > 0) arrow = "\u25B2";        // ▲ target above you
+                                else if(height < 0) arrow = "\u25BC";   // ▼ target below you
+                                else arrow = "\u00B1";                  // ± level with it
+                                text += " " + arrow + (point.approximate() ? "~" : "") + Math.abs(height);
+                            }
+
+                            MutableComponent dist = Component.literal(text);
+                            gui.drawString(font, dist, x + 4, y + 4, 0xffffff, true);
+                            nextLine = y + 14;
+                        } else {
+                            gui.drawString(font, "?m", x + 4, y + 4, 0xffffff, true);
+                            gui.drawString(font, Component.translatable("gui.magichem.distance.otherdimtarget"), x + 4, y + 14, 0x888888, true);
+                            nextLine = y + 24;
                         }
 
-                        MutableComponent dist = Component.literal(text);
-                        gui.drawString(font, dist, x + 4, y + 4, 0xffffff, true);
-
                         float time = player.level().getTimeOfDay(0);
-                        gui.drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 14, 0x888888, true);
+                        gui.drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, nextLine, 0x888888, true);
 
                         float rot = (360 + (player.getYRot() % 360)) % 360;
-                        gui.drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, y + 24, 0x888888, true);
+                        gui.drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, nextLine + 10, 0x888888, true);
                     } else {
                         if(targetStack.getTag().contains("respawnDimension")) {
                             if(targetStack.getTag().getString("respawnDimension").equals(player.level().dimension().location().toString())) {

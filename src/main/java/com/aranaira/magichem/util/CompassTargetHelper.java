@@ -2,7 +2,9 @@ package com.aranaira.magichem.util;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class CompassTargetHelper {
@@ -36,5 +38,14 @@ public class CompassTargetHelper {
         }
     
         return new CompassPoint(lodestone.getInt("X"), lodestone.getInt("Y"), lodestone.getInt("Z"), false, false);
-    }    
+    }
+
+    // MnA's rule (ThaumaturgicCompass.getTrackedPosition): a compass's point only counts in the dimension its
+    // LodestoneDimension names; without one it counts nowhere.
+    public static boolean inDimension(ItemStack stack, Level level) {
+        CompoundTag tag = stack.getTag();
+        if (tag == null || !tag.contains("LodestoneDimension", Tag.TAG_STRING)) return false;
+        ResourceLocation dimension = ResourceLocation.tryParse(tag.getString("LodestoneDimension"));
+        return dimension != null && dimension.equals(level.dimension().location());
+    }
 }
