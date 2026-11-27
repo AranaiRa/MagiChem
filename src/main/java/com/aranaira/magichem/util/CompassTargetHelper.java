@@ -19,6 +19,8 @@ public class CompassTargetHelper {
         CompoundTag tag = stack.getTag();
         if (tag == null || !tag.contains("LodestonePos", Tag.TAG_COMPOUND)) return null;
         CompoundTag lodestone = tag.getCompound("LodestonePos");
+        // Yeah girl, give us nothing (if you have nothing to give).
+        if (!lodestone.contains("X", Tag.TAG_INT) || !lodestone.contains("Z", Tag.TAG_INT)) return null;        
 
         if (lodestone.contains("mnapfixes_target", Tag.TAG_COMPOUND)) {
             CompoundTag target = lodestone.getCompound("mnapfixes_target");

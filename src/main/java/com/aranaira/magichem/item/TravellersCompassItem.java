@@ -96,6 +96,8 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
 
     @Override
     public void setIndex(ItemStack itemStack, int i) {
+        // Save the slot we're leaving first: a search result can land after use() has already synced it.
+        updateSelectedRadialItemFromTag(itemStack);
         itemStack.getOrCreateTag().putInt("index", i);
         updateTagFromSelectedRadialItem(itemStack);
 
@@ -121,11 +123,11 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
 
             if(compassToCopyFrom.hasTag()) {
                 CompoundTag nbtCompass = compassToCopyFrom.getTag();
-                nbt.putString("LodestoneDimension", nbtCompass.getString("LodestoneDimension"));
+                copyOrRemove(nbtCompass, nbt, "LodestoneDimension");
                 nbt.putInt("tracking_type", nbtCompass.getInt("tracking_type"));
-                nbt.put("LodestonePos", nbtCompass.getCompound("LodestonePos"));
+                copyOrRemove(nbtCompass, nbt, "LodestonePos");
                 nbt.putByte("tracking_mode", nbtCompass.getByte("tracking_mode"));
-                nbt.putByte("LodestoneTracked", nbtCompass.getByte("LodestoneTracked"));
+                copyOrRemove(nbtCompass, nbt, "LodestoneTracked");
                 nbt.putString("tracking_key", nbtCompass.getString("tracking_key"));
                 nbt.putInt("CustomModelData", 1);
                 pStack.setTag(nbt);
@@ -153,16 +155,22 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
 
         if(compassToCopyTo.hasTag()) {
             CompoundTag nbtCompass = compassToCopyTo.getTag();
-            nbtCompass.putString("LodestoneDimension", nbt.getString("LodestoneDimension"));
+            copyOrRemove(nbt, nbtCompass, "LodestoneDimension");
             nbtCompass.putInt("tracking_type",nbt.getInt("tracking_type"));
-            nbtCompass.put("LodestonePos", nbt.getCompound("LodestonePos"));
+            copyOrRemove(nbt, nbtCompass, "LodestonePos");
             nbtCompass.putByte("tracking_mode", nbt.getByte("tracking_mode"));
-            nbtCompass.putByte("LodestoneTracked", nbt.getByte("LodestoneTracked"));
+            copyOrRemove(nbt, nbtCompass, "LodestoneTracked");
             nbtCompass.putString("tracking_key", nbt.getString("tracking_key"));
 
             nbt.put("inventory", deserializedInventory.serializeNBT());
         }
 
+    }
+
+    // This stops premature shimmers on the compass in updateTagFromSelectedRadialItem.  Almost, but not quite magical yet.
+    private static void copyOrRemove(CompoundTag from, CompoundTag to, String key) {
+        if(from.contains(key)) to.put(key, from.get(key));
+        else to.remove(key);
     }
 
     @Override
