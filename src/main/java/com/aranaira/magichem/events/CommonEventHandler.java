@@ -413,9 +413,11 @@ public class CommonEventHandler {
             }
         }
         else if(event.getEntity() instanceof ServerPlayer sp && !sp.level().isClientSide()) {
-            if (!playersGivenWarning.contains(sp.getUUID())) {
-                sp.sendSystemMessage(Component.translatable("feedback.warning.api_bug_tier_tooltips"));
-                playersGivenWarning.add(sp.getUUID());
+            if(!ModList.get().isLoaded("mnapfixes")) {
+                if (!playersGivenWarning.contains(sp.getUUID())) {
+                    sp.sendSystemMessage(Component.translatable("feedback.warning.api_bug_tier_tooltips"));
+                    playersGivenWarning.add(sp.getUUID());
+                }
             }
 
             if(CACHED_ARMORS.containsKey(sp.getUUID())) {
