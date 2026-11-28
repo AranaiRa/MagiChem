@@ -69,6 +69,9 @@ public class TravellersCompassMenu extends AbstractContainerMenu {
         playerInventory = inv;
         compassHoldingSlot = pCompassHoldingSlot;
 
+        // Save the selected slot first, or this screen shows (and on close writes back) its older stored copy.
+        TravellersCompassItem.updateSelectedRadialItemFromTag(playerInventory.getItem(compassHoldingSlot));
+
         CompoundTag nbt = playerInventory.getItem(compassHoldingSlot).getOrCreateTag();
         if(nbt.contains("inventory")) {
             itemHandler.deserializeNBT(nbt.getCompound("inventory"));

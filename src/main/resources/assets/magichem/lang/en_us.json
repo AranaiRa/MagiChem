@@ -1558,6 +1558,7 @@
   "gui.magichem.distance.bedspawn": "...from Bed",
   "gui.magichem.distance.nobed": "...No Bed Location",
   "gui.magichem.distance.otherdimbed": "...Bed in Another Dimension",
+  "gui.magichem.distance.otherdimtarget": "...Target in Another Dimension",
 
   "construct.magichem:sort_materia": "Sort Materia from Device",
   "construct.magichem:sort_materia_from_container": "Sort Materia from Container",
@@ -2007,7 +2008,7 @@
   "jei.magichem.info_panel.boss_trophy_fey": "Obtained by defeating a very powerful opponent in a Fey Tree. \n Faction strongholds are rare. The Broker may be able to help you locate a Fey Tree.",
   "jei.magichem.info_panel.boss_trophy_undead": "Obtained by defeating a very powerful opponent in a Cathedral. \n Faction strongholds are rare. The Broker may be able to help you locate a Cathedral.",
   "jei.magichem.info_panel.codex_materia": "Trade a Codex Arcana to the Wandering Wizard. \n The item does not appear in her trade list, you need to right click her with the actual codex itself.",
-  "jei.magichem.info_panel.droplets": "Created when a Standing Retort inserts elemental essentia into an Eldrin Fume Filter. \n Creates 50% more Eldrin power than a dram of elemental Essentia alone. \n If you remove it from the Fume Filter it will evaporate into nothing very quickly.",
+  "jei.magichem.info_panel.droplets": "Created when a Standing Retort inserts elemental essentia into an Eldrin Fume Filter. \n Creates 50%% more Eldrin power than a dram of elemental Essentia alone. \n If you remove it from the Fume Filter it will evaporate into nothing very quickly.",
   "jei.magichem.info_panel.obscure_prognostications": "Created by fulfilling a Prophecy of Thought. \n Anoint a Gnostic Orb with 50 Admixture of Thought and then wait one hour. \n When the orb is surrounded by a full magic circle, the appointed time has arrived and you can fulfill the prophecy by right-clicking the Orb. \n A nearby vanilla bookshelf will be destroyed and turned into this item.",
   "jei.magichem.info_panel.rarefied_waste": "When an advanced alchemical device is hooked up to a Quake Refinery a portion of absorbed Grime becomes Rarefied Waste instead of Alchemical Waste. \n Rarefied Waste can be distilled into random Admixtures and generates no Grime.",
   "jei.magichem.info_panel.scorched_theorem": "Results from Fulminating an Enchanted Book or a Torn Journal Page. \n Higher level enchantments (or higher tier components for Journal Pages) create more Scorched Theorems.",

@@ -21,6 +21,7 @@ import com.aranaira.magichem.recipe.ConstructStudyMaterialRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.KeybindRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.aranaira.magichem.util.CompassTargetHelper;
 import com.mna.KeybindInit;
 import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.api.config.ClientConfigValues;
@@ -414,20 +415,41 @@ public class ClientEventForgeBusHandler {
 
             if(targetStack != null) {
                 if (targetStack.hasTag()) {
-                    if(targetStack.getTag().contains("LodestonePos")) {
-                        CompoundTag posTag = targetStack.getTag().getCompound("LodestonePos");
-                        BlockPos target = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
+                    CompassTargetHelper.CompassPoint point = CompassTargetHelper.getPoint(targetStack);
+                    if(point != null) {
+                        int nextLine;
+                        if(CompassTargetHelper.inDimension(targetStack, player.level())) {
+                            BlockPos feet = player.blockPosition();
+                            double dx = point.x() - feet.getX();
+                            double dy = point.hasHeight() ? point.y() - feet.getY() : 0;
+                            double dz = point.z() - feet.getZ();
 
-                        int distance = (int) Math.round(Math.sqrt(player.getOnPos().distSqr(target)));
+                            int distance = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
 
-                        MutableComponent dist = Component.literal(distance + "m");
-                        gui.drawString(font, dist, x + 4, y + 4, 0xffffff, true);
+                            String text = distance + "m";
+                            if(point.hasHeight()) {
+                                int height = point.y() - feet.getY();
+                                String arrow;
+                                if(height > 0) arrow = "\u25B2";        // ▲ target above you
+                                else if(height < 0) arrow = "\u25BC";   // ▼ target below you
+                                else arrow = "\u00B1";                  // ± level with it
+                                text += " " + arrow + (point.approximate() ? "~" : "") + Math.abs(height);
+                            }
+
+                            MutableComponent dist = Component.literal(text);
+                            gui.drawString(font, dist, x + 4, y + 4, 0xffffff, true);
+                            nextLine = y + 14;
+                        } else {
+                            gui.drawString(font, "?m", x + 4, y + 4, 0xffffff, true);
+                            gui.drawString(font, Component.translatable("gui.magichem.distance.otherdimtarget"), x + 4, y + 14, 0x888888, true);
+                            nextLine = y + 24;
+                        }
 
                         float time = player.level().getTimeOfDay(0);
-                        gui.drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 14, 0x888888, true);
+                        gui.drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, nextLine, 0x888888, true);
 
                         float rot = (360 + (player.getYRot() % 360)) % 360;
-                        gui.drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, y + 24, 0x888888, true);
+                        gui.drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, nextLine + 10, 0x888888, true);
                     } else {
                         if(targetStack.getTag().contains("respawnDimension")) {
                             if(targetStack.getTag().getString("respawnDimension").equals(player.level().dimension().location().toString())) {
