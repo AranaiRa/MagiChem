@@ -11,8 +11,13 @@ import com.aranaira.magichem.networking.ParticleSpawnAnointingS2CPacket;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
+import com.aranaira.magichem.util.render.ColorUtils;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
 import com.mna.items.runes.RuneMarkingPair;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -26,7 +31,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -43,6 +50,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Random;
 
 public class NourishingCenserBlockEntity extends BlockEntity implements MenuProvider, IKeepsInventoryOnBreak, IMateriaProvisionRequester {
     private int droplets, index;
@@ -55,6 +63,7 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
         SLOT_MARK_PAIR = 0, SLOT_MATERIA_INPUT = 1, SLOT_MATERIA_OUTPUT = 2;
     private boolean isOverlapping = false;
     public static final MateriaItem ESSENTIA_NOURISHING = ItemRegistry.getEssentiaMap(false, false).get("nourishing");
+    private static final Random r = new Random();
 
     protected ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -237,7 +246,7 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
     }
 
     public float getDropletsPercent() {
-        return (float)droplets / (float)(ServerConfig.nourishingCenserMateriaUnitsPerDram * 5);
+        return (float)droplets / (float)(getDropletsMaximum());
     }
 
     public int getTickModulus() {
@@ -313,23 +322,86 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
         return new NourishingCenserMenu(pContainerId, pPlayerInventory, this, new SimpleContainerData(0));
     }
 
-    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+    public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pState, T t) {
         if(t instanceof NourishingCenserBlockEntity entity) {
-            if(!level.isClientSide()) {
+            if(pLevel.isClientSide()) {
+                if(entity.droplets >= entity.getMateriaCost()) {
+                    if (pLevel.getGameTime() % 8 == 0) {
+                        int[] color = ColorUtils.getRGBAIntTintFromPackedInt(0x7cc55f);
+                        Vector3 origin = new Vector3(pPos.getX() + 0.5, pPos.getY() + 0.375, pPos.getZ() + 0.5);
+
+                        double spreadRadius = 0.015625d;
+
+                        double x = r.nextDouble() * spreadRadius * 2 - spreadRadius;
+                        double z = r.nextDouble() * spreadRadius * 2 - spreadRadius;
+
+                        Vector3 pos = origin.add(new Vector3(x, 0.325, z));
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                                        .setScale(0.0625f).setMaxAge(96)
+                                        .setMover(new ParticleLerpMover(pos.x, pos.y, pos.z, pos.x, pos.y + 0.625, pos.z))
+                                        .setColor(color[0], color[1], color[2], 64),
+                                pos.x, pos.y, pos.z,
+                                0, 0, 0);
+                    }
+                    if (pLevel.getGameTime() % 6 == 0) {
+                        int[] color = ColorUtils.getRGBAIntTintFromPackedInt(0x7cc55f);
+                        if (entity.operatingArea == null) {
+                            entity.operatingArea = createDefaultAABB(pPos);
+                        }
+                        Vector3 origin = new Vector3(
+                                entity.operatingArea.minX + (entity.operatingArea.maxX + 1 - entity.operatingArea.minX) * r.nextDouble(),
+                                entity.operatingArea.minY + (entity.operatingArea.maxY - entity.operatingArea.minY) * r.nextDouble(),
+                                entity.operatingArea.minZ + (entity.operatingArea.maxZ + 1 - entity.operatingArea.minZ) * r.nextDouble()
+                        );
+
+                        double spreadRadius = 0.015625d;
+
+                        double x = r.nextDouble() * spreadRadius * 2 - spreadRadius;
+                        double z = r.nextDouble() * spreadRadius * 2 - spreadRadius;
+
+                        Vector3 pos = origin.add(new Vector3(x, 0.325, z));
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                        .setScale(0.075f + r.nextFloat(0.075f)).setMaxAge(48 + r.nextInt(48))
+                                        .setMover(new ParticleLerpMover(pos.x, pos.y + 1.125, pos.z, pos.x, pos.y + 0.375, pos.z))
+                                        .setColor(color[0], color[1], color[2], 255),
+                                pos.x, pos.y, pos.z,
+                                0, 0, 0);
+                    }
+                }
+            }
+            else {
                 boolean changed = false;
 
-                if(level.getGameTime() % 120 == 0) {
-                    changed = syncWithLevelData(level, pos.asLong(), entity);
+                if(pLevel.getGameTime() % 120 == 0) {
+                    changed = syncWithLevelData(pLevel, pPos.asLong(), entity);
                 }
 
-                if(entity.droplets <= ServerConfig.nourishingCenserMateriaUnitsPerDram * 4) {
+                if(entity.droplets <= getDropletsMaximum() - ServerConfig.nourishingCenserMateriaUnitsPerDram) {
                     ItemStack inputQuery = entity.itemHandler.getStackInSlot(SLOT_MATERIA_INPUT);
                     if(!inputQuery.isEmpty()) {
-                        if (inputQuery.getItem() != ItemRegistry.DEBUG_ORB.get()) {
-                            inputQuery.shrink(1);
+                        if (inputQuery.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                            int pre = entity.droplets;
+                            entity.droplets = getDropletsMaximum();
+                            if(pre != entity.droplets)
+                                changed = true;
                         }
-                        entity.droplets += ServerConfig.nourishingCenserMateriaUnitsPerDram;
-                        changed = true;
+                        else {
+                            ItemStack bottleQuery = entity.itemHandler.getStackInSlot(SLOT_MATERIA_OUTPUT);
+                            if(bottleQuery.isEmpty()) {
+                                inputQuery.shrink(1);
+                                entity.itemHandler.setStackInSlot(SLOT_MATERIA_OUTPUT, new ItemStack(Items.GLASS_BOTTLE));
+                                changed = true;
+                            }
+                            else if(bottleQuery.getCount() < bottleQuery.getMaxStackSize()) {
+                                inputQuery.shrink(1);
+                                bottleQuery.grow(1);
+                                entity.droplets += ServerConfig.nourishingCenserMateriaUnitsPerDram;
+                                changed = true;
+                            }
+                        }
+
                     }
                 }
 
@@ -343,12 +415,12 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
                     changed = true;
                 }
 
-                if (level.getGameTime() % entity.getTickModulus() != 0) {
+                if (pLevel.getGameTime() % entity.getTickModulus() != 0) {
                     if(changed) entity.syncAndSave();
                     return;
                 }
 
-                if(entity.operatingArea != null){
+                if(entity.operatingArea != null && entity.droplets >= entity.getMateriaCost()){
                     //Fill the block positions list if it's empty
                     reshuffleRemainingTargets(entity);
 
@@ -362,12 +434,14 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
                         }
 
                         final BlockPos posQuery = entity.remainingTargets.get(entity.index);
-                        final BlockState stateQuery = level.getBlockState(posQuery);
+                        final BlockState stateQuery = pLevel.getBlockState(posQuery);
                         if (stateQuery.getBlock() instanceof CropBlock crop) {
                             if (crop.getAge(stateQuery) < crop.getMaxAge()) {
-                                crop.growCrops(level, posQuery, stateQuery);
+                                entity.droplets -= entity.getMateriaCost();
+                                entity.syncAndSave();
+                                crop.growCrops(pLevel, posQuery, stateQuery);
                                 MagiChemMod.CHANNEL.send(
-                                        PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 12f, level.dimension())),
+                                        PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 12f, pLevel.dimension())),
                                         new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), ESSENTIA_NOURISHING.getMateriaColor(), true));
                                 break;
                             }
@@ -382,6 +456,10 @@ public class NourishingCenserBlockEntity extends BlockEntity implements MenuProv
                 }
             }
         }
+    }
+
+    private static int getDropletsMaximum() {
+        return ServerConfig.nourishingCenserMateriaUnitsPerDram * 5;
     }
 
     private static void reshuffleRemainingTargets(NourishingCenserBlockEntity entity) {
